@@ -1,0 +1,16 @@
+:root {
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Noto Sans KR */
+@font-face {
+  font-family: 'Noto Sans KR';
+  src: url(../public/fonts/NotoSansKR-VariableFont_wght.ttf);
+}
+
+/* Pretendard Variable */
+@font-face {
+  font-family: 'Pretendard Variable';
+  src: url(https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css);
+}
