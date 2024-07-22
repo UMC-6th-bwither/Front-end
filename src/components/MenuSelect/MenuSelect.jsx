@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import * as M from '../MenuSelect/MenuSelect.style';
+import * as M from './MenuSelect.style';
 
 function MenuSelect({ menus, activeMenu, setActiveMenu }) {
   return (
