@@ -1,6 +1,14 @@
 import * as S from './DogCard.style.jsx';
-import { Heart, Gender, Foot, People } from '../assets/CardInfoIcon';
-import { BookmarkActive, BookmarkInactive } from '../assets/BookmarkIcon';
+import {
+  Heart,
+  Gender,
+  Foot,
+  People,
+} from '../../../public/img/CardInfoIcon.jsx';
+import {
+  BookmarkActive,
+  BookmarkInactive,
+} from '../../../public/img/BookmarkIcon.jsx';
 
 const DogCard = ({
   photo,
