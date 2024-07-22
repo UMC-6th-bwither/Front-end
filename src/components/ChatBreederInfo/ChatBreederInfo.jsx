@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import img from '../assets/image.png';
-import * as C from '../styles/ChatBreederInfo.style';
+import img from '../../../public/img/breederprofile.png';
+import * as C from './ChatBreederInfo.style';
 
 export default function ChatBreederInfo() {
   const [activePage, setActivePage] = useState(0);
