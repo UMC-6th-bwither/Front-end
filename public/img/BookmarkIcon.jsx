@@ -1,4 +1,4 @@
-const BookmarkActive = () => {
+function BookmarkActive() {
   return (
     <svg
       width="30"
@@ -7,8 +7,8 @@ const BookmarkActive = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_521_10088)">
-        <g clip-path="url(#clip1_521_10088)">
+      <g clipPath="url(#clip0_521_10088)">
+        <g clipPath="url(#clip1_521_10088)">
           <path
             d="M15 30C23.2843 30 30 23.2843 30 15C30 6.71573 23.2843 0 15 0C6.71573 0 0 6.71573 0 15C0 23.2843 6.71573 30 15 30Z"
             fill="#F87B45"
@@ -29,8 +29,8 @@ const BookmarkActive = () => {
       </defs>
     </svg>
   );
-};
-const BookmarkInactive = () => {
+}
+function BookmarkInactive() {
   return (
     <svg
       width="30"
@@ -39,8 +39,8 @@ const BookmarkInactive = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_521_10990)">
-        <g clip-path="url(#clip1_521_10990)">
+      <g clipPath="url(#clip0_521_10990)">
+        <g clipPath="url(#clip1_521_10990)">
           <path
             d="M15 30C23.2843 30 30 23.2843 30 15C30 6.71573 23.2843 0 15 0C6.71573 0 0 6.71573 0 15C0 23.2843 6.71573 30 15 30Z"
             fill="#E1E1E1"
@@ -61,6 +61,5 @@ const BookmarkInactive = () => {
       </defs>
     </svg>
   );
-};
-
+}
 export { BookmarkActive, BookmarkInactive };

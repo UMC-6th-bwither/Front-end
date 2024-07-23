@@ -1,12 +1,8 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import * as S from './Pagination.style.jsx';
+import * as S from './Pagination.style';
 
-const Pagination = ({
-  totalItems,
-  itemsPerPage,
-  currentPage,
-  setCurrentPage,
-}) => {
+function Pagination({ totalItems, itemsPerPage, currentPage, setCurrentPage }) {
   const [totalPages, setTotalPages] = useState(
     Math.ceil(totalItems / itemsPerPage),
   );
@@ -52,7 +48,6 @@ const Pagination = ({
             key={page}
             onClick={() => handleClick(page)}
             disabled={page === currentPage}
-            //aria-current={page === currentPage ? 'page' : null}
           >
             {page}
           </S.PageButton>
@@ -67,6 +62,13 @@ const Pagination = ({
       </S.GroupPageBtn>
     </S.Pagination>
   );
+}
+
+Pagination.propTypes = {
+  totalItems: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
 };
 
 export default Pagination;

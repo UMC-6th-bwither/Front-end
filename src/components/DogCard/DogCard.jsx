@@ -1,16 +1,12 @@
-import * as S from './DogCard.style.jsx';
-import {
-  Heart,
-  Gender,
-  Foot,
-  People,
-} from '../../../public/img/CardInfoIcon.jsx';
+import PropTypes from 'prop-types';
+import * as S from './DogCard.style';
+import { Heart, Gender, Foot, People } from '../../../public/img/CardInfoIcon';
 import {
   BookmarkActive,
   BookmarkInactive,
-} from '../../../public/img/BookmarkIcon.jsx';
+} from '../../../public/img/BookmarkIcon';
 
-const DogCard = ({
+function DogCard({
   photo,
   location,
   name,
@@ -21,7 +17,7 @@ const DogCard = ({
   waitlistCount,
   isBookmarked,
   setIsBookmarked,
-}) => {
+}) {
   const bookmarking = () => {
     setIsBookmarked(!isBookmarked);
   };
@@ -38,20 +34,24 @@ const DogCard = ({
         <S.SubInfo>
           <p className="info">
             <Heart />
-            출생 <strong>{birthDate}</strong>
+            <span>출생 </span>
+            <strong>{birthDate}</strong>
           </p>
           <p className="info">
             <Gender />
-            성별 <strong>{gender}</strong>
+            <span>성별 </span>
+            <strong>{gender}</strong>
           </p>
           <p className="info">
             <Foot />
-            브리더 <strong>{breederName}</strong>
+            <span>브리더 </span>
+            <strong>{breederName}</strong>
           </p>
           {waitlistCount > 0 && (
             <p className="info">
               <People />
-              대기예약 <strong>{waitlistCount}명</strong>
+              <span>대기예약 </span>
+              <strong>{waitlistCount}명</strong>
             </p>
           )}
         </S.SubInfo>
@@ -62,6 +62,22 @@ const DogCard = ({
       </S.BookmarkBtn>
     </S.CardBox>
   );
+}
+
+DogCard.propTypes = {
+  photo: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  breed: PropTypes.string.isRequired,
+  birthDate: PropTypes.string.isRequired,
+  gender: PropTypes.string.isRequired,
+  breederName: PropTypes.string.isRequired,
+  waitlistCount: PropTypes.number,
+  isBookmarked: PropTypes.bool.isRequired,
+  setIsBookmarked: PropTypes.func.isRequired,
 };
 
+DogCard.defaultProps = {
+  waitlistCount: 0,
+};
 export default DogCard;
