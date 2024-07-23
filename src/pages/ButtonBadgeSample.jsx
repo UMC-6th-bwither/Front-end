@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import Button from '../components/Button';
-import SmallButton from '../components/SmallButton';
-import ButtonSelector from '../components/ButtonSelector';
-import Badge from '../components/Badge';
+import Button from '../components/button/Button';
+import SmallButton from '../components/smallbutton/SmallButton';
+import ButtonSelector from '../components/buttonselector/ButtonSelector';
+import Badge from '../components/badge/Badge';
 
 function App() {
   const [buttonSelection, setButtonSelection] = useState({});
