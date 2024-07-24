@@ -1,8 +1,5 @@
-import AnimalList from './pages/AnimalList/AnimalList';
-
 function App() {
-  // return <>App</>;
-  return <AnimalList />;
+  return <>App</>;
 }
 
 export default App;
