@@ -10,7 +10,8 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 365px;
+  margin: 0 auto;
+  max-width: 1190px;
 `;
 
 export const Left = styled.div`
