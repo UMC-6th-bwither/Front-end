@@ -142,4 +142,9 @@ export const BreederCard = styled.div`
   }
 `;
 
-export const BreederInfoContainer = styled.div``;
+export const BreederInfoContainer = styled.div`
+  width: 100%;
+
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+`;
