@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import MenuSelect from '../components/MenuSelect/MenuSelect';
-import * as A from './AnimalUpload.style';
+import * as A from './WaitingAnimalDetail';
 
-export default function AnimalUpload() {
+export default function WaitingAnimalDetail() {
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
 
   const menu = ['강아지 정보', '부모 강아지 정보', '브리더 정보'];
