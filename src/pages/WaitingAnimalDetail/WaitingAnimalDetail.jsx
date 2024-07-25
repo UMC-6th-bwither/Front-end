@@ -2,6 +2,7 @@ import { useState } from 'react';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './WaitingAnimalDetail.style';
 import Badge from '../../components/badge/Badge';
+import Button from '../../components/button/Button';
 
 function WaitingAnimalDetail() {
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
@@ -299,11 +300,12 @@ function WaitingAnimalDetail() {
             </Badge>
           </A.StatusContainer>
           <A.ButtonContainer>
-            <div>버튼 컴포넌트</div>
-            <div>버튼 컴포넌트</div>
+            <Button whiteBorder>혈통서 보기</Button>
+            <Button orange>브리더에게 문의하기</Button>
           </A.ButtonContainer>
         </A.InfoContainer>
       </A.Card>
+      <div>이미지 슬라이드 추가하기</div>
       <A.InfoWrapper>
         <MenuSelect
           menus={menu}
