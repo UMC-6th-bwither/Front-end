@@ -107,8 +107,8 @@ export const DogInfo = styled.div`
 
 export const StatusContainer = styled.div`
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 4px;
+  margin-bottom: 28px;
 `;
 
 export const Status = styled.div`
@@ -123,4 +123,39 @@ export const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
   margin-top: auto;
+`;
+
+export const InfoWrapper = styled.div`
+  width: 100%;
+`;
+
+export const InfoTitle = styled.div`
+  font-family: 'Noto Sans KR';
+  color: #323232;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const InfoContent = styled.div`
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 24px;
+  letter-spacing: -0.3px;
+`;
+
+export const InfoItem = styled.div`
+  margin-bottom: 48px;
+`;
+
+export const InfoIcon = styled.svg`
+  margin-left: 10px;
 `;
