@@ -210,8 +210,24 @@ function WaitingAnimalDetail() {
         <A.ParentDogImage>여긴 이미지</A.ParentDogImage>
         {/* <A.ParentDogImage src="https://via.placeholder.com/360" alt="parent dog" /> */}
         <A.ParentDogInfo>
-          <A.ParentDogName>행복이</A.ParentDogName>
-          <div>행복이 부</div>
+          <A.ParentDogNameContainer>
+            <A.ParentDogName>행복이</A.ParentDogName>
+            <A.ParentDogNameGender>행복이 부</A.ParentDogNameGender>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="8"
+              height="17"
+              viewBox="0 0 8 17"
+              fill="none"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M4 5.87378C4.80274 5.87378 5.45349 5.22303 5.45349 4.42029C5.45349 3.61755 4.80274 2.9668 4 2.9668C3.19726 2.9668 2.54651 3.61755 2.54651 4.42029C2.54651 5.22303 3.19726 5.87378 4 5.87378ZM7.45349 4.42029C7.45349 5.97987 6.4197 7.29799 5 7.72678V11.8887H7.5V13.8887H5V16.0332H3V13.8887H0.5V11.8887H3V7.72678C1.5803 7.29799 0.546509 5.97987 0.546509 4.42029C0.546509 2.51298 2.09269 0.966797 4 0.966797C5.90731 0.966797 7.45349 2.51298 7.45349 4.42029Z"
+                fill="#D86480"
+              />
+            </svg>
+          </A.ParentDogNameContainer>
           <A.ParentDogDetail>
             <A.ParentDogLabel>종</A.ParentDogLabel>
             <A.ParentDogValue>비글</A.ParentDogValue>
