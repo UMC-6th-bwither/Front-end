@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import Button from '../components/button/Button';
-import SmallButton from '../components/smallbutton/SmallButton';
-import ButtonSelector from '../components/buttonselector/ButtonSelector';
-import Badge from '../components/badge/Badge';
+import Button from '../../components/button/Button';
+import SmallButton from '../../components/smallbutton/SmallButton';
+import ButtonSelector from '../../components/buttonselector/ButtonSelector';
+import Badge from '../../components/badge/Badge';
 
-function App() {
+function ButtonBadgeSample() {
   const [buttonSelection, setButtonSelection] = useState({});
 
   const selectButtonHandler = (selectionInfo) => {
@@ -86,4 +86,4 @@ function App() {
   );
 }
 
-export default App;
+export default ButtonBadgeSample;

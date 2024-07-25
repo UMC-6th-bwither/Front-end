@@ -2,8 +2,8 @@ import { styled } from 'styled-components';
 
 const Pagination = styled.div`
   display: flex;
-  justify-content: center; /* 수평 가운데 정렬 */
-  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center;
+  align-items: center;
 `;
 
 const PageButton = styled.button`
@@ -12,7 +12,7 @@ const PageButton = styled.button`
   color: #222222;
   margin: 10px;
   cursor: pointer;
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR';
   font-size: 16px;
   font-weight: 400;
 

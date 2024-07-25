@@ -1,7 +1,6 @@
-/* eslint-disable import/extensions */
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import * as S from './Pagination.style.jsx';
+import * as S from './Pagination.style';
 
 function Pagination({ totalItems, itemsPerPage, currentPage, setCurrentPage }) {
   const [totalPages, setTotalPages] = useState(
@@ -49,7 +48,6 @@ function Pagination({ totalItems, itemsPerPage, currentPage, setCurrentPage }) {
             key={page}
             onClick={() => handleClick(page)}
             disabled={page === currentPage}
-            // aria-current={page === currentPage ? 'page' : null}
           >
             {page}
           </S.PageButton>
@@ -65,5 +63,12 @@ function Pagination({ totalItems, itemsPerPage, currentPage, setCurrentPage }) {
     </S.Pagination>
   );
 }
+
+Pagination.propTypes = {
+  totalItems: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
+};
 
 export default Pagination;

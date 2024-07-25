@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 const CardBox = styled.div`
   display: flex;
   flex-direction: row;
-  position: relative; /* 부모 요소에 상대적 위치를 설정 */
+  position: relative;
   width: 970px;
   height: 188px;
   justify: space-between;
@@ -24,7 +24,7 @@ const InfoContainer = styled.div`
 
   .location {
     margin: 10px 0;
-    font-family: Noto Sans KR;
+    font-family: 'Noto Sans KR';
     font-size: 15px;
     font-weight: 350;
     text-align: left;
@@ -32,45 +32,80 @@ const InfoContainer = styled.div`
   }
 
   .name {
-    font-family: Pretendard Variable;
+    font-family: 'Pretendard Variable';
     font-size: 22px;
-    font-weight: 700;
-    text-align: center;
-  }
-
-  .breed {
-    font-family: Pretendard Variable;
-    font-size: 16px;
     font-weight: 700;
     text-align: center;
   }
 
   .info {
     margin: 8px 0;
-    font-family: Noto Sans KR;
+    font-family: 'Noto Sans KR';
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 400;
     text-align: left;
   }
 `;
 
 const SubInfo = styled.div`
-  margin: 25px 0 0 0;
+  margin: 30px 0 0 0;
 
   strong {
-    margin: 0 0 0 8px;
-    font-family: Pretendard Variable;
+    margin: 0 0 0 5px;
+    font-family: 'Pretendard Variable';
     font-size: 16px;
     font-weight: 700;
     text-align: left;
   }
+
+  span {
+    margin: 0 0 0 5px;
+  }
 `;
+
+const CareerBadge = styled.div`
+  width: 140px;
+  height: 24px;
+  gap: 6px;
+  opacity: 0px;
+
+  display: flex;
+  flex-direction: row;
+  position: relative;
+
+  .badge {
+    padding: 4px 8px 4px 8px;
+    gap: 10px;
+    border-radius: 4px 0px 0px 0px;
+    opacity: 0px;
+    background: #fffdf2;
+
+    height: 16px;
+    gap: 0px;
+    opacity: 0px;
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: -0.2800000011920929px;
+    text-align: center;
+    color: #f87b45;
+  }
+`;
+
 const BookmarkBtn = styled.button`
   border: none;
   background-color: transparent;
-  position: absolute; /* 부모 요소를 기준으로 위치 조정 */
+  position: absolute;
   right: 5%;
   top: 5%;
 `;
 
-export { CardBox, PhotoContainer, InfoContainer, SubInfo, BookmarkBtn };
+export {
+  CardBox,
+  PhotoContainer,
+  InfoContainer,
+  SubInfo,
+  CareerBadge,
+  BookmarkBtn,
+};
