@@ -6,7 +6,7 @@
 /* Noto Sans KR */
 @font-face {
   font-family: 'Noto Sans KR';
-  src: url(../public/fonts/NotoSansKR-VariableFont_wght.ttf);
+  src: url(/fonts/NotoSansKR-VariableFont_wght.ttf);
 }
 
 /* Pretendard Variable */
