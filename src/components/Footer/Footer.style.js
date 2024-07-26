@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Border = styled.div`
   display: flex;
   width: 1920px;
-  height: 366px;
+  height: 322px;
   padding: 22px 0px;
   flex-direction: column;
   align-items: center;
