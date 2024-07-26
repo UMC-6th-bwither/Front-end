@@ -7,6 +7,7 @@ export const MenuContainer = styled.div`
   align-items: flex-end;
   gap: 18px;
   align-self: stretch;
+  margin-bottom: 32px;
 `;
 
 export const MenuItem = styled.div`
