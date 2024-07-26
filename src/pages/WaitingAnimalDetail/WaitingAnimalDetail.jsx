@@ -1,13 +1,43 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
+import Carousel from 'react-multi-carousel';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './WaitingAnimalDetail.style';
 import Badge from '../../components/badge/Badge';
 import Button from '../../components/button/Button';
+import 'react-multi-carousel/lib/styles.css';
 
+function LeftArrow({ onClick }) {
+  return <A.Arrow className="left" onClick={onClick} />;
+}
+LeftArrow.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+function RightArrow({ onClick }) {
+  return <A.Arrow className="right" onClick={onClick} />;
+}
+RightArrow.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 function WaitingAnimalDetail() {
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
 
   const menu = ['강아지 정보', '부모 강아지 정보', '브리더 정보'];
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 5,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 5,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 5,
+    },
+  };
 
   const renderDogInfo = () => (
     <>
@@ -556,19 +586,19 @@ function WaitingAnimalDetail() {
           </A.DogContainer>
           <A.DogInfo>
             <p>
-              <strong>종:</strong> 비글
+              <strong>종</strong> 비글
             </p>
             <p>
-              <strong>성별:</strong> 여아
+              <strong>성별</strong> 여아
             </p>
             <p>
-              <strong>생일:</strong> 2023.01.23.
+              <strong>생일</strong> 2023.01.23.
             </p>
             <p>
-              <strong>예방접종:</strong> 1~3차 접종
+              <strong>예방접종</strong> 1~3차 접종
             </p>
             <p>
-              <strong>바이러스 질환 검사:</strong> 음성
+              <strong>바이러스 질환 검사</strong> 음성
             </p>
           </A.DogInfo>
           <A.StatusContainer>
@@ -625,7 +655,20 @@ function WaitingAnimalDetail() {
           </A.ButtonContainer>
         </A.InfoContainer>
       </A.Card>
-      <div>이미지 슬라이드 추가하기</div>
+      <A.SliderContainer>
+        <Carousel
+          responsive={responsive}
+          customLeftArrow={<LeftArrow />}
+          customRightArrow={<RightArrow />}
+        >
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail1" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail1" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail2" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail3" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail4" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail5" />
+        </Carousel>
+      </A.SliderContainer>
       <A.InfoWrapper>
         <MenuSelect
           menus={menu}

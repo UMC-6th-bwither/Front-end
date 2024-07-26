@@ -128,6 +128,64 @@ export const ButtonContainer = styled.div`
 export const InfoWrapper = styled.div`
   width: 100%;
 `;
+export const SliderContainer = styled.div`
+  position: relative;
+  overflow: visible;
+  width: 365px;
+
+  .react-multi-carousel-item {
+    display: flex;
+    width: 355px;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  align-self: flex-start;
+`;
+
+export const Thumbnail = styled.img`
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+`;
+export const Arrow = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 2;
+  user-select: none;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid #888888;
+    border-right: 2px solid #888888;
+    transform: rotate(45deg);
+  }
+
+  &.left {
+    left: -15px;
+    &::before {
+      transform: rotate(-135deg);
+    }
+  }
+
+  &.right {
+    left: 340px;
+  }
+`;
 
 export const InfoTitle = styled.div`
   font-family: 'Noto Sans KR';
