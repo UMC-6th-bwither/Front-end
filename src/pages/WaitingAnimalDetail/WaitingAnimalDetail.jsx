@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
@@ -22,8 +22,11 @@ RightArrow.propTypes = {
 };
 function WaitingAnimalDetail() {
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
+  const dogInfoRef = useRef(null);
+  const parentDogInfoRef = useRef(null);
+  const breederInfoRef = useRef(null);
 
-  const menu = ['강아지 정보', '부모 강아지 정보', '브리더 정보'];
+  const menuItems = ['강아지 정보', '부모 강아지 정보', '브리더 정보'];
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -39,8 +42,20 @@ function WaitingAnimalDetail() {
     },
   };
 
+  const handleMenuClick = (menu) => {
+    setActiveMenu(menu);
+    if (menu === '강아지 정보') {
+      dogInfoRef.current.scrollIntoView({ behavior: 'smooth' });
+    } else if (menu === '부모 강아지 정보') {
+      parentDogInfoRef.current.scrollIntoView({ behavior: 'smooth' });
+    } else if (menu === '브리더 정보') {
+      breederInfoRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // 강아지 정보
   const renderDogInfo = () => (
-    <>
+    <div ref={dogInfoRef} style={{ marginBottom: '96px' }}>
       <A.InfoItem>
         <A.InfoTitle>행복이의 성격은요</A.InfoTitle>
         <A.InfoContent>
@@ -167,11 +182,12 @@ function WaitingAnimalDetail() {
         </A.InfoTitle>
         <A.InfoContent>건강상태 이상 없음</A.InfoContent>
       </A.InfoItem>
-    </>
+    </div>
   );
 
+  // 부모 강아지 정보
   const renderParentDogInfo = () => (
-    <>
+    <div ref={parentDogInfoRef} style={{ marginBottom: '96px' }}>
       <A.InfoTitle>부모 강아지 정보</A.InfoTitle>
       <A.ParentDogCard>
         <A.ParentDogImage>여긴 이미지</A.ParentDogImage>
@@ -298,12 +314,13 @@ function WaitingAnimalDetail() {
           </A.ParentDogDetail>
         </A.ParentDogInfo>
       </A.ParentDogCard>
-    </>
+    </div>
   );
 
+  // 브리더 정보
   const renderBreederInfo = () => (
     // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
+    <div ref={breederInfoRef}>
       <A.InfoItem>
         <A.InfoTitle>브리더 정보</A.InfoTitle>
         <A.BreederInfoTitleBox>
@@ -507,21 +524,8 @@ function WaitingAnimalDetail() {
           </A.BreederInfoBottom3>
         </A.BreederInfoBottomBox>
       </A.InfoItem>
-    </>
+    </div>
   );
-
-  const renderContent = () => {
-    switch (activeMenu) {
-      case '강아지 정보':
-        return renderDogInfo();
-      case '부모 강아지 정보':
-        return renderParentDogInfo();
-      case '브리더 정보':
-        return renderBreederInfo();
-      default:
-        return null;
-    }
-  };
 
   return (
     <A.Container>
@@ -671,11 +675,13 @@ function WaitingAnimalDetail() {
       </A.SliderContainer>
       <A.InfoWrapper>
         <MenuSelect
-          menus={menu}
+          menus={menuItems}
           activeMenu={activeMenu}
-          setActiveMenu={setActiveMenu}
+          setActiveMenu={handleMenuClick}
         />
-        {renderContent()}
+        {renderDogInfo()}
+        {renderParentDogInfo()}
+        {renderBreederInfo()}
       </A.InfoWrapper>
     </A.Container>
   );
