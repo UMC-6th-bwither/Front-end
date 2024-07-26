@@ -227,3 +227,133 @@ export const ParentDogValue = styled.div`
   font-size: 16px;
   line-height: 21px;
 `;
+
+export const BreederInfoTitleBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 12px 0 6px 0;
+`;
+
+export const BreederInfoTitle = styled.div`
+  color: #323232;
+
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: -0.7px;
+  margin-right: 19px;
+`;
+
+export const BreederInfoLocation = styled.div`
+  display: flex;
+  align-items: center;
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
+  letter-spacing: -0.3px;
+`;
+
+export const BreederInfoLocationIcon1 = styled.svg`
+  width: 20px;
+  height: 20px;
+  margin-right: 2px;
+`;
+
+export const BreederInfoLocationIcon2 = styled.svg`
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+`;
+
+export const BreederInfoLabelBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  margin-top: 18px;
+  margin-bottom: 34px;
+`;
+
+export const BreederInfoBottomBox = styled.div`
+  display: flex;
+  height: 100px;
+
+  flex-direction: row;
+  border-radius: 8px;
+  background: #fafafa;
+`;
+
+export const BreederInfoBottomTitle = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
+`;
+
+export const BreederInfoBottomContent = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+`;
+
+export const BreederInfoBottom1 = styled.div`
+  display: flex;
+  padding: 18px 87.34px 18.5px 87.33px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: -0.5px;
+  flex: 1 0 0;
+  align-self: stretch;
+`;
+
+export const BreederInfoBottom2 = styled.div`
+  display: flex;
+  padding: 18px 69.56px 18.5px 69.55px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  align-self: stretch;
+`;
+
+export const BreederInfoBottom3 = styled.div`
+  display: flex;
+  padding: 18px 87.06px 18.5px 87.05px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: -0.5px;
+  flex: 1 0 0;
+  align-self: stretch;
+`;
+export const BreederInfoBottomReviewBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+export const BreederInfoBottomReviewIcon = styled.svg`
+  margin-right: 4px;
+`;
+
+export const BreederInfoBottomReviewText1 = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-right: 2px;
+`;
+
+export const BreederInfoBottomReviewText2 = styled.div`
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 350;
+  line-height: 18px;
+`;
