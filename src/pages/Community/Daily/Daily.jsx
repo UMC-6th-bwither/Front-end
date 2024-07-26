@@ -7,6 +7,7 @@ import Button from '../../../components/button/Button';
 import postDummy from '../dummyData';
 import Pagination from '../../../components/Pagination/Pagination';
 import PostCard from '../../../components/PostCard/PostCard';
+import Dropbox from '../../../components/Dropbox/Dropbox';
 
 function Icon() {
   return (
@@ -18,6 +19,7 @@ function Icon() {
 
 export default function CommunityDaily() {
   const [page, setPage] = useState(1);
+  const [sortOption, setSortOption] = useState(null);
 
   return (
     <P.Layout>
@@ -62,7 +64,12 @@ export default function CommunityDaily() {
             <ButtonSelector>고양이</ButtonSelector>
           </P.FiltersContainer>
           <P.SortContainer>
-            <ButtonSelector>조회순</ButtonSelector>
+            <Dropbox
+              defaultPlaceholder="정렬 기준"
+              menuList={['최신순', '조회순', '댓글순', '스크랩순']}
+              currentMenu={sortOption}
+              setCurrentMenu={setSortOption}
+            />
           </P.SortContainer>
         </P.FilterContainer>
 
@@ -73,8 +80,9 @@ export default function CommunityDaily() {
                 key={post.id}
                 profileImgSrc={post.profile.img}
                 profileName={post.profile.name}
-                postTitle={post.title}
+                postTitle={post.content.title}
                 postContent={post.content.text}
+                postThumbnailSrc="/img/post_thumbnail_example_1.jpeg"
                 timeStampKR="2024-07-25T14:40:00+09:00"
                 viewCount={159}
                 commentCount={159}

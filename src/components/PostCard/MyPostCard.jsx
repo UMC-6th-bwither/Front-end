@@ -10,9 +10,7 @@ function PostIcon({ src }) {
   );
 }
 
-export default function PostCard({
-  profileImgSrc,
-  profileName,
+export default function MyPostCard({
   postTitle,
   postContent,
   postThumbnailSrc,
@@ -22,16 +20,11 @@ export default function PostCard({
   bookmarkCount,
 }) {
   return (
-    <P.Post>
-      <P.PostUserProfile>
-        <P.UserProfileImageConatiner>
-          <P.UserProfileImage src={profileImgSrc} />
-        </P.UserProfileImageConatiner>
-        <P.UserProfileName>{profileName}</P.UserProfileName>
-      </P.PostUserProfile>
+    <P.MyPost>
+      <P.PostCategoryTag>정보공유</P.PostCategoryTag>
       <P.PostWrapper>
         <div>
-          <P.PostTitle>{postTitle}</P.PostTitle>
+          <P.MyPostTitle>{postTitle}</P.MyPostTitle>
           <P.PostContent>{postContent}</P.PostContent>
         </div>
         <P.ThumbnailWrapper>
@@ -56,6 +49,6 @@ export default function PostCard({
           <P.PostIconContent>{bookmarkCount}</P.PostIconContent>
         </P.PostIconFrame>
       </P.PostIconLayout>
-    </P.Post>
+    </P.MyPost>
   );
 }
