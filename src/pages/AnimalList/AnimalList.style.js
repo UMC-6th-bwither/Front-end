@@ -60,6 +60,7 @@ export const Right = styled.div`
     align-items: center;
     border-radius: 20px;
     background: var(--sub, #fffdf2);
+    cursor: pointer;
     color: var(--main, #fe834d);
     text-align: center;
     font-family: 'Noto Sans KR';
@@ -83,53 +84,12 @@ export const SelectContainer = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   align-self: stretch;
-
-  .select-container {
-    position: relative;
-    width: 96px;
-  }
-  .select-box {
-    display: flex;
-    width: 96px;
-    height: 36px;
-    padding: 8px 14px;
-    flex-direction: column;
-    align-items: center;
-    border: none;
-    border-radius: 10px;
-    background: var(--Grey_block, #f4f4f4);
-
-    color: var(--black, #272727);
-    text-align: center;
-    font-family: 'Noto Sans KR';
-    font-size: 14px;
-    font-weight: 350;
-
-    appearance: none; /* 기본 화살표 숨기기 */
-    -webkit-appearance: none; /* 사파리에서 기본 화살표 숨기기 */
-    -moz-appearance: none; /* 파이어폭스에서 기본 화살표 숨기기 */
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="9" height="5" viewBox="0 0 12 8" fill="none"><path d="M1.5 1.5L6 6.5L10.5 1.5" stroke="%23272727" strokeLinecap="square"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-  }
-  .sort {
-    justify-content: center;
-    flex-shrink: 0;
-    align-self: stretch;
-  }
 `;
 
 export const AnimalSelector = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 8px;
-
-  .animals,
-  .breeds {
-    justify-content: center;
-    flex-shrink: 0;
-    align-self: stretch;
-  }
 `;
 
 export const ReservationBtn = styled.button`
@@ -138,6 +98,7 @@ export const ReservationBtn = styled.button`
   border-radius: 8px;
   border: 1px solid #737373;
   background: #fff;
+  cursor: pointer;
   color: #2d2d2d;
   text-align: center;
   font-family: 'Noto Sans KR';
@@ -147,7 +108,7 @@ export const ReservationBtn = styled.button`
   line-height: 21px; /* 150% */
 `;
 
-export const ContentContainer = styled.div`
+export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

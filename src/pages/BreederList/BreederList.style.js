@@ -61,13 +61,18 @@ export const Right = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    background: var(--sub, #fffdf2);
-    color: var(--main, #fe834d);
+    background: ${({ isActive }) => (isActive ? '#FE834D' : '#fffdf2')};
+    cursor: pointer;
+    color: ${({ isActive }) => (isActive ? '#ffffff' : '#fe834d')};
     text-align: center;
     font-family: 'Noto Sans KR';
     font-size: 14px;
     font-weight: 350;
     line-height: 36px; /* 257.143% */
+  }
+  .item:hover {
+    background-color: #ffddc5;
+    color: #fe834d;
   }
 `;
 
@@ -85,62 +90,21 @@ export const SelectContainer = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   align-self: stretch;
-
-  .select-container {
-    position: relative;
-    width: 96px;
-  }
-  .select-box {
-    display: flex;
-    width: 96px;
-    height: 36px;
-    padding: 8px 14px;
-    flex-direction: column;
-    align-items: center;
-    border: none;
-    border-radius: 10px;
-    background: var(--Grey_block, #f4f4f4);
-
-    color: var(--black, #272727);
-    text-align: center;
-    font-family: 'Noto Sans KR';
-    font-size: 14px;
-    font-weight: 350;
-
-    appearance: none; /* 기본 화살표 숨기기 */
-    -webkit-appearance: none; /* 사파리에서 기본 화살표 숨기기 */
-    -moz-appearance: none; /* 파이어폭스에서 기본 화살표 숨기기 */
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="9" height="5" viewBox="0 0 12 8" fill="none"><path d="M1.5 1.5L6 6.5L10.5 1.5" stroke="%23272727" strokeLinecap="square"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-  }
-  .sort {
-    justify-content: center;
-    flex-shrink: 0;
-    align-self: stretch;
-  }
 `;
 
 export const AnimalSelector = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 8px;
-
-  .animals,
-  .breeds {
-    justify-content: center;
-    flex-shrink: 0;
-    align-self: stretch;
-  }
 `;
 
-export const ContentContainer = styled.div`
+export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 120px;
   align-self: stretch;
-  .dogCard {
+  .breederCard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;

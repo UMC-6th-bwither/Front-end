@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import * as A from './Breeder.style';
 import bookmark from '../../../../public/img/bookmark.svg';
 import { animalBreeds } from '../../selectData';
+import BreederCard from '../../../components/BreederCard/BreederCard';
+import DropBox from '../../../components/dropBox/DropBox';
 
 function Breeder() {
   //  ** Breeder Card API호출 필요 **
@@ -16,9 +18,8 @@ function Breeder() {
   }, [selectedAnimal, setSelectedAnimal]);
 
   const handleAnimalChange = (event) => {
-    const animal = event.target.value;
-    setSelectedAnimal(animal);
-    setBreeds(animalBreeds[animal] || []);
+    setSelectedAnimal(event);
+    setBreeds(animalBreeds[event] || []);
   };
 
   return (
@@ -33,34 +34,43 @@ function Breeder() {
       <A.BottomContainer>
         <A.SelectContainer>
           <A.Left>
-            <div className="select-container">
-              <select
-                onChange={handleAnimalChange}
-                className="select-box animals"
-              >
-                <option value="entire">전체</option>
-                <option value="dog">강아지</option>
-                <option value="cat">고양이</option>
-              </select>
-            </div>
-            <div className="select-container">
-              <select
-                // onChange={handleBreedChange}
-                className="select-box breeds"
-                // value={selectedBreed}
-              >
-                <option value="">종 선택</option>
-                {breeds.map((breed, index) => (
-                  <option key={index} value={breed}>
-                    {breed}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <DropBox
+              id="animal-dropbox"
+              label="전체"
+              options={[
+                { value: 'entire', label: '전체' },
+                { value: 'dog', label: '강아지' },
+                { value: 'cat', label: '고양이' },
+              ]}
+              onChange={handleAnimalChange}
+            />
+            <DropBox
+              id="breed-dropbox"
+              label="종 선택"
+              options={breeds.map((breed) => ({ value: breed, label: breed }))}
+            />
           </A.Left>
         </A.SelectContainer>
 
-        <A.CardsContainer />
+        <A.CardsContainer>
+          {/* {bookmarkedBreeder.map((breeder, index) => ( //필터링된 카드 나열
+            <BreederCard
+              key={index}
+              photo={breeder.photo}
+              location={breeder.location}
+              name={breeder.name}
+              breederExperience={breeder.breederExperience}
+              numberOfCertifications={breeder.numberOfCertifications}
+              waitingDogs={breeder.waitingDogs}
+              waitlistCount={breeder.waitlistCount}
+              rating={breeder.rating}
+              reviewCount={breeder.reviewCount}
+              isBookmarked={breeder.isBookmarked}
+              setIsBookmarked= () => {} 
+            />
+          ))} */}
+          <BreederCard />
+        </A.CardsContainer>
       </A.BottomContainer>
     </A.Border>
   );

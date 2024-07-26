@@ -1,107 +1,232 @@
 /* eslint-disable react/no-array-index-key */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as BL from './BreederList.style';
+import { cities, animalBreeds } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
-import DogCard from '../../components/DogCard/DogCard';
+import BreederCard from '../../components/BreederCard/BreederCard';
+import DropBox from '../../components/dropBox/DropBox';
 
 function BreederList() {
-  const cities = [
-    '서울',
-    '세종',
-    '강원',
-    '인천',
-    '경기',
-    '충북',
-    '충남',
-    '경북',
-    '대전',
-    '대구',
-    '전북',
-    '경남',
-    '울산',
-    '광주',
-    '부산',
-    '전남',
-    '제주',
+  // ** BreederCard API호출 필요 **
+  //  예시 데이터 15개
+  const 전체BreederCard = [
+    {
+      photo: '',
+      location: '서울',
+      name: '김철수',
+      breederExperience: '5년',
+      numberOfCertifications: 3,
+      waitingDogs: 5,
+      waitlistCount: 2,
+      rating: 4.5,
+      reviewCount: 10,
+    },
+    {
+      photo: '',
+      location: '부산',
+      name: '이영희',
+      breederExperience: '10년',
+      numberOfCertifications: 5,
+      waitingDogs: 8,
+      waitlistCount: 4,
+      rating: 4.8,
+      reviewCount: 20,
+    },
+    {
+      photo: '',
+      location: '대구',
+      name: '박민수',
+      breederExperience: '3년',
+      numberOfCertifications: 2,
+      waitingDogs: 3,
+      waitlistCount: 1,
+      rating: 4.2,
+      reviewCount: 5,
+    },
+    {
+      photo: '',
+      location: '인천',
+      name: '최지영',
+      breederExperience: '7년',
+      numberOfCertifications: 4,
+      waitingDogs: 6,
+      waitlistCount: 3,
+      rating: 4.6,
+      reviewCount: 15,
+    },
+    {
+      photo: '',
+      location: '광주',
+      name: '김은정',
+      breederExperience: '6년',
+      numberOfCertifications: 3,
+      waitingDogs: 7,
+      waitlistCount: 2,
+      rating: 4.7,
+      reviewCount: 12,
+    },
+    {
+      photo: '',
+      location: '대전',
+      name: '이승현',
+      breederExperience: '4년',
+      numberOfCertifications: 2,
+      waitingDogs: 4,
+      waitlistCount: 1,
+      rating: 4.4,
+      reviewCount: 8,
+    },
+    {
+      photo: '',
+      location: '울산',
+      name: '한지민',
+      breederExperience: '8년',
+      numberOfCertifications: 5,
+      waitingDogs: 9,
+      waitlistCount: 5,
+      rating: 4.9,
+      reviewCount: 25,
+    },
+    {
+      photo: '',
+      location: '경기',
+      name: '박서준',
+      breederExperience: '2년',
+      numberOfCertifications: 1,
+      waitingDogs: 2,
+      waitlistCount: 1,
+      rating: 4.1,
+      reviewCount: 3,
+    },
+    {
+      photo: '',
+      location: '강원',
+      name: '최예진',
+      breederExperience: '9년',
+      numberOfCertifications: 4,
+      waitingDogs: 7,
+      waitlistCount: 3,
+      rating: 4.7,
+      reviewCount: 18,
+    },
+    {
+      photo: '',
+      location: '충북',
+      name: '김지훈',
+      breederExperience: '1년',
+      numberOfCertifications: 1,
+      waitingDogs: 1,
+      waitlistCount: 0,
+      rating: 3.9,
+      reviewCount: 2,
+    },
+    {
+      photo: '',
+      location: '충남',
+      name: '이수정',
+      breederExperience: '11년',
+      numberOfCertifications: 6,
+      waitingDogs: 10,
+      waitlistCount: 6,
+      rating: 4.8,
+      reviewCount: 30,
+    },
+    {
+      photo: '',
+      location: '경북',
+      name: '김태영',
+      breederExperience: '3년',
+      numberOfCertifications: 2,
+      waitingDogs: 3,
+      waitlistCount: 1,
+      rating: 4.3,
+      reviewCount: 6,
+    },
+    {
+      photo: '',
+      location: '전북',
+      name: '박진우',
+      breederExperience: '5년',
+      numberOfCertifications: 3,
+      waitingDogs: 5,
+      waitlistCount: 2,
+      rating: 4.5,
+      reviewCount: 10,
+    },
+    {
+      photo: '',
+      location: '전남',
+      name: '서지수',
+      breederExperience: '4년',
+      numberOfCertifications: 2,
+      waitingDogs: 4,
+      waitlistCount: 1,
+      rating: 4.4,
+      reviewCount: 8,
+    },
+    {
+      photo: '',
+      location: '제주',
+      name: '최현우',
+      breederExperience: '2년',
+      numberOfCertifications: 1,
+      waitingDogs: 2,
+      waitlistCount: 1,
+      rating: 4.1,
+      reviewCount: 3,
+    },
   ];
-  const [, setSelectedAnimal] = useState('');
+
+  const [activeCity, setActiveCity] = useState(null);
+  const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
+  const [selectedBreed, setSelectedBreed] = useState('');
+  const [selectedCities, setSelectedCities] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const animalBreeds = {
-    dog: [
-      '골든 리트리버',
-      '닥스훈트',
-      '도베르만 핀셔',
-      '래브라도 레트리버',
-      '말티즈',
-      '말티푸',
-      '미니어처 슈나우저',
-      '미니어처 핀셔',
-      '베들링턴 테리어',
-      '보더콜리',
-      '비글',
-      '비숑프리제',
-      '사모예드',
-      '시바이누',
-      '시베리아허스키',
-      '시추',
-      '알래스칸 맬러뮤트',
-      '요크셔테리어',
-      '웰시코기',
-      '이탈리안 그레이 하운드',
-      '재페니스 스피츠',
-      '잭 러셀 테리어',
-      '저먼 셰퍼드',
-      '차우차우',
-      '치와와',
-      '파피용',
-      '퍼그',
-      '포메라니안',
-      '푸들',
-      '프렌치불독',
-      '기타',
-    ],
-    cat: [
-      '노르웨이 숲',
-      '데본 렉스',
-      '돈스코이',
-      '랙돌',
-      '러시안 블루',
-      '맹크스',
-      '먼치킨',
-      '메인 쿤',
-      '민스킨',
-      '벵갈',
-      '봄베이',
-      '브리티시 숏헤어',
-      '사바나',
-      '샴',
-      '소말리',
-      '소코케',
-      '스코티쉬 폴드',
-      '스핑크스',
-      '아메리칸 밥테일',
-      '아메리칸 숏헤어',
-      '아메리칸 컬',
-      '아비니시안',
-      '엑조틱 숏헤어',
-      '오리엔탈',
-      '카오 마니',
-      '코리안 숏헤어',
-      '터키쉬 앙고라',
-      '페르시안',
-      '기타',
-    ],
-    entire: [],
-  };
-  animalBreeds.entire = [...animalBreeds.dog, ...animalBreeds.cat];
+
+  useEffect(() => {
+    setBreeds(animalBreeds[selectedAnimal] || []);
+  }, [selectedAnimal, setSelectedAnimal]);
 
   const handleAnimalChange = (event) => {
-    const animal = event.target.value;
-    setSelectedAnimal(animal);
-    setBreeds(animalBreeds[animal] || []);
+    setSelectedAnimal(event);
+    setBreeds(animalBreeds[event] || []);
   };
+
+  const handleBreedChange = (value) => {
+    setSelectedBreed(value);
+  };
+
+  const handleCityChange = (city) => {
+    setSelectedCities((prevCities) => {
+      if (prevCities.includes(city)) {
+        return prevCities.filter((c) => c !== city); // 이미 선택된 지역 -> 제거
+      }
+      return [...prevCities, city]; // 새 지역 추가
+    });
+    setCurrentPage(1);
+  };
+
+  const handleBookmarkToggle = (name) => {
+    setIsBookmarked((preBookmarkedCards) => ({
+      ...preBookmarkedCards,
+      [name]: !preBookmarkedCards[name], // 해당 DogCard 상태 변경
+    }));
+  };
+
+  const handleCityClick = (city) => {
+    setActiveCity(city); // 클릭된 도시를 활성화 상태로 설정
+    handleCityChange(city); // 기존 onClick 핸들러 호출
+  };
+
+  // 선택된 조건에 따른 BreederCard데이터 필터링
+  const filteredBreederCards = 전체BreederCard.filter((breeder) => {
+    return (
+      (selectedBreed === '' || breeder.breed === selectedBreed) &&
+      (selectedCities.length === 0 || selectedCities.includes(breeder.location))
+    );
+  });
 
   return (
     <BL.Border>
@@ -114,7 +239,14 @@ function BreederList() {
         </BL.Left>
         <BL.Right>
           {cities.map((city, index) => (
-            <div key={index} className="item">
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+            <div
+              key={index}
+              className="item"
+              isActive={activeCity === city}
+              onClick={() => handleCityClick(city)}
+              onKeyDown={() => {}}
+            >
               {city}
             </div>
           ))}
@@ -124,56 +256,66 @@ function BreederList() {
       <BL.AnimalContainer>
         <BL.SelectContainer>
           <BL.AnimalSelector>
-            <div className="select-container">
-              <select
-                onChange={handleAnimalChange}
-                className="select-box animals"
-              >
-                <option value="entire">전체</option>
-                <option value="dog">강아지</option>
-                <option value="cat">고양이</option>
-              </select>
-            </div>
-            <div className="select-container">
-              <select className="select-box breeds">
-                <option value="">종 선택</option>
-                {breeds.map((breed, index) => (
-                  <option key={index} value={breed}>
-                    {breed}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <DropBox
+              id="animal-dropbox"
+              label="전체"
+              options={[
+                { value: 'entire', label: '전체' },
+                { value: 'dog', label: '강아지' },
+                { value: 'cat', label: '고양이' },
+              ]}
+              onChange={handleAnimalChange}
+            />
+            <DropBox
+              id="breed-dropbox"
+              label="종 선택"
+              options={[
+                { value: '', label: '종 선택' },
+                ...breeds.map((breed) => ({ value: breed, label: breed })),
+              ]}
+              onChange={handleBreedChange}
+            />
           </BL.AnimalSelector>
-          <select className="select-box sort">
-            <option value="latest">최신순</option>
-          </select>
+          <DropBox
+            id="sort-dropbox"
+            label="최신순"
+            options={[
+              { value: 'latest', label: '최신순' },
+              { value: 'popular', label: '인기순' },
+              { value: 'distance', label: '거리순' },
+              { value: 'individual', label: '개체순' },
+            ]}
+          />
         </BL.SelectContainer>
 
-        <BL.ContentContainer>
-          <div className="dogCard">
-            <DogCard
-              photo=""
-              location="서울 노원구"
-              name="행복이"
-              breed="골든리트리버"
-              birthDate="2020-01-01"
-              gender="수컷"
-              breederName="해피브리더"
-              waitlistCount={5}
-              isBookmarked={isBookmarked}
-              setIsBookmarked={setIsBookmarked}
-            />
+        <BL.CardsContainer>
+          <div className="breederCard">
+            {filteredBreederCards.map((breeder, index) => (
+              <BreederCard
+                key={index}
+                photo={breeder.photo}
+                location={breeder.location}
+                name={breeder.name}
+                breederExperience={breeder.breederExperience}
+                numberOfCertifications={breeder.numberOfCertifications}
+                waitingDogs={breeder.waitingDogs}
+                waitlistCount={breeder.waitlistCount}
+                rating={breeder.rating}
+                reviewCount={breeder.reviewCount}
+                isBookmarked={!!isBookmarked[breeder.name]}
+                setIsBookmarked={() => handleBookmarkToggle(breeder.name)}
+              />
+            ))}
           </div>
           <div>
             <Pagination
               totalItems={100}
-              itemsPerPage={9}
+              itemsPerPage={20}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />
           </div>
-        </BL.ContentContainer>
+        </BL.CardsContainer>
       </BL.AnimalContainer>
     </BL.Border>
   );

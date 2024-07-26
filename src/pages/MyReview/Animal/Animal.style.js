@@ -73,26 +73,6 @@ export const Left = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 8px;
-
-  .select-box {
-    display: flex;
-    width: 96px;
-    height: 36px;
-    padding: 8px 14px;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 4px;
-    border: none;
-    border-radius: 10px;
-    background: var(--Grey_block, #f4f4f4);
-
-    color: var(--black, #272727);
-    text-align: center;
-    font-family: 'Noto Sans KR';
-    font-size: 14px;
-    font-weight: 350;
-  }
 `;
 
 export const ReservationBtn = styled.button`
@@ -108,7 +88,6 @@ export const ReservationBtn = styled.button`
   text-align: center;
   font-family: 'Noto Sans KR';
   font-size: 14px;
-  font-style: normal;
   font-weight: 350;
   line-height: 21px; /* 150% */
 `;
