@@ -141,6 +141,7 @@ export const SliderContainer = styled.div`
     flex-shrink: 0;
   }
   align-self: flex-start;
+  margin-bottom: 88px;
 `;
 
 export const Thumbnail = styled.img`
