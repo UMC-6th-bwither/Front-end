@@ -2,191 +2,32 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as AL from './AnimalList.style';
 import { cities, animalBreeds } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
 import DogCard from '../../components/DogCard/DogCard';
 import DropBox from '../../components/dropBox/DropBox';
+import { toggleBookmark } from '../../redux/bookmarkSlice';
 
 function AnimalList() {
   // ** DogCard API호출 필요 **
-  //  예시 데이터 15개
-  const 전체DogCard = [
-    {
-      photo: '',
-      location: '서울',
-      name: '바둑이',
-      breed: '포메라니안',
-      birthDate: '2020-01-01',
-      gender: '수컷',
-      breederName: '김철수',
-      waitlistCount: 5,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '부산',
-      name: '쫑이',
-      breed: '푸들',
-      birthDate: '2019-05-03',
-      gender: '암컷',
-      breederName: '이영희',
-      waitlistCount: 2,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '대구',
-      name: '멍멍이',
-      breed: '말티즈',
-      birthDate: '2018-07-11',
-      gender: '수컷',
-      breederName: '박민수',
-      waitlistCount: 7,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '인천',
-      name: '냥이',
-      breed: '러시안 블루',
-      birthDate: '2017-12-24',
-      gender: '암컷',
-      breederName: '최지우',
-      waitlistCount: 3,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '광주',
-      name: '코코',
-      breed: '비숑 프리제',
-      birthDate: '2021-03-15',
-      gender: '수컷',
-      breederName: '정성훈',
-      waitlistCount: 4,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '대전',
-      name: '하루',
-      breed: '치와와',
-      birthDate: '2022-10-10',
-      gender: '암컷',
-      breederName: '박지성',
-      waitlistCount: 0,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '울산',
-      name: '보리',
-      breed: '요크셔 테리어',
-      birthDate: '2020-08-20',
-      gender: '수컷',
-      breederName: '김하늘',
-      waitlistCount: 1,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '수원',
-      name: '사랑이',
-      breed: '골든 리트리버',
-      birthDate: '2019-02-05',
-      gender: '암컷',
-      breederName: '홍길동',
-      waitlistCount: 8,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '성남',
-      name: '몽이',
-      breed: '보더 콜리',
-      birthDate: '2016-04-25',
-      gender: '수컷',
-      breederName: '박찬호',
-      waitlistCount: 10,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '청주',
-      name: '초코',
-      breed: '닥스훈트',
-      birthDate: '2018-09-14',
-      gender: '암컷',
-      breederName: '이순신',
-      waitlistCount: 9,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '전주',
-      name: '나비',
-      breed: '페르시안',
-      birthDate: '2017-06-30',
-      gender: '수컷',
-      breederName: '안중근',
-      waitlistCount: 11,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '제주',
-      name: '모찌',
-      breed: '프렌치 불독',
-      birthDate: '2015-11-19',
-      gender: '암컷',
-      breederName: '유관순',
-      waitlistCount: 4,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '강릉',
-      name: '까미',
-      breed: '비글',
-      birthDate: '2021-01-01',
-      gender: '수컷',
-      breederName: '김구',
-      waitlistCount: 7,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '포항',
-      name: '보라',
-      breed: '사모예드',
-      birthDate: '2022-12-31',
-      gender: '암컷',
-      breederName: '윤봉길',
-      waitlistCount: 5,
-      isBookmarked: false,
-    },
-    {
-      photo: '',
-      location: '서울',
-      name: '마루',
-      breed: '달마티안',
-      birthDate: '2018-03-03',
-      gender: '수컷',
-      breederName: '김좌진',
-      waitlistCount: 6,
-      isBookmarked: false,
-    },
-  ];
-
+  const [activeCities, setActiveCities] = useState([]);
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedBreed, setSelectedBreed] = useState('');
   const [selectedCities, setSelectedCities] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isBookmarked, setIsBookmarked] = useState({});
   const [isReserved, setIsReserved] = useState(false);
+
+  const dispatch = useDispatch();
+  const bookmarks = useSelector((state) => state.bookmarks.card);
+  console.log('Bookmarks:', bookmarks);
+
+  const handleBookmarkToggle = (name) => {
+    dispatch(toggleBookmark(name)); // 액션 디스패치
+  };
 
   useEffect(() => {
     setBreeds(animalBreeds[selectedAnimal] || []);
@@ -197,6 +38,13 @@ function AnimalList() {
   };
 
   const handleCityChange = (city) => {
+    setActiveCities(
+      (prevCities) =>
+        prevCities.includes(city)
+          ? prevCities.filter((c) => c !== city) // 배열에서 도시를 제거하여 비활성화
+          : [...prevCities, city], // 배열에 도시를 추가하여 활성화
+    );
+
     setSelectedCities((prevCities) => {
       if (prevCities.includes(city)) {
         return prevCities.filter((c) => c !== city); // 이미 선택된 지역 -> 제거
@@ -214,19 +62,12 @@ function AnimalList() {
     setSelectedBreed(value);
   };
 
-  const handleBookmarkToggle = (name) => {
-    setIsBookmarked((preBookmarkedCards) => ({
-      ...preBookmarkedCards,
-      [name]: !preBookmarkedCards[name], // 해당 DogCard 상태 변경
-    }));
-  };
-
   const toggleReservation = () => {
     setIsReserved(!isReserved);
   };
 
   // 선택된 조건에 따른 DogCard데이터 필터링
-  const filteredDogCards = 전체DogCard.filter((dog) => {
+  const filteredDogCards = bookmarks.filter((dog) => {
     return (
       (selectedGender === '' || dog.gender === selectedGender) &&
       (selectedBreed === '' || dog.breed === selectedBreed) &&
@@ -251,7 +92,9 @@ function AnimalList() {
             // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <div
               key={index}
-              className="item"
+              role="button"
+              tabIndex={0}
+              className={`item ${activeCities.includes(city) ? 'active' : ''}`}
               onClick={() => handleCityChange(city)}
               onKeyDown={() => {}}
             >
@@ -321,7 +164,7 @@ function AnimalList() {
                 gender={dog.gender}
                 breederName={dog.breederName}
                 waitlistCount={dog.waitlistCount}
-                isBookmarked={!!isBookmarked[dog.name]}
+                isBookmarked={dog.isBookmarked}
                 setIsBookmarked={() => handleBookmarkToggle(dog.name)}
               />
             ))}

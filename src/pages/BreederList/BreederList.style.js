@@ -51,6 +51,7 @@ export const Right = styled.div`
   grid-template-columns: repeat(9, 1fr);
   gap: 16px;
   width: 650px;
+  height: 100px;
 
   .item {
     display: flex;
@@ -61,9 +62,9 @@ export const Right = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    background: ${({ isActive }) => (isActive ? '#FE834D' : '#fffdf2')};
+    background: #fffdf2;
     cursor: pointer;
-    color: ${({ isActive }) => (isActive ? '#ffffff' : '#fe834d')};
+    color: #fe834d;
     text-align: center;
     font-family: 'Noto Sans KR';
     font-size: 14px;
@@ -73,6 +74,10 @@ export const Right = styled.div`
   .item:hover {
     background-color: #ffddc5;
     color: #fe834d;
+  }
+  .item.active {
+    background: #fe834d;
+    color: #ffffff;
   }
 `;
 

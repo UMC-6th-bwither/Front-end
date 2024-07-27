@@ -1,183 +1,15 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
 import * as BL from './BreederList.style';
-import { cities, animalBreeds } from '../selectData';
+import { cities, animalBreeds, 전체BreederCard } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
 import BreederCard from '../../components/BreederCard/BreederCard';
 import DropBox from '../../components/dropBox/DropBox';
 
 function BreederList() {
   // ** BreederCard API호출 필요 **
-  //  예시 데이터 15개
-  const 전체BreederCard = [
-    {
-      photo: '',
-      location: '서울',
-      name: '김철수',
-      breederExperience: '5년',
-      numberOfCertifications: 3,
-      waitingDogs: 5,
-      waitlistCount: 2,
-      rating: 4.5,
-      reviewCount: 10,
-    },
-    {
-      photo: '',
-      location: '부산',
-      name: '이영희',
-      breederExperience: '10년',
-      numberOfCertifications: 5,
-      waitingDogs: 8,
-      waitlistCount: 4,
-      rating: 4.8,
-      reviewCount: 20,
-    },
-    {
-      photo: '',
-      location: '대구',
-      name: '박민수',
-      breederExperience: '3년',
-      numberOfCertifications: 2,
-      waitingDogs: 3,
-      waitlistCount: 1,
-      rating: 4.2,
-      reviewCount: 5,
-    },
-    {
-      photo: '',
-      location: '인천',
-      name: '최지영',
-      breederExperience: '7년',
-      numberOfCertifications: 4,
-      waitingDogs: 6,
-      waitlistCount: 3,
-      rating: 4.6,
-      reviewCount: 15,
-    },
-    {
-      photo: '',
-      location: '광주',
-      name: '김은정',
-      breederExperience: '6년',
-      numberOfCertifications: 3,
-      waitingDogs: 7,
-      waitlistCount: 2,
-      rating: 4.7,
-      reviewCount: 12,
-    },
-    {
-      photo: '',
-      location: '대전',
-      name: '이승현',
-      breederExperience: '4년',
-      numberOfCertifications: 2,
-      waitingDogs: 4,
-      waitlistCount: 1,
-      rating: 4.4,
-      reviewCount: 8,
-    },
-    {
-      photo: '',
-      location: '울산',
-      name: '한지민',
-      breederExperience: '8년',
-      numberOfCertifications: 5,
-      waitingDogs: 9,
-      waitlistCount: 5,
-      rating: 4.9,
-      reviewCount: 25,
-    },
-    {
-      photo: '',
-      location: '경기',
-      name: '박서준',
-      breederExperience: '2년',
-      numberOfCertifications: 1,
-      waitingDogs: 2,
-      waitlistCount: 1,
-      rating: 4.1,
-      reviewCount: 3,
-    },
-    {
-      photo: '',
-      location: '강원',
-      name: '최예진',
-      breederExperience: '9년',
-      numberOfCertifications: 4,
-      waitingDogs: 7,
-      waitlistCount: 3,
-      rating: 4.7,
-      reviewCount: 18,
-    },
-    {
-      photo: '',
-      location: '충북',
-      name: '김지훈',
-      breederExperience: '1년',
-      numberOfCertifications: 1,
-      waitingDogs: 1,
-      waitlistCount: 0,
-      rating: 3.9,
-      reviewCount: 2,
-    },
-    {
-      photo: '',
-      location: '충남',
-      name: '이수정',
-      breederExperience: '11년',
-      numberOfCertifications: 6,
-      waitingDogs: 10,
-      waitlistCount: 6,
-      rating: 4.8,
-      reviewCount: 30,
-    },
-    {
-      photo: '',
-      location: '경북',
-      name: '김태영',
-      breederExperience: '3년',
-      numberOfCertifications: 2,
-      waitingDogs: 3,
-      waitlistCount: 1,
-      rating: 4.3,
-      reviewCount: 6,
-    },
-    {
-      photo: '',
-      location: '전북',
-      name: '박진우',
-      breederExperience: '5년',
-      numberOfCertifications: 3,
-      waitingDogs: 5,
-      waitlistCount: 2,
-      rating: 4.5,
-      reviewCount: 10,
-    },
-    {
-      photo: '',
-      location: '전남',
-      name: '서지수',
-      breederExperience: '4년',
-      numberOfCertifications: 2,
-      waitingDogs: 4,
-      waitlistCount: 1,
-      rating: 4.4,
-      reviewCount: 8,
-    },
-    {
-      photo: '',
-      location: '제주',
-      name: '최현우',
-      breederExperience: '2년',
-      numberOfCertifications: 1,
-      waitingDogs: 2,
-      waitlistCount: 1,
-      rating: 4.1,
-      reviewCount: 3,
-    },
-  ];
 
-  const [activeCity, setActiveCity] = useState(null);
+  const [activeCities, setActiveCities] = useState([]);
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
   const [selectedBreed, setSelectedBreed] = useState('');
@@ -199,6 +31,13 @@ function BreederList() {
   };
 
   const handleCityChange = (city) => {
+    setActiveCities(
+      (prevCities) =>
+        prevCities.includes(city)
+          ? prevCities.filter((c) => c !== city) // 배열에서 도시를 제거하여 비활성화
+          : [...prevCities, city], // 배열에 도시를 추가하여 활성화
+    );
+
     setSelectedCities((prevCities) => {
       if (prevCities.includes(city)) {
         return prevCities.filter((c) => c !== city); // 이미 선택된 지역 -> 제거
@@ -213,11 +52,6 @@ function BreederList() {
       ...preBookmarkedCards,
       [name]: !preBookmarkedCards[name], // 해당 DogCard 상태 변경
     }));
-  };
-
-  const handleCityClick = (city) => {
-    setActiveCity(city); // 클릭된 도시를 활성화 상태로 설정
-    handleCityChange(city); // 기존 onClick 핸들러 호출
   };
 
   // 선택된 조건에 따른 BreederCard데이터 필터링
@@ -242,9 +76,10 @@ function BreederList() {
             // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <div
               key={index}
-              className="item"
-              isActive={activeCity === city}
-              onClick={() => handleCityClick(city)}
+              role="button"
+              tabIndex={0}
+              className={`item ${activeCities.includes(city) ? 'active' : ''}`}
+              onClick={() => handleCityChange(city)}
               onKeyDown={() => {}}
             >
               {city}

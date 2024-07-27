@@ -68,6 +68,14 @@ export const Right = styled.div`
     font-weight: 350;
     line-height: 36px; /* 257.143% */
   }
+  .item:hover {
+    background-color: #ffddc5;
+    color: #fe834d;
+  }
+  .item.active {
+    background: #fe834d;
+    color: #ffffff;
+  }
 `;
 
 export const AnimalContainer = styled.div`
