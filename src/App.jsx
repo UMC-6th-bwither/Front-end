@@ -1,5 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 import Header from './components/header/Header';
 import AnimalList from './pages/AnimalList/AnimalList';
@@ -13,7 +15,7 @@ import Footer from './components/Footer/Footer';
 
 function App() {
   return (
-    <>
+    <Provider store={store}>
       <Header />
       <Router>
         <Routes>
@@ -27,7 +29,7 @@ function App() {
         </Routes>
       </Router>
       <Footer />
-    </>
+    </Provider>
   );
 }
 
