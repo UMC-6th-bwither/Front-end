@@ -99,7 +99,7 @@ function AnimalUpload() {
         </A.Image>
         <A.InfoContainer>
           <A.DogContainer>
-            <A.Name>이름을 입력하세요</A.Name>
+            <A.Name type="text" placeholder="이름을 입력하세요" />
           </A.DogContainer>
           <A.AnimalSelectBox>
             <A.AnimalSelect>강아지</A.AnimalSelect>
@@ -108,7 +108,10 @@ function AnimalUpload() {
           <A.DogInfo>
             <p>
               <strong>종</strong>
-              <A.DogInfoText>정확한 품종명을 입력하세요</A.DogInfoText>
+              <A.DogInfoText
+                type="text"
+                placeholder="정확한 품종명을 입력하세요"
+              />
             </p>
             <p>
               <strong>성별</strong>
@@ -182,6 +185,7 @@ function AnimalUpload() {
           <UploadParentDogInfo ref={parentDogInfoRef} />
         </A.MenuContentWrapper>
       </A.InfoWrapper>
+      <A.ConfirmBtn>확인</A.ConfirmBtn>
     </A.Container>
   );
 }

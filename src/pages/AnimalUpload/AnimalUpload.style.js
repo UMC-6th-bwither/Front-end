@@ -9,6 +9,7 @@ export const Container = styled.div`
   max-width: 970px;
   margin: 0 auto;
   padding-top: 64px;
+  padding-bottom: 105px;
 `;
 
 export const Title = styled.div`
@@ -53,7 +54,6 @@ export const InfoContainer = styled.div`
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  width: 100%;
   max-width: 100%;
 `;
 
@@ -66,13 +66,24 @@ export const DogContainer = styled.div`
   border-radius: 10px;
 `;
 
-export const Name = styled.h2`
-  color: var(--Grey_icon, #c5c5c5);
-  font-family: 'Noto Sans KR';
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
+export const Name = styled.input`
   margin-bottom: 12px;
+  display: flex;
+  width: 203px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 10px;
+  align-items: center;
+  border: none;
+  align-self: stretch;
+  border-radius: 10px;
+  &::placeholder {
+    color: #c5c5c5;
+    font-family: 'Noto Sans KR';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+  }
 `;
 
 export const AnimalSelectBox = styled.div`
@@ -107,16 +118,28 @@ export const DogInfo = styled.div`
     width: 34px;
     height: 26px;
     margin-right: 18px;
+    display: flex;
+    align-items: center;
     white-space: nowrap;
   }
   margin-bottom: 24px;
 `;
 
-export const DogInfoText = styled.div`
-  color: #c5c5c5;
-  font-family: 'Noto Sans KR';
-  font-size: 18px;
-  font-weight: 500;
+export const DogInfoText = styled.input`
+  display: flex;
+  align-items: center;
+  width: 227px;
+  align-self: stretch;
+  border-radius: 10px;
+  padding: 8px 10px;
+
+  border: none;
+  &::placeholder {
+    color: #c5c5c5;
+    font-family: 'Noto Sans KR';
+    font-size: 18px;
+    font-weight: 500;
+  }
 `;
 export const InputWrapper = styled.div`
   position: relative;
@@ -129,7 +152,6 @@ export const DogInfoInput = styled.input`
   height: 42px;
   padding-left: 18px;
   align-items: center;
-  gap: 8px;
   border-radius: 10px;
   border: 2px solid #f1f1f1;
   background: #fff;
@@ -422,39 +444,56 @@ export const ParentDogInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 8px;
+  width: 610px;
+  gap: 10px;
   padding: 2px 0;
 `;
-export const ParentDogNameContainer = styled.div`
+
+export const ParentDogNameBox = styled.div`
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  align-self: stretch;
+  margin-bottom: 8px;
 `;
 
-export const ParentDogName = styled.div`
-  color: #c5c5c5;
-  font-family: 'Noto Sans KR';
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 30px;
-  letter-spacing: -0.5px;
+export const ParentDogName = styled.input`
+  display: flex;
+  width: 203px;
+  padding: 8px 10px;
+  align-items: center;
+  border-radius: 10px;
+  border: none;
+  &::placeholder {
+    color: #c5c5c5;
+    font-family: 'Noto Sans KR';
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: -0.5px;
+  }
 `;
-export const ParentDogNameGender = styled.div`
+
+export const ParentDogGenderBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8.5px;
+  align-items: center;
+`;
+
+export const ParentDogGender = styled.div`
   color: #737373;
-  letter-spacing: -0.28px;
   text-align: center;
   font-family: 'Noto Sans KR';
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 350;
+  font-size: 22px;
   line-height: 16px;
-  margin-right: 8.5px;
+  letter-spacing: -0.28px;
 `;
 
 export const ParentDogDetail = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
 
 export const ParentDogLabel = styled.div`
@@ -463,6 +502,7 @@ export const ParentDogLabel = styled.div`
   color: #737373;
   line-height: 21px;
   margin-right: 8px;
+  white-space: nowrap;
 `;
 
 export const ParentDogValue = styled.div`
@@ -470,4 +510,69 @@ export const ParentDogValue = styled.div`
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+`;
+
+export const ParentDogValueInput = styled.input`
+  display: flex;
+  padding: 8px 10px;
+  align-items: center;
+  border-radius: 10px;
+  border: none;
+  &::placeholder {
+    color: #c5c5c5;
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
+`;
+export const InfoFileBoxContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+  align-self: stretch;
+`;
+
+export const InfoFileBoxNameContainerWrapper = styled.div`
+  display: flex;
+  padding: 8px 0px 0px 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+`;
+
+export const ParentInfoFileBox = styled.div`
+  display: flex;
+  padding: 8px 16px;
+  width: 60px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 2px solid rgba(226, 226, 226, 0.5);
+  background: #fff;
+  white-space: nowrap;
+`;
+
+export const ConfirmBtn = styled.button`
+  display: flex;
+  width: 140px;
+  height: 52px;
+  padding: 6px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 1000px;
+  border: none;
+  background: #fe834d;
+  color: #fff;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+  margin-top: 209px;
 `;
