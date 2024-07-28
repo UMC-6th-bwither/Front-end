@@ -177,8 +177,10 @@ function AnimalUpload() {
           activeMenu={activeMenu}
           setActiveMenu={handleMenuClick}
         />
-        <UploadDogInfo ref={dogInfoRef} />
-        <UploadParentDogInfo ref={parentDogInfoRef} />
+        <A.MenuContentWrapper>
+          <UploadDogInfo ref={dogInfoRef} />
+          <UploadParentDogInfo ref={parentDogInfoRef} />
+        </A.MenuContentWrapper>
       </A.InfoWrapper>
     </A.Container>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as A from '../../pages/WaitingAnimalDetail/WaitingAnimalDetail.style';
+import * as A from '../../pages/AnimalUpload/AnimalUpload.style';
 
 const UploadParentDogInfo = React.forwardRef((props, ref) => {
   return (
