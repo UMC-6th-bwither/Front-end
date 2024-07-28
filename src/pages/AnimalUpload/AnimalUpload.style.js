@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import DatePicker from 'react-datepicker';
 
 export const Container = styled.div`
   display: flex;
@@ -117,22 +118,82 @@ export const DogInfoText = styled.div`
   font-size: 18px;
   font-weight: 500;
 `;
+export const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
 
 export const DogInfoInput = styled.input`
   display: flex;
   width: 184px;
   height: 42px;
-  padding: 8px 18px;
+  padding-left: 18px;
   align-items: center;
   gap: 8px;
   border-radius: 10px;
   border: 2px solid #f1f1f1;
   background: #fff;
-  color: #dadada;
-  font-family: 'Noto Sans KR';
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
+  &::placeholder {
+    color: #dadada;
+    font-family: 'Noto Sans KR';
+    font-size: 18px;
+    font-weight: 500;
+  }
+`;
+export const CustomDatePicker = styled(DatePicker)`
+  .react-datepicker__header {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .react-datepicker__current-month,
+  .react-datepicker__day-name,
+  .react-datepicker__day,
+  .react-datepicker__time-name {
+    font-size: 0.8rem;
+  }
+
+  .react-datepicker__day {
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+  }
+
+  .react-datepicker {
+    font-size: 0.8rem;
+    position: absolute;
+    right: 0;
+    z-index: 1000;
+  }
+
+  .react-datepicker__month-container {
+    width: 100px;
+  }
+
+  .react-datepicker__day-names,
+  .react-datepicker__week,
+  .react-datepicker__day {
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+  }
+
+  .react-datepicker__input-container input {
+    width: 8rem;
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+`;
+
+export const SvgIcon = styled.svg`
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  cursor: pointer;
 `;
 
 export const StatusContainer = styled.div`
@@ -190,6 +251,7 @@ export const Thumbnail = styled.img`
   object-fit: cover;
   border-radius: 4px;
 `;
+
 export const Arrow = styled.div`
   position: absolute;
   display: flex;
