@@ -5,15 +5,15 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
   return (
     <div ref={ref} style={{ marginBottom: '96px' }}>
       <A.InfoItem>
-        <A.InfoTitle>(이름)의 성격은요</A.InfoTitle>
+        <A.DogInfoTitle>(이름)의 성격은요</A.DogInfoTitle>
         <A.InfoInput placeholder="강아지의 자세한 성격에 대해 알려주세요" />
       </A.InfoItem>
       <A.InfoItem>
-        <A.InfoTitle>(이름)는 이런 분양자에게 잘 맞아요</A.InfoTitle>
+        <A.DogInfoTitle>(이름)는 이런 분양자에게 잘 맞아요</A.DogInfoTitle>
         <A.InfoInput placeholder="강아지와 잘 맞을 분양자의 특징에 대해 알려주세요" />
       </A.InfoItem>
       <A.InfoItem>
-        <A.InfoTitle>
+        <A.DogInfoTitle>
           먹고 있는 사료 및 간식
           <A.InfoIcon
             xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +31,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
               fill="#2D2D2D"
             />
           </A.InfoIcon>
-        </A.InfoTitle>
+        </A.DogInfoTitle>
         <A.InfoInput placeholder="급여 중인 사료와 간식 제품명에 대해 알려주세요" />
         <A.InfoFileBox>첨부파일</A.InfoFileBox>
         <A.InfoFileBoxNameContainer>
@@ -52,7 +52,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
       </A.InfoItem>
 
       <A.InfoItem>
-        <A.InfoTitle>
+        <A.DogInfoTitle>
           예방 접종 내역
           <A.InfoIcon
             xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
               fill="#2D2D2D"
             />
           </A.InfoIcon>
-        </A.InfoTitle>
+        </A.DogInfoTitle>
         <A.InfoInput placeholder="지금까지 접종한 예방 주사에 대해 알려주세요" />
         <A.InfoFileBox>첨부파일</A.InfoFileBox>
         <A.InfoFileBoxNameContainer>
@@ -90,7 +90,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
         </A.InfoFileBoxNameContainer>
       </A.InfoItem>
       <A.InfoItem>
-        <A.InfoTitle>
+        <A.DogInfoTitle>
           바이러스 질환 검사 내역
           <A.InfoIcon
             xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +108,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
               fill="#2D2D2D"
             />
           </A.InfoIcon>
-        </A.InfoTitle>
+        </A.DogInfoTitle>
         <A.InfoInput placeholder="지금까지 진행한 바이러스 질환 검사 양/음성 여부를 알려주세요" />
         <A.InfoFileBox>첨부파일</A.InfoFileBox>
         <A.InfoFileBoxNameContainer>
@@ -128,7 +128,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
         </A.InfoFileBoxNameContainer>
       </A.InfoItem>
       <A.InfoItem>
-        <A.InfoTitle>
+        <A.DogInfoTitle>
           기생충 예방약 투약
           <A.InfoIcon
             xmlns="http://www.w3.org/2000/svg"
@@ -146,7 +146,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
               fill="#2D2D2D"
             />
           </A.InfoIcon>
-        </A.InfoTitle>
+        </A.DogInfoTitle>
         <A.InfoInput placeholder="투약한 기생충 예방약에 대해 알려주세요" />
         <A.InfoFileBox>첨부파일</A.InfoFileBox>
         <A.InfoFileBoxNameContainer>
@@ -166,7 +166,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
         </A.InfoFileBoxNameContainer>
       </A.InfoItem>
       <A.InfoItem>
-        <A.InfoTitle>
+        <A.DogInfoTitle>
           수의사 검진 결과
           <A.InfoIcon
             xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +184,7 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
               fill="#2D2D2D"
             />
           </A.InfoIcon>
-        </A.InfoTitle>
+        </A.DogInfoTitle>
         <A.InfoInput placeholder="수의사 검진 결과에 대해 알려주세요" />
         <A.InfoFileBox>첨부파일</A.InfoFileBox>
         <A.InfoFileBoxNameContainer>

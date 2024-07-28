@@ -290,7 +290,7 @@ export const Arrow = styled.div`
   }
 `;
 
-export const InfoTitle = styled.div`
+export const DogInfoTitle = styled.div`
   font-family: 'Noto Sans KR';
   color: #323232;
   font-size: 20px;
@@ -369,6 +369,27 @@ export const MenuContentWrapper = styled.div`
   align-items: flex-start;
   gap: 120px;
 `;
+export const ParentInfoTitleBox = styled.div`
+  display: flex;
+  width: 203px;
+  padding: 8px 10px;
+  align-items: center;
+  border-radius: 10px;
+`;
+
+export const ParentInfoTitle = styled.div`
+  font-family: 'Noto Sans KR';
+  color: #323232;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+`;
 
 export const ParentDogCard = styled.div`
   display: flex;
@@ -379,10 +400,21 @@ export const ParentDogCard = styled.div`
 `;
 
 export const ParentDogImage = styled.div`
-  width: 188px;
-  height: 188px;
+  width: 296px;
+  height: 296px;
   border-radius: 12px;
-  background-color: #d9d9d9;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #c5c5c5;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  gap: 10px;
+  line-height: 21px;
 `;
 
 export const ParentDogInfo = styled.div`
@@ -401,11 +433,12 @@ export const ParentDogNameContainer = styled.div`
 `;
 
 export const ParentDogName = styled.div`
+  color: #c5c5c5;
   font-family: 'Noto Sans KR';
-  font-size: 18px;
-  font-weight: 600;
-  color: #323232;
-  margin-right: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: -0.5px;
 `;
 export const ParentDogNameGender = styled.div`
   color: #737373;
@@ -435,5 +468,6 @@ export const ParentDogLabel = styled.div`
 export const ParentDogValue = styled.div`
   font-family: 'Noto Sans KR';
   font-size: 16px;
-  line-height: 21px;
+  font-weight: 500;
+  line-height: 24px;
 `;
