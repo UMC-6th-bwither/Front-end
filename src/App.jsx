@@ -20,8 +20,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/DropBox" element={<DropBox />} />
-          <Route path="/Animal" element={<Animal />} />
-          <Route path="/Breeder" element={<Breeder />} />
+          <Route path="MyReview/Animal" element={<Animal />} />
+          <Route path="MyReview/Breeder" element={<Breeder />} />
           <Route path="/" element={<AnimalList />} />
           <Route path="/BreederList" element={<BreederList />} />
           <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
