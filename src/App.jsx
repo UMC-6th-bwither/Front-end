@@ -4,6 +4,7 @@ import NotFound from './pages/NotFound/NotFound';
 import ButtonBadgeSample from './pages/ButtonBadgeSample/ButtonBadgeSample';
 import WaitingAnimalDetail from './pages/WaitingAnimalDetail/WaitingAnimalDetail';
 import AnimalUpload from './pages/AnimalUpload/AnimalUpload';
+import BreederDetail from './pages/BreederDetail/BreederDetail';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
         <Route path="/waitinganimal-detail" element={<WaitingAnimalDetail />} />
         <Route path="/animal-upload" element={<AnimalUpload />} />
+        <Route path="/breeder-detail" element={<BreederDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
