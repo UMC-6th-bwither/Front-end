@@ -1,12 +1,84 @@
 /* eslint-disable import/prefer-default-export */
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
+export const SideHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+
+  .scrap,
+  .community {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+    align-self: stretch;
+  }
+`;
+
+export const MenuTitle = styled.div`
+  position: relative;
+  padding-bottom: 22px;
+
+  color: #2d2d2d;
+  font-family: 'Noto Sans KR';
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px; /* 72.727% */
+  letter-spacing: -0.28px;
+
+  &::after {
+    display: block;
+    position: relative;
+    content: '';
+    bottom: -22px;
+    width: 32px;
+    height: 2px;
+    background: var(--main, #fe834d);
+  }
+`;
+
+export const MenuSubtitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export const MenuSubtitleActive = styled(Link)`
+  color: var(--main, #fe834d);
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-decoration: none;
+`;
+
+export const MenuSubtitleInActive = styled(Link)`
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: normal;
+  text-decoration: none;
+`;
 
 export const Border = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 210px;
+  padding: 80px 0;
+`;
+
+export const MainContainer = styled.div`
   display: inline-flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 52px;
-  margin: 136px 475px 522px;
 `;
 
 export const TopContainer = styled.div`
