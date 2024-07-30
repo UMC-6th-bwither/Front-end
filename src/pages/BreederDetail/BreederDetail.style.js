@@ -42,6 +42,15 @@ export const InfoContentBox = styled.div`
   margin-bottom: 10px;
 `;
 
+export const InfoContentTitle = styled.div`
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.3px;
+`;
+
 export const InfoContent = styled.div`
   color: #737373;
   font-family: 'Noto Sans KR';
@@ -122,4 +131,19 @@ export const Line = styled.div`
   background: var(--Grey_line, #f1f1f1);
   height: 1px;
   align-self: stretch;
+`;
+
+export const KennelImgBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 28px;
+  gap: 14px;
+`;
+
+export const KennelImg = styled.div`
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  background-color: tomato;
 `;
