@@ -5,7 +5,7 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 64px 0 291px 0;
 `;
@@ -126,8 +126,10 @@ export const ButtonContainer = styled.div`
 `;
 
 export const InfoWrapper = styled.div`
-  width: 100%;
+  width: 900px;
+  align-items: center;
 `;
+
 export const SliderContainer = styled.div`
   position: relative;
   overflow: visible;
@@ -358,6 +360,7 @@ export const BreederInfoBottomContent = styled.div`
   font-size: 20px;
   font-weight: 700;
   line-height: 30px;
+  white-space: nowrap;
 `;
 
 export const BreederInfoBottom1 = styled.div`
