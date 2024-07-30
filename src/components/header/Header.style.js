@@ -10,7 +10,7 @@ export const Container = styled.div`
   padding-left: 15vw;
   padding-right: 15vw;
   border-bottom: 0.5px solid #c5c5c5;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 `;
 
 export const Left = styled.div`
