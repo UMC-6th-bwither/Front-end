@@ -173,3 +173,80 @@ export const KennelImgText = styled.div`
 export const QnaBox = styled.div`
   margin-bottom: 42px;
 `;
+
+export const CommuBox = styled.div`
+  margin-bottom: 32px;
+`;
+
+export const CommuBtnBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 21px;
+`;
+
+export const CommuBtn = styled.button`
+  display: flex;
+  height: 32px;
+  padding: 5px 13px 6px 13px;
+  align-items: center;
+  border-radius: 28px;
+  border: 1px solid #e1e1e1;
+  background: #fff;
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    border: 1px solid #f87b45;
+    background: #f87b45;
+    color: #fff;
+  }
+`;
+
+export const CommuCategory = styled.div`
+  color: #b5b5b5;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 350;
+  line-height: 18px;
+  margin-bottom: 8px;
+`;
+
+export const CommuText1 = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  margin-bottom: 2px;
+`;
+
+export const CommuText2 = styled.div`
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
+  margin-bottom: 11px;
+`;
+
+export const CommuNumBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const CommuNum = styled.div`
+  color: #b5b5b5;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 350;
+  line-height: 18px;
+`;
