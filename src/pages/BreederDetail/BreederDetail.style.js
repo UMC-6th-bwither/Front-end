@@ -135,15 +135,27 @@ export const Line = styled.div`
 
 export const KennelImgBox = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-top: 28px;
+  flex-wrap: wrap;
   gap: 14px;
+  margin-top: 28px;
+  width: calc(5 * 150px + 4 * 14px);
 `;
 
 export const KennelImg = styled.div`
+  position: relative;
   width: 150px;
   height: 150px;
   border-radius: 12px;
   background-color: tomato;
+  display: flex;
+  align-items: flex-end; /* 텍스트를 이미지의 아래쪽에 배치 */
+  justify-content: flex-start; /* 텍스트를 이미지의 왼쪽에 배치 */
+  padding: 0 0 12px 14px; /* 텍스트 위치 조정 */
+`;
+
+export const KennelImgText = styled.div`
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  color: white;
 `;

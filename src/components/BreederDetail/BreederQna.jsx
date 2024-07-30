@@ -3,7 +3,7 @@ import * as A from '../../pages/WaitingAnimalDetail/WaitingAnimalDetail.style';
 
 const BreederQna = React.forwardRef((props, ref) => {
   return (
-    <div ref={ref} style={{ marginBottom: '96px' }}>
+    <div ref={ref} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
         <A.InfoTitle>브리더 정보</A.InfoTitle>
         <A.InfoContent>

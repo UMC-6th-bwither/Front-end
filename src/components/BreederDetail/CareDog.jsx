@@ -1,14 +1,31 @@
 import React from 'react';
-import * as A from '../../pages/WaitingAnimalDetail/WaitingAnimalDetail.style';
+import * as A from '../../pages/BreederDetail/BreederDetail.style';
 
 const CareDog = React.forwardRef((props, ref) => {
   return (
-    <div ref={ref} style={{ marginBottom: '96px' }}>
+    <div ref={ref} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
-        <A.InfoTitle>브리더 정보</A.InfoTitle>
-        <A.InfoContent>
-          장난꾸러기인 행복이는 장난감을 가지고 놀 때 가장 좋아해요
-        </A.InfoContent>
+        <A.InfoTitle>관리 중인 강아지</A.InfoTitle>
+        <A.KennelImgBox>
+          <A.KennelImg>
+            <A.KennelImgText>행복이(1살, 여아)</A.KennelImgText>
+          </A.KennelImg>
+          <A.KennelImg>
+            <A.KennelImgText>행복이(1살, 여아)</A.KennelImgText>
+          </A.KennelImg>
+          <A.KennelImg>
+            <A.KennelImgText>행복이(1살, 여아)</A.KennelImgText>
+          </A.KennelImg>
+          <A.KennelImg>
+            <A.KennelImgText>행복이(1살, 여아)</A.KennelImgText>
+          </A.KennelImg>
+          <A.KennelImg>
+            <A.KennelImgText>행복이(1살, 여아)</A.KennelImgText>
+          </A.KennelImg>
+          <A.KennelImg>
+            <A.KennelImgText>행복이(1살, 여아)</A.KennelImgText>
+          </A.KennelImg>
+        </A.KennelImgBox>
       </A.InfoItem>
     </div>
   );
