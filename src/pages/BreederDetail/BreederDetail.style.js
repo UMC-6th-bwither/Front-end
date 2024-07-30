@@ -875,3 +875,85 @@ export const CommuDate = styled.div`
   font-weight: 350;
   line-height: 18px;
 `;
+
+export const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+export const ModalContainer = styled.div`
+  background-color: white;
+  border-radius: 12px;
+  width: 453px;
+  height: 364px;
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ModalTop = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 20px 0;
+  border-bottom: 1px solid #d9d9d9;
+`;
+
+export const ModalTitle = styled.div`
+  color: #000;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  white-space: nowrap;
+`;
+
+export const CloseIcon = styled.svg`
+  position: absolute;
+  right: 36px;
+  cursor: pointer;
+`;
+
+export const ModalBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 30px 24px;
+  flex: 1;
+  justify-content: center;
+`;
+
+export const InfoRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+`;
+
+export const InfoLabel = styled.span`
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  width: 104px;
+  flex-shrink: 0;
+`;
+
+export const InfoValue = styled.span`
+  color: #000;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  margin-left: 16px;
+`;

@@ -10,9 +10,12 @@ import BreederQna from '../../components/BreederDetail/BreederQna';
 import BreederCommunity from '../../components/BreederDetail/BreederCommunity';
 import Badge from '../../components/badge/Badge';
 import Button from '../../components/button/Button';
+import BusinessInfoModal from '../../components/BreederDetail/BusinessInfoModal';
 
 function BreederDetail() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const breederInfoRef = useRef(null);
   const kennelInfoRef = useRef(null);
   const careDogRef = useRef(null);
@@ -45,9 +48,17 @@ function BreederDetail() {
       communityRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <A.Container>
+      {isModalOpen && <BusinessInfoModal onClose={closeModal} />}
+
       <A.TopImage />
       <A.TopBox>
         <A.OverlappingImage />
@@ -279,7 +290,9 @@ function BreederDetail() {
           <A.TopRightBoxResponse>
             평균 <span>1시간 내</span> 응답하는 브리더입니다
           </A.TopRightBoxResponse>
-          <Button whiteBorder>사업자 정보 확인하기</Button>
+          <Button whiteBorder onClick={openModal}>
+            사업자 정보 확인하기
+          </Button>
         </A.TopRightWrapper>
       </A.TopBox>
 
