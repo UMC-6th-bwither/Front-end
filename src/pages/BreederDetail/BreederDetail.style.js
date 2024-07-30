@@ -5,13 +5,289 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
-  padding: 64px 0 291px 0;
+  padding: 0 0 291px 0;
+  padding-top: 208px;
 `;
 
-export const InfoWrapper = styled.div`
+export const TopImage = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 208px;
+  background: url('/public/img/breederdetailbackimg.jpg') no-repeat center
+    calc(50% - 20px);
+  background-color: lightgray;
+  background-size: cover;
+`;
+
+export const TopBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 91px;
+  position: relative;
+`;
+export const OverlappingImage = styled.div`
+  position: absolute;
+  top: -152px;
+  left: 16px;
+  width: 120px;
+  height: 120px;
+  background-color: #000;
+  background-size: cover;
+  background-position: center;
+  border-radius: 18px;
+  border: 1px solid #f2f2f2;
+`;
+
+export const TopLeftBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+export const BreederInfoTitleBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+export const BreederInfoTitleBoxRight = styled.div`
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+`;
+
+export const BreederInfoTitle = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.7px;
+`;
+
+export const BreederInfoSubTitleBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 19px;
+  margin-bottom: 18px;
+`;
+export const BreederInfoSubTitle = styled.div`
+  color: #f87b45;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  line-height: 24px;
+`;
+
+export const BreederInfoLocation = styled.div`
+  display: flex;
+  align-items: center;
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
+  letter-spacing: -0.3px;
+`;
+
+export const BreederInfoLocationIcon1 = styled.svg`
+  width: 20px;
+  height: 20px;
+  margin-right: 2px;
+`;
+
+export const BreederInfoLabelBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  margin-top: 18px;
+  margin-bottom: 34px;
+`;
+
+export const BreederInfoBottomBox = styled.div`
+  display: flex;
+  height: 100px;
+  flex-direction: row;
+  border-radius: 8px;
+  background: #fafafa;
+`;
+
+export const BreederInfoBottomTitle = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
+  white-space: nowrap;
+`;
+
+export const BreederInfoBottomContent = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  white-space: nowrap;
+`;
+
+export const BreederInfoBottom1 = styled.div`
+  display: flex;
+  padding: 18px 87.34px 18.5px 87.33px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: -0.5px;
+  flex: 1 0 0;
+  align-self: stretch;
+`;
+
+export const BreederInfoBottom2 = styled.div`
+  display: flex;
+  padding: 18px 69.56px 18.5px 69.55px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  align-self: stretch;
+`;
+
+export const BreederInfoBottom3 = styled.div`
+  display: flex;
+  padding: 18px 87.06px 18.5px 87.05px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: -0.5px;
+  flex: 1 0 0;
+  align-self: stretch;
+`;
+
+export const BreederInfoBottom4 = styled.div`
+  display: flex;
+  padding: 18px 87.06px 18.5px 87.05px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: -0.5px;
+  flex: 1 0 0;
+  align-self: stretch;
+`;
+
+export const BreederInfoBottomReviewBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+export const BreederInfoBottomReviewIcon = styled.svg`
+  margin-right: 4px;
+`;
+
+export const BreederInfoBottomReviewText1 = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-right: 2px;
+`;
+
+export const BreederInfoBottomReviewText2 = styled.div`
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 350;
+  line-height: 18px;
+`;
+
+export const ReviewEvent = styled.div`
+  display: flex;
+  gap: 6px;
+  flex-direction: row;
+  width: 650px;
+  padding: 15px 17px 17px 17px;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #f87b45;
+  background: #fffdf2;
+  margin-bottom: 142px;
+  margin-top: 24px;
+`;
+
+export const ReviewEventTitle = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  align-self: flex-start;
+`;
+
+export const ReviewEventContent = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 500;
+  align-self: flex-start;
+  line-height: 20px;
+`;
+
+export const TopRightWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+export const TopRightBox = styled.div`
+  display: flex;
+  width: 280px;
+  padding: 26px 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border-radius: 12px;
+  border: 2px solid var(--Grey_line, #f1f1f1);
+`;
+
+export const TopRightBoxInquiry = styled.div`
+  color: #323232;
+  text-align: justify;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  align-self: center;
+  width: 240px;
+  line-height: 26px;
+  letter-spacing: -0.3px;
+`;
+
+export const TopRightBoxResponse = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
+  margin-top: 28px;
+  margin-bottom: 16px;
+  span {
+    color: #fe834d;
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+  }
+`;
+
+// 메뉴탭부분
+
+export const InfoWrapper = styled.div`
+  width: 1249px;
+  align-items: center;
 `;
 
 export const InfoItem = styled.div`
