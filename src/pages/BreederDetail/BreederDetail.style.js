@@ -250,3 +250,49 @@ export const CommuNum = styled.div`
   font-weight: 350;
   line-height: 18px;
 `;
+export const CommuPostBox = styled.div`
+  border-radius: 8px;
+  border: 1px solid #f2f2f2;
+  display: flex;
+  max-width: 231px;
+  padding: 1px;
+  width: 231px;
+  height: 231px;
+  background-color: tomato;
+  flex-shrink: 0;
+  align-items: flex-end;
+  align-self: stretch;
+  justify-content: center;
+`;
+
+export const CommuPostText = styled.div`
+  color: #fff;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.5px;
+  height: 64px;
+`;
+
+export const CommuPostFooter = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`;
+
+export const CommuPostImage = styled.img`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 8px;
+`;
+
+export const CommuPostAuthor = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 350;
+  line-height: 20px;
+`;
