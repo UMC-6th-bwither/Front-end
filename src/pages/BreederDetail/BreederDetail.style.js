@@ -51,6 +51,16 @@ export const InfoContentTitle = styled.div`
   letter-spacing: -0.3px;
 `;
 
+export const InfoContentTitle2 = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+`;
+
 export const InfoContent = styled.div`
   color: #737373;
   font-family: 'Noto Sans KR';
@@ -148,9 +158,9 @@ export const KennelImg = styled.div`
   border-radius: 12px;
   background-color: tomato;
   display: flex;
-  align-items: flex-end; /* 텍스트를 이미지의 아래쪽에 배치 */
-  justify-content: flex-start; /* 텍스트를 이미지의 왼쪽에 배치 */
-  padding: 0 0 12px 14px; /* 텍스트 위치 조정 */
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0 0 12px 14px;
 `;
 
 export const KennelImgText = styled.div`
@@ -158,4 +168,8 @@ export const KennelImgText = styled.div`
   left: 14px;
   bottom: 12px;
   color: white;
+`;
+
+export const QnaBox = styled.div`
+  margin-bottom: 42px;
 `;
