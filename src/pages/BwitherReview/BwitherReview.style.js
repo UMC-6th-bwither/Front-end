@@ -100,12 +100,23 @@ export const ReviewItem = styled.div`
   overflow: hidden;
   border: 2px solid rgba(241, 241, 241, 0.5);
   background: #fff;
+  &.expanded {
+    display: inline-flex;
+    height: 351px;
+    padding: 16px 15px 24px 15px;
+    border-radius: 20px;
+    border: 2px solid #f1f1f1;
+  }
 `;
 
 export const ReviewImage = styled.div`
   width: 235px;
   height: 235px;
   background: #eee;
+
+  &.hidden {
+    display: none;
+  }
 `;
 
 export const ReviewContent = styled.div`
@@ -117,6 +128,12 @@ export const ReviewContent = styled.div`
   border-right: 2px solid #f1f1f1;
   border-bottom: 2px solid #f1f1f1;
   border-left: 2px solid #f1f1f1;
+
+  &.expanded {
+    padding: 0;
+    height: 100%;
+    border: none;
+  }
 `;
 
 export const ReviewKennelName = styled.div`
@@ -145,6 +162,11 @@ export const ReviewText = styled.div`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+
+  &.expanded {
+    -webkit-line-clamp: unset;
+    display: block;
+  }
 `;
 
 export const PaginationContainer = styled.div`

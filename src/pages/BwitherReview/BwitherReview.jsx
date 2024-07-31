@@ -6,6 +6,7 @@ function BwitherReview() {
   const [activeButton, setActiveButton] = useState('전체');
   const [selectedReviewType, setSelectedReviewType] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [expandedReviewId, setExpandedReviewId] = useState(null); // 추가된 상태
   const itemsPerPage = 16;
 
   const handleButtonClick = (buttonName) => {
@@ -14,6 +15,10 @@ function BwitherReview() {
 
   const handleReviewTypeClick = (type) => {
     setSelectedReviewType(type);
+  };
+
+  const handleReviewClick = (id) => {
+    setExpandedReviewId(id === expandedReviewId ? null : id);
   };
 
   const reviews = [
@@ -146,11 +151,18 @@ function BwitherReview() {
       </R.MiddleBox>
       <R.ReviewList>
         {reviews.map((review) => (
-          <R.ReviewItem key={review.id}>
+          <R.ReviewItem
+            key={review.id}
+            onClick={() => handleReviewClick(review.id)}
+            className={expandedReviewId === review.id ? 'expanded' : ''}
+          >
             <R.ReviewImage
               style={{ backgroundImage: `url(${review.image})` }}
+              className={expandedReviewId === review.id ? 'hidden' : ''}
             />
-            <R.ReviewContent>
+            <R.ReviewContent
+              className={expandedReviewId === review.id ? 'expanded' : ''}
+            >
               <R.ReviewKennelName>
                 {review.kennelName}
                 <svg
@@ -169,7 +181,11 @@ function BwitherReview() {
                 </svg>
                 <span>{review.rating}</span>
               </R.ReviewKennelName>
-              <R.ReviewText>{review.text}</R.ReviewText>
+              <R.ReviewText
+                className={expandedReviewId === review.id ? 'expanded' : ''}
+              >
+                {review.text}
+              </R.ReviewText>
             </R.ReviewContent>
           </R.ReviewItem>
         ))}
