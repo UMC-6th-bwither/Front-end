@@ -6,6 +6,7 @@ import WaitingAnimalDetail from './pages/WaitingAnimalDetail/WaitingAnimalDetail
 import AnimalUpload from './pages/AnimalUpload/AnimalUpload';
 import BreederDetail from './pages/BreederDetail/BreederDetail';
 import BwitherReview from './pages/BwitherReview/BwitherReview';
+import BreederReview from './pages/BreederReview/BreederReview';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/animal-upload" element={<AnimalUpload />} />
         <Route path="/breeder-detail" element={<BreederDetail />} />
         <Route path="/bwither-review" element={<BwitherReview />} />
+        <Route path="/breeder-review" element={<BreederReview />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
