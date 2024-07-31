@@ -98,29 +98,27 @@ function AnimalUpload() {
           사진 파일 첨부
         </A.Image>
         <A.InfoContainer>
-          <A.DogContainer>
-            <A.Name type="text" placeholder="이름을 입력하세요" />
-          </A.DogContainer>
+          <A.Name type="text" placeholder="이름을 입력하세요" />
           <A.AnimalSelectBox>
             <A.AnimalSelect>강아지</A.AnimalSelect>
             <A.AnimalSelect>고양이</A.AnimalSelect>
           </A.AnimalSelectBox>
           <A.DogInfo>
-            <p>
+            <div>
               <strong>종</strong>
               <A.DogInfoText
                 type="text"
                 placeholder="정확한 품종명을 입력하세요"
               />
-            </p>
-            <p>
+            </div>
+            <div>
               <strong>성별</strong>
               <A.AnimalSelectBox>
                 <A.AnimalSelect>수컷</A.AnimalSelect>
                 <A.AnimalSelect>암컷</A.AnimalSelect>
               </A.AnimalSelectBox>
-            </p>
-            <p>
+            </div>
+            <div>
               <strong>생일</strong>
               <A.InputWrapper>
                 <A.CustomDatePicker
@@ -143,7 +141,7 @@ function AnimalUpload() {
                   />
                 </A.SvgIcon>
               </A.InputWrapper>
-            </p>
+            </div>
           </A.DogInfo>
           <A.ButtonContainer>
             <Button whiteBorder>혈통서 업로드</Button>
