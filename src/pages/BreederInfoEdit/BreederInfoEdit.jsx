@@ -2,10 +2,11 @@ import { useState, useRef } from 'react';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederInfoEdit.style';
 import 'react-multi-carousel/lib/styles.css';
+import Button from '../../components/button/Button';
 import BreederInfo from '../../components/BreederInfoEdit/BreederInfo';
 import KennelInfo from '../../components/BreederInfoEdit/KennelInfo';
 // import CareDog from '../../components/BreederInfoEdit/CareDog';
-// import BreederQna from '../../components/BreederInfoEdit/BreederQna';
+import BreederQna from '../../components/BreederInfoEdit/BreederQna';
 
 function BreederInfoEdit() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
@@ -14,6 +15,7 @@ function BreederInfoEdit() {
   const kennelInfoRef = useRef(null);
   const careDogRef = useRef(null);
   const qnaRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const menuItems = [
     '브리더 정보',
@@ -35,104 +37,258 @@ function BreederInfoEdit() {
     }
   };
 
+  const handleIconClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     // 프로필 이미지 변경 로직추가
+  //     console.log('Selected file:', file);
+  //   }
+  // };
+
   return (
     <A.Container>
       <A.TopImage />
+      <A.TopImageIcon>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="42"
+          height="42"
+          viewBox="0 0 42 42"
+          fill="none"
+        >
+          <g filter="url(#filter0_d_912_16835)">
+            <circle cx="21" cy="17" r="17" fill="white" />
+          </g>
+          <path
+            d="M21.334 20.418C22.0243 20.418 22.584 19.8583 22.584 19.168C22.584 18.4776 22.0243 17.918 21.334 17.918C20.6436 17.918 20.084 18.4776 20.084 19.168C20.084 19.8583 20.6436 20.418 21.334 20.418Z"
+            fill="#FE834D"
+          />
+          <path
+            d="M27.1667 13.3333H24.6667V12.0833C24.6667 11.5308 24.4472 11.0009 24.0565 10.6102C23.6658 10.2195 23.1359 10 22.5833 10H20.0833C19.5308 10 19.0009 10.2195 18.6102 10.6102C18.2195 11.0009 18 11.5308 18 12.0833V13.3333H15.5C14.837 13.3333 14.2011 13.5967 13.7322 14.0656C13.2634 14.5344 13 15.1703 13 15.8333V22.5C13 23.163 13.2634 23.7989 13.7322 24.2678C14.2011 24.7366 14.837 25 15.5 25H27.1667C27.8297 25 28.4656 24.7366 28.9344 24.2678C29.4033 23.7989 29.6667 23.163 29.6667 22.5V15.8333C29.6667 15.1703 29.4033 14.5344 28.9344 14.0656C28.4656 13.5967 27.8297 13.3333 27.1667 13.3333ZM19.6667 12.0833C19.6667 11.9728 19.7106 11.8668 19.7887 11.7887C19.8668 11.7106 19.9728 11.6667 20.0833 11.6667H22.5833C22.6938 11.6667 22.7998 11.7106 22.878 11.7887C22.9561 11.8668 23 11.9728 23 12.0833V13.3333H19.6667V12.0833ZM21.3333 22.0833C20.7565 22.0833 20.1926 21.9123 19.7129 21.5918C19.2333 21.2713 18.8594 20.8158 18.6387 20.2828C18.4179 19.7499 18.3602 19.1634 18.4727 18.5977C18.5852 18.0319 18.863 17.5122 19.2709 17.1043C19.6788 16.6964 20.1985 16.4186 20.7643 16.306C21.3301 16.1935 21.9165 16.2513 22.4495 16.472C22.9824 16.6928 23.438 17.0666 23.7585 17.5463C24.0789 18.0259 24.25 18.5898 24.25 19.1667C24.25 19.9402 23.9427 20.6821 23.3957 21.2291C22.8487 21.776 22.1069 22.0833 21.3333 22.0833Z"
+            fill="#FE834D"
+          />
+          <defs>
+            <filter
+              id="filter0_d_912_16835"
+              x="0"
+              y="0"
+              width="42"
+              height="42"
+              filterUnits="userSpaceOnUse"
+              colorInterpolationFilters="sRGB"
+            >
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
+              <feColorMatrix
+                in="SourceAlpha"
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha"
+              />
+              <feOffset dy="4" />
+              <feGaussianBlur stdDeviation="2" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"
+              />
+              <feBlend
+                mode="normal"
+                in2="BackgroundImageFix"
+                result="effect1_dropShadow_912_16835"
+              />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="effect1_dropShadow_912_16835"
+                result="shape"
+              />
+            </filter>
+          </defs>
+        </svg>
+      </A.TopImageIcon>
       <A.TopBox>
-        <A.OverlappingImage />
+        <A.OverlappingImageContainer>
+          <A.OverlappingImage />
+          <A.ProfileIcon onClick={handleIconClick}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="42"
+              height="42"
+              viewBox="0 0 42 42"
+              fill="none"
+            >
+              <g filter="url(#filter0_d_912_16835)">
+                <circle cx="21" cy="17" r="17" fill="white" />
+              </g>
+              <path
+                d="M21.334 20.418C22.0243 20.418 22.584 19.8583 22.584 19.168C22.584 18.4776 22.0243 17.918 21.334 17.918C20.6436 17.918 20.084 18.4776 20.084 19.168C20.084 19.8583 20.6436 20.418 21.334 20.418Z"
+                fill="#FE834D"
+              />
+              <path
+                d="M27.1667 13.3333H24.6667V12.0833C24.6667 11.5308 24.4472 11.0009 24.0565 10.6102C23.6658 10.2195 23.1359 10 22.5833 10H20.0833C19.5308 10 19.0009 10.2195 18.6102 10.6102C18.2195 11.0009 18 11.5308 18 12.0833V13.3333H15.5C14.837 13.3333 14.2011 13.5967 13.7322 14.0656C13.2634 14.5344 13 15.1703 13 15.8333V22.5C13 23.163 13.2634 23.7989 13.7322 24.2678C14.2011 24.7366 14.837 25 15.5 25H27.1667C27.8297 25 28.4656 24.7366 28.9344 24.2678C29.4033 23.7989 29.6667 23.163 29.6667 22.5V15.8333C29.6667 15.1703 29.4033 14.5344 28.9344 14.0656C28.4656 13.5967 27.8297 13.3333 27.1667 13.3333ZM19.6667 12.0833C19.6667 11.9728 19.7106 11.8668 19.7887 11.7887C19.8668 11.7106 19.9728 11.6667 20.0833 11.6667H22.5833C22.6938 11.6667 22.7998 11.7106 22.878 11.7887C22.9561 11.8668 23 11.9728 23 12.0833V13.3333H19.6667V12.0833ZM21.3333 22.0833C20.7565 22.0833 20.1926 21.9123 19.7129 21.5918C19.2333 21.2713 18.8594 20.8158 18.6387 20.2828C18.4179 19.7499 18.3602 19.1634 18.4727 18.5977C18.5852 18.0319 18.863 17.5122 19.2709 17.1043C19.6788 16.6964 20.1985 16.4186 20.7643 16.306C21.3301 16.1935 21.9165 16.2513 22.4495 16.472C22.9824 16.6928 23.438 17.0666 23.7585 17.5463C24.0789 18.0259 24.25 18.5898 24.25 19.1667C24.25 19.9402 23.9427 20.6821 23.3957 21.2291C22.8487 21.776 22.1069 22.0833 21.3333 22.0833Z"
+                fill="#FE834D"
+              />
+              <defs>
+                <filter
+                  id="filter0_d_912_16835"
+                  x="0"
+                  y="0"
+                  width="42"
+                  height="42"
+                  filterUnits="userSpaceOnUse"
+                  colorInterpolationFilters="sRGB"
+                >
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                  <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"
+                  />
+                  <feOffset dy="4" />
+                  <feGaussianBlur stdDeviation="2" />
+                  <feComposite in2="hardAlpha" operator="out" />
+                  <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_912_16835"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_912_16835"
+                    result="shape"
+                  />
+                </filter>
+              </defs>
+            </svg>
+          </A.ProfileIcon>
+        </A.OverlappingImageContainer>
 
         <A.TopLeftBox>
           <A.BreederInfoTitleBox>
-            <A.BreederInfoTitle>
-              🐶 행복한 분양의 시작 - 해피 브리더
-            </A.BreederInfoTitle>
+            <A.BreederInfoTitle
+              type="text"
+              placeholder="켄넬/캐터리 이름을 입력하세요"
+            />
             <A.BreederInfoTitleBoxRight>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="19"
-                viewBox="0 0 16 19"
-                fill="none"
-              >
+              <div>0/20</div>
+
+              <A.CertificateIconBox2>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M1.09367 2.50789C0.70315 2.11736 0.70315 1.4842 1.09367 1.09367C1.4842 0.70315 2.11736 0.70315 2.50789 1.09367L5.00078 3.58657L7.49368 1.09367C7.8842 0.70315 8.51737 0.70315 8.90789 1.09367C9.29841 1.4842 9.29841 2.11736 8.90789 2.50789L6.415 5.00078L8.90789 7.49367C9.29841 7.8842 9.29841 8.51736 8.90789 8.90789C8.51736 9.29841 7.8842 9.29841 7.49367 8.90789L5.00078 6.415L2.50789 8.90789C2.11736 9.29841 1.4842 9.29841 1.09368 8.90789C0.703151 8.51736 0.703151 7.8842 1.09368 7.49367L3.58657 5.00078L1.09367 2.50789Z"
+                    fill="white"
+                  />
+                </svg>
+              </A.CertificateIconBox2>
+            </A.BreederInfoTitleBoxRight>
+          </A.BreederInfoTitleBox>
+
+          <A.BreederInfoSubTitle
+            type="text"
+            placeholder="켄넬 / 캐터리에 대한 간략한 소개를 해주세요."
+          />
+          <A.BreederInfoSubBtnBox>
+            <Button whiteBorder>사업자 등록증 업로드</Button>
+            <A.BreederInfoSubBtnText>파일명.jpg</A.BreederInfoSubBtnText>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29095 13.8916 3.18685 13.9347C3.08274 13.9778 2.97117 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
+                fill="#737373"
+              />
+            </svg>
+          </A.BreederInfoSubBtnBox>
+          <A.ReviewEventTitleBox>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <g clipPath="url(#clip0_912_16866)">
+                <rect width="24" height="24" rx="4" fill="white" />
+                <rect
+                  x="1"
+                  y="1"
+                  width="22"
+                  height="22"
+                  rx="3"
+                  stroke="#C5C5C5"
+                  strokeOpacity="0.5"
+                  strokeWidth="2"
+                />
                 <path
-                  d="M0.740234 12.8V17.75H15.2602V12.8M2.72023 6.36042L8.00023 1.25L13.2802 6.36042M8.00023 12.8V1.25183"
-                  stroke="#323232"
-                  strokeWidth="1.375"
+                  d="M5.00004 12.2632L10.04 17L19 7"
+                  stroke="#C5C5C5"
+                  strokeOpacity="0.5"
+                  strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="25"
-                viewBox="0 0 24 25"
-                fill="none"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M9.52438 5.71522C8.7232 5.28429 7.79974 5.14735 6.91069 5.32696C6.02155 5.50658 5.21995 5.99212 4.6431 6.70287C4.06612 7.41378 3.75 8.30581 3.75 9.22728C3.75 11.9761 5.77662 14.6015 8.0045 16.6269C9.09642 17.6195 10.1917 18.4275 11.0155 18.9878C11.4233 19.2651 11.7627 19.4806 12 19.6265C12.2373 19.4806 12.5767 19.2651 12.9845 18.9878C13.8083 18.4275 14.9036 17.6195 15.9955 16.6269C18.2234 14.6015 20.25 11.9761 20.25 9.22728C20.25 8.30581 19.9339 7.41378 19.3569 6.70287C18.7801 5.99212 17.9784 5.50658 17.0893 5.32696C16.2003 5.14735 15.2768 5.28429 14.4756 5.71522C13.6743 6.14624 13.0438 6.84535 12.6933 7.6951C12.5775 7.97589 12.3037 8.1591 12 8.1591C11.6963 8.1591 11.4225 7.97589 11.3067 7.6951C10.9562 6.84535 10.3257 6.14624 9.52438 5.71522ZM12 20.5C11.6307 21.1528 11.6305 21.1527 11.6303 21.1526L11.6278 21.1511L11.6215 21.1476L11.5995 21.1349C11.5806 21.124 11.5534 21.1082 11.5185 21.0877C11.4487 21.0466 11.3479 20.9864 11.2205 20.9081C10.9659 20.7516 10.6045 20.5223 10.172 20.2281C9.30829 19.6407 8.15358 18.7896 6.9955 17.7368C4.72338 15.6712 2.25 12.6603 2.25 9.22728C2.25 7.96309 2.68357 6.73697 3.47842 5.75761C4.2734 4.7781 5.38101 4.10568 6.61366 3.85666C7.8464 3.60762 9.12621 3.79784 10.2349 4.39419C10.9297 4.7679 11.53 5.28639 12 5.90887C12.47 5.28639 13.0703 4.7679 13.7651 4.39419C14.8738 3.79784 16.1536 3.60762 17.3863 3.85666C18.619 4.10568 19.7266 4.7781 20.5216 5.75761C21.3164 6.73697 21.75 7.96309 21.75 9.22728C21.75 12.6603 19.2766 15.6712 17.0045 17.7368C15.8464 18.7896 14.6917 19.6407 13.828 20.2281C13.3955 20.5223 13.0341 20.7516 12.7795 20.9081C12.6521 20.9864 12.5513 21.0466 12.4815 21.0877C12.4466 21.1082 12.4194 21.124 12.4005 21.1349L12.3785 21.1476L12.3722 21.1511L12.3703 21.1522C12.3701 21.1523 12.3693 21.1528 12 20.5ZM12 20.5L12.3693 21.1528C12.1401 21.2824 11.8594 21.2822 11.6303 21.1526L12 20.5Z"
-                  fill="#323232"
-                />
-              </svg>
-            </A.BreederInfoTitleBoxRight>
-          </A.BreederInfoTitleBox>
-          <A.BreederInfoSubTitleBox>
-            <A.BreederInfoSubTitle>
-              비글, 골든 리트리버 전문
-            </A.BreederInfoSubTitle>
-            <A.BreederInfoLocation>
-              <A.BreederInfoLocationIcon1
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-              >
-                <g clipPath="url(#clip0_1_1486)">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M16.2188 7.27399C16.2188 12.217 10.3858 17.5 10.3858 17.5C10.3858 17.5 4.55078 12.542 4.55078 7.27399C4.55078 4.17699 7.16278 1.66699 10.3848 1.66699C13.6058 1.66699 16.2178 4.17699 16.2178 7.27399H16.2188Z"
-                    stroke="#737373"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M12.6284 7.91728C12.6345 8.19473 12.585 8.47059 12.483 8.72867C12.3809 8.98674 12.2284 9.22184 12.0342 9.42017C11.8401 9.61849 11.6084 9.77605 11.3525 9.88359C11.0967 9.99113 10.822 10.0465 10.5444 10.0464C10.2669 10.0464 9.99221 9.99087 9.73643 9.8832C9.48065 9.77554 9.24895 9.61787 9.05493 9.41945C8.8609 9.22104 8.70846 8.98586 8.60655 8.72774C8.50463 8.46961 8.4553 8.19373 8.46145 7.91628C8.47338 7.37161 8.69813 6.85326 9.08757 6.47227C9.477 6.09127 10.0001 5.87793 10.5449 5.87793C11.0898 5.87793 11.6129 6.09127 12.0023 6.47227C12.3918 6.85326 12.6165 7.37261 12.6284 7.91728Z"
-                    stroke="#737373"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_1_1486">
-                    <rect width="20" height="20" fill="white" />
-                  </clipPath>
-                </defs>
-              </A.BreederInfoLocationIcon1>
-              서울시 강서구
-            </A.BreederInfoLocation>
-          </A.BreederInfoSubTitleBox>
-
-          <A.InfoContent>
-            비글, 골든 리트리버 전문 브리더로, 대표가 직접 방문하는 ✨해피
-            브리더✨ 입니다.
-          </A.InfoContent>
+              </g>
+              <defs>
+                <clipPath id="clip0_912_16866">
+                  <rect width="24" height="24" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+            <A.ReviewEventTitle>리뷰이벤트</A.ReviewEventTitle>
+          </A.ReviewEventTitleBox>
+          <A.ReviewEventContent
+            type="text"
+            placeholder="이벤트 시 제공되는 서비스를 적어주세요"
+          />
         </A.TopLeftBox>
-        <A.TopRightWrapper>
-          <A.TopRightBox>
-            <A.TopRightBoxInquiry>
-              해피 브리더에게 자세한 문의를 요청해보세요. 자세한 분양 절차에
-              대한 정보를 받아보실 수 있어요.
-            </A.TopRightBoxInquiry>
-          </A.TopRightBox>
-        </A.TopRightWrapper>
+        <A.ConfidenceModal>
+          <A.ConfidenceModalTop>
+            <A.ConfidenceModalTopText>신뢰 등급</A.ConfidenceModalTopText>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10ZM20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10ZM10.4047 9.15353C9.79772 9.88252 9.12157 10.6945 9.301 11.958H10.627C10.5121 10.944 11.0826 10.2675 11.6568 9.5866C12.1868 8.95807 12.72 8.32582 12.72 7.421C12.72 5.887 11.68 5.029 10.159 5.029C9.067 5.029 8.196 5.549 7.559 6.277L8.404 7.057C8.846 6.563 9.379 6.264 9.99 6.264C10.809 6.264 11.264 6.797 11.264 7.525C11.264 8.12158 10.8532 8.61489 10.4047 9.15353ZM8.989 14.129C8.989 14.74 9.418 15.182 9.99 15.182C10.549 15.182 10.991 14.74 10.991 14.129C10.991 13.505 10.549 13.076 9.99 13.076C9.418 13.076 8.989 13.505 8.989 14.129Z"
+                fill="#737373"
+              />
+            </svg>
+          </A.ConfidenceModalTop>
+          <A.ConfidenceModalBottom>
+            필수 항목에 대한 업로드 불이행 시 신뢰등급에 영향을 줄 수 있습니다.
+            신뢰등급을 높게 유지하기 위해서는 주기적인 정보 업로드가 필요합니다.
+          </A.ConfidenceModalBottom>
+        </A.ConfidenceModal>
       </A.TopBox>
 
       <A.InfoWrapper>
@@ -143,10 +299,11 @@ function BreederInfoEdit() {
         />
         <BreederInfo ref={breederInfoRef} />
         <KennelInfo ref={kennelInfoRef} />
-        {/*
-        <CareDog ref={careDogRef} />
-        <BreederQna ref={qnaRef} /> */}
+        {/* <Car/eDog ref={careDogRef} /> */}
+
+        <BreederQna ref={qnaRef} />
       </A.InfoWrapper>
+      <A.FinishBtn>저장</A.FinishBtn>
     </A.Container>
   );
 }
