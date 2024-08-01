@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
-export const Border = styled.div`
+export const Container = styled.div`
+  min-width: 1050px;
+  height: 72px;
+  display: flex;
+  justify-content: center;
   border-bottom: 0.5px solid #c5c5c5;
 `;
 
-export const Container = styled.div`
+export const SubContainer = styled.div`
+  width: 1050px;
   height: 72px;
   display: flex;
   flex-direction: row;
@@ -26,6 +31,7 @@ export const Logo = styled.img`
   height: 44px;
   margin-right: 36px;
   margin-bottom: 20px;
+  cursor: pointer;
 `;
 
 export const TextWrapper = styled.div`
@@ -42,6 +48,7 @@ export const NavText = styled.div`
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
+  cursor: pointer;
 `;
 
 export const AuthText = styled.div`
@@ -51,6 +58,7 @@ export const AuthText = styled.div`
   font-size: 14px;
   font-style: normal;
   font-weight: 350;
+  cursor: pointer;
 `;
 
 export const Button = styled.button`
@@ -68,4 +76,5 @@ export const Button = styled.button`
   font-style: normal;
   font-weight: 500;
   margin-left: 12px;
+  cursor: pointer;
 `;
