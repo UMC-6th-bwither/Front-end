@@ -16,8 +16,7 @@ export const TopImage = styled.div`
   left: 0;
   width: 100%;
   height: 208px;
-  background: url('/public/img/breederdetailbackimg.jpg') no-repeat center
-    calc(50% - 20px);
+  background: url('/public/img/breederinfoedit.png') no-repeat center;
   background-color: lightgray;
   background-size: cover;
 `;
@@ -324,6 +323,78 @@ export const InfoInputBox = styled.input`
   }
 `;
 
+export const InfoInputContentBox = styled.textarea`
+  display: flex;
+  width: 970px;
+  height: 112px;
+  padding: 8px 10px 8px 18px;
+  align-items: flex-start;
+  border-radius: 10px;
+  border: 2px solid var(--Grey_line, #f1f1f1);
+  background: var(--White, #fff);
+  &::placeholder {
+    color: #737373;
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-weight: 350;
+    line-height: 24px;
+  }
+`;
+
+export const InfoInputContentLine = styled.input`
+  display: flex;
+  width: 902px;
+  height: 40px;
+  padding: 8px 10px 8px 18px;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 2px solid var(--Grey_line, #f1f1f1);
+  background: var(--White, #fff);
+  &::placeholder {
+    color: #737373;
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-weight: 350;
+    line-height: 24px;
+  }
+`;
+
+export const InfoInputContentLine2Box = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 12px;
+`;
+
+export const InfoInputContentLine22 = styled.div`
+  width: 18px;
+  height: 3px;
+  background: #d9d9d9;
+  margin: 0 3px;
+`;
+
+export const InfoInputContentLine2 = styled.input`
+  display: flex;
+  width: 184px;
+  height: 40px;
+  padding: 8px 18px;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 2px solid var(--Grey_line, #f1f1f1);
+  background: var(--White, #fff);
+  &::placeholder {
+    color: #dadada;
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+  }
+`;
+
 export const InfoContentBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -381,17 +452,23 @@ export const InfoContentDetail = styled.div`
 export const AnimalSelectBox = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 6px;
+  gap: 8px;
 `;
 
 export const AnimalSelect = styled.div`
   display: flex;
-  height: 32px;
-  padding: 5px 13px 6px 13px;
+  padding: 10px 19px;
   align-items: center;
-  border-radius: 28px;
-  border: 1px solid #e1e1e1;
-  background: #fff;
+  gap: 12px;
+  border-radius: 21px;
+  border: 1px #e1e1e1;
+
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
+  letter-spacing: -0.3px;
 `;
 
 export const MiniTitle = styled.div`
@@ -400,6 +477,7 @@ export const MiniTitle = styled.div`
   font-size: 16px;
   font-weight: 500;
   letter-spacing: -0.5px;
+  margin-top: 20px;
   margin-bottom: 2px;
 `;
 
@@ -417,6 +495,26 @@ export const MiniContent2 = styled.div`
   font-size: 14px;
   font-weight: 350;
   line-height: 21px;
+  margin-bottom: 24px;
+`;
+export const CertificateImgBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+`;
+export const CertificateIconBox = styled.div`
+  display: flex;
+  width: 18px;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  border-radius: 1000px;
+  background: #c5c5c5;
 `;
 
 export const CertificateImg = styled.div`
@@ -424,7 +522,19 @@ export const CertificateImg = styled.div`
   height: 120px;
   border-radius: 8px;
   border: 2px solid rgba(241, 241, 241, 0.5);
-  background-color: tomato;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: #c5c5c5;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 21px;
+  cursor: pointer;
 `;
 
 export const Line = styled.div`

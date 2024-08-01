@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as A from '../../pages/BreederInfoEdit/BreederInfoEdit.style';
 
 const BreederInfo = React.forwardRef((props, ref) => {
+  // 인풋 value들 추가하기
+  const [certificates, setCertificates] = useState([]);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setCertificates([
+        ...certificates,
+        { id: URL.createObjectURL(file), name: file.name },
+      ]);
+    }
+  };
+
+  const handleDelete = (id) => {
+    const newCertificates = certificates.filter((cert) => cert.id !== id);
+    setCertificates(newCertificates);
+  };
   return (
     <div ref={ref} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
@@ -79,9 +96,10 @@ const BreederInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContent>블로그</A.InfoContent>
-          <A.InfoContentDetail>
-            https://section.blog.naver.com/BlogHome.naver?directoryNo=0&currentPage=1&groupId=0
-          </A.InfoContentDetail>
+          <A.InfoInputBox
+            type="text"
+            placeholder="블로그 주소를 입력해주세요"
+          />
         </A.InfoContentBox>
         <A.InfoContentBox>
           <svg
@@ -100,23 +118,54 @@ const BreederInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContent>인스타그램</A.InfoContent>
-          <A.InfoContentDetail>
-            https://www.instagram.com/@happybreeder
-          </A.InfoContentDetail>
+          <A.InfoInputBox
+            type="text"
+            placeholder="인스타그램 주소를 입력해주세요"
+          />
         </A.InfoContentBox>
       </A.InfoItem>
       <A.InfoItem>
         <A.InfoTitle>브리더 상세설명</A.InfoTitle>
-        <A.InfoContent>
-          안녕하세요 투명하고 깨끗한 해피 브리더입니다~!
-        </A.InfoContent>
+        <A.InfoInputContentBox
+          type="text"
+          placeholder="브리더에 대해 알려주세요"
+        />
       </A.InfoItem>
       <A.InfoItemSecond>
         <A.InfoTitle>전문 견종</A.InfoTitle>
         <A.AnimalSelectBox>
-          <A.AnimalSelect>강아지</A.AnimalSelect>
-          <A.AnimalSelect>고양이</A.AnimalSelect>
+          <A.AnimalSelect>
+            비글
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29095 13.8916 3.18685 13.9347C3.08274 13.9778 2.97117 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
+                fill="#C5C5C5"
+              />
+            </svg>
+          </A.AnimalSelect>
+          <A.AnimalSelect>
+            고양이
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29095 13.8916 3.18685 13.9347C3.08274 13.9778 2.97117 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
+                fill="#C5C5C5"
+              />
+            </svg>
+          </A.AnimalSelect>
         </A.AnimalSelectBox>
+        <A.InfoInputContentLine type="text" placeholder="종을 입력해주세요" />
       </A.InfoItemSecond>
       <A.InfoItemSecond>
         <A.InfoTitle>경력</A.InfoTitle>
@@ -140,16 +189,82 @@ const BreederInfo = React.forwardRef((props, ref) => {
         <A.MiniTitle>해피 브리더</A.MiniTitle>
         <A.MiniContent>2023년 3월 - 현재 · 1년 4개월</A.MiniContent>
         <A.MiniContent2>브리더 전문가 양성과정 수료</A.MiniContent2>
+        <A.InfoInputContentLine
+          type="text"
+          style={{ marginBottom: '12px' }}
+          placeholder="기관명을 입력해주세요"
+        />
+        <A.InfoInputContentBox
+          type="text"
+          placeholder="경력에 대한 간단한 설명을 작성해주세요"
+        />
       </A.InfoItemSecond>
       <A.InfoItemSecond>
         <A.InfoTitle>학력</A.InfoTitle>
-        <A.MiniTitle>서연대학교</A.MiniTitle>
-        <A.MiniContent>2014년 2월 - 2016년 8월</A.MiniContent>
-        <A.MiniContent2>반려동물학과</A.MiniContent2>
+        <A.InfoInputContentLine
+          type="text"
+          placeholder="학교명을 입력해주세요"
+        />
+        {/* 달력추가 예정 */}
+        <A.InfoInputContentLine2Box>
+          <A.InfoInputContentLine2 type="text" placeholder="입학 연월" />
+          <A.InfoInputContentLine22 />
+          <A.InfoInputContentLine2 type="text" placeholder="입학 연월" />
+        </A.InfoInputContentLine2Box>
       </A.InfoItemSecond>
       <A.InfoItem>
         <A.InfoTitle>자격증 및 기타 서류</A.InfoTitle>
-        <A.CertificateImg>자격증 사진</A.CertificateImg>
+        <A.CertificateImgBox>
+          {certificates.map((cert) => (
+            <div key={cert.id} style={{ position: 'relative' }}>
+              <A.CertificateImg as="img" src={cert.id} alt={cert.name} />
+              <A.CertificateIconBox>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  style={{
+                    position: 'absolute',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleDelete(cert.id)}
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M1.09367 2.50789C0.70315 2.11736 0.70315 1.4842 1.09367 1.09367C1.4842 0.70315 2.11736 0.70315 2.50789 1.09367L5.00078 3.58657L7.49368 1.09367C7.8842 0.70315 8.51737 0.70315 8.90789 1.09367C9.29841 1.4842 9.29841 2.11736 8.90789 2.50789L6.415 5.00078L8.90789 7.49367C9.29841 7.8842 9.29841 8.51736 8.90789 8.90789C8.51736 9.29841 7.8842 9.29841 7.49367 8.90789L5.00078 6.415L2.50789 8.90789C2.11736 9.29841 1.4842 9.29841 1.09368 8.90789C0.703151 8.51736 0.703151 7.8842 1.09368 7.49367L3.58657 5.00078L1.09367 2.50789Z"
+                    fill="white"
+                  />
+                </svg>
+              </A.CertificateIconBox>
+            </div>
+          ))}
+          <label htmlFor="file-upload">
+            <A.CertificateImg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="34"
+                height="34"
+                viewBox="0 0 34 34"
+                fill="none"
+              >
+                <path
+                  d="M17 0C17.5636 0 18.1041 0.223884 18.5026 0.622398C18.9011 1.02091 19.125 1.56141 19.125 2.125V14.875H31.875C32.4386 14.875 32.9791 15.0989 33.3776 15.4974C33.7761 15.8959 34 16.4364 34 17C34 17.5636 33.7761 18.1041 33.3776 18.5026C32.9791 18.9011 32.4386 19.125 31.875 19.125H19.125V31.875C19.125 32.4386 18.9011 32.9791 18.5026 33.3776C18.1041 33.7761 17.5636 34 17 34C16.4364 34 15.8959 33.7761 15.4974 33.3776C15.0989 32.9791 14.875 32.4386 14.875 31.875V19.125H2.125C1.56141 19.125 1.02091 18.9011 0.622398 18.5026C0.223884 18.1041 0 17.5636 0 17C0 16.4364 0.223884 15.8959 0.622398 15.4974C1.02091 15.0989 1.56141 14.875 2.125 14.875H14.875V2.125C14.875 1.56141 15.0989 1.02091 15.4974 0.622398C15.8959 0.223884 16.4364 0 17 0Z"
+                  fill="#C5C5C5"
+                />
+              </svg>
+              파일 첨부
+            </A.CertificateImg>
+            <input
+              id="file-upload"
+              type="file"
+              style={{ display: 'none' }}
+              onChange={handleFileUpload}
+            />
+          </label>
+        </A.CertificateImgBox>
       </A.InfoItem>
       <A.Line />
     </div>
