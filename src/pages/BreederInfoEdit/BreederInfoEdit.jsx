@@ -3,7 +3,7 @@ import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederInfoEdit.style';
 import 'react-multi-carousel/lib/styles.css';
 import BreederInfo from '../../components/BreederInfoEdit/BreederInfo';
-// import KennelInfo from '../../components/BreederInfoEdit/KennelInfo';
+import KennelInfo from '../../components/BreederInfoEdit/KennelInfo';
 // import CareDog from '../../components/BreederInfoEdit/CareDog';
 // import BreederQna from '../../components/BreederInfoEdit/BreederQna';
 
@@ -142,7 +142,8 @@ function BreederInfoEdit() {
           setActiveMenu={handleMenuClick}
         />
         <BreederInfo ref={breederInfoRef} />
-        {/* <KennelInfo ref={kennelInfoRef} />
+        <KennelInfo ref={kennelInfoRef} />
+        {/*
         <CareDog ref={careDogRef} />
         <BreederQna ref={qnaRef} /> */}
       </A.InfoWrapper>

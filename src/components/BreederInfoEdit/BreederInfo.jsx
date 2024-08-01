@@ -165,7 +165,10 @@ const BreederInfo = React.forwardRef((props, ref) => {
             </svg>
           </A.AnimalSelect>
         </A.AnimalSelectBox>
-        <A.InfoInputContentLine type="text" placeholder="종을 입력해주세요" />
+        <A.InfoInputBtnBox>
+          <A.InfoInputContentLine type="text" placeholder="종을 입력해주세요" />
+          <A.InfoInputBtn>추가</A.InfoInputBtn>
+        </A.InfoInputBtnBox>
       </A.InfoItemSecond>
       <A.InfoItemSecond>
         <A.InfoTitle>경력</A.InfoTitle>
@@ -189,27 +192,62 @@ const BreederInfo = React.forwardRef((props, ref) => {
         <A.MiniTitle>해피 브리더</A.MiniTitle>
         <A.MiniContent>2023년 3월 - 현재 · 1년 4개월</A.MiniContent>
         <A.MiniContent2>브리더 전문가 양성과정 수료</A.MiniContent2>
-        <A.InfoInputContentLine
-          type="text"
-          style={{ marginBottom: '12px' }}
-          placeholder="기관명을 입력해주세요"
-        />
+        <A.InfoInputContentLine3Box>
+          <A.InfoInputContentLine3
+            type="text"
+            style={{ marginBottom: '12px' }}
+            placeholder="기관명을 입력해주세요"
+          />
+          <A.InfoInputContentLine2Box>
+            <A.InfoInputContentLine2 type="text" placeholder="입사연월" />
+            <A.InfoInputContentLine22 />
+            <A.InfoInputContentLine2 type="text" placeholder="퇴사연월" />
+          </A.InfoInputContentLine2Box>
+        </A.InfoInputContentLine3Box>
+
         <A.InfoInputContentBox
           type="text"
           placeholder="경력에 대한 간단한 설명을 작성해주세요"
         />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginTop: '24px',
+            justifyContent: 'flex-end',
+            gap: '12px',
+          }}
+        >
+          <A.InfoInputBtn>저장</A.InfoInputBtn>
+          <A.InfoInputBtn>추가</A.InfoInputBtn>
+        </div>
       </A.InfoItemSecond>
       <A.InfoItemSecond>
         <A.InfoTitle>학력</A.InfoTitle>
-        <A.InfoInputContentLine
-          type="text"
-          placeholder="학교명을 입력해주세요"
-        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '970px',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '12px',
+          }}
+        >
+          <A.InfoInputContentLine4
+            type="text"
+            placeholder="학교명을 입력해주세요"
+          />
+          <A.InfoInputContentLine4
+            type="text"
+            placeholder="학과명을 입력해주세요"
+          />
+        </div>
         {/* 달력추가 예정 */}
         <A.InfoInputContentLine2Box>
-          <A.InfoInputContentLine2 type="text" placeholder="입학 연월" />
+          <A.InfoInputContentLine2 type="text" placeholder="입학연월" />
           <A.InfoInputContentLine22 />
-          <A.InfoInputContentLine2 type="text" placeholder="입학 연월" />
+          <A.InfoInputContentLine2 type="text" placeholder="졸업연월" />
         </A.InfoInputContentLine2Box>
       </A.InfoItemSecond>
       <A.InfoItem>

@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as A from '../../pages/BreederInfoEdit/BreederInfoEdit.style';
 
 const KennelInfo = React.forwardRef((props, ref) => {
+  const [certificates, setCertificates] = useState([]);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setCertificates([
+        ...certificates,
+        { id: URL.createObjectURL(file), name: file.name },
+      ]);
+    }
+  };
   return (
     <div ref={ref} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
@@ -24,9 +35,10 @@ const KennelInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContentTitle>켄넬 주소</A.InfoContentTitle>
-          <A.InfoContent>
-            서울특별시 강서구 어쩌고동 어쩌고로 123-1
-          </A.InfoContent>
+          <A.InfoInputBox
+            type="text"
+            placeholder="서울특별시 강서구 어쩌고동 어쩌고로 123-1"
+          />
         </A.InfoContentBox>
         <A.InfoContentBox>
           <svg
@@ -61,7 +73,7 @@ const KennelInfo = React.forwardRef((props, ref) => {
             </defs>
           </svg>
           <A.InfoContentTitle>영업 시간</A.InfoContentTitle>
-          <A.InfoContent>오전 10시 ~ 오후 9시(일요일 휴무)</A.InfoContent>
+          <A.InfoInputBox type="text" placeholder="영업 시간을 입력해주세요" />
         </A.InfoContentBox>
         <A.InfoContentBox>
           <svg
@@ -79,13 +91,48 @@ const KennelInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContentTitle>개체수</A.InfoContentTitle>
-          <A.InfoContent>비글 2마리, 골든리트리버 3마리</A.InfoContent>
+          <A.InfoInputBox
+            type="text"
+            placeholder="비글 2마리, 골든리트리버 3마리"
+          />
         </A.InfoContentBox>
 
         <A.KennelImgBox>
           <A.KennelImg>강아지 켄넬 사진 1</A.KennelImg>
           <A.KennelImg>강아지 켄넬 사진 2</A.KennelImg>
-          <A.KennelImg>강아지 켄넬 사진 3</A.KennelImg>
+          <A.CertificateImg2 />
+          {/* 새로 추가된 사진에 제목 입력하는 부분 추가 예정 */}
+
+          <A.CertificateImgBox>
+            {certificates.map((cert) => (
+              <div key={cert.id} style={{ position: 'relative' }}>
+                <A.CertificateImg2 as="img" src={cert.id} alt={cert.name} />
+              </div>
+            ))}
+            <label htmlFor="file-upload">
+              <A.CertificateImg2>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="34"
+                  height="34"
+                  viewBox="0 0 34 34"
+                  fill="none"
+                >
+                  <path
+                    d="M17 0C17.5636 0 18.1041 0.223884 18.5026 0.622398C18.9011 1.02091 19.125 1.56141 19.125 2.125V14.875H31.875C32.4386 14.875 32.9791 15.0989 33.3776 15.4974C33.7761 15.8959 34 16.4364 34 17C34 17.5636 33.7761 18.1041 33.3776 18.5026C32.9791 18.9011 32.4386 19.125 31.875 19.125H19.125V31.875C19.125 32.4386 18.9011 32.9791 18.5026 33.3776C18.1041 33.7761 17.5636 34 17 34C16.4364 34 15.8959 33.7761 15.4974 33.3776C15.0989 32.9791 14.875 32.4386 14.875 31.875V19.125H2.125C1.56141 19.125 1.02091 18.9011 0.622398 18.5026C0.223884 18.1041 0 17.5636 0 17C0 16.4364 0.223884 15.8959 0.622398 15.4974C1.02091 15.0989 1.56141 14.875 2.125 14.875H14.875V2.125C14.875 1.56141 15.0989 1.02091 15.4974 0.622398C15.8959 0.223884 16.4364 0 17 0Z"
+                    fill="#C5C5C5"
+                  />
+                </svg>
+                파일 첨부
+              </A.CertificateImg2>
+              <input
+                id="file-upload"
+                type="file"
+                style={{ display: 'none' }}
+                onChange={handleFileUpload}
+              />
+            </label>
+          </A.CertificateImgBox>
         </A.KennelImgBox>
       </A.InfoItem>
       <A.Line />

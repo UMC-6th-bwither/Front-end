@@ -316,8 +316,10 @@ export const InfoInputBox = styled.input`
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+  width: 315px;
   color: #323232;
-
+  display: flex;
+  white-space: nowrap;
   &::placeholder {
     color: #c5c5c5;
   }
@@ -339,6 +341,34 @@ export const InfoInputContentBox = styled.textarea`
     font-weight: 350;
     line-height: 24px;
   }
+`;
+
+export const InfoInputBtnBox = styled.div`
+  display: flex;
+  width: 970px;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+`;
+export const InfoInputBtn = styled.button`
+  display: flex;
+  width: 50px;
+  height: 40px;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 1px solid #c5c5c5;
+  background: #f4f4f4;
+  white-space: nowrap;
+  color: #444;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
 `;
 
 export const InfoInputContentLine = styled.input`
@@ -365,7 +395,6 @@ export const InfoInputContentLine2Box = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 12px;
 `;
 
 export const InfoInputContentLine22 = styled.div`
@@ -392,6 +421,53 @@ export const InfoInputContentLine2 = styled.input`
     font-size: 14px;
     font-weight: 500;
     line-height: 21px;
+  }
+`;
+
+export const InfoInputContentLine3Box = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-start;
+  align-self: stretch;
+`;
+
+export const InfoInputContentLine3 = styled.input`
+  display: flex;
+  width: 562px;
+  height: 40px;
+  padding: 8px 10px 8px 18px;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 10px;
+  border: 2px solid var(--Grey_line, #f1f1f1);
+  background: var(--White, #fff);
+  &::placeholder {
+    color: #737373;
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-weight: 350;
+    line-height: 24px;
+  }
+`;
+
+export const InfoInputContentLine4 = styled.input`
+  display: flex;
+  width: 476px;
+  height: 40px;
+  padding: 8px 10px 8px 18px;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+  background: #fff;
+  flex-shrink: 0;
+  &::placeholder {
+    color: #737373;
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-weight: 350;
+    line-height: 24px;
   }
 `;
 
@@ -537,6 +613,26 @@ export const CertificateImg = styled.div`
   cursor: pointer;
 `;
 
+export const CertificateImg2 = styled.div`
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  border: 2px solid rgba(241, 241, 241, 0.5);
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: #c5c5c5;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 21px;
+  cursor: pointer;
+`;
+
 export const Line = styled.div`
   background: var(--Grey_line, #f1f1f1);
   height: 1px;
@@ -561,6 +657,15 @@ export const KennelImg = styled.div`
   align-items: flex-end;
   justify-content: flex-start;
   padding: 0 0 12px 14px;
+  overflow: hidden;
+  color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: -0.3px;
 `;
 
 export const KennelImgText = styled.div`
