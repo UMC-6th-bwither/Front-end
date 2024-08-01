@@ -42,7 +42,10 @@ function App() {
           <Route path="/MyReview/Comment" element={<MyReviewComment />} />
           <Route path="/MyReview/Review" element={<MyReview />} />
           <Route path="/MyReview/Save" element={<MyReviewSave />} />
-          <Route path="/waitinganimal-detail" element={<WaitingAnimalDetail />} />
+          <Route
+            path="/waitinganimal-detail"
+            element={<WaitingAnimalDetail />}
+          />
           <Route path="/animal-upload" element={<AnimalUpload />} />
           <Route path="/breeder-detail" element={<BreederDetail />} />
           <Route path="/bwither-review" element={<BwitherReview />} />
