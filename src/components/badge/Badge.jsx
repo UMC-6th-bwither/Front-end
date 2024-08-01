@@ -2,11 +2,7 @@
 import * as T from './Badge.style';
 
 function Icon({ icon }) {
-  return (
-    <T.IconContainer>
-      <T.Icon src={icon} />
-    </T.IconContainer>
-  );
+  return <T.IconContainer>{icon}</T.IconContainer>;
 }
 
 export default function Badge({ color, backgroundColor, children, icon }) {
