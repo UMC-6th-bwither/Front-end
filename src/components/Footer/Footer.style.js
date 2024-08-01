@@ -2,17 +2,16 @@ import styled from 'styled-components';
 
 export const Border = styled.div`
   display: flex;
-  width: 1920px;
   height: 366px;
   padding: 22px 0px;
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
 
-  position: fixed;
+  /* position: fixed;
   bottom: 0;
   left: 0;
-  right: 0;
+  right: 0; */
 `;
 
 export const Container = styled.div`

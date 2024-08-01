@@ -15,6 +15,8 @@ export const SubContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
+  max-width: 1190px;
 `;
 
 export const Left = styled.div`
