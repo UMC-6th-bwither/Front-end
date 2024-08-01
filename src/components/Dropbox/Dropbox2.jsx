@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import * as D from './Dropbox.style';
+import * as D from './Dropbox2.style';
 
 export default function Dropbox({
   width = 100,

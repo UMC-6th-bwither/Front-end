@@ -7,7 +7,7 @@ import Button from '../../../components/button/Button';
 import postDummy from '../dummyData';
 import Pagination from '../../../components/Pagination/Pagination';
 import MyCommentPostCard from '../../../components/PostCard/MyCommentPostCard';
-import Dropbox from '../../../components/Dropbox/Dropbox';
+import Dropbox from '../../../components/Dropbox/Dropbox2';
 
 function Icon() {
   return (

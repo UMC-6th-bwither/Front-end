@@ -7,7 +7,9 @@ import Button from '../../../components/button/Button';
 import postDummy from '../dummyData';
 import Pagination from '../../../components/Pagination/Pagination';
 import PostCard from '../../../components/PostCard/PostCard';
-import Dropbox from '../../../components/Dropbox/Dropbox';
+import Dropbox from '../../../components/Dropbox/Dropbox2';
+import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
+import { menuItems } from '../menuItems';
 
 function Icon() {
   return (
@@ -23,24 +25,11 @@ export default function CommunityInformation() {
 
   return (
     <P.Layout>
-      <nav>
-        <P.MenuTitle>커뮤니티</P.MenuTitle>
-        <P.MenuSubtitleContainer>
-          <P.MenuSubtitleInActive to="/community/question">
-            질문/고민
-          </P.MenuSubtitleInActive>
-          <P.MenuSubtitleActive to="/community/information">
-            정보 공유
-          </P.MenuSubtitleActive>
-          <P.MenuSubtitleInActive to="/community/daily">
-            일상 이야기
-          </P.MenuSubtitleInActive>
-          <P.MenuSubtitleInActive to="/community/breederinformation">
-            브리더의 꿀정보
-          </P.MenuSubtitleInActive>
-          <P.MenuSubtitleInActive>브위더 후기</P.MenuSubtitleInActive>
-        </P.MenuSubtitleContainer>
-      </nav>
+      <VerticalMenuSelector
+        title="커뮤니티"
+        items={menuItems}
+        activeItemName="정보 공유"
+      />
       <P.MainContainer>
         <Icon />
         <P.TitleLayout>
