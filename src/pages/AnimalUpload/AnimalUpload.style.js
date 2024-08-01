@@ -26,7 +26,7 @@ export const Title = styled.div`
 export const Card = styled.div`
   display: flex;
   overflow: hidden;
-  gap: 42px;
+  gap: 52px;
   width: 100%;
   max-width: 100%;
   margin-bottom: 28px;
@@ -57,26 +57,18 @@ export const InfoContainer = styled.div`
   max-width: 100%;
 `;
 
-export const DogContainer = styled.div`
-  display: flex;
-  padding: 8px 10px;
-  align-items: center;
-  gap: 8px;
-  align-self: stretch;
-  border-radius: 10px;
-`;
-
 export const Name = styled.input`
+  padding: 8px 10px 8px 0;
+  gap: 8px;
+  border-radius: 10px;
   margin-bottom: 12px;
   display: flex;
   width: 203px;
   flex-direction: column;
   gap: 12px;
-  padding: 8px 10px;
   align-items: center;
   border: none;
-  align-self: stretch;
-  border-radius: 10px;
+  align-self: flex-start;
   &::placeholder {
     color: #c5c5c5;
     font-family: 'Noto Sans KR';
@@ -108,7 +100,7 @@ export const DogInfo = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 13px;
-  p {
+  div {
     display: flex;
     flex-direction: row;
     align-items: center;
