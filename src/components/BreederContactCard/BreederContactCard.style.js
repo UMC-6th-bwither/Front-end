@@ -8,6 +8,7 @@ export const Container = styled.div`
   align-items: center;
   box-shadow: 0px 6px 20px 0px rgba(148, 156, 163, 0.2);
   font-family: 'Noto Sans KR';
+  border-radius: 12px;
 `;
 
 export const SpanningContainer = styled.div`

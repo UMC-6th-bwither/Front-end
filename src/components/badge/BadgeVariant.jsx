@@ -108,6 +108,20 @@ export default function BadgeVariant({ content }) {
       </Badge>
     );
   }
+  if (/\d+년 경력/.test(content)) {
+    return (
+      <Badge backgroundColor="#FFFDF2" color="#F87B45">
+        {content}
+      </Badge>
+    );
+  }
+  if (/자격증 \d+개/.test(content)) {
+    return (
+      <Badge backgroundColor="#FFFDF2" color="#F87B45">
+        {content}
+      </Badge>
+    );
+  }
   return (
     <Badge
       backgroundColor="#FFF2F3"

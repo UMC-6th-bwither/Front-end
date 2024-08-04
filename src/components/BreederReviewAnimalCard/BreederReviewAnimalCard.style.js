@@ -81,6 +81,7 @@ export const StarFlex = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
+  gap: 3px;
 `;
 
 export const IconContainer = styled.button`
