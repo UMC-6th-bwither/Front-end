@@ -3,8 +3,8 @@ import * as H from './Header.style';
 
 export default function Header() {
   return (
-    <H.Border>
-      <H.Container>
+    <H.Container>
+      <H.SubContainer>
         <H.Left>
           <H.Logo src={logo} alt="logo" />
           <H.TextWrapper>
@@ -21,7 +21,7 @@ export default function Header() {
           </H.TextWrapper>
           <H.Button>브리더로 가입</H.Button>
         </H.Right>
-      </H.Container>
-    </H.Border>
+      </H.SubContainer>
+    </H.Container>
   );
 }

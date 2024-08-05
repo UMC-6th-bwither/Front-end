@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import * as M from '../MenuSelect/MenuSelect.style';
+import * as M from './MenuSelect.style';
 
 function MenuSelect({ menus, activeMenu, setActiveMenu }) {
   return (
@@ -7,7 +7,7 @@ function MenuSelect({ menus, activeMenu, setActiveMenu }) {
       {menus.map((menu) => (
         <M.MenuItem
           key={menu}
-          isActive={menu === activeMenu}
+          active={menu === activeMenu}
           onClick={() => setActiveMenu(menu)}
         >
           {menu}

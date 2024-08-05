@@ -7,19 +7,20 @@ export const MenuContainer = styled.div`
   align-items: flex-end;
   gap: 18px;
   align-self: stretch;
+  margin-bottom: 32px;
 `;
 
 export const MenuItem = styled.div`
   padding: 10px 20px;
   cursor: pointer;
   position: relative;
-  color: ${(props) => (props.isActive ? '#FE834D' : '#737373')};
-  font-weight: ${(props) => (props.isActive ? '700' : '350')};
+  color: ${(props) => (props.active ? '#FE834D' : '#737373')};
+  font-weight: ${(props) => (props.active ? '700' : '350')};
   font-size: 16px;
   line-height: 24px;
   &:after {
     content: '';
-    display: ${(props) => (props.isActive ? 'block' : 'none')};
+    display: ${(props) => (props.active ? 'block' : 'none')};
     position: absolute;
     bottom: 0;
     left: 0;

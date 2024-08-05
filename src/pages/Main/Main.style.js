@@ -7,8 +7,6 @@ export const MainContainer = styled.div`
   align-items: center;
   text-align: center;
   justify-content: center;
-
-  padding: 0 0 250px 0;
 `;
 
 export const Layout = styled.div`
@@ -32,6 +30,7 @@ export const HeadLineContainer = styled.h1`
 
   position: relative;
   overflow: visible;
+  margin: 20px 0;
 `;
 
 export const HeadLiner = styled.h1`
@@ -97,7 +96,7 @@ export const Button = styled.button`
 
   &:disabled {
     cursor: default;
-    opacity: 0.3;
+    opacity: 0.5;
   }
 `;
 
@@ -127,8 +126,8 @@ export const BreederList = styled.div`
 `;
 
 export const MeetingBreederCard = styled.div`
-  width: 150px !important;
-  height: 150px;
+  width: 182px !important;
+  height: 182px !important;
   margin: 20px 0 0 0;
   padding: 16px;
   border-radius: 12px;
@@ -168,8 +167,8 @@ export const MeetingBreederText = styled.div`
 `;
 
 export const BreederCard = styled.div`
-  width: 150px !important;
-  height: 150px;
+  width: 182px !important;
+  height: 182px !important;
   margin: 20px 5px;
   padding: 16px;
   border-radius: 12px;
@@ -243,7 +242,7 @@ export const BreederInfo = styled.div`
 
 export const PBContainerVer2 = styled.div`
   width: 970px;
-  height: 748px;
+  height: 680px;
   gap: 20px;
 `;
 
@@ -255,7 +254,7 @@ export const BreederListVer2 = styled.div`
 
 export const BreederCardVer2 = styled.div`
   width: 970px;
-  height: 80px;
+  height: 124px;
   padding: 28px 20px;
   margin: 15px 0;
   border-radius: 15px;

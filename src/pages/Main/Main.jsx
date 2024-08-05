@@ -18,7 +18,7 @@ import ButtonSelector from '../../components/buttonselector/ButtonSelector';
 const fetchUserData = () => {
   return {
     name: 'John',
-    role: 'breder',
+    role: 'bwither',
   };
 };
 
