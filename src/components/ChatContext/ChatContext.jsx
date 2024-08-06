@@ -1,7 +1,19 @@
 /* eslint-disable react/prop-types */
+import { useRef, useEffect } from 'react';
 import * as S from './ChatContext.style';
 
 export default function ChatContext({ chatList }) {
+  const lastMsgRef = useRef(null);
+
+  useEffect(() => {
+    if (lastMsgRef.current) {
+      lastMsgRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [chatList]);
+
   return (
     <S.Container>
       {chatList.map((chat, index) => {
@@ -13,7 +25,12 @@ export default function ChatContext({ chatList }) {
         const isEnd = nextRole !== chat.role;
 
         return (
-          <S.MessageWrapper key={index} role={chat.role} isStart={isStart}>
+          <S.MessageWrapper
+            key={index}
+            role={chat.role}
+            isStart={isStart}
+            ref={index === chatList.length - 1 ? lastMsgRef : null}
+          >
             {isEnd && chat.role === 'me' && (
               <S.ChatTime>{chat.time}</S.ChatTime>
             )}

@@ -57,7 +57,7 @@ export const TopbarDetailBar = styled.div`
   gap: 30px;
   display: flex;
   align-items: center;
-  min-width: 375px;
+  min-width: 425px;
 `;
 
 export const TopbarDetailBarContext = styled.div`
@@ -87,11 +87,14 @@ export const ChatListContainer = styled.div`
   border: 1px solid var(--Grey_block, #f4f4f4);
 `;
 
-export const ChatContentContainer = styled.div`
-  background: none;
-  flex: 2;
-  border: 1px solid var(--Grey_block, #f4f4f4);
-  overflow-y: scroll;
+export const ChatWindowContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+export const ChatMessagesContainer = styled.div`
+  flex: 1; // 남은 공간을 모두 차지
+  overflow-y: auto; // 스크롤이 가능하도록 설정
 
   /* 스크롤바 전체 */
   &::-webkit-scrollbar {
@@ -101,7 +104,7 @@ export const ChatContentContainer = styled.div`
 
   /* 스크롤바의 트랙 (스크롤바 뒤의 배경) */
   &::-webkit-scrollbar-track {
-    background: rgba(244, 244, 244, 0.8); /* 트랙의 색상을 약간 투명하게 설정 */
+    background: rgba(244, 244, 244, 0.2); /* 트랙의 색상을 약간 투명하게 설정 */
     border-radius: 10px;
   }
 
@@ -111,15 +114,60 @@ export const ChatContentContainer = styled.div`
       248,
       123,
       69,
-      0.8
+      0.3
     ); /* 핸들의 색상을 약간 투명하게 설정 */
     border-radius: 10px;
-    border: 2px solid rgba(244, 244, 244, 0.8); /* 핸들 주위에 트랙의 색상으로 테두리 적용 */
   }
 
   /* 스크롤바 핸들에 호버 상태 */
   &::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(248, 123, 69, 1); /* 호버 시 불투명하게 설정 */
+    background-color: rgba(248, 123, 69, 0.5); /* 호버 시 불투명하게 설정 */
+  }
+`;
+
+export const ChatContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: none;
+  flex: 2;
+  border: 1px solid var(--Grey_block, #f4f4f4);
+  padding-bottom: 0;
+`;
+
+export const ChatInputContainer = styled.div`
+  display: flex;
+  align-items: center; // 수직 가운데 정렬
+  padding: 12px;
+  box-sizing: border-box;
+  border-top: 1px solid var(--main, #fe834d);
+  background-color: var(--white, #fff);
+`;
+
+export const UserChatInput = styled.input`
+  flex-grow: 1;
+  padding: 8px 24px;
+  box-sizing: border-box;
+  border-radius: 1000px;
+  border: 2px solid var(--Grey_block, #f4f4f4);
+  background: var(--White, #fff);
+  font-family: 'Noto Sans KR';
+`;
+
+export const SendButton = styled.button`
+  width: 48px;
+  height: 48px;
+  margin-left: 8px; // 입력창과의 간격 설정
+  padding: 8px;
+  background-color: var(--white, #fff);
+  border: none;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--Grey_block, #f4f4f4); // 호버 시 배경색 변경
   }
 `;
 
