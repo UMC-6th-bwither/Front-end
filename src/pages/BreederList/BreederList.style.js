@@ -5,7 +5,10 @@ export const Border = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: linear-gradient(0deg, #fff 0%, #fff 100%), #fff;
+  margin: 0 auto;
+  gap: 88px;
+  padding-top: 64px;
+  padding-bottom: 105px;
 `;
 
 export const RegionContainer = styled.div`
@@ -14,12 +17,10 @@ export const RegionContainer = styled.div`
   max-width: 1000px;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 136px 475px 88px;
 `;
 
 export const Left = styled.div`
   display: flex;
-  width: 188px;
   height: 100px;
   padding-right: 110px;
   flex-direction: column;
@@ -30,7 +31,6 @@ export const Left = styled.div`
 
   .title {
     color: #323232;
-    /* Head */
     font-family: 'Noto Sans KR';
     font-size: 24px;
     font-weight: 700;
@@ -55,8 +55,8 @@ export const Right = styled.div`
 
   .item {
     display: flex;
-    width: 42px;
-    height: 20px;
+    width: 58px;
+    height: 36px;
     padding: 8px;
     flex-direction: column;
     justify-content: center;
@@ -87,7 +87,6 @@ export const AnimalContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 36px;
-  padding: 0 475px 780px;
 `;
 
 export const SelectContainer = styled.div`
