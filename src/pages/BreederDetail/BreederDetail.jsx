@@ -1,4 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
+
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederDetail.style';
 import 'react-multi-carousel/lib/styles.css';
@@ -16,6 +18,8 @@ function BreederDetail() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [breederImage, setBreederImage] = useState('');
+  const [topImage, setTopImage] = useState('/img/breederdetailbackimg.jpg');
 
   const breederInfoRef = useRef(null);
   const kennelInfoRef = useRef(null);
@@ -32,6 +36,28 @@ function BreederDetail() {
     '질문/답변',
     '커뮤니티',
   ];
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        // 브리더 프로필 이미지, 썸네일 불러오는 api 추가 예정
+        const breederResponse = await axios.get('/api/breeder/image');
+        setBreederImage(
+          breederResponse.data.image || '/img/defaultprofile.png',
+        );
+
+        const topImageResponse = await axios.get('/api/top/image');
+        setTopImage(topImageResponse.data.image || '/img/breederinfoedit.png');
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('이미지를 불러오기 에러 발생:', error);
+        setBreederImage('/img/defaultprofile.png');
+        setTopImage('/img/breederinfoedit.png');
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -62,6 +88,7 @@ function BreederDetail() {
   const handleCopyUrl = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
+      // eslint-disable-next-line no-alert
       alert('클립보드에 url이 복사됐어요');
     });
   };
@@ -75,9 +102,9 @@ function BreederDetail() {
     <A.Container>
       {isModalOpen && <BusinessInfoModal onClose={closeModal} />}
 
-      <A.TopImage />
+      <A.TopImage image={topImage} />
       <A.TopBox>
-        <A.OverlappingImage />
+        <A.OverlappingImage alt="프로필사진" image={breederImage} />
 
         <A.TopLeftBox>
           <A.BreederInfoTitleBox>
