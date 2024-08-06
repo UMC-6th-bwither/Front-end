@@ -568,6 +568,31 @@ export const KennelImgText = styled.div`
   line-height: 22px;
 `;
 
+export const CareImgBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 28px;
+  width: calc(5 * 150px + 4 * 14px);
+`;
+
+export const CareImg = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+`;
+
 export const ReviewScoreBox = styled.div`
   display: flex;
   flex-direction: row;
