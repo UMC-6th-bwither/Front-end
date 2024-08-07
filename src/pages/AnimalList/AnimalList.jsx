@@ -23,7 +23,6 @@ function AnimalList() {
 
   const dispatch = useDispatch();
   const bookmarks = useSelector((state) => state.bookmarks.card);
-  console.log('Bookmarks:', bookmarks);
 
   const handleBookmarkToggle = (name) => {
     dispatch(toggleBookmark(name)); // 액션 디스패치
