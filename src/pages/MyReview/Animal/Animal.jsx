@@ -10,9 +10,6 @@ import DogCard from '../../../components/DogCard/DogCard';
 import DropBox from '../../../components/dropBox/DropBox';
 
 function Animal() {
-  //  ** DogCard API호출 필요 **
-  //  예시 데이터 15개
-
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
   const [selectedGender, setSelectedGender] = useState('');
