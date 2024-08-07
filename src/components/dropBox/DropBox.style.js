@@ -6,10 +6,10 @@ export const Container = styled.div`
   height: 36px;
   position: relative;
   border-radius: 10px;
-  background: var(--Grey_block, #f4f4f4);
-  color: var(--black, #272727);
+  background: #f4f4f4;
+  color: #272727;
   cursor: pointer;
-
+  bottom: 8px;
   .dropdown-checkbox {
     left: 0;
     visibility: hidden;
@@ -19,8 +19,9 @@ export const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 14px;
-    margin-bottom: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 8px 12px;
     text-align: center;
     font-family: 'Noto Sans KR';
     font-size: 14px;
@@ -34,8 +35,9 @@ export const Container = styled.div`
     position: absolute;
     width: 100%;
     left: 0;
+    top: 44px;
     border-radius: 10px;
-    background: var(--White, #fff);
+    background: #fff;
     box-shadow: 0px 6px 20px 0px rgba(148, 156, 163, 0.2);
     z-index: 1000; /*Card 앞으로*/
   }
@@ -56,13 +58,13 @@ export const Container = styled.div`
     z-index: 999;
   }
   .content li {
-    height: 20px;
+    height: 36px;
     padding: 8px 0px;
     justify-content: center;
     align-items: center;
     gap: 8px;
     align-self: stretch;
-    color: var(--black, #272727);
+    color: #272727;
     text-align: center;
     font-family: 'Noto Sans KR';
     font-size: 14px;
