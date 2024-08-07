@@ -15,33 +15,36 @@ import BwitherReview from './pages/BwitherReview/BwitherReview';
 import BreederReview from './pages/BreederReview/BreederReview';
 import Animal from './pages/MyReview/Animal/Animal';
 import Breeder from './pages/MyReview/Breeder/Breeder';
-import DropBox from './components/dropBox/DropBox';
+import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
+import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
 import Footer from './components/Footer/Footer';
+
+import FootPrintLine from './components/FootPrintLine/FootPrintLine';
+import ReportModal from './components/ReportModal/ReportModal';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<AnimalList />} />
-        <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
-        <Route path="/waitinganimal-detail" element={<WaitingAnimalDetail />} />
-        <Route path="/animal-upload" element={<AnimalUpload />} />
-        <Route path="/breeder-detail" element={<BreederDetail />} />
-        <Route path="/bwither-review" element={<BwitherReview />} />
-        <Route path="/breeder-review" element={<BreederReview />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
     <Provider store={store}>
       <Header />
       <Router>
         <Routes>
-          <Route path="/DropBox" element={<DropBox />} />
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
-          <Route path="/" element={<AnimalList />} />
           <Route path="/BreederList" element={<BreederList />} />
+          <Route path="/" element={<AnimalList />} />
           <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
+          <Route
+            path="/waitinganimal-detail"
+            element={<WaitingAnimalDetail />}
+          />
+          <Route path="/animal-upload" element={<AnimalUpload />} />
+          <Route path="/breeder-detail" element={<BreederDetail />} />
+          <Route path="/bwither-review" element={<BwitherReview />} />
+          <Route path="/breeder-review" element={<BreederReview />} />
+          <Route path="/MypageGeneral" element={<MypageGeneral />} />
+          <Route path="/MypageBreeder" element={<MypageBreeder />} />
+          <Route path="/FootPrintLine" element={<FootPrintLine />} />
+          <Route path="/ReportModal" element={<ReportModal />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
