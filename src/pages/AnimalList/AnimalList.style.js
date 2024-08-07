@@ -7,8 +7,8 @@ export const Border = styled.div`
   flex-direction: column;
   margin: 0 auto;
   gap: 88px;
-  padding-top: 64px;
-  padding-bottom: 105px;
+  padding-top: 136px;
+  padding-bottom: 527px;
 `;
 
 export const RegionContainer = styled.div`
@@ -97,7 +97,7 @@ export const SelectContainer = styled.div`
 
 export const AnimalSelector = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
 `;
 

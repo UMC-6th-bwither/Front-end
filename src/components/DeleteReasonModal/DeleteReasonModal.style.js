@@ -44,9 +44,22 @@ export const Label = styled.label`
     margin: 0;
     border: 3px solid rgba(197, 197, 197, 0.5);
     border-radius: 3px;
+    position: relative;
+
     &:checked {
-      background-repeat: no-repeat;
-      border: 3px solid rgba(197, 197, 197, 0.5);
+      background-color: white;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        width: 12px;
+        height: 6px;
+        border: solid rgba(197, 197, 197, 0.5);
+        border-width: 0 0 4px 4px;
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
     }
   }
 `;
