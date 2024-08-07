@@ -7,7 +7,7 @@ function MenuSelect({ menus, activeMenu, setActiveMenu }) {
       {menus.map((menu) => (
         <M.MenuItem
           key={menu}
-          isActive={menu === activeMenu}
+          active={menu === activeMenu}
           onClick={() => setActiveMenu(menu)}
         >
           {menu}
