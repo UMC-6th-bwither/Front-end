@@ -7,7 +7,7 @@ import bookmark from '../../../../public/img/bookmark.svg';
 import footprint from '../../../../public/img/footprint.svg';
 import { animalBreeds } from '../../selectData';
 import DogCard from '../../../components/DogCard/DogCard';
-import DropBox from '../../../components/dropBox/DropBox';
+import DropBox from '../../../components/DropBoxes/DropBox';
 
 function Animal() {
   const [selectedAnimal, setSelectedAnimal] = useState('');

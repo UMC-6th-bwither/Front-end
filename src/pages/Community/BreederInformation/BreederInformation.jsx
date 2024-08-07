@@ -7,7 +7,7 @@ import Button from '../../../components/button/Button';
 import postDummy from '../dummyData';
 import Pagination from '../../../components/Pagination/Pagination';
 import PostCard from '../../../components/PostCard/PostCard';
-import Dropbox from '../../../components/Dropbox/Dropbox2';
+import Dropbox from '../../../components/DropBoxes/Dropbox2';
 import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
 import { menuItems } from '../menuItems';
 

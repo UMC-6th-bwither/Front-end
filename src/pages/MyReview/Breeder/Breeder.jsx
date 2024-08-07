@@ -4,7 +4,7 @@ import * as A from './Breeder.style';
 import bookmark from '../../../../public/img/bookmark.svg';
 import { animalBreeds } from '../../selectData';
 import BreederCard from '../../../components/BreederCard/BreederCard';
-import DropBox from '../../../components/dropBox/DropBox';
+import DropBox from '../../../components/DropBoxes/DropBox';
 
 function Breeder() {
   //  ** Breeder Card API호출 필요 **

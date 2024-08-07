@@ -4,7 +4,7 @@ import * as BL from './BreederList.style';
 import { cities, animalBreeds, 전체BreederCard } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
 import BreederCard from '../../components/BreederCard/BreederCard';
-import DropBox from '../../components/dropBox/DropBox';
+import DropBox from '../../components/DropBoxes/DropBox';
 
 function BreederList() {
   // ** BreederCard API호출 필요 **

@@ -7,7 +7,7 @@ import * as AL from './AnimalList.style';
 import { cities, animalBreeds } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
 import DogCard from '../../components/DogCard/DogCard';
-import DropBox from '../../components/dropBox/DropBox';
+import DropBox from '../../components/DropBoxes/DropBox';
 import { toggleBookmark } from '../../redux/bookmarkSlice';
 
 function AnimalList() {
