@@ -94,8 +94,19 @@ function BreederDetail() {
   };
 
   // 하트 클릭시
-  const toggleFavorite = () => {
+  const toggleFavorite = async () => {
     setIsFavorite((prev) => !prev);
+    try {
+      await axios.post('/api/favorite/breeder', {
+        breederId: 'BREEDER_ID',
+        favorite: !isFavorite,
+      });
+      // eslint-disable-next-line no-console
+      console.log('저장 완료');
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('저장 실패:', error);
+    }
   };
 
   return (

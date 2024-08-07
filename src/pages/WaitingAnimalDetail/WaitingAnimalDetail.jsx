@@ -1,4 +1,7 @@
 import { useState, useRef } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
@@ -47,18 +50,37 @@ function WaitingAnimalDetail() {
       items: 5,
     },
   };
+  const navigate = useNavigate();
 
-  // 공유 아이콘 클릭시
+  // 브리더에게 문의하기 클릭
+  const handleInquiryClick = () => {
+    navigate('/breeder-chat');
+    // 브리더 id별로 채팅화면으로 이동되게 수정할 예정
+  };
+
+  // 공유 아이콘 클릭
   const handleCopyUrl = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
+      // eslint-disable-next-line no-alert
       alert('클립보드에 url이 복사됐어요');
     });
   };
 
-  // 하트 클릭시
-  const toggleFavorite = () => {
+  // 하트 클릭
+  const toggleFavorite = async () => {
     setIsFavorite((prev) => !prev);
+    try {
+      await axios.post('/api/favorite/breeder', {
+        breederId: 'BREEDER_ID',
+        favorite: !isFavorite,
+      });
+      // eslint-disable-next-line no-console
+      console.log('저장 완료');
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('저장 실패:', error);
+    }
   };
 
   const handleMenuClick = (menu) => {
@@ -222,7 +244,9 @@ function WaitingAnimalDetail() {
           </A.StatusContainer>
           <A.ButtonContainer>
             <Button whiteBorder>혈통서 보기</Button>
-            <Button orange>브리더에게 문의하기</Button>
+            <Button orange onClick={handleInquiryClick}>
+              브리더에게 문의하기
+            </Button>
           </A.ButtonContainer>
         </A.InfoContainer>
       </A.Card>
@@ -232,12 +256,17 @@ function WaitingAnimalDetail() {
           customLeftArrow={<LeftArrow />}
           customRightArrow={<RightArrow />}
         >
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail1" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail1" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail2" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail3" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail4" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail5" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          {/* <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
+          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" /> */}
         </Carousel>
       </A.SliderContainer>
       <A.InfoWrapper>
