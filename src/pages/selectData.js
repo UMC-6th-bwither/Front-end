@@ -421,4 +421,3 @@ export const animalBreeds = {
   ],
   entire: [],
 };
-animalBreeds.entire = [...animalBreeds.dog, ...animalBreeds.cat];
