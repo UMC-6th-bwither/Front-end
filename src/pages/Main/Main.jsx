@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { Carousel } from 'react-responsive-carousel';
 import * as S from './Main.style';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import PostPreviewCard from '../../components/PostPreviewCard/PostPreviewCard';
 import {
   LeftArrow,
   RightArrow,
@@ -14,6 +15,65 @@ import {
 import teleimg from '../../../public/img/telescope.png';
 import bannerimg from '../../../public/img/bannerimg.png';
 import ButtonSelector from '../../components/buttonselector/ButtonSelector';
+
+const postPreviewData = {
+  question: [
+    {
+      communityName: '질문/고민',
+      postTitle: '이거 왜이러는 건가요?',
+      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
+      postThumbnailSrc: '',
+      viewCount: 159,
+      commentCount: 13459,
+      bookmarkCount: 1259,
+    },
+    {
+      communityName: '질문/고민',
+      postTitle: '이거 왜이러는 건가요?',
+      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
+      postThumbnailSrc: '',
+      viewCount: 159,
+      commentCount: 13459,
+      bookmarkCount: 1259,
+    },
+    {
+      communityName: '질문/고민',
+      postTitle: '이거 왜이러는 건가요?',
+      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
+      postThumbnailSrc: '',
+      viewCount: 159,
+      commentCount: 13459,
+      bookmarkCount: 1259,
+    },
+    {
+      communityName: '질문/고민',
+      postTitle: '이거 왜이러는 건가요?',
+      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
+      postThumbnailSrc: '',
+      viewCount: 159,
+      commentCount: 13459,
+      bookmarkCount: 1259,
+    },
+    {
+      communityName: '질문/고민',
+      postTitle: '이거 왜이러는 건가요?',
+      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
+      postThumbnailSrc: '',
+      viewCount: 159,
+      commentCount: 13459,
+      bookmarkCount: 1259,
+    },
+    {
+      communityName: '질문/고민',
+      postTitle: '이거 왜이러는 건가요?',
+      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
+      postThumbnailSrc: '',
+      viewCount: 159,
+      commentCount: 13459,
+      bookmarkCount: 1259,
+    },
+  ],
+};
 
 const fetchUserData = () => {
   return {
@@ -193,19 +253,21 @@ function BreederRankingCommonVer() {
     setSelectedAnimal(animal);
   };
 
+  const handleBeforeChange = (current, next) => {
+    if (current < next) {
+      setCurrentPage(currentPage + 3);
+    } else {
+      setCurrentPage(currentPage - 3);
+    }
+  };
+
   const settings = {
     dots: false,
     infinite: false,
     speed: 400,
     slidesToShow: 5,
     slidesToScroll: 3,
-    beforeChange: (current, next) => {
-      if (current < next) {
-        setCurrentPage(currentPage + 3);
-      } else {
-        setCurrentPage(currentPage - 3);
-      }
-    },
+    beforeChange: handleBeforeChange,
     prevArrow: (
       <S.Button disabled={currentPage === 0}>
         <LeftArrow />
@@ -217,7 +279,6 @@ function BreederRankingCommonVer() {
       </S.Button>
     ),
   };
-
   return (
     <S.PBContainer>
       <S.AnimalChoiceContainer>
@@ -236,7 +297,16 @@ function BreederRankingCommonVer() {
       </S.AnimalChoiceContainer>
 
       <S.BreederList>
-        <Slider {...settings}>
+        <Slider
+          dots={settings.dots}
+          infinite={settings.infinite}
+          speed={settings.speed}
+          slidesToShow={settings.slidesToShow}
+          slidesToScroll={settings.slidesToScroll}
+          beforeChange={settings.beforeChange}
+          prevArrow={settings.prevArrow}
+          nextArrow={settings.nextArrow}
+        >
           <S.MeetingBreederCard>
             <S.Img src={teleimg} alt="telescope" />
             <S.MeetingBreederText>
@@ -396,11 +466,34 @@ function BreederRankingBreederVer() {
 }
 
 function CommunityPreview() {
-  return <S.CPContainer>커뮤니티 글들</S.CPContainer>;
+  const firstPostsList = postPreviewData.question.slice(0, 3);
+  const secondPostsList = postPreviewData.question.slice(3, 6);
+  return (
+    <S.CPContainer>
+      <S.PostFirstList>
+        {firstPostsList.map((post, index) => (
+          <PostPreviewCard key={index} {...post} />
+        ))}
+      </S.PostFirstList>
+      <S.PostSecondList>
+        {secondPostsList.map((post, index) => (
+          <PostPreviewCard key={index} {...post} />
+        ))}
+      </S.PostSecondList>
+    </S.CPContainer>
+  );
 }
 
 function InfoArticle() {
   const [currentPage, setCurrentPage] = useState(0);
+
+  const handleBeforeChange = (current, next) => {
+    if (current < next) {
+      setCurrentPage(currentPage + 3);
+    } else {
+      setCurrentPage(currentPage - 3);
+    }
+  };
 
   const settings = {
     dots: false,
@@ -408,13 +501,7 @@ function InfoArticle() {
     speed: 400,
     slidesToShow: 4,
     slidesToScroll: 3,
-    beforeChange: (current, next) => {
-      if (current < next) {
-        setCurrentPage(currentPage + 3);
-      } else {
-        setCurrentPage(currentPage - 3);
-      }
-    },
+    beforeChange: handleBeforeChange,
     prevArrow: (
       <S.Button disabled={currentPage === 0}>
         <LeftArrow />
@@ -426,9 +513,19 @@ function InfoArticle() {
       </S.Button>
     ),
   };
+
   return (
     <S.IAContainer>
-      <Slider {...settings}>
+      <Slider
+        dots={settings.dots}
+        infinite={settings.infinite}
+        speed={settings.speed}
+        slidesToShow={settings.slidesToShow}
+        slidesToScroll={settings.slidesToScroll}
+        beforeChange={settings.beforeChange}
+        prevArrow={settings.prevArrow}
+        nextArrow={settings.nextArrow}
+      >
         <S.InfoCard>
           <S.InfoCardImg>
             <S.InfoTitle>강아지를 훈육하려면?</S.InfoTitle>
@@ -539,6 +636,13 @@ function InfoArticle() {
 
 function AdoptionReview() {
   const [currentPage, setCurrentPage] = useState(0);
+  const handleBeforeChange = (current, next) => {
+    if (current < next) {
+      setCurrentPage(currentPage + 3);
+    } else {
+      setCurrentPage(currentPage - 3);
+    }
+  };
 
   const settings = {
     dots: false,
@@ -546,13 +650,7 @@ function AdoptionReview() {
     speed: 400,
     slidesToShow: 3,
     slidesToScroll: 3,
-    beforeChange: (current, next) => {
-      if (current < next) {
-        setCurrentPage(currentPage + 3);
-      } else {
-        setCurrentPage(currentPage - 3);
-      }
-    },
+    beforeChange: handleBeforeChange,
     prevArrow: (
       <S.Button disabled={currentPage === 0}>
         <LeftArrow />
@@ -564,9 +662,19 @@ function AdoptionReview() {
       </S.Button>
     ),
   };
+
   return (
     <S.ARContainer>
-      <Slider {...settings}>
+      <Slider
+        dots={settings.dots}
+        infinite={settings.infinite}
+        speed={settings.speed}
+        slidesToShow={settings.slidesToShow}
+        slidesToScroll={settings.slidesToScroll}
+        beforeChange={settings.beforeChange}
+        prevArrow={settings.prevArrow}
+        nextArrow={settings.nextArrow}
+      >
         <S.ReviewCard>
           <S.ReviewCardImg />
           <S.ReviewDetail>

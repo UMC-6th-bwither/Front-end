@@ -1,5 +1,19 @@
 import styled from 'styled-components';
 
+export const PostTitle = styled.div`
+  height: 21px;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  text-align: left;
+  color: #323232;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 export const Post = styled.div`
   margin-bottom: 24px;
   height: 96px;
@@ -7,6 +21,14 @@ export const Post = styled.div`
   flex-direction: row;
   justify-content: space-between;
   position: relative;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:hover ${PostTitle} {
+    color: #f57137;
+  }
 `;
 
 export const PostWrapper = styled.div`
@@ -32,20 +54,6 @@ export const CommunityName = styled.div`
   color: #737373;
 
   margin-bottom: 10px;
-`;
-
-export const PostTitle = styled.div`
-  height: 21px;
-  font-family: 'Noto Sans KR';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 21px;
-  text-align: left;
-  color: #323232;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 export const PostContent = styled.div`

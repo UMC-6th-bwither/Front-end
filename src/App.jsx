@@ -22,6 +22,7 @@ import BreederInfoEdit from './pages/BreederInfoEdit/BreederInfoEdit';
 import Main from './pages/Main/Main';
 import ChatListGeneral from './pages/ChatListGeneral/ChatListGeneral';
 import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
+import CommunityMain from './pages/CommunityMain/CommunityMain';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<AnimalList />} />
           <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
+          <Route path="/Community" element={<CommunityMain />} />
           <Route path="/Community/Question" element={<CommunityQuestion />} />
           <Route
             path="/Community/Information"

@@ -111,16 +111,15 @@ export const CardWrapper = styled.div`
 
 export const DogCatTipContainer = styled.div`
   width: 970px;
-  height: 318px;
+  height: 560px;
   display: flex;
   flex-direction: row;
   gap: 18px;
-  opacity: 0px;
 `;
 
 export const DogTipBoard = styled.div`
   width: 476px;
-  height: 318px;
+  height: 560px;
   padding: 28px 24px;
   gap: 28px;
   border-radius: 20px;
@@ -131,7 +130,7 @@ export const DogTipBoard = styled.div`
 
 export const CatTipBoard = styled.div`
   width: 476px;
-  height: 318px;
+  height: 560px;
   padding: 28px 24px;
   gap: 28px;
   border-radius: 20px;

@@ -355,12 +355,22 @@ export const LinkText = styled.span`
 `;
 
 export const CPContainer = styled.div`
-  width: 980px;
-  height: 324px;
-  gap: 18px;
-  margin: 0 auto;
+  display: flex;
+  width: 970px;
+  height: 360px;
+  justify-content: space-between;
+`;
 
-  background-color: #fafafa;
+export const PostFirstList = styled.div`
+  width: 480px;
+  height: 324px;
+  padding: 0px 30px 10px 0;
+`;
+
+export const PostSecondList = styled.div`
+  width: 480px;
+  height: 324px;
+  padding: 0px 0px 10px 40px;
 `;
 
 export const IAContainer = styled.div`

@@ -1,4 +1,7 @@
+import { useState } from 'react';
+
 import * as S from './CommunityMain.style';
+import Pagination from '../../components/Pagination/Pagination';
 import PostPreviewCard from '../../components/PostPreviewCard/PostPreviewCard';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
 import { OrangeRightArrow } from '../../../public/img/ArrowIcon';
@@ -65,8 +68,7 @@ const postPreviewData = {
   information: [
     {
       communityName: '정보 공유',
-      postTitle:
-        '정보 공유 예시보 공유 예시보 공유 예시보 공유 예시보 공유 예시',
+      postTitle: '강아지 사료 추천입니당',
       postContent:
         '이 정보는 무엇인보는 무엇인보는 무엇인보는 무엇인보는 무엇인는 무엇인가요?',
       postThumbnailSrc: '',
@@ -76,8 +78,7 @@ const postPreviewData = {
     },
     {
       communityName: '정보 공유',
-      postTitle:
-        '정보 공유 예시보 공유 예시보 공유 예시보 공유 예시보 공유 예시',
+      postTitle: '강아지 사료 추천입니당',
       postContent:
         '이 정보는 무엇인보는 무엇인보는 무엇인보는 무엇인보는 무엇인는 무엇인가요?',
       postThumbnailSrc: '',
@@ -163,7 +164,7 @@ const postPreviewData = {
   dog: [
     {
       communityName: '브리더의 꿀정보',
-      postTitle: '강아지 정보 예시',
+      postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
       postThumbnailSrc: '',
@@ -173,7 +174,7 @@ const postPreviewData = {
     },
     {
       communityName: '브리더의 꿀정보',
-      postTitle: '강아지 정보 예시',
+      postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
       postThumbnailSrc: '',
@@ -183,7 +184,7 @@ const postPreviewData = {
     },
     {
       communityName: '브리더의 꿀정보',
-      postTitle: '강아지 정보 예시',
+      postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
       postThumbnailSrc: '',
@@ -193,7 +194,7 @@ const postPreviewData = {
     },
     {
       communityName: '브리더의 꿀정보',
-      postTitle: '강아지 정보 예시',
+      postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
       postThumbnailSrc: '',
@@ -205,7 +206,7 @@ const postPreviewData = {
   cat: [
     {
       communityName: '브리더의 꿀정보',
-      postTitle: '고양이 정보 예시',
+      postTitle: '고양이 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
       postThumbnailSrc: '',
@@ -215,7 +216,7 @@ const postPreviewData = {
     },
     {
       communityName: '브리더의 꿀정보',
-      postTitle: '고양이 정보 예시',
+      postTitle: '고양이 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
       postThumbnailSrc: '',
@@ -225,7 +226,7 @@ const postPreviewData = {
     },
     {
       communityName: '브리더의 꿀정보',
-      postTitle: '고양이 정보 예시',
+      postTitle: '고양이 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
       postThumbnailSrc: '',
@@ -235,7 +236,7 @@ const postPreviewData = {
     },
     {
       communityName: '브리더의 꿀정보',
-      postTitle: '고양이 정보 예시',
+      postTitle: '고양이 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
       postThumbnailSrc: '',
@@ -247,6 +248,7 @@ const postPreviewData = {
 };
 
 function CommunityMain() {
+  const [page, setPage] = useState(1);
   return (
     <S.Layout>
       <VerticalMenuSelector title="커뮤니티" items={menuItems} />
@@ -341,6 +343,12 @@ function CommunityMain() {
             </S.PostList>
           </S.CatTipBoard>
         </S.DogCatTipContainer>
+        <Pagination
+          currentPage={page}
+          setCurrentPage={setPage}
+          totalItems={280}
+          itemsPerPage={10}
+        />
       </S.Container>
     </S.Layout>
   );
