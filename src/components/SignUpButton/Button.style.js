@@ -12,7 +12,6 @@ export const Container = styled.button`
   border-radius: 4px;
   border: 1px solid #fe834d;
   background: #fe834d;
-  margin-top: 50px;
 
   color: #fff;
   text-align: center;
@@ -25,5 +24,14 @@ export const Container = styled.button`
   cursor: pointer;
   &:hover {
     background: #f57137;
+  }
+`;
+
+export const WhiteContainer = styled(Container)`
+  background: #fff;
+  color: #f57137;
+
+  &:hover {
+    background: #ffddc5;
   }
 `;
