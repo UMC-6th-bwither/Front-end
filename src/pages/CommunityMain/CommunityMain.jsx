@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import * as S from './CommunityMain.style';
 import Pagination from '../../components/Pagination/Pagination';
 import PostPreviewCard from '../../components/PostPreviewCard/PostPreviewCard';
@@ -8,13 +6,114 @@ import { OrangeRightArrow } from '../../../public/img/ArrowIcon';
 import thumbup from '../../../public/img/thumb_up.png';
 import foot from '../../../public/img/foot.png';
 
-const menuItems = [
-  { name: '질문/고민', href: '/community/question' },
-  { name: '정보 공유', href: '/community/information' },
-  { name: '일상 이야기', href: '/community/daily' },
-  { name: '브리더의 꿀정보', href: '/community/breederinformation' },
-  { name: '브위더 후기', href: '/community/review' },
-];
+function CommunityMain() {
+  return (
+    <S.Layout>
+      <VerticalMenuSelector title="커뮤니티" items={menuItems} />
+
+      <S.Container>
+        <S.QuesInfoDailyContainer>
+          <S.QuestionBoard>
+            <S.BoardTitle>
+              질문/고민
+              <ExploreAll />
+            </S.BoardTitle>
+            <S.PostList>
+              {postPreviewData.question.map((post, index) => (
+                <PostPreviewCard key={index} {...post} />
+              ))}
+            </S.PostList>
+          </S.QuestionBoard>
+
+          <S.InfoDailyContainer>
+            <S.InformationBoard>
+              <S.BoardTitle>
+                정보 공유 <ExploreAll />
+              </S.BoardTitle>
+              <S.PostList>
+                {postPreviewData.information.map((post, index) => (
+                  <PostPreviewCard key={index} {...post} />
+                ))}
+              </S.PostList>
+            </S.InformationBoard>
+
+            <S.DailyBoard>
+              <S.BoardTitle>
+                일상 이야기 <ExploreAll />
+              </S.BoardTitle>
+              <S.PostList>
+                {postPreviewData.daily.map((post, index) => (
+                  <PostPreviewCard key={index} {...post} />
+                ))}
+              </S.PostList>
+            </S.DailyBoard>
+          </S.InfoDailyContainer>
+        </S.QuesInfoDailyContainer>
+
+        <S.BreederTipsBoard>
+          <S.TipTitleContainer>
+            <S.TipBoardTitle>
+              <S.Img src={thumbup} alt="thumb_up" />
+              많은 저장을 이끌어낸 브리더의 꿀정보
+            </S.TipBoardTitle>
+            <ExploreAll />
+          </S.TipTitleContainer>
+          <S.PostList>
+            {postPreviewData.breeder.map((post, index) => (
+              <S.PostWrapper key={index}>
+                <S.Index>{index + 1}</S.Index>
+                <S.CardWrapper>
+                  <PostPreviewCard key={index} {...post} />
+                </S.CardWrapper>
+              </S.PostWrapper>
+            ))}
+          </S.PostList>
+        </S.BreederTipsBoard>
+
+        <S.DogCatTipContainer>
+          <S.DogTipBoard>
+            <S.TipTitleContainer>
+              <S.TipBoardTitle>
+                <S.Img src={foot} alt="footIcon" />
+                강아지 꿀정보
+              </S.TipBoardTitle>
+              <ExploreAll />
+            </S.TipTitleContainer>
+            <S.PostList>
+              {postPreviewData.dog.map((post, index) => (
+                <PostPreviewCard key={index} {...post} />
+              ))}
+            </S.PostList>
+          </S.DogTipBoard>
+
+          <S.CatTipBoard>
+            <S.TipTitleContainer>
+              <S.TipBoardTitle>
+                <S.Img src={foot} alt="footIcon" />
+                고양이 꿀정보
+              </S.TipBoardTitle>
+              <ExploreAll />
+            </S.TipTitleContainer>
+            <S.PostList>
+              {postPreviewData.cat.map((post, index) => (
+                <PostPreviewCard key={index} {...post} />
+              ))}
+            </S.PostList>
+          </S.CatTipBoard>
+        </S.DogCatTipContainer>
+      </S.Container>
+    </S.Layout>
+  );
+}
+
+function ExploreAll() {
+  return (
+    <S.LinkText>
+      전체보기
+      <OrangeRightArrow />
+    </S.LinkText>
+  );
+}
 
 const postPreviewData = {
   question: [
@@ -247,120 +346,12 @@ const postPreviewData = {
   ],
 };
 
-function CommunityMain() {
-  const [page, setPage] = useState(1);
-  return (
-    <S.Layout>
-      <VerticalMenuSelector title="커뮤니티" items={menuItems} />
-
-      <S.Container>
-        <S.QuesInfoDailyContainer>
-          <S.QuestionBoard>
-            <S.BoardTitle>
-              질문/고민
-              <ExploreAll />
-            </S.BoardTitle>
-            <S.PostList>
-              {postPreviewData.question.map((post, index) => (
-                <PostPreviewCard key={index} {...post} />
-              ))}
-            </S.PostList>
-          </S.QuestionBoard>
-
-          <S.InfoDailyContainer>
-            <S.InformationBoard>
-              <S.BoardTitle>
-                정보 공유 <ExploreAll />
-              </S.BoardTitle>
-              <S.PostList>
-                {postPreviewData.information.map((post, index) => (
-                  <PostPreviewCard key={index} {...post} />
-                ))}
-              </S.PostList>
-            </S.InformationBoard>
-
-            <S.DailyBoard>
-              <S.BoardTitle>
-                일상 이야기 <ExploreAll />
-              </S.BoardTitle>
-              <S.PostList>
-                {postPreviewData.daily.map((post, index) => (
-                  <PostPreviewCard key={index} {...post} />
-                ))}
-              </S.PostList>
-            </S.DailyBoard>
-          </S.InfoDailyContainer>
-        </S.QuesInfoDailyContainer>
-
-        <S.BreederTipsBoard>
-          <S.TipTitleContainer>
-            <S.TipBoardTitle>
-              <S.Img src={thumbup} alt="thumb_up" />
-              많은 저장을 이끌어낸 브리더의 꿀정보
-            </S.TipBoardTitle>
-            <ExploreAll />
-          </S.TipTitleContainer>
-          <S.PostList>
-            {postPreviewData.breeder.map((post, index) => (
-              <S.PostWrapper key={index}>
-                <S.Index>{index + 1}</S.Index>
-                <S.CardWrapper>
-                  <PostPreviewCard key={index} {...post} />
-                </S.CardWrapper>
-              </S.PostWrapper>
-            ))}
-          </S.PostList>
-        </S.BreederTipsBoard>
-
-        <S.DogCatTipContainer>
-          <S.DogTipBoard>
-            <S.TipTitleContainer>
-              <S.TipBoardTitle>
-                <S.Img src={foot} alt="footIcon" />
-                강아지 꿀정보
-              </S.TipBoardTitle>
-              <ExploreAll />
-            </S.TipTitleContainer>
-            <S.PostList>
-              {postPreviewData.dog.map((post, index) => (
-                <PostPreviewCard key={index} {...post} />
-              ))}
-            </S.PostList>
-          </S.DogTipBoard>
-
-          <S.CatTipBoard>
-            <S.TipTitleContainer>
-              <S.TipBoardTitle>
-                <S.Img src={foot} alt="footIcon" />
-                고양이 꿀정보
-              </S.TipBoardTitle>
-              <ExploreAll />
-            </S.TipTitleContainer>
-            <S.PostList>
-              {postPreviewData.cat.map((post, index) => (
-                <PostPreviewCard key={index} {...post} />
-              ))}
-            </S.PostList>
-          </S.CatTipBoard>
-        </S.DogCatTipContainer>
-        <Pagination
-          currentPage={page}
-          setCurrentPage={setPage}
-          totalItems={280}
-          itemsPerPage={10}
-        />
-      </S.Container>
-    </S.Layout>
-  );
-}
-
-function ExploreAll() {
-  return (
-    <S.LinkText>
-      전체보기
-      <OrangeRightArrow />
-    </S.LinkText>
-  );
-}
+const menuItems = [
+  { name: '질문/고민', href: '/community/question' },
+  { name: '정보 공유', href: '/community/information' },
+  { name: '일상 이야기', href: '/community/daily' },
+  { name: '브리더의 꿀정보', href: '/community/breederinformation' },
+  { name: '브위더 후기', href: '/community/review' },
+];
 
 export default CommunityMain;
