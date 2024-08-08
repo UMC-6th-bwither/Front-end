@@ -12,7 +12,8 @@ import ConfidenceLevelModal from '../../components/ConfidenceLevelModal/Confiden
 function BreederInfoEdit() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
   const [isConfidenceModalVisible, setIsConfidenceModalVisible] =
-    useState(false); // State for modal visibility
+    useState(false);
+  const [isBackdropVisible, setIsBackdropVisible] = useState(false); // State for backdrop visibility
 
   const navigate = useNavigate();
 
@@ -42,6 +43,16 @@ function BreederInfoEdit() {
     }
   };
 
+  const openConfidenceModal = () => {
+    setIsConfidenceModalVisible(true);
+    setIsBackdropVisible(true);
+  };
+
+  const closeConfidenceModal = () => {
+    setIsConfidenceModalVisible(false);
+    setIsBackdropVisible(false);
+  };
+
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
@@ -61,6 +72,7 @@ function BreederInfoEdit() {
 
   return (
     <A.Container>
+      {isBackdropVisible && <A.Backdrop />}
       <A.TopImage />
       <A.TopImageIcon>
         <svg
@@ -285,8 +297,8 @@ function BreederInfoEdit() {
                 height="20"
                 viewBox="0 0 20 20"
                 fill="none"
-                onMouseEnter={() => setIsConfidenceModalVisible(true)}
-                onMouseLeave={() => setIsConfidenceModalVisible(false)}
+                style={{ cursor: 'pointer' }}
+                onClick={openConfidenceModal}
               >
                 <path
                   fillRule="evenodd"
@@ -306,7 +318,7 @@ function BreederInfoEdit() {
       </A.TopBox>
       {isConfidenceModalVisible && (
         <A.AbsolutePositionedModal>
-          <ConfidenceLevelModal />
+          <ConfidenceLevelModal onClose={closeConfidenceModal} />
         </A.AbsolutePositionedModal>
       )}
       <A.InfoWrapper>

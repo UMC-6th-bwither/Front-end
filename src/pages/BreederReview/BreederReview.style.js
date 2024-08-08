@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+export const LoadingSpinner = styled.div`
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+  color: #999;
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -8,6 +15,7 @@ export const Container = styled.div`
   width: 100%;
   max-width: 970px;
   margin: 0 auto;
+  padding-bottom: 294px;
 `;
 
 export const PencilIcon = styled.svg`
@@ -101,6 +109,16 @@ export const ReviewItem = styled.div`
   overflow: hidden;
   border: 2px solid rgba(241, 241, 241, 0.5);
   background: #fff;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
   &.expanded {
     display: inline-flex;
     height: 351px;
@@ -185,11 +203,4 @@ export const ReviewText = styled.div`
     -webkit-line-clamp: unset;
     display: block;
   }
-`;
-
-export const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 119px;
-  margin-bottom: 220px;
 `;

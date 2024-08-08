@@ -11,6 +11,16 @@ export const Container = styled.div`
   padding-top: 208px;
 `;
 
+export const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999; // 모달 위에 다른 요소들이 나타나지 않도록 충분히 큰 z-index를 설정
+`;
+
 export const TopImage = styled.div`
   position: absolute;
   top: 0;
