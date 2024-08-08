@@ -39,12 +39,12 @@ function Footer() {
             </F.TextWrapper>
           </F.Links>
           <F.Icons>
-            <button>
+            <F.IconButton>
               <InstaIcon />
-            </button>
-            <button>
+            </F.IconButton>
+            <F.IconButton>
               <BlogIcon />
-            </button>
+            </F.IconButton>
           </F.Icons>
         </F.LinkWrapper>
         <F.Information>
