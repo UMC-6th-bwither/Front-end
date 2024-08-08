@@ -65,8 +65,12 @@ export const Main = styled.div`
     color: #272727;
     font-family: 'Noto Sans KR';
     font-size: 18px;
+    font-weight: 500;
+    line-height: normal;
   }
-
+  .gender {
+    width: auto;
+  }
   .right {
     color: #737373;
     font-family: 'Noto Sans KR';

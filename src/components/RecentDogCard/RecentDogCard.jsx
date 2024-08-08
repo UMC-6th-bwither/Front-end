@@ -23,7 +23,11 @@ function RecentDogCard({
           <R.Main>
             <div className="left">
               <div>{name}</div>
-              <img src={gender === '암컷' ? female : male} alt={gender} />
+              <img
+                src={gender === '암컷' ? female : male}
+                alt={gender}
+                className="gender"
+              />
             </div>
             <div className="right">{breed}</div>
           </R.Main>
