@@ -6,6 +6,9 @@ export const Border = styled.div`
   align-items: flex-start;
   width: 254px;
   height: 180px;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 export const ImgContainer = styled.div`

@@ -166,6 +166,13 @@ export const ReservationBtn = styled.button`
 export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: column;
   gap: 32px;
+  .dogCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+    align-self: stretch;
+  }
 `;

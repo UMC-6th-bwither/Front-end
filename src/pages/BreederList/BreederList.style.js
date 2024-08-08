@@ -8,7 +8,7 @@ export const Border = styled.div`
   margin: 0 auto;
   gap: 88px;
   padding-top: 136px;
-  padding-bottom: 527px;
+  padding-bottom: 414px;
 `;
 
 export const RegionContainer = styled.div`

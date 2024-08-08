@@ -82,4 +82,7 @@ export const YesBtn = styled.button`
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+  &:hover {
+    background: #f57137;
+  }
 `;

@@ -30,38 +30,12 @@ export const Label = styled.label`
   align-items: flex-end;
   gap: 16px;
   align-self: stretch;
-  color: #272727;
+  color: ${(props) => (props.checked ? '#FE834D' : '#272727')};
   font-family: 'Noto Sans KR';
   font-size: 20px;
   font-weight: 400;
   line-height: 30px;
   letter-spacing: -0.5px;
-  .checkbox {
-    appearance: none;
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    margin: 0;
-    border: 3px solid rgba(197, 197, 197, 0.5);
-    border-radius: 3px;
-    position: relative;
-
-    &:checked {
-      background-color: white;
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 40%;
-        left: 50%;
-        width: 12px;
-        height: 6px;
-        border: solid rgba(197, 197, 197, 0.5);
-        border-width: 0 0 4px 4px;
-        transform: translate(-50%, -50%) rotate(-45deg);
-      }
-    }
-  }
 `;
 
 export const Etc = styled.div`
@@ -114,4 +88,7 @@ export const Button = styled.button`
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+  &:hover {
+    background: #f57137;
+  }
 `;

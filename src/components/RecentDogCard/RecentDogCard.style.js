@@ -6,6 +6,25 @@ export const Border = styled.div`
   align-items: flex-start;
   width: 254px;
   height: 180px;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+export const ReservationBadge = styled.div`
+  display: flex;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border-radius: 10px 0px;
+  background: #008080;
+  color: #fffdf2;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px; /* 150% */
 `;
 
 export const ImgContainer = styled.div`

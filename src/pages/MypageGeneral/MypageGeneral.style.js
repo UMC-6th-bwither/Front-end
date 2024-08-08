@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import rightArrow from '../../../public/img/rightArrow.svg';
 
 // Styled components with common styles
 const commonFlexColumn = `
@@ -22,7 +21,7 @@ export const Border = styled.div`
   margin: 0 auto;
   gap: 80px;
   padding-top: 136px;
-  padding-bottom: 666px;
+  padding-bottom: 300px;
 `;
 
 export const TopContainer = styled.div`
@@ -72,22 +71,6 @@ export const Left = styled.div`
   }
 `;
 
-export const Right = styled.div`
-  .edit_profile_btn {
-    padding: 12px;
-    justify-content: flex-end;
-    align-items: flex-start;
-    border-radius: 12px;
-    border: 1px solid #fe834d;
-    background: #fff;
-    color: #fe834d;
-    font-size: 14px;
-    font-weight: 350;
-    line-height: 21px;
-    cursor: pointer;
-  }
-`;
-
 export const Info = styled.div`
   ${commonFlexColumn}
   gap: 6px;
@@ -117,20 +100,33 @@ export const ReservationContainer = styled.div`
 `;
 
 export const Reservation = styled.div`
+  display: flex;
   width: 970px;
   padding: 24px 18px 34px 28px;
+  align-items: center;
   border-radius: 12px;
   background: #f8f8f8;
 `;
 
-export const ResContent = styled.div`
-  ${commonFlexColumn}
+export const CardsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  flex: 1 0 0;
-  font-family: 'Noto Sans KR';
-  font-size: 18px;
-  font-weight: 500;
+`;
 
+export const ResContent = styled.div`
+  display: flex;
+  align-items: center;
+
+  .content {
+    ${commonFlexColumn}
+    gap: 20px;
+    flex: 1 0 0;
+    width: 894px;
+    font-family: 'Noto Sans KR';
+    font-size: 18px;
+    font-weight: 500;
+  }
   .waitingnum {
     display: flex;
     align-items: flex-start;
@@ -140,47 +136,14 @@ export const ResContent = styled.div`
     color: #fe834d;
     font-weight: 700;
   }
-`;
-
-export const CardsContainer = styled.div`
-  position: relative;
-  overflow: visible;
-  width: 950px;
-
-  .react-multi-carousel-item {
-    display: flex;
-    width: 355px;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
+  .rightArrowButton {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
   }
-  align-self: flex-start;
-`;
-
-export const Arrow2 = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: visible;
-  width: 30px;
-  height: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  z-index: 10;
-  user-select: none;
-  background-image: url(${rightArrow});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-
-  &.left {
-    left: -24px;
-  }
-
-  &.right {
-    right: 18px;
+  .rightArrow {
+    display: block;
   }
 `;
 
@@ -200,6 +163,11 @@ export const SliderContainer = styled.div`
   overflow: visible;
   width: 972px;
 
+  .carousel {
+    width: 972px;
+    height: 200px;
+    padding: 10px 15px;
+  }
   .react-multi-carousel-item {
     display: flex;
     width: 355px;
@@ -247,6 +215,10 @@ export const Arrow = styled.div`
   &.right {
     left: 948px;
   }
+`;
+
+export const FootpintLine = styled.img`
+  padding: 170px 0;
 `;
 
 export const BottomContainer = styled.div`

@@ -2,7 +2,6 @@ import { styled } from 'styled-components';
 
 const CardBox = styled.div`
   display: flex;
-  width: 466px;
   height: 120px;
   gap: 48px;
 `;
@@ -30,7 +29,6 @@ const PhotoContainer = styled.div`
   background: #d9d9d9;
 `;
 const InfoContainer = styled.div`
-  width: 298px;
   heigth: 120px;
   display: flex;
   flex-direction: column;

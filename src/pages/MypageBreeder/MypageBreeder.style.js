@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Border = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ export const Border = styled.div`
   margin: 0 auto;
   gap: 100px;
   padding-top: 136px;
-  padding-bottom: 666px;
+  padding-bottom: 254px;
 `;
 
 export const TopContainer = styled.div`
@@ -64,28 +65,24 @@ export const Left = styled(FlexRow)`
 export const Right = styled(FlexRow)`
   gap: 12px;
 
-  .edit_profile_btn,
   .edit_info_btn {
-    padding: 12px;
-    justify-content: flex-end;
-    align-items: flex-start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    box-sizing: border-box;
     border-radius: 12px;
-    font-size: 14px;
-    font-weight: 350;
-    line-height: 21px;
-    cursor: pointer;
-  }
-
-  .edit_profile_btn {
-    border: 1px solid #fe834d;
-    background: #fff;
-    color: #fe834d;
-  }
-
-  .edit_info_btn {
     border: 1px solid #fe834d;
     background: #fe834d;
+
     color: #fff;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 21px;
+
+    cursor: pointer;
   }
 `;
 
@@ -170,6 +167,10 @@ export const RankBottom = styled(FlexRow)`
   }
 `;
 
+export const FootpintLine = styled.img`
+  padding: 170px 0;
+`;
+
 export const BottomContainer = styled.div`
   display: inline-flex;
   flex-direction: column;
@@ -212,4 +213,14 @@ export const SectionLinks = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
+`;
+
+export const NavLink = styled(Link)`
+  color: #444;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px; /* 150% */
+  letter-spacing: -0.5px;
+  text-decoration: none;
 `;

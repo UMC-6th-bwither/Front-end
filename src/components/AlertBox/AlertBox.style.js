@@ -41,4 +41,10 @@ export const Button = styled.button`
   font-weight: 500;
   line-height: 24px;
   cursor: pointer;
+  &:hover {
+    border: 1px solid #fe834d;
+    background: #ffddc5;
+
+    color: #fe834d;
+  }
 `;
