@@ -5,7 +5,7 @@ import Terms from '../../components/SignUpTerms/SignUpTerms';
 import Button from '../../components/SignUpButton/Button';
 import TextButton from '../../components/SignUpButton/TextButton';
 
-export default function BwitherSignUp() {
+export default function BwitherSignUp1() {
   return (
     <B.Background>
       <B.WelcomeMsg>
@@ -72,8 +72,10 @@ export default function BwitherSignUp() {
           </B.InputWrapper>
         </B.InputArea>
         <Terms />
-        <Button text="회원가입" path="" />
-        <TextButton path="" />
+        <B.BtnWrapper1>
+          <Button text="회원가입" path="bwither-signup-2" />
+          <TextButton path="" />
+        </B.BtnWrapper1>
       </B.Container>
     </B.Background>
   );
