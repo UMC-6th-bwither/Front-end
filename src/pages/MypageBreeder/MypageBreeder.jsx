@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+// import { useNavigate } from 'react-router-dom';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
 import {
   openDeleteAccountModal,
@@ -8,9 +9,12 @@ import {
 import * as MP from './MypageBreeder.style';
 import profile from '../../../public/img/profile.png';
 import question from '../../../public/img/helpQuestionMark.svg';
+import footprintLine from '../../../public/img/footprintLine.svg';
 import AlertBox from '../../components/AlertBox/AlertBox';
+import SmallButton from '../../components/smallbutton/SmallButton';
 
 function MypageBreeder() {
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isDeleteAccountModalOpen } = useSelector(selectModal);
 
@@ -31,9 +35,10 @@ function MypageBreeder() {
               </MP.Info>
             </MP.Left>
             <MP.Right>
-              <button type="button" className="edit_profile_btn">
+              <SmallButton>
+                {/* onClick={() => navigate(`/수정페이지`)} -> 수정 페이지 추가되면 */}
                 프로필 설정
-              </button>
+              </SmallButton>
               <button type="button" className="edit_info_btn">
                 브리더 정보 수정
               </button>
@@ -59,25 +64,28 @@ function MypageBreeder() {
         </MP.AlertContainer>
       </MP.StatusContainer>
 
+      <MP.FootpintLine src={footprintLine} alt="footprintLine" />
+
       <MP.BottomContainer>
         <MP.SectionContainer>
           <div className="title">커뮤니티</div>
           <MP.SectionLinks>
-            <div>내가 쓴 글</div>
-            <div>댓글 단 글</div>
-            <div>나의 후기</div>
+            <MP.NavLink to="/myreview/post">내가 쓴 글</MP.NavLink>
+            <MP.NavLink to="/myreview/comment">댓글 단 글</MP.NavLink>
+            <MP.NavLink to="/myreview/review">나의 후기</MP.NavLink>
+            <MP.NavLink>받은 후기</MP.NavLink>
           </MP.SectionLinks>
         </MP.SectionContainer>
         <MP.SectionContainer>
           <div className="title">계정</div>
           <MP.SectionLinks>
-            <div>로그아웃</div>
-            <div
+            <MP.NavLink>로그아웃</MP.NavLink>
+            <MP.NavLink
               type="button"
               onClick={() => dispatch(openDeleteAccountModal())}
             >
               회원탈퇴
-            </div>
+            </MP.NavLink>
             <DeleteAccountModal
               isOpen={isDeleteAccountModalOpen}
               onSubmit={() => dispatch(openDeleteAccountModal())}

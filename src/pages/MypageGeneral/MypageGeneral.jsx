@@ -1,18 +1,18 @@
 import Carousel from 'react-multi-carousel';
 import PropTypes from 'prop-types';
+// import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as MP from './MypageGeneral.style';
 import profile from '../../../public/img/profile.png';
+import rightArrow from '../../../public/img/rightArrow.svg';
 import footprint from '../../../public/img/mypage_footprint.svg';
+import footprintLine from '../../../public/img/footprintLine.svg';
 import ReservationDogCard from '../../components/ReservationDogCard/ReservationDogCard';
 import RecentDogCard from '../../components/RecentDogCard/RecentDogCard';
 import RecentBreederCard from '../../components/RecentBreederCard/RecentBreederCard';
+import SmallButton from '../../components/smallbutton/SmallButton';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
-import {
-  openDeleteAccountModal,
-  closeDeleteAccountModal,
-  selectModal,
-} from '../../redux/modalSlice';
+import { openDeleteAccountModal, selectModal } from '../../redux/modalSlice';
 // 예시 데이터
 import { recentDogData, recentBreederData } from './recentData';
 import { waitingDogData } from './waitingData';
@@ -31,21 +31,8 @@ RightArrow.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-function LeftArrow2({ onClick }) {
-  return <MP.Arrow2 className="left" onClick={onClick} />;
-}
-LeftArrow2.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-function RightArrow2({ onClick }) {
-  return <MP.Arrow2 className="right" onClick={onClick} />;
-}
-RightArrow2.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
 function MypageGeneral() {
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isDeleteAccountModalOpen } = useSelector(selectModal);
 
@@ -53,29 +40,17 @@ function MypageGeneral() {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 3.5,
+      slidesToSlide: 3,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 3,
+      slidesToSlide: 3,
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 2,
-    },
-  };
-
-  const responsive2 = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
+      slidesToSlide: 2,
     },
   };
 
@@ -92,33 +67,32 @@ function MypageGeneral() {
                 <div>example@eamil.com</div>
               </MP.Info>
             </MP.Left>
-            <MP.Right>
-              <button type="button" className="edit_profile_btn">
+            <div>
+              <SmallButton>
+                {/* onClick={() => navigate(`/수정페이지`)} -> 수정 페이지 추가되면 */}
                 프로필 설정
-              </button>
-            </MP.Right>
+              </SmallButton>
+            </div>
           </MP.Profile>
         </MP.ProfileContainer>
 
         <MP.ReservationContainer>
           <div className="resTitle">나의 예약</div>
           <MP.Reservation>
-            <MP.ResContent>
-              <div className="waitingnum">
-                <img src={footprint} alt="footprint" />
-                <div>
-                  대기 예약 순번{' '}
-                  <span className="emphasis">{waitingDogData.length}번째</span>
-                  예요!
-                </div>
-              </div>
-              <MP.CardsContainer>
-                <Carousel
-                  responsive={responsive2}
-                  customLeftArrow={<LeftArrow2 />}
-                  customRightArrow={<RightArrow2 />}
-                >
-                  {waitingDogData.map((petdata) => (
+            <MP.CardsContainer>
+              {waitingDogData.map((petdata) => (
+                <MP.ResContent key={petdata.id}>
+                  <div className="content">
+                    <div className="waitingnum">
+                      <img src={footprint} alt="footprint" />
+                      <pre>
+                        대기 예약 순번
+                        <span className="emphasis">
+                          &nbsp;{petdata.waitlistCount}번째
+                        </span>
+                        예요!
+                      </pre>
+                    </div>
                     <ReservationDogCard
                       key={petdata.id}
                       photo={petdata.photo}
@@ -130,10 +104,18 @@ function MypageGeneral() {
                       breederName={petdata.breederName}
                       waitlistCount={petdata.waitlistCount}
                     />
-                  ))}
-                </Carousel>
-              </MP.CardsContainer>
-            </MP.ResContent>
+                  </div>
+                  <button type="button" className="rightArrowButton">
+                    {/* onClick={() => navigator(`/`)} */}
+                    <img
+                      src={rightArrow}
+                      alt="rightArrow"
+                      className="rightArrow"
+                    />
+                  </button>
+                </MP.ResContent>
+              ))}
+            </MP.CardsContainer>
           </MP.Reservation>
         </MP.ReservationContainer>
       </MP.TopContainer>
@@ -148,7 +130,7 @@ function MypageGeneral() {
               customLeftArrow={<LeftArrow />}
               customRightArrow={<RightArrow />}
             >
-              {recentDogData.map((dogdata) => (
+              {recentDogData.slice(0, 30).map((dogdata) => (
                 <RecentDogCard
                   key={dogdata.id}
                   photo={dogdata.photo}
@@ -156,6 +138,7 @@ function MypageGeneral() {
                   gender={dogdata.gender}
                   breed={dogdata.breed}
                   breederName={dogdata.breederName}
+                  waitlistCount={dogdata.waitlistCount}
                 />
               ))}
             </Carousel>
@@ -166,10 +149,11 @@ function MypageGeneral() {
           <MP.SliderContainer>
             <Carousel
               responsive={responsive}
+              className="carousel"
               customLeftArrow={<LeftArrow />}
               customRightArrow={<RightArrow />}
             >
-              {recentBreederData.map((breederdata) => (
+              {recentBreederData.slice(0, 30).map((breederdata) => (
                 <RecentBreederCard
                   key={breederdata.id}
                   photo={breederdata.photo}
@@ -183,13 +167,15 @@ function MypageGeneral() {
         </MP.Recent>
       </MP.RecentContainer>
 
+      <MP.FootpintLine src={footprintLine} alt="footprintLine" />
+
       <MP.BottomContainer>
         <MP.SectionContainer>
           <div className="title">커뮤니티</div>
           <MP.SectionLinks>
-            <div>내가 쓴 글</div>
-            <div>댓글 단 글</div>
-            <div>나의 후기</div>
+            <MP.NavLink to="/myreview/post">내가 쓴 글</MP.NavLink>
+            <MP.NavLink to="/myreview/comment">댓글 단 글</MP.NavLink>
+            <MP.NavLink to="/myreview/review">나의 후기</MP.NavLink>
           </MP.SectionLinks>
         </MP.SectionContainer>
         <MP.SectionContainer>
@@ -197,23 +183,22 @@ function MypageGeneral() {
           <MP.SectionLinks>
             <MP.NavLink to="/myreview/animal">저장한 동물</MP.NavLink>
             <MP.NavLink to="/myreview/breeder">저장한 브리더</MP.NavLink>
-            <div>저장한 글</div>
+            <MP.NavLink to="/myreview/save">저장한 글</MP.NavLink>
           </MP.SectionLinks>
         </MP.SectionContainer>
         <MP.SectionContainer>
           <div className="title">계정</div>
           <MP.SectionLinks>
-            <div>로그아웃</div>
-            <div
+            <MP.NavLink>로그아웃</MP.NavLink>
+            <MP.NavLink
               type="button"
               onClick={() => dispatch(openDeleteAccountModal())}
             >
               회원탈퇴
-            </div>
+            </MP.NavLink>
             <DeleteAccountModal
               isOpen={isDeleteAccountModalOpen}
-              onSubmit={() => dispatch(openDeleteAccountModal())}
-              onCancel={() => dispatch(closeDeleteAccountModal())}
+              userType="general"
             />
           </MP.SectionLinks>
         </MP.SectionContainer>
