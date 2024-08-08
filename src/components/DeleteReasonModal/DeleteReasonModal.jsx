@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import * as D from './DeleteReasonModal.style';
 import { closeDeleteReasonModal, selectModal } from '../../redux/modalSlice';
+import uncheckedCheck from '../../../public/img/uncheckedCheck.svg';
+import checkedCheck from '../../../public/img/checkedCheck.svg';
 
 const CustomModal = {
   overlay: {
@@ -25,10 +28,32 @@ const CustomModal = {
   },
 };
 
-function DeleteReasonModal() {
+const userLabels = [
+  '동물 분양 여건이 안 되어서',
+  '원하는 브리더가 없어서',
+  '원하는 정보를 받지 못해서',
+  '서비스가 복잡해서',
+];
+
+const breederLabels = [
+  '브리더를 그만두게 되어서',
+  '분양자가 없어서',
+  '비슷한 다른 서비스를 찾아서',
+  '서비스가 복잡해서',
+];
+
+function DeleteReasonModal({ userType }) {
   const { isDeleteReasonModalOpen } = useSelector(selectModal);
   const dispatch = useDispatch();
   const [inputCount, setInputCount] = useState(0);
+  const [isChecked, setIsChecked] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const labels = userType === 'general' ? userLabels : breederLabels;
 
   const handleClickSubmit = () => {
     dispatch(closeDeleteReasonModal());
@@ -38,36 +63,45 @@ function DeleteReasonModal() {
     setInputCount(e.target.value.length);
   };
 
+  const handleToggleCheck = (index) => {
+    const updatedCheckedStates = [...isChecked];
+    updatedCheckedStates[index] = !updatedCheckedStates[index];
+    setIsChecked(updatedCheckedStates);
+  };
+
   return (
     <Modal isOpen={isDeleteReasonModalOpen} style={CustomModal}>
       <D.ModalContent>
         <D.Title>브위더를 떠나시는 이유를 알려주세요</D.Title>
         <D.CheckboxContainer>
-          <D.Label htmlFor="checkbox1">
-            <input type="checkbox" id="checkbox1" className="checkbox" />
-            동물 분양 여건이 안 되어서
-          </D.Label>
-          <D.Label htmlFor="checkbox2">
-            <input type="checkbox" id="checkbox2" className="checkbox" />
-            원하는 브리더가 없어서
-          </D.Label>
-          <D.Label htmlFor="checkbox3">
-            <input type="checkbox" id="checkbox3" className="checkbox" />
-            원하는 정보를 받지 못해서
-          </D.Label>
-          <D.Label htmlFor="checkbox4">
-            <input type="checkbox" id="checkbox4" className="checkbox" />
-            서비스가 복잡해서
-          </D.Label>
+          {labels?.map((reason, index) => (
+            <D.Label
+              key={reason}
+              checked={isChecked[index]}
+              onClick={() => handleToggleCheck(index)}
+            >
+              <img
+                src={isChecked[index] ? checkedCheck : uncheckedCheck}
+                alt={isChecked[index] ? 'checked' : 'unchecked'}
+              />
+              {reason}
+            </D.Label>
+          ))}
           <D.Etc>
-            <D.Label htmlFor="checkbox5">
-              <input type="checkbox" id="checkbox5" className="checkbox" />
+            <D.Label
+              checked={isChecked[4]}
+              onClick={() => handleToggleCheck(4)}
+            >
+              <img
+                src={isChecked[4] ? checkedCheck : uncheckedCheck}
+                alt={isChecked[4] ? 'checked' : 'unchecked'}
+              />
               기타
             </D.Label>
             <textarea
               className="textarea"
               onChange={onInputHandler}
-              maxLength="199"
+              maxLength="200"
             />
             <D.TextCountDisplay>{inputCount}/200</D.TextCountDisplay>
           </D.Etc>

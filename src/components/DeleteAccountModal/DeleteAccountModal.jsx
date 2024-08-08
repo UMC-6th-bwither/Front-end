@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import * as M from './DeleteAccountModal.style';
@@ -29,15 +30,14 @@ const CustomModal = {
   },
 };
 
-function DeleteAccountModal() {
+function DeleteAccountModal({ userType }) {
   const { isDeleteAccountModalOpen, isDeleteReasonModalOpen } =
     useSelector(selectModal); // isOpenMidal의 상태 추출
   const dispatch = useDispatch();
 
   const handleClickSubmit = () => {
     dispatch(closeDeleteAccountModal());
-    dispatch(openDeleteReasonModal());
-    // 100ms 딜레이
+    dispatch(openDeleteReasonModal(userType));
   };
 
   const handleClickCancle = () => {
@@ -65,11 +65,7 @@ function DeleteAccountModal() {
           </M.YesBtn>
         </M.BtnContainer>
       </Modal>
-      <DeleteReasonModal
-        isOpen={isDeleteReasonModalOpen}
-        onSubmit={() => dispatch(openDeleteReasonModal())}
-        onCancel={() => dispatch(closeDeleteAccountModal())}
-      />
+      <DeleteReasonModal isOpen={isDeleteReasonModalOpen} userType={userType} />
     </>
   );
 }
