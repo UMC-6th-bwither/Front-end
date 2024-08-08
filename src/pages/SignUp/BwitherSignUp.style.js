@@ -6,6 +6,7 @@ export const Background = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 145px;
 `;
 
 export const WelcomeMsg = styled.div`
@@ -52,6 +53,7 @@ export const InputArea = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 32px;
+  margin-bottom: 80px;
 `;
 
 export const InputWrapper = styled.div`
@@ -96,6 +98,9 @@ export const Button = styled.button`
   border-radius: 6px;
   background: #c5c5c5;
   cursor: pointer;
+  &:hover {
+    background: #f87b45;
+  }
 
   position: relative;
   left: -100px;
@@ -119,4 +124,7 @@ export const PwShowIcon = styled.img`
   top: 3px;
 
   cursor: pointer;
+  &:hover {
+    fill: #f87b45;
+  }
 `;

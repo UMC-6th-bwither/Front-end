@@ -1,6 +1,9 @@
 import * as B from './BwitherSignUp.style';
 import progressBar25 from '../../../public/icons/signUp/progress-bar-25.svg';
 import pwShow from '../../../public/icons/signUp/password-show.svg';
+import Terms from '../../components/SignUpTerms/SignUpTerms';
+import Button from '../../components/SignUpButton/Button';
+import TextButton from '../../components/SignUpButton/TextButton';
 
 export default function BwitherSignUp() {
   return (
@@ -68,6 +71,9 @@ export default function BwitherSignUp() {
             </div>
           </B.InputWrapper>
         </B.InputArea>
+        <Terms />
+        <Button text="회원가입" path="" />
+        <TextButton path="" />
       </B.Container>
     </B.Background>
   );
