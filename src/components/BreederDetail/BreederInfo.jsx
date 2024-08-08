@@ -1,7 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as A from '../../pages/BreederDetail/BreederDetail.style';
 
 const BreederInfo = React.forwardRef((props, ref) => {
+  const [showMore, setShowMore] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
+
+  const images = [
+    { id: 1, src: '/img/kennelex.png', alt: '자격증 사진 1' },
+    { id: 2, src: '/img/certificate2.jpg', alt: '자격증 사진 2' },
+    { id: 3, src: '/img/certificate3.jpg', alt: '자격증 사진 3' },
+  ];
+
+  const handleShowMore = () => {
+    setShowMore(!showMore);
+  };
+
+  const openModal = (index) => {
+    setCurrentImage(index);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const nextImage = () => {
+    setCurrentImage((currentImage + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImage((currentImage - 1 + images.length) % images.length);
+  };
+
+  // 상세설명 임시 데이터
+  const description = `
+  안녕하세요 투명하고 깨끗한 해피 브리더입니다~! 여기서부터 설명이 길어질 때 더보기 버튼을 표시하도록 설정합니다.
+  이는 브리더에 대한 신뢰성을 높이고 투명한 정보를 제공하기 위해 노력하고 있습니다.
+  저희 브리더는 강아지와 고양이를 전문적으로 다루며, 전문적인 지식과 경험을 바탕으로 건강하고 행복한 반려동물을 분양하고 있습니다.
+  브리더 전문가 양성과정을 수료한 경력이 있으며, 서연대학교 반려동물학과를 졸업하였습니다.
+  저희 해피 브리더는 반려동물의 건강과 행복을 최우선으로 생각하며, 항상 투명하고 신뢰할 수 있는 정보를 제공합니다.
+  자세한 상담을 원하시면 언제든지 문의해주시기 바랍니다. 감사합니다.안녕하세요 투명하고 깨끗한 해피 브리더입니다~! 여기서부터 설명이 길어질 때 더보기 버튼을 표시하도록 설정합니다.
+  이는 브리더에 대한 신뢰성을 높이고 투명한 정보를 제공하기 위해 노력하고 있습니다.
+  저희 브리더는 강아지와 고양이를 전문적으로 다루며, 전문적인 지식과 경험을 바탕으로 건강하고 행복한 반려동물을 분양하고 있습니다.
+  브리더 전문가 양성과정을 수료한 경력이 있으며, 서연대학교 반려동물학과를 졸업하였습니다.
+  저희 해피 브리더는 반려동물의 건강과 행복을 최우선으로 생각하며, 항상 투명하고 신뢰할 수 있는 정보를 제공합니다.
+  자세한 상담을 원하시면 언제든지 문의해주시기 바랍니다. 감사합니다.안녕하세요 투명하고 깨끗한 해피 브리더입니다~! 여기서부터 설명이 길어질 때 더보기 버튼을 표시하도록 설정합니다.
+  이는 브리더에 대한 신뢰성을 높이고 투명한 정보를 제공하기 위해 노력하고 있습니다.
+  저희 브리더는 강아지와 고양이를 전문적으로 다루며, 전문적인 지식과 경험을 바탕으로 건강하고 행복한 반려동물을 분양하고 있습니다.
+  브리더 전문가 양성과정을 수료한 경력이 있으며, 서연대학교 반려동물학과를 졸업하였습니다.
+  저희 해피 브리더는 반려동물의 건강과 행복을 최우선으로 생각하며, 항상 투명하고 신뢰할 수 있는 정보를 제공합니다.
+  자세한 상담을 원하시면 언제든지 문의해주시기 바랍니다. 감사합니다.`;
+
   return (
     <div ref={ref} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
@@ -99,8 +149,27 @@ const BreederInfo = React.forwardRef((props, ref) => {
       <A.InfoItem>
         <A.InfoTitle>브리더 상세설명</A.InfoTitle>
         <A.InfoContent>
-          안녕하세요 투명하고 깨끗한 해피 브리더입니다~!
+          {showMore ? description : description.substring(0, 17 * 26)}
         </A.InfoContent>
+        {description.length > 17 * 26 && (
+          <A.ContentMoreButton showMore={showMore} onClick={handleShowMore}>
+            상세설명 더보기
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="17"
+              viewBox="0 0 16 17"
+              fill="none"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M8.05313 12.4002C8.19653 12.3996 8.3328 12.3374 8.42727 12.2295L14.3763 5.43083C14.5581 5.22302 14.5371 4.90713 14.3293 4.72529C14.1215 4.54344 13.8056 4.5645 13.6237 4.77231L8.0478 11.1445L2.3735 4.76915C2.18991 4.56288 1.87386 4.54449 1.66759 4.72808C1.46131 4.91167 1.44292 5.22772 1.62651 5.43399L7.67753 12.2326C7.77287 12.3397 7.90967 12.4008 8.05313 12.4002Z"
+                fill="#FE834D"
+              />
+            </svg>
+          </A.ContentMoreButton>
+        )}
       </A.InfoItem>
       <A.InfoItemSecond>
         <A.InfoTitle>전문 견종</A.InfoTitle>
@@ -140,9 +209,65 @@ const BreederInfo = React.forwardRef((props, ref) => {
       </A.InfoItemSecond>
       <A.InfoItem>
         <A.InfoTitle>자격증 및 기타 서류</A.InfoTitle>
-        <A.CertificateImg>자격증 사진</A.CertificateImg>
+        <A.CertificateImgBox>
+          {images.map((image, index) => (
+            <A.CertificateImg key={image.id} onClick={() => openModal(index)}>
+              <img src={image.src} alt={image.alt} />
+            </A.CertificateImg>
+          ))}
+        </A.CertificateImgBox>
       </A.InfoItem>
       <A.Line />
+
+      {modalOpen && (
+        <A.ModalOverlay onClick={closeModal}>
+          <A.ModalContent onClick={(e) => e.stopPropagation()}>
+            <A.ModalHeader>
+              <A.CloseButton onClick={closeModal}>&times;</A.CloseButton>
+            </A.ModalHeader>
+            <A.ModalBody>
+              <A.PrevButton onClick={prevImage}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="26"
+                  viewBox="0 0 14 26"
+                  fill="none"
+                >
+                  <path
+                    d="M12.5 2L1.5 13L12.5 24"
+                    stroke="#737373"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </A.PrevButton>
+              <A.ModalImage
+                src={images[currentImage].src}
+                alt={images[currentImage].alt}
+              />
+              <A.NextButton onClick={nextImage}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="26"
+                  viewBox="0 0 14 26"
+                  fill="none"
+                >
+                  <path
+                    d="M1.5 2L12.5 13L1.5 24"
+                    stroke="#737373"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </A.NextButton>
+            </A.ModalBody>
+          </A.ModalContent>
+        </A.ModalOverlay>
+      )}
     </div>
   );
 });

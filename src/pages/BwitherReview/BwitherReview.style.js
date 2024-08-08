@@ -93,6 +93,7 @@ export const ReviewList = styled.div`
 `;
 
 export const ReviewItem = styled.div`
+  position: relative;
   width: 235px;
   display: flex;
   flex-direction: column;
@@ -100,6 +101,16 @@ export const ReviewItem = styled.div`
   overflow: hidden;
   border: 2px solid rgba(241, 241, 241, 0.5);
   background: #fff;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
   &.expanded {
     display: inline-flex;
     height: 351px;
