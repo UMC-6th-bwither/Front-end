@@ -19,6 +19,7 @@ import BreederDetail from './pages/BreederDetail/BreederDetail';
 import BwitherReview from './pages/BwitherReview/BwitherReview';
 import BreederReview from './pages/BreederReview/BreederReview';
 import BreederInfoEdit from './pages/BreederInfoEdit/BreederInfoEdit';
+import Main from './pages/Main/Main';
 import ChatListGeneral from './pages/ChatListGeneral/ChatListGeneral';
 import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="/bwither-review" element={<BwitherReview />} />
           <Route path="/breeder-review" element={<BreederReview />} />
           <Route path="/breederinfo-edit" element={<BreederInfoEdit />} />
+          <Route path="/Main" element={<Main />} />
           <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
           <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
           <Route path="*" element={<NotFound />} />
