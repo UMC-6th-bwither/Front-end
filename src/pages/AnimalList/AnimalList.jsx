@@ -4,14 +4,13 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as AL from './AnimalList.style';
-import { cities, animalBreeds } from '../selectData';
+import { cities, animalBreeds, 전체DogCard } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
 import DogCard from '../../components/DogCard/DogCard';
 import DropBox from '../../components/DropBoxes/DropBox';
-import { toggleBookmark } from '../../redux/bookmarkSlice';
+import ButtonSelector from '../../components/buttonselector/ButtonSelector';
 
 function AnimalList() {
-  // ** DogCard API호출 필요 **
   const [activeCities, setActiveCities] = useState([]);
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
@@ -20,13 +19,6 @@ function AnimalList() {
   const [selectedCities, setSelectedCities] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isReserved, setIsReserved] = useState(false);
-
-  const dispatch = useDispatch();
-  const bookmarks = useSelector((state) => state.bookmarks.card);
-
-  const handleBookmarkToggle = (name) => {
-    dispatch(toggleBookmark(name)); // 액션 디스패치
-  };
 
   useEffect(() => {
     setBreeds(animalBreeds[selectedAnimal] || []);
@@ -66,7 +58,7 @@ function AnimalList() {
   };
 
   // 선택된 조건에 따른 DogCard데이터 필터링
-  const filteredDogCards = bookmarks.filter((dog) => {
+  const filteredDogCards = 전체DogCard.filter((dog) => {
     return (
       (selectedGender === '' || dog.gender === selectedGender) &&
       (selectedBreed === '' || dog.breed === selectedBreed) &&
@@ -135,9 +127,9 @@ function AnimalList() {
               ]}
               onChange={handleBreedChange}
             />
-            <AL.ReservationBtn onClick={toggleReservation}>
-              {isReserved ? '예약 중 포함' : '예약 중 제외'}
-            </AL.ReservationBtn>
+            <ButtonSelector border onClick={toggleReservation}>
+              예약 중 제외
+            </ButtonSelector>
           </AL.AnimalSelector>
           <DropBox
             id="sort-dropbox"
@@ -164,7 +156,7 @@ function AnimalList() {
                 breederName={dog.breederName}
                 waitlistCount={dog.waitlistCount}
                 isBookmarked={dog.isBookmarked}
-                setIsBookmarked={() => handleBookmarkToggle(dog.name)}
+                setIsBookmarked={() => {}}
               />
             ))}
           </div>

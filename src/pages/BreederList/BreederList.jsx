@@ -7,8 +7,6 @@ import BreederCard from '../../components/BreederCard/BreederCard';
 import DropBox from '../../components/DropBoxes/DropBox';
 
 function BreederList() {
-  // ** BreederCard API호출 필요 **
-
   const [activeCities, setActiveCities] = useState([]);
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
@@ -68,7 +66,9 @@ function BreederList() {
         <BL.Left>
           <div className="title">전국 브리더</div>
           <div className="detail">
-            믿을 수 있는 브리더를 브위더 단 한 곳에서 찾으세요
+            믿을 수 있는 브리더를
+            <br />
+            브위더 단 한 곳에서 찾으세요
           </div>
         </BL.Left>
         <BL.Right>
@@ -144,7 +144,7 @@ function BreederList() {
           </div>
           <div>
             <Pagination
-              totalItems={100}
+              totalItems={filteredBreederCards.length}
               itemsPerPage={20}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
