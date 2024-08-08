@@ -7,7 +7,7 @@ export const Container = styled.div`
 `;
 
 export const MessageWrapper = styled.div`
-  margin-top: ${({ isStart }) => (isStart ? '30px' : '2px')};
+  margin-top: ${({ $isStart }) => ($isStart ? '30px' : '2px')};
   position: relative;
   display: flex;
   justify-content: ${({ role }) => (role === 'me' ? 'flex-end' : 'flex-start')};
@@ -16,21 +16,21 @@ export const MessageWrapper = styled.div`
 export const ChatBubble = styled.div`
   padding: 16px 20px;
   margin: 5px;
-  border-radius: ${({ role, isStart, isEnd }) => {
+  border-radius: ${({ role, $isStart, $isEnd }) => {
     if (role === 'me') {
       return `
         30px
-        ${isStart ? '30px' : '8px'} 
-        ${isEnd ? '30px' : '8px'}
+        ${$isStart ? '30px' : '8px'} 
+        ${$isEnd ? '30px' : '8px'}
         30px
       `;
     }
 
     return `
-        ${isStart ? '30px' : '8px'} 
+        ${$isStart ? '30px' : '8px'} 
         30px
         30px
-        ${isEnd ? '30px' : '8px'} 
+        ${$isEnd ? '30px' : '8px'} 
       `;
   }};
   max-width: 60%;

@@ -28,13 +28,13 @@ export default function ChatContext({ chatList }) {
           <S.MessageWrapper
             key={index}
             role={chat.role}
-            isStart={isStart}
+            $isStart={isStart}
             ref={index === chatList.length - 1 ? lastMsgRef : null}
           >
             {isEnd && chat.role === 'me' && (
               <S.ChatTime>{chat.time}</S.ChatTime>
             )}
-            <S.ChatBubble role={chat.role} isStart={isStart} isEnd={isEnd}>
+            <S.ChatBubble role={chat.role} $isStart={isStart} $isEnd={isEnd}>
               {chat.msg}
             </S.ChatBubble>
             {isEnd && chat.role !== 'me' && (
