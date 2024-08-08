@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isDeleteAccountModalOpen: false,
   isDeleteReasonModalOpen: false,
+  page: 'general', // 페이지 구분
 };
 
 export const modalSlice = createSlice({
@@ -17,9 +18,10 @@ export const modalSlice = createSlice({
       const status = state;
       status.isDeleteAccountModalOpen = false;
     },
-    openDeleteReasonModal: (state) => {
+    openDeleteReasonModal: (state, action) => {
       const status = state;
       status.isDeleteReasonModalOpen = true;
+      status.page = action.payload;
     },
     closeDeleteReasonModal: (state) => {
       const status = state;
