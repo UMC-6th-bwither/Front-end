@@ -19,6 +19,8 @@ import BreederDetail from './pages/BreederDetail/BreederDetail';
 import BwitherReview from './pages/BwitherReview/BwitherReview';
 import BreederReview from './pages/BreederReview/BreederReview';
 import BreederInfoEdit from './pages/BreederInfoEdit/BreederInfoEdit';
+import ChatListGeneral from './pages/ChatListGeneral/ChatListGeneral';
+import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
 
 function App() {
   return (
@@ -42,12 +44,17 @@ function App() {
           <Route path="/MyReview/Comment" element={<MyReviewComment />} />
           <Route path="/MyReview/Review" element={<MyReview />} />
           <Route path="/MyReview/Save" element={<MyReviewSave />} />
-          <Route path="/waitinganimal-detail" element={<WaitingAnimalDetail />} />
+          <Route
+            path="/waitinganimal-detail"
+            element={<WaitingAnimalDetail />}
+          />
           <Route path="/animal-upload" element={<AnimalUpload />} />
           <Route path="/breeder-detail" element={<BreederDetail />} />
           <Route path="/bwither-review" element={<BwitherReview />} />
           <Route path="/breeder-review" element={<BreederReview />} />
           <Route path="/breederinfo-edit" element={<BreederInfoEdit />} />
+          <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
+          <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

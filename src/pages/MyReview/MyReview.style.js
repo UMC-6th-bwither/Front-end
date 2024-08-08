@@ -263,5 +263,12 @@ export const BreederCardContainer = styled.div`
   padding-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 40px;
+`;
+
+export const ReviewCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding-top: 30px;
 `;

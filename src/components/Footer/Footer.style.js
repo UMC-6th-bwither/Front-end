@@ -75,6 +75,15 @@ export const Icons = styled.div`
   gap: 12px;
 `;
 
+export const IconButton = styled.button`
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
 export const Information = styled.div`
   display: flex;
   width: 970px;
