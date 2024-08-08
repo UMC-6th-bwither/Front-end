@@ -1,15 +1,20 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederInfoEdit.style';
 import 'react-multi-carousel/lib/styles.css';
 import Button from '../../components/button/Button';
 import BreederInfo from '../../components/BreederInfoEdit/BreederInfo';
 import KennelInfo from '../../components/BreederInfoEdit/KennelInfo';
-// import CareDog from '../../components/BreederInfoEdit/CareDog';
 import BreederQna from '../../components/BreederInfoEdit/BreederQna';
+import ConfidenceLevelModal from '../../components/ConfidenceLevelModal/ConfidenceLevelModal';
 
 function BreederInfoEdit() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
+  const [isConfidenceModalVisible, setIsConfidenceModalVisible] =
+    useState(false); // State for modal visibility
+
+  const navigate = useNavigate();
 
   const breederInfoRef = useRef(null);
   const kennelInfoRef = useRef(null);
@@ -48,6 +53,11 @@ function BreederInfoEdit() {
   //     console.log('Selected file:', file);
   //   }
   // };
+
+  const handleSaveClick = () => {
+    // 저장 로직 추가 예정
+    navigate('/breeder-mypage'); // 브리더 마이페이지
+  };
 
   return (
     <A.Container>
@@ -172,7 +182,6 @@ function BreederInfoEdit() {
             </svg>
           </A.ProfileIcon>
         </A.OverlappingImageContainer>
-
         <A.TopLeftBox>
           <A.BreederInfoTitleBox>
             <A.BreederInfoTitle
@@ -266,31 +275,40 @@ function BreederInfoEdit() {
             placeholder="이벤트 시 제공되는 서비스를 적어주세요"
           />
         </A.TopLeftBox>
-        <A.ConfidenceModal>
-          <A.ConfidenceModalTop>
-            <A.ConfidenceModalTopText>신뢰 등급</A.ConfidenceModalTopText>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10ZM20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10ZM10.4047 9.15353C9.79772 9.88252 9.12157 10.6945 9.301 11.958H10.627C10.5121 10.944 11.0826 10.2675 11.6568 9.5866C12.1868 8.95807 12.72 8.32582 12.72 7.421C12.72 5.887 11.68 5.029 10.159 5.029C9.067 5.029 8.196 5.549 7.559 6.277L8.404 7.057C8.846 6.563 9.379 6.264 9.99 6.264C10.809 6.264 11.264 6.797 11.264 7.525C11.264 8.12158 10.8532 8.61489 10.4047 9.15353ZM8.989 14.129C8.989 14.74 9.418 15.182 9.99 15.182C10.549 15.182 10.991 14.74 10.991 14.129C10.991 13.505 10.549 13.076 9.99 13.076C9.418 13.076 8.989 13.505 8.989 14.129Z"
-                fill="#737373"
-              />
-            </svg>
-          </A.ConfidenceModalTop>
-          <A.ConfidenceModalBottom>
-            필수 항목에 대한 업로드 불이행 시 신뢰등급에 영향을 줄 수 있습니다.
-            신뢰등급을 높게 유지하기 위해서는 주기적인 정보 업로드가 필요합니다.
-          </A.ConfidenceModalBottom>
-        </A.ConfidenceModal>
+        <A.ConfidenceModalWrapper>
+          <A.ConfidenceModal>
+            <A.ConfidenceModalTop>
+              <A.ConfidenceModalTopText>신뢰 등급</A.ConfidenceModalTopText>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                onMouseEnter={() => setIsConfidenceModalVisible(true)}
+                onMouseLeave={() => setIsConfidenceModalVisible(false)}
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10ZM20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10ZM10.4047 9.15353C9.79772 9.88252 9.12157 10.6945 9.301 11.958H10.627C10.5121 10.944 11.0826 10.2675 11.6568 9.5866C12.1868 8.95807 12.72 8.32582 12.72 7.421C12.72 5.887 11.68 5.029 10.159 5.029C9.067 5.029 8.196 5.549 7.559 6.277L8.404 7.057C8.846 6.563 9.379 6.264 9.99 6.264C10.809 6.264 11.264 6.797 11.264 7.525C11.264 8.12158 10.8532 8.61489 10.4047 9.15353ZM8.989 14.129C8.989 14.74 9.418 15.182 9.99 15.182C10.549 15.182 10.991 14.74 10.991 14.129C10.991 13.505 10.549 13.076 9.99 13.076C9.418 13.076 8.989 13.505 8.989 14.129Z"
+                  fill="#737373"
+                />
+              </svg>
+            </A.ConfidenceModalTop>
+            <A.ConfidenceModalBottom>
+              필수 항목에 대한 업로드 불이행 시 신뢰등급에 영향을 줄 수
+              있습니다. 신뢰등급을 높게 유지하기 위해서는 주기적인 정보 업로드가
+              필요합니다.
+            </A.ConfidenceModalBottom>
+          </A.ConfidenceModal>
+        </A.ConfidenceModalWrapper>
       </A.TopBox>
-
+      {isConfidenceModalVisible && (
+        <A.AbsolutePositionedModal>
+          <ConfidenceLevelModal />
+        </A.AbsolutePositionedModal>
+      )}
       <A.InfoWrapper>
         <MenuSelect
           menus={menuItems}
@@ -299,11 +317,9 @@ function BreederInfoEdit() {
         />
         <BreederInfo ref={breederInfoRef} />
         <KennelInfo ref={kennelInfoRef} />
-        {/* <Car/eDog ref={careDogRef} /> */}
-
         <BreederQna ref={qnaRef} />
       </A.InfoWrapper>
-      <A.FinishBtn>저장</A.FinishBtn>
+      <A.FinishBtn onClick={handleSaveClick}>저장</A.FinishBtn>
     </A.Container>
   );
 }
