@@ -136,9 +136,6 @@ export const ReviewContent = styled.div`
   padding: 16px 15px 24px 15px;
   gap: 8px;
   border-top: none;
-  border-right: 2px solid #f1f1f1;
-  border-bottom: 2px solid #f1f1f1;
-  border-left: 2px solid #f1f1f1;
 
   &.expanded {
     padding: 0;
