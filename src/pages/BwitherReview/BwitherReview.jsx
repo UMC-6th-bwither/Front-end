@@ -2,83 +2,96 @@ import { useState } from 'react';
 import * as R from './BwitherReview.style';
 import Pagination from '../../components/Pagination/Pagination';
 
+const allReviews = [
+  {
+    id: 1,
+    image: 'https://via.placeholder.com/235',
+    author: '켄넬 이름',
+    rating: 5,
+    isNew: true,
+    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+    category: '강아지',
+  },
+  {
+    id: 2,
+    image: 'https://via.placeholder.com/235',
+    author: '켄넬 이름',
+    rating: 5,
+    isNew: true,
+    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+    category: '강아지',
+  },
+  {
+    id: 3,
+    image: 'https://via.placeholder.com/235',
+    author: '켄넬 이름',
+    rating: 5,
+    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+    category: '고양이',
+  },
+  {
+    id: 4,
+    image: '',
+    author: '켄넬 이름',
+    rating: 4,
+    text: '고양이 품종이 정말 이쁩니다!',
+    category: '고양이',
+  },
+  {
+    id: 14,
+    image: 'https://via.placeholder.com/235',
+    author: '켄넬 이름',
+    rating: 5,
+    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+    category: '고양이',
+  },
+];
+
 function BwitherReview() {
-  const [activeButton, setActiveButton] = useState('전체');
+  const [activeCategories, setActiveCategories] = useState(['전체']);
   const [selectedReviewType, setSelectedReviewType] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [expandedReviewId, setExpandedReviewId] = useState(null); // 추가된 상태
+  const [expandedReviewId, setExpandedReviewId] = useState(null);
   const itemsPerPage = 16;
 
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
+  const handleCategoryClick = (category) => {
+    if (category === '전체') {
+      setActiveCategories(['전체']);
+    } else if (activeCategories.includes('전체')) {
+      setActiveCategories([category]);
+    } else {
+      setActiveCategories((prev) =>
+        prev.includes(category)
+          ? prev.filter((c) => c !== category)
+          : [...prev, category],
+      );
+    }
   };
 
-  const handleReviewTypeClick = (type) => {
-    setSelectedReviewType(type);
+  const handleReviewTypeClick = () => {
+    setSelectedReviewType((prev) =>
+      prev === '사진 리뷰' ? null : '사진 리뷰',
+    );
   };
 
   const handleReviewClick = (id) => {
     setExpandedReviewId(id === expandedReviewId ? null : id);
   };
 
-  const reviews = [
-    {
-      id: 1,
-      image: 'https://via.placeholder.com/235',
-      kennelName: '브위더 켄넬',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 2,
-      image: 'https://via.placeholder.com/235',
-      kennelName: '브위더 켄넬',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 3,
-      image: 'https://via.placeholder.com/235',
-      kennelName: '브위더 켄넬',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 4,
-      image: 'https://via.placeholder.com/235',
-      kennelName: '브위더 켄넬',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 5,
-      image: 'https://via.placeholder.com/235',
-      kennelName: '브위더 켄넬',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 6,
-      image: 'https://via.placeholder.com/235',
-      kennelName: '브위더 켄넬',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 7,
-      image: 'https://via.placeholder.com/235',
-      kennelName: '브위더 켄넬',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 8,
-      image: 'https://via.placeholder.com/235',
-      kennelName: '브위더 켄넬',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-  ];
+  const filteredReviews = allReviews.filter((review) => {
+    const categoryMatch =
+      activeCategories.includes('전체') ||
+      activeCategories.includes(review.category);
+
+    const photoMatch = selectedReviewType === '사진 리뷰' ? review.image : true;
+
+    return categoryMatch && photoMatch;
+  });
+
+  const paginatedReviews = filteredReviews.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   return (
     <R.Container>
@@ -108,25 +121,25 @@ function BwitherReview() {
       <R.MiddleBox>
         <R.CommuBtnBox>
           <R.CommuBtn
-            className={activeButton === '전체' ? 'active' : ''}
-            onClick={() => handleButtonClick('전체')}
+            className={activeCategories.includes('전체') ? 'active' : ''}
+            onClick={() => handleCategoryClick('전체')}
           >
             전체
           </R.CommuBtn>
           <R.CommuBtn
-            className={activeButton === '비글' ? 'active' : ''}
-            onClick={() => handleButtonClick('비글')}
+            className={activeCategories.includes('강아지') ? 'active' : ''}
+            onClick={() => handleCategoryClick('강아지')}
           >
-            비글
+            강아지
           </R.CommuBtn>
           <R.CommuBtn
-            className={activeButton === '골든 리트리버' ? 'active' : ''}
-            onClick={() => handleButtonClick('골든 리트리버')}
+            className={activeCategories.includes('고양이') ? 'active' : ''}
+            onClick={() => handleCategoryClick('고양이')}
           >
-            골든 리트리버
+            고양이
           </R.CommuBtn>
         </R.CommuBtnBox>
-        <R.ReviewType onClick={() => handleReviewTypeClick('사진 리뷰')}>
+        <R.ReviewType onClick={handleReviewTypeClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="18"
@@ -150,7 +163,7 @@ function BwitherReview() {
         </R.ReviewType>
       </R.MiddleBox>
       <R.ReviewList>
-        {reviews.map((review) => (
+        {paginatedReviews.map((review) => (
           <R.ReviewItem
             key={review.id}
             onClick={() => handleReviewClick(review.id)}
@@ -164,7 +177,7 @@ function BwitherReview() {
               className={expandedReviewId === review.id ? 'expanded' : ''}
             >
               <R.ReviewKennelName>
-                {review.kennelName}
+                {review.author}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -192,7 +205,7 @@ function BwitherReview() {
       </R.ReviewList>
       <R.PaginationContainer>
         <Pagination
-          totalItems={reviews.length}
+          totalItems={filteredReviews.length}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
