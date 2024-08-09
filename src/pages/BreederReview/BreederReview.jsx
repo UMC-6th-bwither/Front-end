@@ -5,7 +5,10 @@ import ReviewModal from '../../components/BreederReview/ReviewModal';
 const allReviews = [
   {
     id: 1,
-    image: 'https://via.placeholder.com/235',
+    images: [
+      'https://via.placeholder.com/235/0000FF/808080',
+      'https://via.placeholder.com/235/FF0000/FFFFFF',
+    ],
     author: '작성자',
     rating: 5,
     isNew: true,
@@ -14,7 +17,7 @@ const allReviews = [
   },
   {
     id: 2,
-    image: 'https://via.placeholder.com/235',
+    images: ['https://via.placeholder.com/235'],
     author: '작성자',
     rating: 5,
     isNew: true,
@@ -23,7 +26,10 @@ const allReviews = [
   },
   {
     id: 3,
-    image: 'https://via.placeholder.com/235',
+    images: [
+      'https://via.placeholder.com/235/0000FF/808080',
+      'https://via.placeholder.com/235/FF0000/FFFFFF',
+    ],
     author: '작성자',
     rating: 5,
     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
@@ -31,7 +37,7 @@ const allReviews = [
   },
   {
     id: 4,
-    image: '',
+    images: [],
     author: '작성자',
     rating: 4,
     text: '고양이 품종이 정말 이쁩니다!',
@@ -40,7 +46,7 @@ const allReviews = [
   // ...
   {
     id: 14,
-    image: 'https://via.placeholder.com/235',
+    images: ['https://via.placeholder.com/235'],
     author: '작성자',
     rating: 5,
     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
@@ -58,7 +64,7 @@ function BreederReview() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [readReviews, setReadReviews] = useState([]); // 읽은 리뷰 ID 목록
+  const [readReviews, setReadReviews] = useState([]);
   const [modalReview, setModalReview] = useState(null);
 
   const fetchReviews = useCallback(() => {
@@ -75,7 +81,9 @@ function BreederReview() {
     }
 
     if (selectedReviewType === '사진 리뷰') {
-      filteredReviews = filteredReviews.filter((review) => review.image);
+      filteredReviews = filteredReviews.filter(
+        (review) => review.images.length,
+      );
     }
 
     const newReviews = filteredReviews.slice(start, end);
@@ -109,6 +117,7 @@ function BreederReview() {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, hasMore]);
 
   const handleButtonClick = (buttonName) => {
@@ -215,7 +224,7 @@ function BreederReview() {
               <R.NewBadge>NEW</R.NewBadge>
             )}
             <R.ReviewImage
-              style={{ backgroundImage: `url(${review.image})` }}
+              style={{ backgroundImage: `url(${review.images[0]})` }}
               // className={expandedReviewId === review.id ? 'hidden' : ''}
             />
             <R.ReviewContent

@@ -6,7 +6,7 @@ const allReviews = [
   {
     id: 1,
     image: 'https://via.placeholder.com/235',
-    author: '작성자',
+    author: '켄넬 이름',
     rating: 5,
     isNew: true,
     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
@@ -15,7 +15,7 @@ const allReviews = [
   {
     id: 2,
     image: 'https://via.placeholder.com/235',
-    author: '작성자',
+    author: '켄넬 이름',
     rating: 5,
     isNew: true,
     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
@@ -24,7 +24,7 @@ const allReviews = [
   {
     id: 3,
     image: 'https://via.placeholder.com/235',
-    author: '작성자',
+    author: '켄넬 이름',
     rating: 5,
     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
     category: '고양이',
@@ -32,7 +32,7 @@ const allReviews = [
   {
     id: 4,
     image: '',
-    author: '작성자',
+    author: '켄넬 이름',
     rating: 4,
     text: '고양이 품종이 정말 이쁩니다!',
     category: '고양이',
@@ -40,7 +40,7 @@ const allReviews = [
   {
     id: 14,
     image: 'https://via.placeholder.com/235',
-    author: '작성자',
+    author: '켄넬 이름',
     rating: 5,
     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
     category: '고양이',

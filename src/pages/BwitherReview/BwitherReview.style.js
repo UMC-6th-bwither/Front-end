@@ -105,6 +105,7 @@ export const ReviewItem = styled.div`
     transform 0.3s ease,
     box-shadow 0.3s ease;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  height: 100%; /* 기본 높이 설정 */
 
   &:hover {
     transform: translateY(-5px);

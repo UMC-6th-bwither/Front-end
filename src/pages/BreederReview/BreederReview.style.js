@@ -12,6 +12,48 @@ export const ModalOverlay = styled.div`
   align-items: center;
   z-index: 1000;
 `;
+
+export const PrevButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  svg {
+    width: 14px;
+    height: 26px;
+  }
+`;
+
+export const NextButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  svg {
+    width: 14px;
+    height: 26px;
+  }
+`;
 export const IconContainer = styled.div`
   position: absolute;
   top: 10px;
