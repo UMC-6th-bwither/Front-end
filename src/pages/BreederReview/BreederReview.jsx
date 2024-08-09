@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import * as R from './BreederReview.style';
+import ReviewModal from '../../components/BreederReview/ReviewModal';
 
 const allReviews = [
   {
@@ -52,11 +53,13 @@ const PAGE_SIZE = 5;
 function BreederReview() {
   const [activeButtons, setActiveButtons] = useState(['전체']);
   const [selectedReviewType, setSelectedReviewType] = useState(null);
-  const [expandedReviewId, setExpandedReviewId] = useState(null);
+  // const [expandedReviewId, setExpandedReviewId] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [readReviews, setReadReviews] = useState([]); // 읽은 리뷰 ID 목록
+  const [modalReview, setModalReview] = useState(null);
 
   const fetchReviews = useCallback(() => {
     setLoading(true);
@@ -120,8 +123,16 @@ function BreederReview() {
     setSelectedReviewType((prevType) => (prevType === type ? null : type));
   };
 
-  const handleReviewClick = (id) => {
-    setExpandedReviewId(id === expandedReviewId ? null : id);
+  const handleReviewClick = (review) => {
+    // setExpandedReviewId(review.id === expandedReviewId ? null : review.id);
+    setModalReview(review);
+  };
+
+  const handleCloseModal = () => {
+    if (modalReview) {
+      setReadReviews((prevReadReviews) => [...prevReadReviews, modalReview.id]);
+      setModalReview(null);
+    }
   };
 
   return (
@@ -197,17 +208,18 @@ function BreederReview() {
         {reviews.map((review) => (
           <R.ReviewItem
             key={review.id}
-            onClick={() => handleReviewClick(review.id)}
-            className={expandedReviewId === review.id ? 'expanded' : ''}
+            onClick={() => handleReviewClick(review)}
+            // className={expandedReviewId === review.id ? 'expanded' : ''}
           >
-            {review.isNew && <R.NewBadge>NEW</R.NewBadge>}
-
+            {!readReviews.includes(review.id) && review.isNew && (
+              <R.NewBadge>NEW</R.NewBadge>
+            )}
             <R.ReviewImage
               style={{ backgroundImage: `url(${review.image})` }}
-              className={expandedReviewId === review.id ? 'hidden' : ''}
+              // className={expandedReviewId === review.id ? 'hidden' : ''}
             />
             <R.ReviewContent
-              className={expandedReviewId === review.id ? 'expanded' : ''}
+            // className={expandedReviewId === review.id ? 'expanded' : ''}
             >
               <R.ReviewKennelName>
                 {review.author}
@@ -228,7 +240,7 @@ function BreederReview() {
                 <span>{review.rating}</span>
               </R.ReviewKennelName>
               <R.ReviewText
-                className={expandedReviewId === review.id ? 'expanded' : ''}
+              // className={expandedReviewId === review.id ? 'expanded' : ''}
               >
                 {review.text}
               </R.ReviewText>
@@ -237,6 +249,8 @@ function BreederReview() {
         ))}
         {loading && <R.LoadingSpinner>Loading...</R.LoadingSpinner>}
       </R.ReviewList>
+
+      <ReviewModal review={modalReview} onClose={handleCloseModal} />
     </R.Container>
   );
 }
