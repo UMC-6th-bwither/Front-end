@@ -143,44 +143,55 @@ function ProfileSettingBreeder() {
 
           <div>
             <p>거주지에서 반려동물을 키울 수 있나요?</p>
-            <input
-              type="radio"
-              name=""
-              value="y"
-              checked={selectedOption === 'y'}
-              onChange={handleChange}
-            />
-            <span>네</span>
-            <input
-              type="radio"
-              name=""
-              value="n"
-              checked={selectedOption === 'n'}
-              onChange={handleChange}
-            />
-            <span>아니요</span>
-            <input
-              type="radio"
-              name=""
-              value="dontknow"
-              checked={selectedOption === 'dontknow'}
-              onChange={handleChange}
-            />
-            <span>모르겠어요</span>
+            <S.RadioContainer>
+              <S.RadioBtn type="radio" name="location" />
+              <S.Label>네</S.Label>
+              <S.RadioBtn type="radio" name="location" />
+              <S.Label>아니오</S.Label>
+              <S.RadioBtn type="radio" name="location" />
+              <S.Label>모르겠어요</S.Label>
+            </S.RadioContainer>
           </div>
 
           <div>
             <p>현재 누구와 살고 계신가요?</p>
-
-            <S.RoommateInput type="text" placeholder="아빠, 엄마, 동생 2명" />
+            <S.RoommateContainer>
+              <S.RoommateInput type="text" placeholder="아빠, 엄마, 동생 2명" />
+              <S.RoommateNumInput
+                type="number"
+                class="no-spinner"
+                placeholder="5"
+              />
+              <p>명</p>
+            </S.RoommateContainer>
           </div>
 
           <div>
             <p>모든 가족 구성원 및 동거인의 동의를 받으셨나요?</p>
+            <S.RadioContainer>
+              <S.RadioBtn type="radio" name="family" />
+              <S.Label>네, 모든 동의를 받았습니다.</S.Label>
+              <S.RadioBtn type="radio" name="family" />
+              <S.Label>아니요, 반대하는 분이 계십니다.</S.Label>
+              <S.RadioBtn type="radio" name="family" />
+              <S.Label>설득 중입니다.</S.Label>
+            </S.RadioContainer>
           </div>
 
           <div>
             <p>현재 다니고 계신 직장 또는 학교가 있으신가요?</p>
+            <S.RadioContainer>
+              <S.RadioBtn type="radio" name="job" />
+              <S.Label>재직 중</S.Label>
+              <S.RadioBtn type="radio" name="job" />
+              <S.Label>휴직 중</S.Label>
+              <S.RadioBtn type="radio" name="job" />
+              <S.Label>재학 중</S.Label>
+              <S.RadioBtn type="radio" name="job" />
+              <S.Label>휴학 중</S.Label>
+              <S.RadioBtn type="radio" name="job" />
+              <S.Label>직업없음</S.Label>
+            </S.RadioContainer>
           </div>
 
           <div>
@@ -201,6 +212,12 @@ function ProfileSettingBreeder() {
 
           <div>
             <p>이전에 반려동물을 키워본 경험이 있나요?</p>
+            <S.RadioContainer>
+              <S.RadioBtn type="radio" name="experience" />
+              <S.Label>네</S.Label>
+              <S.RadioBtn type="radio" name="experience" />
+              <S.Label>아니요</S.Label>
+            </S.RadioContainer>
           </div>
 
           <div>
@@ -212,6 +229,12 @@ function ProfileSettingBreeder() {
 
           <div>
             <p>향후 이사나 여행 계획 등이 있으신가요?</p>
+            <S.RadioContainer>
+              <S.RadioBtn type="radio" name="movingplan" />
+              <S.Label>네</S.Label>
+              <S.RadioBtn type="radio" name="movingplan" />
+              <S.Label>아니요</S.Label>
+            </S.RadioContainer>
           </div>
         </S.AdopterInfoContainer>
       </S.AdopterContainer>

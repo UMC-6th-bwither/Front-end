@@ -272,6 +272,27 @@ export const AdressContainer = styled.div`
   }
 `;
 
+export const RadioContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  //justify-content: space-between;
+`;
+
+export const RadioBtn = styled.input`
+  width: 24px;
+  height: 24px;
+`;
+
+export const Label = styled.label`
+  color: #272727;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 55px;
+`;
+
 export const PostCodeInput = styled.input`
   width: 815px;
 `;
@@ -281,15 +302,35 @@ export const ResidentInput = styled.input`
   margin-top: 10px;
 `;
 
-export const RoommateContainer = styled.input`
+export const RoommateContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 970px;
+
+  p {
+    margin-top: 20px;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
 export const RoommateInput = styled.input`
   width: 787px;
   margin-top: 10px;
+`;
+
+export const RoommateNumInput = styled.input`
+  width: 136px;
+  margin-top: 10px;
+
+  &::placeholder {
+    text-align: center;
+  }
 `;
 
 export const CommuteTimeContainer = styled.div`
