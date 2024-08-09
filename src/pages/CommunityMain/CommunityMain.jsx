@@ -1,5 +1,4 @@
 import * as S from './CommunityMain.style';
-import Pagination from '../../components/Pagination/Pagination';
 import PostPreviewCard from '../../components/PostPreviewCard/PostPreviewCard';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
 import { OrangeRightArrow } from '../../../public/img/ArrowIcon';
