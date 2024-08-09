@@ -1,5 +1,87 @@
 import styled from 'styled-components';
 
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+export const IconContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+`;
+
+export const ReportIcon = styled.div`
+  cursor: pointer;
+  svg {
+    width: 32px;
+    height: 33px;
+  }
+`;
+
+export const ModalContent = styled.div`
+  background: #fff;
+  padding: 50px;
+  border-radius: 10px;
+  max-width: 600px;
+  height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+export const ModalCloseButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const ModalAuthorRatingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 15px;
+`;
+
+export const ModalAuthor = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  margin-right: 15px;
+`;
+
+export const ModalRating = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  svg {
+    margin-right: 4px;
+  }
+`;
+
+export const ModalText = styled.div`
+  font-size: 16px;
+  color: #737373;
+  line-height: 1.5;
+  text-align: center;
+`;
+
 export const LoadingSpinner = styled.div`
   text-align: center;
   padding: 20px;
