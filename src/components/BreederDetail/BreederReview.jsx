@@ -163,7 +163,7 @@ const BreederReview = React.forwardRef((props, ref) => {
           <A.ReviewItem>
             <A.ReviewerName>김**</A.ReviewerName>
             <A.ReviewImages>
-              <A.ReviewImage src="image1.jpg" alt="리뷰 이미지 1" />
+              <A.ReviewImage src="/img/kennelex.png" alt="리뷰 이미지 1" />
               <A.ReviewImage src="image2.jpg" alt="리뷰 이미지 2" />
               <A.ReviewImage src="image3.jpg" alt="리뷰 이미지 3" />
               <A.ReviewImage src="image4.jpg" alt="리뷰 이미지 4" />

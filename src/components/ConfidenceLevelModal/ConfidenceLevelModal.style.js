@@ -4,6 +4,7 @@ export const Box = styled.div`
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
+  background-color: white;
   border-radius: 12px;
   box-shadow: 0px 6px 20px 0px rgba(148, 156, 163, 0.2);
 `;
@@ -32,6 +33,7 @@ export const Title = styled.div`
 export const SvgIcon = styled.svg`
   position: absolute;
   right: 24px;
+  cursor: pointer;
 `;
 
 export const BoxBottom = styled.div`
