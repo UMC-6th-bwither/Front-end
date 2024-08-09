@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -22,7 +23,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '',
+      postThumbnailSrc: '../../../public/img/communitysempleimg1.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -31,7 +32,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '',
+      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -40,7 +41,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '',
+      postThumbnailSrc: '../../../public/img/communitysempleimg3.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -49,7 +50,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '',
+      postThumbnailSrc: '../../../public/img/communitysempleimg4.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -58,7 +59,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '',
+      postThumbnailSrc: '../../../public/img/communitysempleimg5.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -67,7 +68,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '',
+      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -145,17 +146,18 @@ function CommonPage() {
       <BreederRankingCommonVer />
 
       <S.Theme>
-        브리더가 알려주는 반려동물 꿀정보 <ExploreAll />
+        브리더가 알려주는 반려동물 꿀정보
+        <ExploreAll href="/community/breederinformation" />
       </S.Theme>
       <InfoArticle />
 
       <S.Theme>
-        브위더 커뮤니티에 물어보세요 <ExploreAll />
+        브위더 커뮤니티에 물어보세요 <ExploreAll href="/community" />
       </S.Theme>
       <CommunityPreview />
 
       <S.Theme>
-        반려동물 분양 후기 <ExploreAll />
+        반려동물 분양 후기 <ExploreAll href="/community/review" />
       </S.Theme>
       <AdoptionReview />
     </div>
@@ -208,12 +210,13 @@ function BreederPage() {
       <BreederRankingBreederVer />
 
       <S.Theme style={{ marginTop: '70px' }}>
-        브리더에게 궁금해요! <ExploreAll />
+        브리더에게 궁금해요! <ExploreAll href="/community" />
       </S.Theme>
       <CommunityPreview />
 
       <S.Theme>
-        브리더가 알려주는 반려동물 꿀정보 <ExploreAll />
+        브리더가 알려주는 반려동물 꿀정보
+        <ExploreAll href="/community/breederinformation" />
       </S.Theme>
       <InfoArticle />
     </div>
@@ -221,13 +224,22 @@ function BreederPage() {
 }
 
 function NewsBanner() {
+  const navigate = useNavigate();
+
   return (
     <S.BannerContainer>
       <S.Button style={{ margin: '-20px' }}>
         <LeftArrow />
       </S.Button>
 
-      <S.NewsContent src={bannerimg} alt="배너 뉴스" className="bannernews" />
+      <S.NewsContent
+        src={bannerimg}
+        alt="배너 뉴스"
+        className="bannernews"
+        onClick={() => {
+          navigate('/adoptionsystem');
+        }}
+      />
 
       <S.Button style={{ margin: '-20px' }}>
         <RightArrow />
@@ -236,9 +248,17 @@ function NewsBanner() {
   );
 }
 
-function ExploreAll() {
+/* eslint-disable react/prop-types */
+function ExploreAll({ href }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(href);
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <S.LinkText>
+    <S.LinkText onClick={handleClick}>
       전체보기
       <OrangeRightArrow />
     </S.LinkText>
@@ -318,70 +338,100 @@ function BreederRankingCommonVer() {
           </S.MeetingBreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
-            <S.BreederName>1</S.BreederName>
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail1.png"
+              alt="InfoCard"
+            />
+            <S.BreederName>김기도</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 8년 · 평균 2시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
-            <S.BreederName>2</S.BreederName>
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail2.png"
+              alt="InfoCard"
+            />
+            <S.BreederName>김성조</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 25년 · 평균 2시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
-            <S.BreederName>3</S.BreederName>
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail3.png"
+              alt="InfoCard"
+            />
+            <S.BreederName>부산몬스터트랜스-권사</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 8년 · 평균 6시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
-            <S.BreederName>4</S.BreederName>
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail4.png"
+              alt="InfoCard"
+            />
+            <S.BreederName>해피켄넬</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 8년 · 평균 6시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail1.png"
+              alt="InfoCard"
+            />
             <S.BreederName>5</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 8년 · 평균 6시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail2.png"
+              alt="InfoCard"
+            />
             <S.BreederName>6</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 3년 · 평균 6시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail3.png"
+              alt="InfoCard"
+            />
             <S.BreederName>7</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 8년 · 평균 2시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail4.png"
+              alt="InfoCard"
+            />
             <S.BreederName>8</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 25년 · 평균 2시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail1.png"
+              alt="InfoCard"
+            />
             <S.BreederName>9</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 8년 · 평균 6시간 내 응답</S.BreederInfo>
           </S.BreederCard>
 
           <S.BreederCard>
-            <S.BreederProfile />
+            <S.BreederProfile
+              src="../../../public/img/breederthumbnail2.png"
+              alt="InfoCard"
+            />
             <S.BreederName>10</S.BreederName>
             <S.ReviewStars>⭐ 5.0</S.ReviewStars>
             <S.BreederInfo>경력 3년 · 평균 6시간 내 응답</S.BreederInfo>
@@ -527,9 +577,13 @@ function InfoArticle() {
         nextArrow={settings.nextArrow}
       >
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail1.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>강아지를 훈육하려면?</S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>남서연</S.ProFileName>
@@ -537,11 +591,15 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail2.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>
               견주만 휴가를 가나요, 반려견도 어쩌구 저쩌구
             </S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>써니</S.ProFileName>
@@ -549,11 +607,15 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail3.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>
               고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구
             </S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>이원비(Racdfkfekk)</S.ProFileName>
@@ -561,9 +623,13 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail4.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>견주가 처음인 당신에게</S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>해피켄넬</S.ProFileName>
@@ -571,9 +637,15 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
-            <S.InfoTitle>5</S.InfoTitle>
-          </S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail1.png"
+              alt="InfoCard"
+            />
+            <S.InfoTitle>
+              고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구
+            </S.InfoTitle>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>남서연</S.ProFileName>
@@ -581,9 +653,13 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail2.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>6</S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>써니</S.ProFileName>
@@ -591,9 +667,13 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail3.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>7</S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>이원비(Racdfkfekk)</S.ProFileName>
@@ -601,9 +681,13 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail4.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>8</S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>해피켄넬</S.ProFileName>
@@ -611,9 +695,13 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail1.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>9</S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>이원비(Racdfkfekk)</S.ProFileName>
@@ -621,9 +709,13 @@ function InfoArticle() {
         </S.InfoCard>
 
         <S.InfoCard>
-          <S.InfoCardImg>
+          <S.CardContainer>
+            <S.InfoCardImg
+              src="../../../public/img/mainpagethumbnail2.png"
+              alt="InfoCard"
+            />
             <S.InfoTitle>10</S.InfoTitle>
-          </S.InfoCardImg>
+          </S.CardContainer>
           <S.ProFileContainer>
             <S.ProfileImg />
             <S.ProFileName>해피켄넬</S.ProFileName>
@@ -676,54 +768,84 @@ function AdoptionReview() {
         nextArrow={settings.nextArrow}
       >
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail5.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>
             아주 귀엽쥬? 금방 적응해서 이젠 잘 웃네요
           </S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail6.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>최궁민 브리더님께 분양 받았습니다!</S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail7.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>이제 3주 된 애기예요~~~ 너무 예쁘죠</S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail5.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>4</S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail5.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>5</S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail5.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>6</S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail5.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>7</S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail5.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>8</S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail5.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>9</S.ReviewDetail>
         </S.ReviewCard>
 
         <S.ReviewCard>
-          <S.ReviewCardImg />
+          <S.ReviewCardImg
+            src="../../../public/img/mainpagethumbnail5.png"
+            alt="InfoCard"
+          />
           <S.ReviewDetail>10</S.ReviewDetail>
         </S.ReviewCard>
       </Slider>

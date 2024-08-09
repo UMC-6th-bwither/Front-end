@@ -190,6 +190,8 @@ export const LinkText = styled.span`
 
   display: flex;
   align-items: center;
+
+  cursor: pointer;
 `;
 
 export const PostList = styled.ul`
