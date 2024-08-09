@@ -26,6 +26,9 @@ import BreederInfoEdit from './pages/BreederInfoEdit/BreederInfoEdit';
 import Main from './pages/Main/Main';
 import ChatListGeneral from './pages/ChatListGeneral/ChatListGeneral';
 import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
+import CommunityMain from './pages/CommunityMain/CommunityMain';
+import ProfileSettingGeneral from './pages/ProfileSetting/ProfileSettingGeneral';
+import ProfileSettingBreeder from './pages/ProfileSetting/ProfileSettingBreeder';
 import Animal from './pages/MyReview/Animal/Animal';
 import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
@@ -34,14 +37,15 @@ import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
 function App() {
   return (
     <Provider store={store}>
-      <Header />
       <Router>
+        <Header />
         <Routes>
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
           <Route path="/BreederList" element={<BreederList />} />
           <Route path="/" element={<AnimalList />} />
           <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
+          <Route path="/Community" element={<CommunityMain />} />
           <Route path="/Community/Question" element={<CommunityQuestion />} />
           <Route
             path="/Community/Information"
@@ -74,6 +78,14 @@ function App() {
           <Route path="/Main" element={<Main />} />
           <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
           <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
+          <Route
+            path="/ProfileSettingGeneral"
+            element={<ProfileSettingGeneral />}
+          />
+          <Route
+            path="/ProfileSettingBreeder"
+            element={<ProfileSettingBreeder />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
