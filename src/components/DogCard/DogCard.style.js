@@ -9,6 +9,23 @@ const CardBox = styled.div`
   justify: space-between;
   opacity: 0px;
 `;
+
+const ReservationBadge = styled.div`
+  display: flex;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border-radius: 10px 0px;
+  background: #008080;
+  color: #fffdf2;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px; /* 150% */
+`;
+
 const PhotoContainer = styled.div`
   width: 188px;
   height: 188px;
@@ -77,4 +94,11 @@ const BookmarkBtn = styled.button`
   top: 5%;
 `;
 
-export { CardBox, PhotoContainer, InfoContainer, SubInfo, BookmarkBtn };
+export {
+  CardBox,
+  ReservationBadge,
+  PhotoContainer,
+  InfoContainer,
+  SubInfo,
+  BookmarkBtn,
+};
