@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import DatePicker from 'react-datepicker';
 
 export const Container = styled.div`
   display: flex;
@@ -8,6 +9,16 @@ export const Container = styled.div`
   margin: 0 auto;
   padding: 0 0 291px 0;
   padding-top: 208px;
+`;
+
+export const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999; // 모달 위에 다른 요소들이 나타나지 않도록 충분히 큰 z-index를 설정
 `;
 
 export const TopImage = styled.div`
@@ -67,6 +78,13 @@ export const ProfileIcon = styled.div`
 
 export const HiddenFileInput = styled.input`
   display: none;
+`;
+export const AbsolutePositionedModal = styled.div`
+  position: absolute;
+  z-index: 1000;
+`;
+export const ConfidenceModalWrapper = styled.div`
+  position: relative;
 `;
 
 export const ConfidenceModal = styled.div`
@@ -333,6 +351,28 @@ export const InfoItemSecond = styled.div`
   margin-bottom: 48px;
 `;
 
+export const DateInputWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+export const CalendarIcon = styled.svg`
+  position: absolute;
+  right: 10px;
+  width: 14px;
+  height: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+`;
+
+export const CustomDatePicker = styled(DatePicker)`
+  position: absolute;
+  z-index: 10;
+  top: 40px;
+  left: 0;
+`;
+
 export const InfoTitle = styled.div`
   font-family: 'Noto Sans KR';
   color: #323232;
@@ -406,6 +446,7 @@ export const InfoInputBtn = styled.button`
   font-size: 14px;
   font-weight: 350;
   line-height: 21px;
+  cursor: pointer;
 `;
 
 export const InfoInputContentLine = styled.input`
@@ -566,6 +607,7 @@ export const AnimalSelectBox = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
+  margin-bottom: 12px;
 `;
 
 export const AnimalSelect = styled.div`
@@ -574,8 +616,9 @@ export const AnimalSelect = styled.div`
   align-items: center;
   gap: 12px;
   border-radius: 21px;
-  border: 1px #e1e1e1;
-
+  white-space: nowrap;
+  border: 1px solid #e1e1e1;
+  border-radius: 21px;
   color: #737373;
   font-family: 'Noto Sans KR';
   font-size: 16px;
@@ -1252,4 +1295,11 @@ export const FinishBtn = styled.div`
   font-weight: 500;
   line-height: 24px;
   margin-top: 116px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #f57137;
+    border-color: #f57137;
+  }
 `;

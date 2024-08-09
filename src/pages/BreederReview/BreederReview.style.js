@@ -1,5 +1,94 @@
 import styled from 'styled-components';
 
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+export const IconContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+`;
+
+export const ReportIcon = styled.div`
+  cursor: pointer;
+  svg {
+    width: 32px;
+    height: 33px;
+  }
+`;
+
+export const ModalContent = styled.div`
+  background: #fff;
+  padding: 50px;
+  border-radius: 10px;
+  max-width: 600px;
+  height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+export const ModalCloseButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const ModalAuthorRatingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 15px;
+`;
+
+export const ModalAuthor = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  margin-right: 15px;
+`;
+
+export const ModalRating = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  svg {
+    margin-right: 4px;
+  }
+`;
+
+export const ModalText = styled.div`
+  font-size: 16px;
+  color: #737373;
+  line-height: 1.5;
+  text-align: center;
+`;
+
+export const LoadingSpinner = styled.div`
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+  color: #999;
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -8,6 +97,7 @@ export const Container = styled.div`
   width: 100%;
   max-width: 970px;
   margin: 0 auto;
+  padding-bottom: 294px;
 `;
 
 export const PencilIcon = styled.svg`
@@ -101,6 +191,16 @@ export const ReviewItem = styled.div`
   overflow: hidden;
   border: 2px solid rgba(241, 241, 241, 0.5);
   background: #fff;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
   &.expanded {
     display: inline-flex;
     height: 351px;
@@ -185,11 +285,4 @@ export const ReviewText = styled.div`
     -webkit-line-clamp: unset;
     display: block;
   }
-`;
-
-export const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 119px;
-  margin-bottom: 220px;
 `;

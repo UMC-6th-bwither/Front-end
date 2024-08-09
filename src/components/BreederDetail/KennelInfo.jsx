@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as A from '../../pages/BreederDetail/BreederDetail.style';
 
 const KennelInfo = React.forwardRef((props, ref) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = [
+    { id: 1, src: '/img/kennelex.png', alt: '강아지 켄넬 사진 1' },
+    { id: 2, src: '/path/to/image2.jpg', alt: '강아지 켄넬 사진 2' },
+    { id: 3, src: '/path/to/image3.jpg', alt: '강아지 켄넬 사진 3' },
+  ];
+
+  const openModal = (index) => {
+    setCurrentImage(index);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const nextImage = () => {
+    setCurrentImage((currentImage + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImage((currentImage - 1 + images.length) % images.length);
+  };
+
   return (
     <div ref={ref} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
@@ -83,16 +108,69 @@ const KennelInfo = React.forwardRef((props, ref) => {
         </A.InfoContentBox>
 
         <A.KennelImgBox>
-          <A.KennelImg>강아지 켄넬 사진 1</A.KennelImg>
-          <A.KennelImg>강아지 켄넬 사진 2</A.KennelImg>
-          <A.KennelImg>강아지 켄넬 사진 3</A.KennelImg>
+          {images.map((image, index) => (
+            <A.KennelImg key={image.id} onClick={() => openModal(index)}>
+              <img src={image.src} alt={image.alt} />
+              <A.KennelImgText>{image.alt}</A.KennelImgText>
+            </A.KennelImg>
+          ))}
         </A.KennelImgBox>
       </A.InfoItem>
       <A.Line />
+
+      {modalOpen && (
+        <A.ModalOverlay onClick={closeModal}>
+          <A.ModalContent onClick={(e) => e.stopPropagation()}>
+            <A.ModalHeader>
+              <A.CloseButton onClick={closeModal}>&times;</A.CloseButton>
+            </A.ModalHeader>
+            <A.ModalBody>
+              <A.PrevButton onClick={prevImage}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="26"
+                  viewBox="0 0 14 26"
+                  fill="none"
+                >
+                  <path
+                    d="M12.5 2L1.5 13L12.5 24"
+                    stroke="#737373"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </A.PrevButton>
+              <A.ModalImage
+                src={images[currentImage].src}
+                alt={images[currentImage].alt}
+              />
+              <A.NextButton onClick={nextImage}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="26"
+                  viewBox="0 0 14 26"
+                  fill="none"
+                >
+                  <path
+                    d="M1.5 2L12.5 13L1.5 24"
+                    stroke="#737373"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </A.NextButton>
+            </A.ModalBody>
+          </A.ModalContent>
+        </A.ModalOverlay>
+      )}
     </div>
   );
 });
 
-KennelInfo.displayName = ' KennelInfo';
+KennelInfo.displayName = 'KennelInfo';
 
 export default KennelInfo;

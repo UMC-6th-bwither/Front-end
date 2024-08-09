@@ -1,86 +1,139 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import * as R from './BreederReview.style';
-import Pagination from '../../components/Pagination/Pagination';
+import ReviewModal from '../../components/BreederReview/ReviewModal';
+
+const allReviews = [
+  {
+    id: 1,
+    image: 'https://via.placeholder.com/235',
+    author: '작성자',
+    rating: 5,
+    isNew: true,
+    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+    category: '강아지',
+  },
+  {
+    id: 2,
+    image: 'https://via.placeholder.com/235',
+    author: '작성자',
+    rating: 5,
+    isNew: true,
+    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+    category: '강아지',
+  },
+  {
+    id: 3,
+    image: 'https://via.placeholder.com/235',
+    author: '작성자',
+    rating: 5,
+    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+    category: '고양이',
+  },
+  {
+    id: 4,
+    image: '',
+    author: '작성자',
+    rating: 4,
+    text: '고양이 품종이 정말 이쁩니다!',
+    category: '고양이',
+  },
+  // ...
+  {
+    id: 14,
+    image: 'https://via.placeholder.com/235',
+    author: '작성자',
+    rating: 5,
+    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+    category: '고양이',
+  },
+];
+
+const PAGE_SIZE = 5;
 
 function BreederReview() {
-  const [activeButton, setActiveButton] = useState('전체');
+  const [activeButtons, setActiveButtons] = useState(['전체']);
   const [selectedReviewType, setSelectedReviewType] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [expandedReviewId, setExpandedReviewId] = useState(null);
-  const itemsPerPage = 16;
+  // const [expandedReviewId, setExpandedReviewId] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [readReviews, setReadReviews] = useState([]); // 읽은 리뷰 ID 목록
+  const [modalReview, setModalReview] = useState(null);
+
+  const fetchReviews = useCallback(() => {
+    setLoading(true);
+    const start = (page - 1) * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+
+    let filteredReviews = allReviews;
+
+    if (!activeButtons.includes('전체')) {
+      filteredReviews = allReviews.filter((review) =>
+        activeButtons.includes(review.category),
+      );
+    }
+
+    if (selectedReviewType === '사진 리뷰') {
+      filteredReviews = filteredReviews.filter((review) => review.image);
+    }
+
+    const newReviews = filteredReviews.slice(start, end);
+
+    if (newReviews.length < PAGE_SIZE) {
+      setHasMore(false);
+    }
+
+    setReviews((prevReviews) => [...prevReviews, ...newReviews]);
+    setLoading(false);
+  }, [page, activeButtons, selectedReviewType]);
+
+  useEffect(() => {
+    setReviews([]);
+    setPage(1);
+  }, [activeButtons, selectedReviewType]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [page, fetchReviews]);
+
+  const handleScroll = () => {
+    const scrollableHeight = document.documentElement.scrollHeight;
+    const scrolledHeight = window.innerHeight + window.scrollY;
+
+    if (scrolledHeight >= scrollableHeight && !loading && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading, hasMore]);
 
   const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
+    setActiveButtons((prevButtons) =>
+      prevButtons.includes(buttonName)
+        ? prevButtons.filter((name) => name !== buttonName)
+        : [...prevButtons, buttonName],
+    );
   };
 
   const handleReviewTypeClick = (type) => {
-    setSelectedReviewType(type);
+    setSelectedReviewType((prevType) => (prevType === type ? null : type));
   };
 
-  const handleReviewClick = (id) => {
-    setExpandedReviewId(id === expandedReviewId ? null : id);
+  const handleReviewClick = (review) => {
+    // setExpandedReviewId(review.id === expandedReviewId ? null : review.id);
+    setModalReview(review);
   };
 
-  const reviews = [
-    {
-      id: 1,
-      image: 'https://via.placeholder.com/235',
-      author: '작성자',
-      rating: 5,
-      isNew: true,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 2,
-      image: 'https://via.placeholder.com/235',
-      author: '작성자',
-      rating: 5,
-      isNew: true,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 3,
-      image: 'https://via.placeholder.com/235',
-      author: '작성자',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 4,
-      image: 'https://via.placeholder.com/235',
-      author: '작성자',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 5,
-      image: 'https://via.placeholder.com/235',
-      author: '작성자',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 6,
-      image: 'https://via.placeholder.com/235',
-      author: '작성자',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 7,
-      image: 'https://via.placeholder.com/235',
-      author: '작성자',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-    {
-      id: 8,
-      image: 'https://via.placeholder.com/235',
-      author: '작성자',
-      rating: 5,
-      text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    },
-  ];
+  const handleCloseModal = () => {
+    if (modalReview) {
+      setReadReviews((prevReadReviews) => [...prevReadReviews, modalReview.id]);
+      setModalReview(null);
+    }
+  };
 
   return (
     <R.Container>
@@ -110,19 +163,19 @@ function BreederReview() {
       <R.MiddleBox>
         <R.CommuBtnBox>
           <R.CommuBtn
-            className={activeButton === '전체' ? 'active' : ''}
+            className={activeButtons.includes('전체') ? 'active' : ''}
             onClick={() => handleButtonClick('전체')}
           >
             전체
           </R.CommuBtn>
           <R.CommuBtn
-            className={activeButton === '강아지' ? 'active' : ''}
+            className={activeButtons.includes('강아지') ? 'active' : ''}
             onClick={() => handleButtonClick('강아지')}
           >
             강아지
           </R.CommuBtn>
           <R.CommuBtn
-            className={activeButton === '고양이' ? 'active' : ''}
+            className={activeButtons.includes('고양이') ? 'active' : ''}
             onClick={() => handleButtonClick('고양이')}
           >
             고양이
@@ -155,17 +208,18 @@ function BreederReview() {
         {reviews.map((review) => (
           <R.ReviewItem
             key={review.id}
-            onClick={() => handleReviewClick(review.id)}
-            className={expandedReviewId === review.id ? 'expanded' : ''}
+            onClick={() => handleReviewClick(review)}
+            // className={expandedReviewId === review.id ? 'expanded' : ''}
           >
-            {review.isNew && <R.NewBadge>NEW</R.NewBadge>}
-
+            {!readReviews.includes(review.id) && review.isNew && (
+              <R.NewBadge>NEW</R.NewBadge>
+            )}
             <R.ReviewImage
               style={{ backgroundImage: `url(${review.image})` }}
-              className={expandedReviewId === review.id ? 'hidden' : ''}
+              // className={expandedReviewId === review.id ? 'hidden' : ''}
             />
             <R.ReviewContent
-              className={expandedReviewId === review.id ? 'expanded' : ''}
+            // className={expandedReviewId === review.id ? 'expanded' : ''}
             >
               <R.ReviewKennelName>
                 {review.author}
@@ -186,22 +240,17 @@ function BreederReview() {
                 <span>{review.rating}</span>
               </R.ReviewKennelName>
               <R.ReviewText
-                className={expandedReviewId === review.id ? 'expanded' : ''}
+              // className={expandedReviewId === review.id ? 'expanded' : ''}
               >
                 {review.text}
               </R.ReviewText>
             </R.ReviewContent>
           </R.ReviewItem>
         ))}
+        {loading && <R.LoadingSpinner>Loading...</R.LoadingSpinner>}
       </R.ReviewList>
-      <R.PaginationContainer>
-        <Pagination
-          totalItems={reviews.length}
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </R.PaginationContainer>
+
+      <ReviewModal review={modalReview} onClose={handleCloseModal} />
     </R.Container>
   );
 }
