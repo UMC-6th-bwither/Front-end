@@ -70,14 +70,18 @@ export const InputArea = styled.div`
 `;
 
 export const InputWrapper = styled.div`
+  width: 420px;
+  height: 86px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
 
-export const InputWrapper2 = styled(InputWrapper)`
+export const InputWrapper2 = styled.div`
   width: 678px;
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const InputTitle = styled.div`
@@ -144,8 +148,8 @@ export const Button = styled.button`
   }
 
   position: relative;
-  left: -100px;
-  top: -2px;
+  left: 320px;
+  top: -44px;
 
   color: #fff;
   font-family: 'Noto Sans KR';
@@ -186,8 +190,8 @@ export const PwShowIcon = styled.img`
   fill: #c5c5c5;
 
   position: relative;
-  left: -40px;
-  top: 3px;
+  left: 380px;
+  top: -34px;
 
   cursor: pointer;
   &:hover {
@@ -266,8 +270,37 @@ export const BtnWrapper1 = styled.div`
   flex-direction: column;
   gap: 18px;
 `;
+
 export const BtnWrapper2 = styled.div`
   display: flex;
   flex-direction: row;
   gap: 18px;
+`;
+
+export const CheckWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  left: 250px;
+  gap: 10px;
+`;
+
+export const CheckBox = styled.input`
+  width: 21px;
+  height: 21px;
+`;
+
+export const CheckText = styled.div`
+  color: #272727;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;
+
+export const Gap = styled.div`
+  height: 10px;
+  border: none;
 `;
