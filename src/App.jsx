@@ -1,6 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+
 import { Provider } from 'react-redux';
 import Header from './components/header/Header';
 import Footer from './components/Footer/Footer';
@@ -37,6 +38,7 @@ import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
 
 function App() {
   return (
+
     <Provider store={store}>
       <Router>
         <Header />

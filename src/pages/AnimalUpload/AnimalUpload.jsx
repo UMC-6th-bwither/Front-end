@@ -1,27 +1,77 @@
 import { useState, useRef, forwardRef } from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
 import PropTypes from 'prop-types';
-import Carousel from 'react-multi-carousel';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './AnimalUpload.style';
 import Button from '../../components/button/Button';
-import 'react-multi-carousel/lib/styles.css';
 import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
+import 'react-datepicker/dist/react-datepicker.css';
 
-function LeftArrow({ onClick }) {
-  return <A.Arrow className="left" onClick={onClick} />;
-}
-LeftArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
+const dogBreeds = [
+  '직접입력',
+  '골든 리트리버',
+  '닥스훈트',
+  '도베르만 핀셔',
+  '래브라도 레트리버',
+  '말티즈',
+  '말티푸',
+  '미니어처 슈나우저',
+  '미니어처 핀셔',
+  '베들링턴 테리어',
+  '보더콜리',
+  '비글',
+  '비숑프리제',
+  '사모예드',
+  '시바이누',
+  '시베리아허스키',
+  '시추',
+  '알래스칸 맬러뮤트',
+  '요크셔테이러',
+  '웰시코기',
+  '이탈리안 그레이 하운드',
+  '재페니스 스피츠',
+  '잭 러셀 테리어',
+  '저먼 셰퍼드',
+  '차우차우',
+  '치와와',
+  '파피용',
+  '퍼그',
+  '포메라니안',
+  '푸들',
+  '프렌치불독',
+];
 
-function RightArrow({ onClick }) {
-  return <A.Arrow className="right" onClick={onClick} />;
-}
-RightArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
+const catBreeds = [
+  '직접입력',
+  '노르웨이 숲',
+  '데본 렉스',
+  '돈스코이',
+  '랙돌',
+  '러시안 블루',
+  '맹크스',
+  '먼치킨',
+  '메인 쿤',
+  '민스킨',
+  '벵갈',
+  '봄베이',
+  '브리티시 숏헤어',
+  '사바나',
+  '샴',
+  '소말리',
+  '소코케',
+  '스코티쉬 폴드',
+  '스핑크스',
+  '아메리칸 밥테일',
+  '아메리칸 숏헤어',
+  '아메리칸 컬',
+  '아비니시안',
+  '엑조틱 숏헤어',
+  '오리엔탈',
+  '카오 마니',
+  '코리안 숏헤어',
+  '터키쉬 앙고라',
+  '페르시안',
+];
 
 const DogInfoInput = forwardRef(({ value, onClick, placeholder }, ref) => (
   <A.DogInfoInput
@@ -52,22 +102,14 @@ function AnimalUpload() {
   const [birthDate, setBirthDate] = useState(null);
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
-
+  const [name, setName] = useState('');
+  const [images, setImages] = useState([]);
+  const [pedigreeFile, setPedigreeFile] = useState(null);
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedAnimal, setSelectedAnimal] = useState('');
+  const [selectedBreed, setSelectedBreed] = useState('');
+  const [customBreed, setCustomBreed] = useState('');
   const menuItems = ['강아지 정보', '부모 강아지 정보'];
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 13,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 13,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 14,
-    },
-  };
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -78,44 +120,152 @@ function AnimalUpload() {
     }
   };
 
+  const handleImageUpload = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length + images.length > 10) {
+      // eslint-disable-next-line no-alert
+      alert('최대 10개의 이미지만 업로드할 수 있습니다.');
+      return;
+    }
+    setImages((prevImages) => [
+      ...prevImages,
+      ...files.slice(0, 10 - images.length),
+    ]);
+  };
+
+  const handlePedigreeUpload = (event) => {
+    const file = event.target.files[0];
+    setPedigreeFile(file);
+  };
+
+  const handleNameChange = (event) => {
+    const inputName = event.target.value;
+    if (inputName.length <= 30) {
+      setName(inputName);
+      event.target.setCustomValidity('');
+    } else {
+      event.target.setCustomValidity('이름은 30자 이내로 입력해주세요.');
+    }
+  };
+
+  const handleGenderSelection = (gender) => {
+    setSelectedGender(gender);
+  };
+
+  const handleAnimalSelection = (animal) => {
+    setSelectedAnimal(animal);
+    setSelectedBreed('');
+    setCustomBreed('');
+  };
+
+  const handleBreedChange = (event) => {
+    setSelectedBreed(event.target.value);
+    if (event.target.value !== '직접입력') {
+      setCustomBreed('');
+    }
+  };
+
+  const handleCustomBreedChange = (event) => {
+    setCustomBreed(event.target.value);
+  };
+
+  const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
+
   return (
     <A.Container>
       <A.Title>관리 중인 동물 정보 업로드</A.Title>
       <A.Card>
-        <A.Image>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="48"
-            height="48"
-            viewBox="0 0 48 48"
-            fill="none"
-          >
-            <path
-              d="M24 0C24.7957 0 25.5587 0.316071 26.1213 0.87868C26.6839 1.44129 27 2.20435 27 3V21H45C45.7957 21 46.5587 21.3161 47.1213 21.8787C47.6839 22.4413 48 23.2043 48 24C48 24.7957 47.6839 25.5587 47.1213 26.1213C46.5587 26.6839 45.7957 27 45 27H27V45C27 45.7957 26.6839 46.5587 26.1213 47.1213C25.5587 47.6839 24.7957 48 24 48C23.2043 48 22.4413 47.6839 21.8787 47.1213C21.3161 46.5587 21 45.7957 21 45V27H3C2.20435 27 1.44129 26.6839 0.87868 26.1213C0.316071 25.5587 0 24.7957 0 24C0 23.2043 0.316071 22.4413 0.87868 21.8787C1.44129 21.3161 2.20435 21 3 21H21V3C21 2.20435 21.3161 1.44129 21.8787 0.87868C22.4413 0.316071 23.2043 0 24 0Z"
-              fill="#C5C5C5"
-            />
-          </svg>
-          사진 파일 첨부
+        <A.Image hasImage={images.length > 0}>
+          {images.length > 0 ? (
+            <img src={URL.createObjectURL(images[0])} alt="Uploaded" />
+          ) : (
+            <label htmlFor="file-upload">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+              >
+                <path
+                  d="M24 0C24.7957 0 25.5587 0.316071 26.1213 0.87868C26.6839 1.44129 27 2.20435 27 3V21H45C45.7957 21 46.5587 21.3161 47.1213 21.8787C47.6839 22.4413 48 23.2043 48 24C48 24.7957 47.6839 25.5587 47.1213 26.1213C46.5587 26.6839 45.7957 27 45 27H27V45C27 45.7957 26.6839 46.5587 26.1213 47.1213C25.5587 47.6839 24.7957 48 24 48C23.2043 48 22.4413 47.6839 21.8787 47.1213C21.3161 46.5587 21 45.7957 21 45V27H3C2.20435 27 1.44129 26.6839 0.87868 26.1213C0.316071 25.5587 0 24.7957 0 24C0 23.2043 0.316071 22.4413 0.87868 21.8787C1.44129 21.3161 2.20435 21 3 21H21V3C21 2.20435 21.3161 1.44129 21.8787 0.87868C22.4413 0.316071 23.2043 0 24 0Z"
+                  fill="#C5C5C5"
+                />
+              </svg>
+              사진 파일 첨부
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                style={{ display: 'none' }}
+              />
+            </label>
+          )}
         </A.Image>
         <A.InfoContainer>
-          <A.Name type="text" placeholder="이름을 입력하세요" />
+          <A.Name
+            type="text"
+            maxLength={30}
+            value={name}
+            onChange={handleNameChange}
+            placeholder="이름을 입력하세요"
+          />
           <A.AnimalSelectBox>
-            <A.AnimalSelect>강아지</A.AnimalSelect>
-            <A.AnimalSelect>고양이</A.AnimalSelect>
+            <A.AnimalSelect
+              selected={selectedAnimal === '강아지'}
+              onClick={() => handleAnimalSelection('강아지')}
+            >
+              강아지
+            </A.AnimalSelect>
+            <A.AnimalSelect
+              selected={selectedAnimal === '고양이'}
+              onClick={() => handleAnimalSelection('고양이')}
+            >
+              고양이
+            </A.AnimalSelect>
           </A.AnimalSelectBox>
+
           <A.DogInfo>
             <div>
               <strong>종</strong>
-              <A.DogInfoText
-                type="text"
-                placeholder="정확한 품종명을 입력하세요"
-              />
+              <A.BreedSelect value={selectedBreed} onChange={handleBreedChange}>
+                <A.BreedOption value="">
+                  정확한 품종명을 선택하세요
+                </A.BreedOption>
+                {breedOptions.map((breed) => (
+                  <A.BreedOption key={breed} value={breed}>
+                    {breed}
+                  </A.BreedOption>
+                ))}
+              </A.BreedSelect>
+
+              {selectedBreed === '직접입력' && (
+                <A.DogInfoText
+                  type="text"
+                  placeholder="품종을 입력하세요"
+                  value={customBreed}
+                  onChange={handleCustomBreedChange}
+                />
+              )}
             </div>
+
             <div>
               <strong>성별</strong>
               <A.AnimalSelectBox>
-                <A.AnimalSelect>수컷</A.AnimalSelect>
-                <A.AnimalSelect>암컷</A.AnimalSelect>
+                <A.AnimalSelect
+                  selected={selectedGender === '수컷'}
+                  onClick={() => handleGenderSelection('수컷')}
+                >
+                  수컷
+                </A.AnimalSelect>
+                <A.AnimalSelect
+                  selected={selectedGender === '암컷'}
+                  onClick={() => handleGenderSelection('암컷')}
+                >
+                  암컷
+                </A.AnimalSelect>
               </A.AnimalSelectBox>
             </div>
             <div>
@@ -125,8 +275,10 @@ function AnimalUpload() {
                   selected={birthDate}
                   onChange={(date) => setBirthDate(date)}
                   customInput={<DogInfoInput />}
-                  dateFormat="yyyy/MM/dd"
+                  locale="ko"
                   popperPlacement="right-start"
+                  dateFormat="yyyy/MM/dd"
+                  calendarContainer={A.CalendarContainer}
                 />
                 <A.SvgIcon
                   xmlns="http://www.w3.org/2000/svg"
@@ -144,34 +296,31 @@ function AnimalUpload() {
             </div>
           </A.DogInfo>
           <A.ButtonContainer>
-            <Button whiteBorder>혈통서 업로드</Button>
-            <A.ButtonFileName>혈통서 파일명.jpg</A.ButtonFileName>
+            <Button whiteBorder>
+              혈통서 업로드
+              <input
+                id="pedigree-upload"
+                type="file"
+                accept="image/*"
+                onChange={handlePedigreeUpload}
+                style={{ display: 'none' }}
+              />
+            </Button>
+            <A.ButtonFileName>
+              {pedigreeFile ? pedigreeFile.name : '파일을 선택하세요'}
+            </A.ButtonFileName>
           </A.ButtonContainer>
         </A.InfoContainer>
       </A.Card>
-      <A.SliderContainer>
-        <Carousel
-          responsive={responsive}
-          customLeftArrow={<LeftArrow />}
-          customRightArrow={<RightArrow />}
-        >
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail1" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail1" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail2" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail3" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail4" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail5" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail6" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail7" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail8" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail9" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail10" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail11" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail12" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail13" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail14" />
-        </Carousel>
-      </A.SliderContainer>
+      <A.ThumbnailContainer>
+        {images.slice(1).map((image, index) => (
+          <A.Thumbnail
+            key={image.name || index}
+            src={URL.createObjectURL(image)}
+            alt={`thumbnail${index + 1}`}
+          />
+        ))}
+      </A.ThumbnailContainer>
       <A.InfoWrapper>
         <MenuSelect
           menus={menuItems}
@@ -179,8 +328,11 @@ function AnimalUpload() {
           setActiveMenu={handleMenuClick}
         />
         <A.MenuContentWrapper>
-          <UploadDogInfo ref={dogInfoRef} />
-          <UploadParentDogInfo ref={parentDogInfoRef} />
+          <UploadDogInfo ref={dogInfoRef} name={name} />
+          <UploadParentDogInfo
+            ref={parentDogInfoRef}
+            selectedAnimal={selectedAnimal}
+          />
         </A.MenuContentWrapper>
       </A.InfoWrapper>
       <A.ConfirmBtn>확인</A.ConfirmBtn>
