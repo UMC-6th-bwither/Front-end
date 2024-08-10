@@ -30,6 +30,23 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
   };
 
   DogInfoInput.displayName = 'DogInfoInput';
+
+  const handleNameChange = (event) => {
+    if (event.target.value.length <= 30) {
+      event.target.setCustomValidity('');
+    } else {
+      event.target.setCustomValidity('이름은 30자 이내로 입력해주세요.');
+    }
+  };
+
+  const handleDescriptionChange = (event) => {
+    if (event.target.value.length <= 500) {
+      event.target.setCustomValidity('');
+    } else {
+      event.target.setCustomValidity('글자 수는 10,000자 이내로 제한됩니다.');
+    }
+  };
+
   return (
     <div ref={ref} style={{ marginBottom: '96px' }}>
       <A.ParentInfoTitleBox>
@@ -54,7 +71,12 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
         </A.ParentDogImage>
         <A.ParentDogInfo>
           <A.ParentDogNameBox>
-            <A.ParentDogName type="text" placeholder="이름을 입력하세요" />
+            <A.ParentDogName
+              type="text"
+              maxLength={30}
+              onChange={handleNameChange}
+              placeholder="이름을 입력하세요"
+            />
             <A.ParentDogGenderBox>
               <A.ParentDogGender>모</A.ParentDogGender>
               <svg
@@ -105,6 +127,8 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
             <A.ParentDogLabel>유전질환</A.ParentDogLabel>
             <A.ParentDogValueInput
               type="text"
+              maxLength={500}
+              onChange={handleDescriptionChange}
               placeholder="유전질환을 입력하세요"
             />
           </A.ParentDogDetail>
@@ -112,6 +136,8 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
             <A.ParentDogLabel>성격</A.ParentDogLabel>
             <A.ParentDogValueInput
               type="text"
+              maxLength={500}
+              onChange={handleDescriptionChange}
               placeholder="성격에 대해 간략히 적어주세요"
             />
           </A.ParentDogDetail>
@@ -197,7 +223,12 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
         </A.ParentDogImage>
         <A.ParentDogInfo>
           <A.ParentDogNameBox>
-            <A.ParentDogName type="text" placeholder="이름을 입력하세요" />
+            <A.ParentDogName
+              type="text"
+              maxLength={30}
+              onChange={handleNameChange}
+              placeholder="이름을 입력하세요"
+            />
             <A.ParentDogGenderBox>
               <A.ParentDogGender>부</A.ParentDogGender>
               <svg
@@ -248,6 +279,8 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
             <A.ParentDogLabel>유전질환</A.ParentDogLabel>
             <A.ParentDogValueInput
               type="text"
+              maxLength={500}
+              onChange={handleDescriptionChange}
               placeholder="유전질환을 입력하세요"
             />
           </A.ParentDogDetail>
@@ -255,6 +288,8 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
             <A.ParentDogLabel>성격</A.ParentDogLabel>
             <A.ParentDogValueInput
               type="text"
+              maxLength={500}
+              onChange={handleDescriptionChange}
               placeholder="성격에 대해 간략히 적어주세요"
             />
           </A.ParentDogDetail>

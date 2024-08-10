@@ -2,14 +2,23 @@ import React from 'react';
 import * as A from '../../pages/AnimalUpload/AnimalUpload.style';
 
 const UploadDogInfo = React.forwardRef((props, ref) => {
+
+  const handleDescriptionChange = (event) => {
+    if (event.target.value.length <= 10000) {
+      event.target.setCustomValidity('');
+    } else {
+      event.target.setCustomValidity('글자 수는 10,000자 이내로 제한됩니다.');
+    }
+  };
+
   return (
     <div ref={ref} style={{ marginBottom: '96px' }}>
       <A.InfoItem>
         <A.DogInfoTitle>(이름)의 성격은요</A.DogInfoTitle>
-        <A.InfoInput placeholder="강아지의 자세한 성격에 대해 알려주세요" />
+        <A.InfoInput onChange={handleDescriptionChange} placeholder="강아지의 자세한 성격에 대해 알려주세요" />
       </A.InfoItem>
       <A.InfoItem>
-        <A.DogInfoTitle>(이름)는 이런 분양자에게 잘 맞아요</A.DogInfoTitle>
+        <A.DogInfoTitle onChange={handleDescriptionChange} >(이름)는 이런 분양자에게 잘 맞아요</A.DogInfoTitle>
         <A.InfoInput placeholder="강아지와 잘 맞을 분양자의 특징에 대해 알려주세요" />
       </A.InfoItem>
       <A.InfoItem>

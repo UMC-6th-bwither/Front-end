@@ -40,22 +40,10 @@ function AnimalUpload() {
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
   const [images, setImages] = useState([]);
+  const [pedigreeFile, setPedigreeFile] = useState(null);
 
   const menuItems = ['강아지 정보', '부모 강아지 정보'];
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 13,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 13,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 14,
-    },
-  };
+  
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -73,6 +61,27 @@ function AnimalUpload() {
       return;
     }
     setImages((prevImages) => [...prevImages, ...files.slice(0, 10 - images.length)]);
+  };
+
+  const handlePedigreeUpload = (event) => {
+    const file = event.target.files[0];
+    setPedigreeFile(file);
+  };
+
+  const handleNameChange = (event) => {
+    if (event.target.value.length <= 30) {
+      event.target.setCustomValidity('');
+    } else {
+      event.target.setCustomValidity('이름은 30자 이내로 입력해주세요.');
+    }
+  };
+
+  const handleDescriptionChange = (event) => {
+    if (event.target.value.length <= 10000) {
+      event.target.setCustomValidity('');
+    } else {
+      event.target.setCustomValidity('글자 수는 10,000자 이내로 제한됩니다.');
+    }
   };
 
   return (
@@ -109,7 +118,8 @@ function AnimalUpload() {
           )}
         </A.Image>
         <A.InfoContainer>
-          <A.Name type="text" placeholder="이름을 입력하세요" />
+          <A.Name type="text" maxLength={30}
+            onChange={handleNameChange} placeholder="이름을 입력하세요" />
           <A.AnimalSelectBox>
             <A.AnimalSelect>강아지</A.AnimalSelect>
             <A.AnimalSelect>고양이</A.AnimalSelect>
@@ -155,8 +165,15 @@ function AnimalUpload() {
             </div>
           </A.DogInfo>
           <A.ButtonContainer>
-            <Button whiteBorder>혈통서 업로드</Button>
-            <A.ButtonFileName>혈통서 파일명.jpg</A.ButtonFileName>
+            <Button whiteBorder>혈통서 업로드<input
+                id="pedigree-upload"
+                type="file"
+                accept="image/*"
+                onChange={handlePedigreeUpload}
+                style={{ display: 'none' }}
+              /></Button>
+            <A.ButtonFileName>              {pedigreeFile ? pedigreeFile.name : '파일을 선택하세요'}
+            </A.ButtonFileName>
           </A.ButtonContainer>
         </A.InfoContainer>
       </A.Card>
@@ -172,8 +189,8 @@ function AnimalUpload() {
           setActiveMenu={handleMenuClick}
         />
         <A.MenuContentWrapper>
-          <UploadDogInfo ref={dogInfoRef} />
-          <UploadParentDogInfo ref={parentDogInfoRef} />
+          <UploadDogInfo ref={dogInfoRef}/>
+          <UploadParentDogInfo ref={parentDogInfoRef}/>
         </A.MenuContentWrapper>
       </A.InfoWrapper>
       <A.ConfirmBtn>확인</A.ConfirmBtn>

@@ -49,11 +49,10 @@ export const Image = styled.div`
   background-color: #f4f4f4;
 
   label {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-      gap: 10px;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
   img {
     width: 100%;
@@ -272,7 +271,7 @@ export const Thumbnail = styled.img`
   width: 60px;
   height: 60px;
   object-fit: cover;
-  margin-right:12px;
+  margin-right: 12px;
   border-radius: 4px;
 `;
 
@@ -539,4 +538,10 @@ export const ConfirmBtn = styled.button`
   line-height: 30px;
   letter-spacing: -0.5px;
   margin-top: 209px;
+  cursor: pointer;
+
+  &:hover {
+    background: #f57137;
+    border-color: #f57137;
+  }
 `;
