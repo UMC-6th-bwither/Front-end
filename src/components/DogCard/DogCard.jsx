@@ -23,6 +23,7 @@ function DogCard({
   };
   return (
     <S.CardBox>
+      {waitlistCount > 0 && <S.ReservationBadge>예약중</S.ReservationBadge>}
       <S.PhotoContainer>
         <img src={photo} alt={name} className="photo" />
       </S.PhotoContainer>

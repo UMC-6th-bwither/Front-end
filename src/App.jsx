@@ -1,8 +1,12 @@
+/* eslint-disable import/no-unresolved */
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import { Provider } from 'react-redux';
 import Header from './components/header/Header';
 import Footer from './components/Footer/Footer';
+import store from './redux/store';
 import AnimalList from './pages/AnimalList/AnimalList';
+import BreederList from './pages/BreederList/BreederList';
 import NotFound from './pages/NotFound/NotFound';
 import ButtonBadgeSample from './pages/ButtonBadgeSample/ButtonBadgeSample';
 import CommunityQuestion from './pages/Community/Question/CommunityQuestion';
@@ -19,18 +23,30 @@ import BreederDetail from './pages/BreederDetail/BreederDetail';
 import BwitherReview from './pages/BwitherReview/BwitherReview';
 import BreederReview from './pages/BreederReview/BreederReview';
 import BreederInfoEdit from './pages/BreederInfoEdit/BreederInfoEdit';
+import Main from './pages/Main/Main';
 import ChatListGeneral from './pages/ChatListGeneral/ChatListGeneral';
 import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
 import WritingFormGeneral from './pages/WritingFormGeneral/WritingFormGeneral';
+import CommunityMain from './pages/CommunityMain/CommunityMain';
+import ProfileSettingGeneral from './pages/ProfileSetting/ProfileSettingGeneral';
+import ProfileSettingBreeder from './pages/ProfileSetting/ProfileSettingBreeder';
+import Animal from './pages/MyReview/Animal/Animal';
+import Breeder from './pages/MyReview/Breeder/Breeder';
+import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
+import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
 
 function App() {
   return (
-    <>
-      <Header />
+    <Provider store={store}>
       <Router>
+        <Header />
         <Routes>
+          <Route path="MyReview/Animal" element={<Animal />} />
+          <Route path="MyReview/Breeder" element={<Breeder />} />
+          <Route path="/BreederList" element={<BreederList />} />
           <Route path="/" element={<AnimalList />} />
           <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
+          <Route path="/Community" element={<CommunityMain />} />
           <Route path="/Community/Question" element={<CommunityQuestion />} />
           <Route
             path="/Community/Information"
@@ -49,19 +65,34 @@ function App() {
             path="/waitinganimal-detail"
             element={<WaitingAnimalDetail />}
           />
+          <Route
+            path="/waitinganimal-detail"
+            element={<WaitingAnimalDetail />}
+          />
           <Route path="/animal-upload" element={<AnimalUpload />} />
           <Route path="/breeder-detail" element={<BreederDetail />} />
           <Route path="/bwither-review" element={<BwitherReview />} />
           <Route path="/breeder-review" element={<BreederReview />} />
+          <Route path="/MypageGeneral" element={<MypageGeneral />} />
+          <Route path="/MypageBreeder" element={<MypageBreeder />} />
           <Route path="/breederinfo-edit" element={<BreederInfoEdit />} />
+          <Route path="/Main" element={<Main />} />
           <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
           <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
           <Route path="/WritingFormGeneral" element={<WritingFormGeneral />} />
+          <Route
+            path="/ProfileSettingGeneral"
+            element={<ProfileSettingGeneral />}
+          />
+          <Route
+            path="/ProfileSettingBreeder"
+            element={<ProfileSettingBreeder />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
       <Footer />
-    </>
+    </Provider>
   );
 }
 

@@ -16,9 +16,7 @@ export const TopImage = styled.div`
   left: 0;
   width: 100%;
   height: 208px;
-  background: url('/public/img/breederdetailbackimg.jpg') no-repeat center
-    calc(50% - 20px);
-  background-color: lightgray;
+  background: url(${(props) => props.image}) no-repeat center calc(50% - 20px);
   background-size: cover;
 `;
 
@@ -36,7 +34,7 @@ export const OverlappingImage = styled.div`
   left: 16px;
   width: 120px;
   height: 120px;
-  background-color: #000;
+  background-image: url(${(props) => props.image});
   background-size: cover;
   background-position: center;
   border-radius: 18px;
@@ -204,6 +202,102 @@ export const BreederInfoBottomReviewText2 = styled.div`
   font-size: 12px;
   font-weight: 350;
   line-height: 18px;
+`;
+
+export const ContentMoreButton = styled.div`
+  color: #fe834d;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 16px;
+  svg {
+    transition: transform 0.3s;
+    transform: ${(props) =>
+      props.showMore ? 'rotate(180deg)' : 'rotate(0deg)'};
+  }
+`;
+
+// 켄넬 이미지 모달
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+export const ModalContent = styled.div`
+  background-color: white;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 800px;
+  height: 80%;
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
+export const ModalHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #d9d9d9;
+`;
+
+export const ModalBody = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+export const ModalImage = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+`;
+
+export const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+`;
+
+export const PrevButton = styled.button`
+  position: absolute;
+  left: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+`;
+
+export const NextButton = styled.button`
+  position: absolute;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
 `;
 
 export const ReviewEvent = styled.div`
@@ -405,12 +499,29 @@ export const MiniContent2 = styled.div`
   line-height: 21px;
 `;
 
+export const CertificateImgBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+  width: calc(5 * 150px + 4 * 14px);
+`;
+
 export const CertificateImg = styled.div`
   width: 120px;
   height: 120px;
-  border-radius: 8px;
   border: 2px solid rgba(241, 241, 241, 0.5);
-  background-color: tomato;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+  }
 `;
 
 export const Line = styled.div`
@@ -432,11 +543,16 @@ export const KennelImg = styled.div`
   width: 150px;
   height: 150px;
   border-radius: 12px;
-  background-color: tomato;
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: 0 0 12px 14px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+  }
 `;
 
 export const KennelImgText = styled.div`
@@ -444,6 +560,37 @@ export const KennelImgText = styled.div`
   left: 14px;
   bottom: 12px;
   color: white;
+  white-space: nowrap;
+  font-family: 'Noto Sans KR';
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  line-height: 22px;
+`;
+
+export const CareImgBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 28px;
+  width: calc(5 * 150px + 4 * 14px);
+`;
+
+export const CareImg = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+  }
 `;
 
 export const ReviewScoreBox = styled.div`
