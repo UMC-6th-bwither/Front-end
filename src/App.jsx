@@ -30,17 +30,19 @@ import Animal from './pages/MyReview/Animal/Animal';
 import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
 import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
+import BreederAnimalList from './pages/BreederAnimalList/BreederAnimalList';
 
 function App() {
   return (
     <Provider store={store}>
-      <Header />
       <Router>
+        <Header />
         <Routes>
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
           <Route path="/BreederList" element={<BreederList />} />
           <Route path="/" element={<AnimalList />} />
+          <Route path="/BreederAnimalList" element={<BreederAnimalList />} />
           <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
           <Route path="/Community/Question" element={<CommunityQuestion />} />
           <Route
