@@ -1,7 +1,7 @@
 import { useState, useRef, forwardRef } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import PropTypes from 'prop-types';
-import Carousel from 'react-multi-carousel';
+
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './AnimalUpload.style';
 import Button from '../../components/button/Button';
@@ -9,6 +9,71 @@ import 'react-multi-carousel/lib/styles.css';
 import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
 
+const dogBreeds = [
+  '직접입력',
+  '골든 리트리버',
+  '닥스훈트',
+  '도베르만 핀셔',
+  '래브라도 레트리버',
+  '말티즈',
+  '말티푸',
+  '미니어처 슈나우저',
+  '미니어처 핀셔',
+  '베들링턴 테리어',
+  '보더콜리',
+  '비글',
+  '비숑프리제',
+  '사모예드',
+  '시바이누',
+  '시베리아허스키',
+  '시추',
+  '알래스칸 맬러뮤트',
+  '요크셔테이러',
+  '웰시코기',
+  '이탈리안 그레이 하운드',
+  '재페니스 스피츠',
+  '잭 러셀 테리어',
+  '저먼 셰퍼드',
+  '차우차우',
+  '치와와',
+  '파피용',
+  '퍼그',
+  '포메라니안',
+  '푸들',
+  '프렌치불독',
+];
+
+const catBreeds = [
+  '직접입력',
+  '노르웨이 숲',
+  '데본 렉스',
+  '돈스코이',
+  '랙돌',
+  '러시안 블루',
+  '맹크스',
+  '먼치킨',
+  '메인 쿤',
+  '민스킨',
+  '벵갈',
+  '봄베이',
+  '브리티시 숏헤어',
+  '사바나',
+  '샴',
+  '소말리',
+  '소코케',
+  '스코티쉬 폴드',
+  '스핑크스',
+  '아메리칸 밥테일',
+  '아메리칸 숏헤어',
+  '아메리칸 컬',
+  '아비니시안',
+  '엑조틱 숏헤어',
+  '오리엔탈',
+  '카오 마니',
+  '코리안 숏헤어',
+  '터키쉬 앙고라',
+  '페르시안',
+];
 
 const DogInfoInput = forwardRef(({ value, onClick, placeholder }, ref) => (
   <A.DogInfoInput
@@ -41,9 +106,10 @@ function AnimalUpload() {
   const parentDogInfoRef = useRef(null);
   const [images, setImages] = useState([]);
   const [pedigreeFile, setPedigreeFile] = useState(null);
-
+  const [selectedAnimal, setSelectedAnimal] = useState('');
+  const [selectedBreed, setSelectedBreed] = useState('');
+  const [customBreed, setCustomBreed] = useState('');
   const menuItems = ['강아지 정보', '부모 강아지 정보'];
-  
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -60,7 +126,10 @@ function AnimalUpload() {
       alert('최대 10개의 이미지만 업로드할 수 있습니다.');
       return;
     }
-    setImages((prevImages) => [...prevImages, ...files.slice(0, 10 - images.length)]);
+    setImages((prevImages) => [
+      ...prevImages,
+      ...files.slice(0, 10 - images.length),
+    ]);
   };
 
   const handlePedigreeUpload = (event) => {
@@ -76,20 +145,31 @@ function AnimalUpload() {
     }
   };
 
-  const handleDescriptionChange = (event) => {
-    if (event.target.value.length <= 10000) {
-      event.target.setCustomValidity('');
-    } else {
-      event.target.setCustomValidity('글자 수는 10,000자 이내로 제한됩니다.');
+  const handleAnimalSelection = (animal) => {
+    setSelectedAnimal(animal);
+    setSelectedBreed('');
+    setCustomBreed('');
+  };
+
+  const handleBreedChange = (event) => {
+    setSelectedBreed(event.target.value);
+    if (event.target.value !== '직접입력') {
+      setCustomBreed('');
     }
   };
+
+  const handleCustomBreedChange = (event) => {
+    setCustomBreed(event.target.value);
+  };
+
+  const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
 
   return (
     <A.Container>
       <A.Title>관리 중인 동물 정보 업로드</A.Title>
       <A.Card>
-      <A.Image hasImage={images.length > 0}>
-      {images.length > 0 ? (
+        <A.Image hasImage={images.length > 0}>
+          {images.length > 0 ? (
             <img src={URL.createObjectURL(images[0])} alt="Uploaded" />
           ) : (
             <label htmlFor="file-upload">
@@ -118,20 +198,51 @@ function AnimalUpload() {
           )}
         </A.Image>
         <A.InfoContainer>
-          <A.Name type="text" maxLength={30}
-            onChange={handleNameChange} placeholder="이름을 입력하세요" />
+          <A.Name
+            type="text"
+            maxLength={30}
+            onChange={handleNameChange}
+            placeholder="이름을 입력하세요"
+          />
           <A.AnimalSelectBox>
-            <A.AnimalSelect>강아지</A.AnimalSelect>
-            <A.AnimalSelect>고양이</A.AnimalSelect>
+            <A.AnimalSelect
+              selected={selectedAnimal === '강아지'}
+              onClick={() => handleAnimalSelection('강아지')}
+            >
+              강아지
+            </A.AnimalSelect>
+            <A.AnimalSelect
+              selected={selectedAnimal === '고양이'}
+              onClick={() => handleAnimalSelection('고양이')}
+            >
+              고양이
+            </A.AnimalSelect>
           </A.AnimalSelectBox>
+
           <A.DogInfo>
             <div>
               <strong>종</strong>
-              <A.DogInfoText
-                type="text"
-                placeholder="정확한 품종명을 입력하세요"
-              />
+              <A.BreedSelect value={selectedBreed} onChange={handleBreedChange}>
+                <A.BreedOption value="">
+                  정확한 품종명을 선택하세요
+                </A.BreedOption>
+                {breedOptions.map((breed) => (
+                  <A.BreedOption key={breed} value={breed}>
+                    {breed}
+                  </A.BreedOption>
+                ))}
+              </A.BreedSelect>
+
+              {selectedBreed === '직접입력' && (
+                <A.DogInfoText
+                  type="text"
+                  placeholder="품종을 입력하세요"
+                  value={customBreed}
+                  onChange={handleCustomBreedChange}
+                />
+              )}
             </div>
+
             <div>
               <strong>성별</strong>
               <A.AnimalSelectBox>
@@ -165,23 +276,32 @@ function AnimalUpload() {
             </div>
           </A.DogInfo>
           <A.ButtonContainer>
-            <Button whiteBorder>혈통서 업로드<input
+            <Button whiteBorder>
+              혈통서 업로드
+              <input
                 id="pedigree-upload"
                 type="file"
                 accept="image/*"
                 onChange={handlePedigreeUpload}
                 style={{ display: 'none' }}
-              /></Button>
-            <A.ButtonFileName>              {pedigreeFile ? pedigreeFile.name : '파일을 선택하세요'}
+              />
+            </Button>
+            <A.ButtonFileName>
+              {' '}
+              {pedigreeFile ? pedigreeFile.name : '파일을 선택하세요'}
             </A.ButtonFileName>
           </A.ButtonContainer>
         </A.InfoContainer>
       </A.Card>
-       <A.ThumbnailContainer>
-       {images.slice(1).map((image, index) => (
-            <A.Thumbnail key={index} src={URL.createObjectURL(image)} alt={`thumbnail${index + 1}`} />
-          ))}
-        </A.ThumbnailContainer>
+      <A.ThumbnailContainer>
+        {images.slice(1).map((image, index) => (
+          <A.Thumbnail
+            key={index}
+            src={URL.createObjectURL(image)}
+            alt={`thumbnail${index + 1}`}
+          />
+        ))}
+      </A.ThumbnailContainer>
       <A.InfoWrapper>
         <MenuSelect
           menus={menuItems}
@@ -189,8 +309,11 @@ function AnimalUpload() {
           setActiveMenu={handleMenuClick}
         />
         <A.MenuContentWrapper>
-          <UploadDogInfo ref={dogInfoRef}/>
-          <UploadParentDogInfo ref={parentDogInfoRef}/>
+          <UploadDogInfo ref={dogInfoRef} name={name} />
+          <UploadParentDogInfo
+            ref={parentDogInfoRef}
+            selectedAnimal={selectedAnimal}
+          />
         </A.MenuContentWrapper>
       </A.InfoWrapper>
       <A.ConfirmBtn>확인</A.ConfirmBtn>

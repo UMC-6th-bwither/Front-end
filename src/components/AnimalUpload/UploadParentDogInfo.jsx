@@ -1,10 +1,77 @@
 import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
-
 import * as A from '../../pages/AnimalUpload/AnimalUpload.style';
 
-const UploadParentDogInfo = React.forwardRef((props, ref) => {
+const dogBreeds = [
+  '직접입력',
+  '골든 리트리버',
+  '닥스훈트',
+  '도베르만 핀셔',
+  '래브라도 레트리버',
+  '말티즈',
+  '말티푸',
+  '미니어처 슈나우저',
+  '미니어처 핀셔',
+  '베들링턴 테리어',
+  '보더콜리',
+  '비글',
+  '비숑프리제',
+  '사모예드',
+  '시바이누',
+  '시베리아허스키',
+  '시추',
+  '알래스칸 맬러뮤트',
+  '요크셔테이러',
+  '웰시코기',
+  '이탈리안 그레이 하운드',
+  '재페니스 스피츠',
+  '잭 러셀 테리어',
+  '저먼 셰퍼드',
+  '차우차우',
+  '치와와',
+  '파피용',
+  '퍼그',
+  '포메라니안',
+  '푸들',
+  '프렌치불독',
+];
+
+const catBreeds = [
+  '직접입력',
+  '노르웨이 숲',
+  '데본 렉스',
+  '돈스코이',
+  '랙돌',
+  '러시안 블루',
+  '맹크스',
+  '먼치킨',
+  '메인 쿤',
+  '민스킨',
+  '벵갈',
+  '봄베이',
+  '브리티시 숏헤어',
+  '사바나',
+  '샴',
+  '소말리',
+  '소코케',
+  '스코티쉬 폴드',
+  '스핑크스',
+  '아메리칸 밥테일',
+  '아메리칸 숏헤어',
+  '아메리칸 컬',
+  '아비니시안',
+  '엑조틱 숏헤어',
+  '오리엔탈',
+  '카오 마니',
+  '코리안 숏헤어',
+  '터키쉬 앙고라',
+  '페르시안',
+];
+
+const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
   const [ParentBirthDate, setParentBirthDate] = useState(null);
+  const [selectedBreed, setSelectedBreed] = useState('');
+  const [customBreed, setCustomBreed] = useState('');
   const DogInfoInput = forwardRef(
     ({ value, onClick, placeholder }, innerRef) => (
       <A.DogInfoInput
@@ -31,6 +98,8 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
 
   DogInfoInput.displayName = 'DogInfoInput';
 
+  const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
+
   const handleNameChange = (event) => {
     if (event.target.value.length <= 30) {
       event.target.setCustomValidity('');
@@ -43,15 +112,27 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
     if (event.target.value.length <= 500) {
       event.target.setCustomValidity('');
     } else {
-      event.target.setCustomValidity('글자 수는 10,000자 이내로 제한됩니다.');
+      event.target.setCustomValidity('글자 수는 500자 이내로 제한됩니다.');
     }
+  };
+
+  const handleBreedChange = (event) => {
+    setSelectedBreed(event.target.value);
+    if (event.target.value !== '직접입력') {
+      setCustomBreed('');
+    }
+  };
+
+  const handleCustomBreedChange = (event) => {
+    setCustomBreed(event.target.value);
   };
 
   return (
     <div ref={ref} style={{ marginBottom: '96px' }}>
       <A.ParentInfoTitleBox>
-        <A.ParentInfoTitle>부모 강아지 정보</A.ParentInfoTitle>
+        <A.ParentInfoTitle>부모 {selectedAnimal} 정보</A.ParentInfoTitle>
       </A.ParentInfoTitleBox>
+
       {/* 모 */}
       <A.ParentDogCard>
         <A.ParentDogImage>
@@ -97,7 +178,22 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
           </A.ParentDogNameBox>
           <A.ParentDogDetail>
             <A.ParentDogLabel>종</A.ParentDogLabel>
-            <A.ParentDogValue>비글</A.ParentDogValue>
+            <A.BreedSelect value={selectedBreed} onChange={handleBreedChange}>
+              <A.BreedOption value="">정확한 품종명을 선택하세요</A.BreedOption>
+              {breedOptions.map((breed) => (
+                <A.BreedOption key={breed} value={breed}>
+                  {breed}
+                </A.BreedOption>
+              ))}
+            </A.BreedSelect>
+            {selectedBreed === '직접입력' && (
+              <A.DogInfoText
+                type="text"
+                placeholder="품종을 입력하세요"
+                value={customBreed}
+                onChange={handleCustomBreedChange}
+              />
+            )}
           </A.ParentDogDetail>
           <A.ParentDogDetail>
             <A.ParentDogLabel>출생</A.ParentDogLabel>
@@ -169,21 +265,6 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
           <A.InfoFileBoxContainer>
             <A.ParentInfoFileBox>첨부파일</A.ParentInfoFileBox>
             <A.InfoFileBoxNameContainerWrapper>
-              <A.InfoFileBoxNameContainer>
-                <A.InfoFileBoxName>파일명.jpg</A.InfoFileBoxName>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                >
-                  <path
-                    d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29095 13.8916 3.18685 13.9347C3.08274 13.9778 2.97117 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
-                    fill="#737373"
-                  />
-                </svg>
-              </A.InfoFileBoxNameContainer>
               <A.InfoFileBoxNameContainer>
                 <A.InfoFileBoxName>파일명.jpg</A.InfoFileBoxName>
                 <svg
@@ -249,7 +330,22 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
           </A.ParentDogNameBox>
           <A.ParentDogDetail>
             <A.ParentDogLabel>종</A.ParentDogLabel>
-            <A.ParentDogValue>비글</A.ParentDogValue>
+            <A.BreedSelect value={selectedBreed} onChange={handleBreedChange}>
+              <A.BreedOption value="">정확한 품종명을 선택하세요</A.BreedOption>
+              {breedOptions.map((breed) => (
+                <A.BreedOption key={breed} value={breed}>
+                  {breed}
+                </A.BreedOption>
+              ))}
+            </A.BreedSelect>
+            {selectedBreed === '직접입력' && (
+              <A.DogInfoText
+                type="text"
+                placeholder="품종을 입력하세요"
+                value={customBreed}
+                onChange={handleCustomBreedChange}
+              />
+            )}
           </A.ParentDogDetail>
           <A.ParentDogDetail>
             <A.ParentDogLabel>출생</A.ParentDogLabel>
@@ -321,21 +417,6 @@ const UploadParentDogInfo = React.forwardRef((props, ref) => {
           <A.InfoFileBoxContainer>
             <A.ParentInfoFileBox>첨부파일</A.ParentInfoFileBox>
             <A.InfoFileBoxNameContainerWrapper>
-              <A.InfoFileBoxNameContainer>
-                <A.InfoFileBoxName>파일명.jpg</A.InfoFileBoxName>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                >
-                  <path
-                    d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29095 13.8916 3.18685 13.9347C3.08274 13.9778 2.97117 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
-                    fill="#737373"
-                  />
-                </svg>
-              </A.InfoFileBoxNameContainer>
               <A.InfoFileBoxNameContainer>
                 <A.InfoFileBoxName>파일명.jpg</A.InfoFileBoxName>
                 <svg

@@ -1,8 +1,7 @@
 import React from 'react';
 import * as A from '../../pages/AnimalUpload/AnimalUpload.style';
 
-const UploadDogInfo = React.forwardRef((props, ref) => {
-
+const UploadDogInfo = React.forwardRef(({ name }, ref) => {
   const handleDescriptionChange = (event) => {
     if (event.target.value.length <= 10000) {
       event.target.setCustomValidity('');
@@ -14,11 +13,16 @@ const UploadDogInfo = React.forwardRef((props, ref) => {
   return (
     <div ref={ref} style={{ marginBottom: '96px' }}>
       <A.InfoItem>
-        <A.DogInfoTitle>(이름)의 성격은요</A.DogInfoTitle>
-        <A.InfoInput onChange={handleDescriptionChange} placeholder="강아지의 자세한 성격에 대해 알려주세요" />
+        <A.DogInfoTitle>{name}의 성격은요</A.DogInfoTitle>
+        <A.InfoInput
+          onChange={handleDescriptionChange}
+          placeholder="강아지의 자세한 성격에 대해 알려주세요"
+        />
       </A.InfoItem>
       <A.InfoItem>
-        <A.DogInfoTitle onChange={handleDescriptionChange} >(이름)는 이런 분양자에게 잘 맞아요</A.DogInfoTitle>
+        <A.DogInfoTitle onChange={handleDescriptionChange}>
+          {name}는 이런 분양자에게 잘 맞아요
+        </A.DogInfoTitle>
         <A.InfoInput placeholder="강아지와 잘 맞을 분양자의 특징에 대해 알려주세요" />
       </A.InfoItem>
       <A.InfoItem>

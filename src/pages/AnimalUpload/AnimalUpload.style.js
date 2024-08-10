@@ -94,6 +94,38 @@ export const Name = styled.input`
   }
 `;
 
+export const BreedSelect = styled.select`
+  display: flex;
+  width: 260px;
+  height: 46px;
+  padding: 8px 10px;
+  align-items: center;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+  background: #fff;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-weight: 500;
+  color: #c5c5c5;
+  margin-right: 10px;
+
+  &:focus {
+    outline: none;
+    border-color: #fe834d;
+  }
+
+  option[value=''] {
+    color: #c5c5c5;
+  }
+`;
+
+export const BreedOption = styled.option`
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 400;
+  color: #323232;
+`;
+
 export const AnimalSelectBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -107,7 +139,14 @@ export const AnimalSelect = styled.div`
   align-items: center;
   border-radius: 28px;
   border: 1px solid #e1e1e1;
-  background: #fff;
+  background: ${({ selected }) => (selected ? '#F87B45' : '#fff')};
+  color: ${({ selected }) => (selected ? '#fff' : '#000')};
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f87b45;
+    color: #fff;
+  }
 `;
 
 export const DogInfo = styled.div`
@@ -311,8 +350,8 @@ export const InfoInput = styled.textarea`
 export const InfoFileBox = styled.div`
   display: flex;
   padding: 8px 16px;
-  width: 60px;
-  height: 24px;
+  width: 90px;
+  height: 40px;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -478,6 +517,7 @@ export const ParentDogValue = styled.div`
 export const ParentDogValueInput = styled.input`
   display: flex;
   padding: 8px 10px;
+  width: 400px;
   align-items: center;
   border-radius: 10px;
   border: none;
@@ -510,8 +550,8 @@ export const InfoFileBoxNameContainerWrapper = styled.div`
 export const ParentInfoFileBox = styled.div`
   display: flex;
   padding: 8px 16px;
-  width: 60px;
-  height: 24px;
+  width: 90px;
+  height: 40px;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
