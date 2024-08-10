@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import ko from 'date-fns/locale/ko';
+import 'react-datepicker/dist/react-datepicker.css';
+
+registerLocale('ko', ko);
 
 export const Container = styled.div`
   display: flex;
@@ -209,60 +213,128 @@ export const DogInfoInput = styled.input`
     font-weight: 500;
   }
 `;
-export const CustomDatePicker = styled(DatePicker)`
-  .react-datepicker__header {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+
+export const CalendarContainer = styled.div`
+  .react-datepicker__month-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   }
 
-  .react-datepicker__current-month,
-  .react-datepicker__day-name,
-  .react-datepicker__day,
-  .react-datepicker__time-name {
-    font-size: 0.8rem;
+  .react-datepicker__month {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+export const CustomDatePicker = styled(DatePicker)`
+  .react-datepicker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 388px;
+    padding: 32px 0 24px;
+    border-radius: 12px;
+    border: 2px solid var(--Grey_line, #f1f1f1);
+    background-color: var(--White, #fff);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .react-datepicker {
+    width: 100%;
+  }
+  .react-datepicker__header {
+    background-color: transparent;
+    border-bottom: none;
+    padding: 0;
+    text-align: center;
+  }
+
+  .react-datepicker__current-month {
+    font-size: 22px;
+    font-weight: bold;
+    color: #c5c5c5;
+    margin-bottom: 24px;
+  }
+
+  .react-datepicker__day-names {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    color: #c5c5c5;
+  }
+
+  .react-datepicker__day-name {
+    font-size: 14px;
+    color: #bdbdbd;
+  }
+
+  .react-datepicker__week {
+    display: flex;
+    justify-content: space-around;
   }
 
   .react-datepicker__day {
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 2px;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
   }
 
-  .react-datepicker {
-    font-size: 0.8rem;
-    position: absolute;
-    right: 0;
-    z-index: 1000;
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    background-color: #333;
+    color: white;
   }
 
   .react-datepicker__month-container {
-    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .react-datepicker__day-names,
-  .react-datepicker__week,
-  .react-datepicker__day {
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
+  .react-datepicker__navigation {
+    top: 10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
   }
 
-  .react-datepicker__input-container input {
-    width: 8rem;
-    height: 2rem;
-    font-size: 0.8rem;
+  .react-datepicker__navigation--previous {
+    left: 10px;
+    border-width: 7px 7px 7px 0;
+    border-color: transparent #333 transparent transparent;
+  }
+
+  .react-datepicker__navigation--next {
+    right: 10px;
+    border-width: 7px 0 7px 7px;
+    border-color: transparent transparent transparent #333;
+  }
+
+  .react-datepicker__month-year-dropdown {
+    display: none;
+  }
+
+  .react-datepicker__month-year-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
-
 export const SvgIcon = styled.svg`
   position: absolute;
-  right: 18px;
   top: 50%;
-  width: 16px;
-  height: 16px;
+  right: 10px;
   transform: translateY(-50%);
   pointer-events: none;
-  cursor: pointer;
 `;
 
 export const StatusContainer = styled.div`
@@ -439,6 +511,7 @@ export const ParentDogImage = styled.div`
   font-weight: 500;
   gap: 10px;
   line-height: 21px;
+  cursor: pointer;
 `;
 
 export const ParentDogInfo = styled.div`

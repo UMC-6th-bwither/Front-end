@@ -1,4 +1,5 @@
-import React, { useState, forwardRef } from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import * as A from '../../pages/AnimalUpload/AnimalUpload.style';
 
@@ -72,6 +73,9 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
   const [ParentBirthDate, setParentBirthDate] = useState(null);
   const [selectedBreed, setSelectedBreed] = useState('');
   const [customBreed, setCustomBreed] = useState('');
+  const [motherImage, setMotherImage] = useState(null);
+  const [fatherImage, setFatherImage] = useState(null);
+
   const DogInfoInput = forwardRef(
     ({ value, onClick, placeholder }, innerRef) => (
       <A.DogInfoInput
@@ -83,6 +87,19 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
       />
     ),
   );
+
+  const [uploadedFileName, setUploadedFileName] = useState('');
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setUploadedFileName(file.name);
+    }
+  };
+
+  const handleFileRemove = () => {
+    setUploadedFileName('');
+  };
 
   DogInfoInput.propTypes = {
     value: PropTypes.string,
@@ -127,6 +144,20 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
     setCustomBreed(event.target.value);
   };
 
+  const handleMotherImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setMotherImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleFatherImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFatherImage(URL.createObjectURL(file));
+    }
+  };
+
   return (
     <div ref={ref} style={{ marginBottom: '96px' }}>
       <A.ParentInfoTitleBox>
@@ -135,20 +166,39 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
 
       {/* 모 */}
       <A.ParentDogCard>
-        <A.ParentDogImage>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="48"
-            height="48"
-            viewBox="0 0 48 48"
-            fill="none"
-          >
-            <path
-              d="M24 0C24.7957 0 25.5587 0.316071 26.1213 0.87868C26.6839 1.44129 27 2.20435 27 3V21H45C45.7957 21 46.5587 21.3161 47.1213 21.8787C47.6839 22.4413 48 23.2043 48 24C48 24.7957 47.6839 25.5587 47.1213 26.1213C46.5587 26.6839 45.7957 27 45 27H27V45C27 45.7957 26.6839 46.5587 26.1213 47.1213C25.5587 47.6839 24.7957 48 24 48C23.2043 48 22.4413 47.6839 21.8787 47.1213C21.3161 46.5587 21 45.7957 21 45V27H3C2.20435 27 1.44129 26.6839 0.87868 26.1213C0.316071 25.5587 0 24.7957 0 24C0 23.2043 0.316071 22.4413 0.87868 21.8787C1.44129 21.3161 2.20435 21 3 21H21V3C21 2.20435 21.3161 1.44129 21.8787 0.87868C22.4413 0.316071 23.2043 0 24 0Z"
-              fill="#C5C5C5"
+        <input
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          id="motherImageUpload"
+          onChange={handleMotherImageChange}
+        />
+        <A.ParentDogImage
+          onClick={() => document.getElementById('motherImageUpload').click()}
+        >
+          {motherImage ? (
+            <img
+              src={motherImage}
+              alt="모 사진"
+              style={{ width: '100%', height: '100%' }}
             />
-          </svg>
-          사진 파일 첨부
+          ) : (
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+              >
+                <path
+                  d="M24 0C24.7957 0 25.5587 0.316071 26.1213 0.87868C26.6839 1.44129 27 2.20435 27 3V21H45C45.7957 21 46.5587 21.3161 47.1213 21.8787C47.6839 22.4413 48 23.2043 48 24C48 24.7957 47.6839 25.5587 47.1213 26.1213C46.5587 26.6839 45.7957 27 45 27H27V45C27 45.7957 26.6839 46.5587 26.1213 47.1213C25.5587 47.6839 24.7957 48 24 48C23.2043 48 22.4413 47.6839 21.8787 47.1213C21.3161 46.5587 21 45.7957 21 45V27H3C2.20435 27 1.44129 26.6839 0.87868 26.1213C0.316071 25.5587 0 24.7957 0 24C0 23.2043 0.316071 22.4413 0.87868 21.8787C1.44129 21.3161 2.20435 21 3 21H21V3C21 2.20435 21.3161 1.44129 21.8787 0.87868C22.4413 0.316071 23.2043 0 24 0Z"
+                  fill="#C5C5C5"
+                />
+              </svg>
+              사진 파일 첨부
+            </>
+          )}
         </A.ParentDogImage>
         <A.ParentDogInfo>
           <A.ParentDogNameBox>
@@ -263,16 +313,27 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             />
           </A.ParentDogDetail>
           <A.InfoFileBoxContainer>
-            <A.ParentInfoFileBox>첨부파일</A.ParentInfoFileBox>
-            <A.InfoFileBoxNameContainerWrapper>
+            <A.ParentInfoFileBox>
+              <label>
+                첨부파일
+                <input
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={handleFileUpload}
+                />
+              </label>
+            </A.ParentInfoFileBox>
+            {uploadedFileName && (
               <A.InfoFileBoxNameContainer>
-                <A.InfoFileBoxName>파일명.jpg</A.InfoFileBoxName>
+                <A.InfoFileBoxName>{uploadedFileName}</A.InfoFileBoxName>
                 <svg
+                  onClick={handleFileRemove}
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"
                   fill="none"
+                  style={{ cursor: 'pointer' }}
                 >
                   <path
                     d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29095 13.8916 3.18685 13.9347C3.08274 13.9778 2.97117 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
@@ -280,27 +341,46 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
                   />
                 </svg>
               </A.InfoFileBoxNameContainer>
-            </A.InfoFileBoxNameContainerWrapper>
+            )}
           </A.InfoFileBoxContainer>
         </A.ParentDogInfo>
       </A.ParentDogCard>
 
       {/* 부 */}
       <A.ParentDogCard>
-        <A.ParentDogImage>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="48"
-            height="48"
-            viewBox="0 0 48 48"
-            fill="none"
-          >
-            <path
-              d="M24 0C24.7957 0 25.5587 0.316071 26.1213 0.87868C26.6839 1.44129 27 2.20435 27 3V21H45C45.7957 21 46.5587 21.3161 47.1213 21.8787C47.6839 22.4413 48 23.2043 48 24C48 24.7957 47.6839 25.5587 47.1213 26.1213C46.5587 26.6839 45.7957 27 45 27H27V45C27 45.7957 26.6839 46.5587 26.1213 47.1213C25.5587 47.6839 24.7957 48 24 48C23.2043 48 22.4413 47.6839 21.8787 47.1213C21.3161 46.5587 21 45.7957 21 45V27H3C2.20435 27 1.44129 26.6839 0.87868 26.1213C0.316071 25.5587 0 24.7957 0 24C0 23.2043 0.316071 22.4413 0.87868 21.8787C1.44129 21.3161 2.20435 21 3 21H21V3C21 2.20435 21.3161 1.44129 21.8787 0.87868C22.4413 0.316071 23.2043 0 24 0Z"
-              fill="#C5C5C5"
+        <input
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          id="fatherImageUpload"
+          onChange={handleFatherImageChange}
+        />
+        <A.ParentDogImage
+          onClick={() => document.getElementById('fatherImageUpload').click()}
+        >
+          {fatherImage ? (
+            <img
+              src={fatherImage}
+              alt="부 사진"
+              style={{ width: '100%', height: '100%' }}
             />
-          </svg>
-          사진 파일 첨부
+          ) : (
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+              >
+                <path
+                  d="M24 0C24.7957 0 25.5587 0.316071 26.1213 0.87868C26.6839 1.44129 27 2.20435 27 3V21H45C45.7957 21 46.5587 21.3161 47.1213 21.8787C47.6839 22.4413 48 23.2043 48 24C48 24.7957 47.6839 25.5587 47.1213 26.1213C46.5587 26.6839 45.7957 27 45 27H27V45C27 45.7957 26.6839 46.5587 26.1213 47.1213C25.5587 47.6839 24.7957 48 24 48C23.2043 48 22.4413 47.6839 21.8787 47.1213C21.3161 46.5587 21 45.7957 21 45V27H3C2.20435 27 1.44129 26.6839 0.87868 26.1213C0.316071 25.5587 0 24.7957 0 24C0 23.2043 0.316071 22.4413 0.87868 21.8787C1.44129 21.3161 2.20435 21 3 21H21V3C21 2.20435 21.3161 1.44129 21.8787 0.87868C22.4413 0.316071 23.2043 0 24 0Z"
+                  fill="#C5C5C5"
+                />
+              </svg>
+              사진 파일 첨부
+            </>
+          )}
         </A.ParentDogImage>
         <A.ParentDogInfo>
           <A.ParentDogNameBox>
@@ -415,16 +495,27 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             />
           </A.ParentDogDetail>
           <A.InfoFileBoxContainer>
-            <A.ParentInfoFileBox>첨부파일</A.ParentInfoFileBox>
-            <A.InfoFileBoxNameContainerWrapper>
+            <A.ParentInfoFileBox>
+              <label>
+                첨부파일
+                <input
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={handleFileUpload}
+                />
+              </label>
+            </A.ParentInfoFileBox>
+            {uploadedFileName && (
               <A.InfoFileBoxNameContainer>
-                <A.InfoFileBoxName>파일명.jpg</A.InfoFileBoxName>
+                <A.InfoFileBoxName>{uploadedFileName}</A.InfoFileBoxName>
                 <svg
+                  onClick={handleFileRemove}
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"
                   fill="none"
+                  style={{ cursor: 'pointer' }}
                 >
                   <path
                     d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29095 13.8916 3.18685 13.9347C3.08274 13.9778 2.97117 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
@@ -432,7 +523,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
                   />
                 </svg>
               </A.InfoFileBoxNameContainer>
-            </A.InfoFileBoxNameContainerWrapper>
+            )}
           </A.InfoFileBoxContainer>
         </A.ParentDogInfo>
       </A.ParentDogCard>
@@ -441,5 +532,9 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
 });
 
 UploadParentDogInfo.displayName = 'UploadParentDogInfo';
+
+UploadParentDogInfo.propTypes = {
+  selectedAnimal: PropTypes.string.isRequired,
+};
 
 export default UploadParentDogInfo;

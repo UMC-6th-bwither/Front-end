@@ -1,13 +1,11 @@
 import { useState, useRef, forwardRef } from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
 import PropTypes from 'prop-types';
-
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './AnimalUpload.style';
 import Button from '../../components/button/Button';
-import 'react-multi-carousel/lib/styles.css';
 import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const dogBreeds = [
   '직접입력',
@@ -104,8 +102,10 @@ function AnimalUpload() {
   const [birthDate, setBirthDate] = useState(null);
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
+  const [name, setName] = useState('');
   const [images, setImages] = useState([]);
   const [pedigreeFile, setPedigreeFile] = useState(null);
+  const [selectedGender, setSelectedGender] = useState('');
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [selectedBreed, setSelectedBreed] = useState('');
   const [customBreed, setCustomBreed] = useState('');
@@ -123,6 +123,7 @@ function AnimalUpload() {
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
     if (files.length + images.length > 10) {
+      // eslint-disable-next-line no-alert
       alert('최대 10개의 이미지만 업로드할 수 있습니다.');
       return;
     }
@@ -138,11 +139,17 @@ function AnimalUpload() {
   };
 
   const handleNameChange = (event) => {
-    if (event.target.value.length <= 30) {
+    const inputName = event.target.value;
+    if (inputName.length <= 30) {
+      setName(inputName);
       event.target.setCustomValidity('');
     } else {
       event.target.setCustomValidity('이름은 30자 이내로 입력해주세요.');
     }
+  };
+
+  const handleGenderSelection = (gender) => {
+    setSelectedGender(gender);
   };
 
   const handleAnimalSelection = (animal) => {
@@ -201,6 +208,7 @@ function AnimalUpload() {
           <A.Name
             type="text"
             maxLength={30}
+            value={name}
             onChange={handleNameChange}
             placeholder="이름을 입력하세요"
           />
@@ -246,8 +254,18 @@ function AnimalUpload() {
             <div>
               <strong>성별</strong>
               <A.AnimalSelectBox>
-                <A.AnimalSelect>수컷</A.AnimalSelect>
-                <A.AnimalSelect>암컷</A.AnimalSelect>
+                <A.AnimalSelect
+                  selected={selectedGender === '수컷'}
+                  onClick={() => handleGenderSelection('수컷')}
+                >
+                  수컷
+                </A.AnimalSelect>
+                <A.AnimalSelect
+                  selected={selectedGender === '암컷'}
+                  onClick={() => handleGenderSelection('암컷')}
+                >
+                  암컷
+                </A.AnimalSelect>
               </A.AnimalSelectBox>
             </div>
             <div>
@@ -257,8 +275,10 @@ function AnimalUpload() {
                   selected={birthDate}
                   onChange={(date) => setBirthDate(date)}
                   customInput={<DogInfoInput />}
-                  dateFormat="yyyy/MM/dd"
+                  locale="ko"
                   popperPlacement="right-start"
+                  dateFormat="yyyy/MM/dd"
+                  calendarContainer={A.CalendarContainer}
                 />
                 <A.SvgIcon
                   xmlns="http://www.w3.org/2000/svg"
@@ -287,7 +307,6 @@ function AnimalUpload() {
               />
             </Button>
             <A.ButtonFileName>
-              {' '}
               {pedigreeFile ? pedigreeFile.name : '파일을 선택하세요'}
             </A.ButtonFileName>
           </A.ButtonContainer>
@@ -296,7 +315,7 @@ function AnimalUpload() {
       <A.ThumbnailContainer>
         {images.slice(1).map((image, index) => (
           <A.Thumbnail
-            key={index}
+            key={image.name || index}
             src={URL.createObjectURL(image)}
             alt={`thumbnail${index + 1}`}
           />
