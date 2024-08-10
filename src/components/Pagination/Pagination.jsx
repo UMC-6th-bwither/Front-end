@@ -36,8 +36,37 @@ function Pagination({ totalItems, itemsPerPage, currentPage, setCurrentPage }) {
         onClick={handlePreviousGroup}
         disabled={currentPageGroup === 0}
       >
-        {' '}
-        〈{' '}
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 19 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="0.25"
+            y="0.25"
+            width="18.5"
+            height="18.5"
+            rx="3.75"
+            fill="white"
+          />
+          <rect
+            x="0.25"
+            y="0.25"
+            width="18.5"
+            height="18.5"
+            rx="3.75"
+            stroke="#D2D2D2"
+            strokeWidth="0.5"
+          />
+          <path
+            d="M12 4.5L7 9.5L12 14.5"
+            stroke="#222222"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </S.GroupPageBtn>
       <div>
         {Array.from(
@@ -57,8 +86,37 @@ function Pagination({ totalItems, itemsPerPage, currentPage, setCurrentPage }) {
         onClick={handleNextGroup}
         disabled={endPage >= totalPages}
       >
-        {' '}
-        〉{' '}
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 19 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="0.25"
+            y="0.25"
+            width="18.5"
+            height="18.5"
+            rx="3.75"
+            fill="white"
+          />
+          <rect
+            x="0.25"
+            y="0.25"
+            width="18.5"
+            height="18.5"
+            rx="3.75"
+            stroke="#D2D2D2"
+            strokeWidth="0.5"
+          />
+          <path
+            d="M7 4.5L12 9.5L7 14.5"
+            stroke="#222222"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </S.GroupPageBtn>
     </S.Pagination>
   );

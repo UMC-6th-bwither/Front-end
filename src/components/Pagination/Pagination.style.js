@@ -27,12 +27,9 @@ const PageButton = styled.button`
 `;
 
 const GroupPageBtn = styled.button`
-  font-weight: bold;
-  margin: 0 10px;
+  margin: 5px 10px 0 10px;
   background-color: #ffffff;
-  border-radius: 4px;
-  opacity: 0px;
-  border: 1px solid #d2d2d2;
+  border: none;
   cursor: pointer;
 
   &:disabled {

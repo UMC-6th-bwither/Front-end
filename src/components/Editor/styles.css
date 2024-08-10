@@ -1,0 +1,13 @@
+.ce-block__content,
+.ce-toolbar__content {
+  max-width: 100%; /* example value, adjust for your own use case */
+}
+
+#editorjs {
+  border-bottom: 1px solid #c5c5c5;
+  padding: 10px;
+  width: 100%;
+  max-width: none;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+}
