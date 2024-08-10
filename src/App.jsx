@@ -26,6 +26,7 @@ import BreederInfoEdit from './pages/BreederInfoEdit/BreederInfoEdit';
 import Main from './pages/Main/Main';
 import ChatListGeneral from './pages/ChatListGeneral/ChatListGeneral';
 import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
+import WritingFormGeneral from './pages/WritingFormGeneral/WritingFormGeneral';
 import CommunityMain from './pages/CommunityMain/CommunityMain';
 import ProfileSettingGeneral from './pages/ProfileSetting/ProfileSettingGeneral';
 import ProfileSettingBreeder from './pages/ProfileSetting/ProfileSettingBreeder';
@@ -78,6 +79,7 @@ function App() {
           <Route path="/Main" element={<Main />} />
           <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
           <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
+          <Route path="/WritingFormGeneral" element={<WritingFormGeneral />} />
           <Route
             path="/ProfileSettingGeneral"
             element={<ProfileSettingGeneral />}
