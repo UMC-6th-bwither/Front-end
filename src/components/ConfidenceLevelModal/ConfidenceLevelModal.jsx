@@ -1,6 +1,7 @@
 import * as C from './ConfidenceLevelModal.style';
 
-function ConfidenceLevelModal() {
+// eslint-disable-next-line react/prop-types
+function ConfidenceLevelModal({ onClose }) {
   return (
     <C.Box>
       <C.BoxTop>
@@ -11,6 +12,7 @@ function ConfidenceLevelModal() {
           height="16"
           viewBox="0 0 16 16"
           fill="none"
+          onClick={onClose}
         >
           <path
             fillRule="evenodd"

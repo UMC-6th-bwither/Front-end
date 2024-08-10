@@ -144,6 +144,7 @@ export const SliderContainer = styled.div`
   }
   align-self: flex-start;
   margin-bottom: 88px;
+  z-index: 1;
 `;
 
 export const Thumbnail = styled.img`
@@ -297,13 +298,17 @@ export const BreederInfoTitleBox = styled.div`
 
 export const BreederInfoTitle = styled.div`
   color: #323232;
-
   font-family: 'Noto Sans KR';
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
   letter-spacing: -0.7px;
   margin-right: 19px;
+
+  &:hover {
+    color: #f57137;
+    cursor: pointer;
+  }
 `;
 
 export const BreederInfoLocation = styled.div`
