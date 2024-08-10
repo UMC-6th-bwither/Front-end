@@ -42,12 +42,29 @@ export const Image = styled.div`
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  gap: 10px;
   line-height: 21px;
   width: 360px;
   height: 360px;
   border-radius: 12px;
   background-color: #f4f4f4;
+
+  label {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+      gap: 10px;
+
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  svg {
+    display: ${({ hasImage }) => (hasImage ? 'none' : 'block')};
+  }
 `;
 
 export const InfoContainer = styled.div`
@@ -243,18 +260,10 @@ export const ButtonFileName = styled.div`
 export const InfoWrapper = styled.div`
   width: 100%;
 `;
-export const SliderContainer = styled.div`
+export const ThumbnailContainer = styled.div`
   position: relative;
   overflow: visible;
   width: 970px;
-
-  .react-multi-carousel-item {
-    display: flex;
-    width: 355px;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-  }
   align-self: flex-start;
   margin-bottom: 88px;
 `;
@@ -263,45 +272,8 @@ export const Thumbnail = styled.img`
   width: 60px;
   height: 60px;
   object-fit: cover;
+  margin-right:12px;
   border-radius: 4px;
-`;
-
-export const Arrow = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 22px;
-  height: 22px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  z-index: 2;
-  user-select: none;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-top: 2px solid #888888;
-    border-right: 2px solid #888888;
-    transform: rotate(45deg);
-  }
-
-  &.left {
-    left: -15px;
-    &::before {
-      transform: rotate(-135deg);
-    }
-  }
-
-  &.right {
-    left: 948px;
-  }
 `;
 
 export const DogInfoTitle = styled.div`

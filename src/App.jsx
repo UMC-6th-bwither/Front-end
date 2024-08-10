@@ -26,7 +26,7 @@ import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
 function App() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Router>
         <Routes>
           <Route path="/" element={<AnimalList />} />

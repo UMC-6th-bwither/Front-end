@@ -9,19 +9,6 @@ import 'react-multi-carousel/lib/styles.css';
 import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
 
-function LeftArrow({ onClick }) {
-  return <A.Arrow className="left" onClick={onClick} />;
-}
-LeftArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-function RightArrow({ onClick }) {
-  return <A.Arrow className="right" onClick={onClick} />;
-}
-RightArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
 
 const DogInfoInput = forwardRef(({ value, onClick, placeholder }, ref) => (
   <A.DogInfoInput
@@ -52,6 +39,7 @@ function AnimalUpload() {
   const [birthDate, setBirthDate] = useState(null);
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
+  const [images, setImages] = useState([]);
 
   const menuItems = ['강아지 정보', '부모 강아지 정보'];
   const responsive = {
@@ -78,24 +66,47 @@ function AnimalUpload() {
     }
   };
 
+  const handleImageUpload = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length + images.length > 10) {
+      alert('최대 10개의 이미지만 업로드할 수 있습니다.');
+      return;
+    }
+    setImages((prevImages) => [...prevImages, ...files.slice(0, 10 - images.length)]);
+  };
+
   return (
     <A.Container>
       <A.Title>관리 중인 동물 정보 업로드</A.Title>
       <A.Card>
-        <A.Image>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="48"
-            height="48"
-            viewBox="0 0 48 48"
-            fill="none"
-          >
-            <path
-              d="M24 0C24.7957 0 25.5587 0.316071 26.1213 0.87868C26.6839 1.44129 27 2.20435 27 3V21H45C45.7957 21 46.5587 21.3161 47.1213 21.8787C47.6839 22.4413 48 23.2043 48 24C48 24.7957 47.6839 25.5587 47.1213 26.1213C46.5587 26.6839 45.7957 27 45 27H27V45C27 45.7957 26.6839 46.5587 26.1213 47.1213C25.5587 47.6839 24.7957 48 24 48C23.2043 48 22.4413 47.6839 21.8787 47.1213C21.3161 46.5587 21 45.7957 21 45V27H3C2.20435 27 1.44129 26.6839 0.87868 26.1213C0.316071 25.5587 0 24.7957 0 24C0 23.2043 0.316071 22.4413 0.87868 21.8787C1.44129 21.3161 2.20435 21 3 21H21V3C21 2.20435 21.3161 1.44129 21.8787 0.87868C22.4413 0.316071 23.2043 0 24 0Z"
-              fill="#C5C5C5"
-            />
-          </svg>
-          사진 파일 첨부
+      <A.Image hasImage={images.length > 0}>
+      {images.length > 0 ? (
+            <img src={URL.createObjectURL(images[0])} alt="Uploaded" />
+          ) : (
+            <label htmlFor="file-upload">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+              >
+                <path
+                  d="M24 0C24.7957 0 25.5587 0.316071 26.1213 0.87868C26.6839 1.44129 27 2.20435 27 3V21H45C45.7957 21 46.5587 21.3161 47.1213 21.8787C47.6839 22.4413 48 23.2043 48 24C48 24.7957 47.6839 25.5587 47.1213 26.1213C46.5587 26.6839 45.7957 27 45 27H27V45C27 45.7957 26.6839 46.5587 26.1213 47.1213C25.5587 47.6839 24.7957 48 24 48C23.2043 48 22.4413 47.6839 21.8787 47.1213C21.3161 46.5587 21 45.7957 21 45V27H3C2.20435 27 1.44129 26.6839 0.87868 26.1213C0.316071 25.5587 0 24.7957 0 24C0 23.2043 0.316071 22.4413 0.87868 21.8787C1.44129 21.3161 2.20435 21 3 21H21V3C21 2.20435 21.3161 1.44129 21.8787 0.87868C22.4413 0.316071 23.2043 0 24 0Z"
+                  fill="#C5C5C5"
+                />
+              </svg>
+              사진 파일 첨부
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                style={{ display: 'none' }}
+              />
+            </label>
+          )}
         </A.Image>
         <A.InfoContainer>
           <A.Name type="text" placeholder="이름을 입력하세요" />
@@ -149,29 +160,11 @@ function AnimalUpload() {
           </A.ButtonContainer>
         </A.InfoContainer>
       </A.Card>
-      <A.SliderContainer>
-        <Carousel
-          responsive={responsive}
-          customLeftArrow={<LeftArrow />}
-          customRightArrow={<RightArrow />}
-        >
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail1" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail1" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail2" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail3" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail4" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail5" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail6" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail7" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail8" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail9" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail10" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail11" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail12" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail13" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail14" />
-        </Carousel>
-      </A.SliderContainer>
+       <A.ThumbnailContainer>
+       {images.slice(1).map((image, index) => (
+            <A.Thumbnail key={index} src={URL.createObjectURL(image)} alt={`thumbnail${index + 1}`} />
+          ))}
+        </A.ThumbnailContainer>
       <A.InfoWrapper>
         <MenuSelect
           menus={menuItems}
