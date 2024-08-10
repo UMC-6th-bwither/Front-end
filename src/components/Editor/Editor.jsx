@@ -50,7 +50,7 @@ const Editor = forwardRef(({ readMode = false, savedData }, ref) => {
 Editor.displayName = 'Editor';
 
 Editor.propTypes = {
-  readMode: PropTypes.string.isRequired,
+  readMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   savedData: PropTypes.object.isRequired,
 };
