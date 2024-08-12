@@ -33,6 +33,7 @@ import Animal from './pages/MyReview/Animal/Animal';
 import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
 import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
+import WritingDetail from './pages/WritingDetail/WritingDetail';
 
 function App() {
   return (
@@ -86,6 +87,7 @@ function App() {
             path="/ProfileSettingBreeder"
             element={<ProfileSettingBreeder />}
           />
+          <Route path="/WritingDetail" element={<WritingDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

@@ -275,13 +275,24 @@ export const AdressContainer = styled.div`
 export const RadioContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 5px;
-  //justify-content: space-between;
+  justify-content: space-between;
 `;
 
-export const RadioBtn = styled.input`
+export const RadioBtn = styled.input.attrs({ type: 'radio' })`
+  display: none;
+
+  &:checked + label > img {
+    content: url(${'../../../public/img/checked.png'});
+  }
+`;
+
+export const RadioIcon = styled.img`
   width: 24px;
   height: 24px;
+  margin-right: 8px;
+  content: url(${'../../../public/img/unchecked.png'});
 `;
 
 export const Label = styled.label`
@@ -291,10 +302,45 @@ export const Label = styled.label`
   font-style: normal;
   font-weight: 350;
   line-height: 55px;
+  display: flex;
+  align-items: center;
+`;
+
+export const PostCodeContainer = styled.section`
+  display: flex;
+  flex-direction: row;
+  height: 52px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 0 25px 0;
 `;
 
 export const PostCodeInput = styled.input`
   width: 815px;
+`;
+
+export const PostCodeBtn = styled.button`
+  display: flex;
+  width: 136px;
+  height: 52px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid #fe834d;
+  background: #fffdf2;
+
+  color: #fe834d;
+  font-family: 'Noto Sans KR';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  cursor: pointer;
+  &:hover {
+    background: #ffddc5;
+  }
 `;
 
 export const ResidentInput = styled.input`
