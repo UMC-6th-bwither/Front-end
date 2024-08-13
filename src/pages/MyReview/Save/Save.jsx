@@ -25,12 +25,9 @@ export default function MyReviewSave() {
         <div>
           <P.MenuTitle>커뮤니티</P.MenuTitle>
           <P.MenuSubtitleContainer>
-            <P.MenuSubtitleInActive to="/myreview/post">
-              내가 쓴 글
-            </P.MenuSubtitleInActive>
-            <P.MenuSubtitleInActive to="/myreview/comment">
-              댓글 단 글
-            </P.MenuSubtitleInActive>
+            <P.MenuSubtitleActive to="/myreview/save">
+              저장한 글
+            </P.MenuSubtitleActive>
             <P.MenuSubtitleInActive to="/myreview/review">
               나의 후기
             </P.MenuSubtitleInActive>
@@ -46,9 +43,6 @@ export default function MyReviewSave() {
             <P.MenuSubtitleInActive to="/myreview/comment">
               저장한 브리더
             </P.MenuSubtitleInActive>
-            <P.MenuSubtitleActive to="/myreview/save">
-              저장한 글
-            </P.MenuSubtitleActive>
           </P.MenuSubtitleContainer>
         </div>
       </P.VerticalFlexGap20Nav>
@@ -76,7 +70,7 @@ export default function MyReviewSave() {
             />
           </P.FiltersContainer>
           <P.SortContainer>
-            <ButtonSelector>편집</ButtonSelector>
+            <ButtonSelector paddingVertical="14px">편집</ButtonSelector>
           </P.SortContainer>
         </P.FilterContainer>
 

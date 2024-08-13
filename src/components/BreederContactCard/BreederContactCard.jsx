@@ -7,6 +7,7 @@ export default function BreederContactCard({
   breederLocation,
   breederName,
   badgeComponents,
+  noButton = false,
 }) {
   return (
     <S.Container>
@@ -57,11 +58,13 @@ export default function BreederContactCard({
           <S.BadgeContainer>{badgeComponents}</S.BadgeContainer>
         </S.ContentContainer>
       </S.SpanningContainer>
-      <div>
-        <Button orange width="auto" paddingHorizontal={14}>
-          후기 등록
-        </Button>
-      </div>
+      {!noButton && (
+        <div>
+          <Button orange width="auto" paddingHorizontal={14}>
+            후기 등록
+          </Button>
+        </div>
+      )}
     </S.Container>
   );
 }
