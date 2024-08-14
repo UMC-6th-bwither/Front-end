@@ -74,7 +74,7 @@ export default function BwitherSignUp1() {
         <Terms />
         <B.BtnWrapper1>
           <Button text="회원가입" path="bwither-signup-2" />
-          <TextButton path="" />
+          <TextButton path="" text="브리더로 가입하시나요?" />
         </B.BtnWrapper1>
       </B.Container>
     </B.Background>
