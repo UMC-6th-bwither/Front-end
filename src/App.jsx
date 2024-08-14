@@ -31,6 +31,16 @@ import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
 import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
 import BreederAnimalList from './pages/BreederAnimalList/BreederAnimalList';
+import BwitherSignUp1 from './pages/SignUpBwither/BwitherSignUp1';
+import BwitherSignUp2 from './pages/SignUpBwither/BwitherSignUp2';
+import BwitherSignUp3 from './pages/SignUpBwither/BwitherSignUp3';
+import BwitherSignUp4 from './pages/SignUpBwither/BwitherSignUp4';
+import SignUpBreeder from './pages/SignUpBreeder/SignUpBreeder';
+import SignUpBreederChoice from './pages/SignUpBreeder/SignUpBreederChoice';
+import SignUpBreederInfo from './pages/SignUpBreeder/SignUpBreederInfo';
+import SignUpBreederInfo2 from './pages/SignUpBreeder/SignUpBreederInfo2';
+import SignUpBreederDone from './pages/SignUpBreeder/SignUpBreederDone';
+import Login from './pages/Login/Login';
 
 function App() {
   return (
@@ -41,7 +51,7 @@ function App() {
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
           <Route path="/BreederList" element={<BreederList />} />
-          <Route path="/" element={<AnimalList />} />
+          <Route path="/AnimalList" element={<AnimalList />} />
           <Route path="/BreederAnimalList" element={<BreederAnimalList />} />
           <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
           <Route path="/Community/Question" element={<CommunityQuestion />} />
@@ -73,10 +83,24 @@ function App() {
           <Route path="/MypageGeneral" element={<MypageGeneral />} />
           <Route path="/MypageBreeder" element={<MypageBreeder />} />
           <Route path="/breederinfo-edit" element={<BreederInfoEdit />} />
-          <Route path="/Main" element={<Main />} />
+          <Route path="/" element={<Main />} />
           <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
           <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
           <Route path="*" element={<NotFound />} />
+
+          <Route path="/BwitherSignUp1" element={<BwitherSignUp1 />} />
+          <Route path="/BwitherSignUp2" element={<BwitherSignUp2 />} />
+          <Route path="/BwitherSignUp3" element={<BwitherSignUp3 />} />
+          <Route path="/BwitherSignUp4" element={<BwitherSignUp4 />} />
+          <Route path="/SignUpBreeder" element={<SignUpBreeder />} />
+          <Route
+            path="/SignUpBreederChoice"
+            element={<SignUpBreederChoice />}
+          />
+          <Route path="/SignUpBreederInfo" element={<SignUpBreederInfo />} />
+          <Route path="/SignUpBreederInfo2" element={<SignUpBreederInfo2 />} />
+          <Route path="/SignUpBreederDone" element={<SignUpBreederDone />} />
+          <Route path="/Login" element={<Login />} />
         </Routes>
       </Router>
       <Footer />
