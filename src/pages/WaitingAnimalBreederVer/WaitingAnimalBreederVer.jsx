@@ -30,9 +30,8 @@ function WaitingAnimalBreederVer() {
 
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
-  const breederInfoRef = useRef(null);
 
-  const menuItems = ['강아지 정보', '부모 강아지 정보', '브리더 정보'];
+  const menuItems = ['강아지 정보', '부모 강아지 정보'];
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -54,8 +53,6 @@ function WaitingAnimalBreederVer() {
       dogInfoRef.current.scrollIntoView({ behavior: 'smooth' });
     } else if (menu === '부모 강아지 정보') {
       parentDogInfoRef.current.scrollIntoView({ behavior: 'smooth' });
-    } else if (menu === '브리더 정보') {
-      breederInfoRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
