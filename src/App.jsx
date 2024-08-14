@@ -1,7 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-
 import { Provider } from 'react-redux';
 import Header from './components/header/Header';
 import Footer from './components/Footer/Footer';
@@ -18,6 +17,7 @@ import MyReviewComment from './pages/MyReview/Comment/Comment';
 import MyReview from './pages/MyReview/Review/Review';
 import ReviewForm from './pages/MyReview/Review/Form/Form';
 import MyReviewSave from './pages/MyReview/Save/Save';
+import WaitingAnimalBreederVer from './pages/WaitingAnimalBreederVer/WaitingAnimalBreederVer';
 import WaitingAnimalDetail from './pages/WaitingAnimalDetail/WaitingAnimalDetail';
 import AnimalUpload from './pages/AnimalUpload/AnimalUpload';
 import BreederDetail from './pages/BreederDetail/BreederDetail';
@@ -38,7 +38,6 @@ import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
 
 function App() {
   return (
-
     <Provider store={store}>
       <Router>
         <Header />
@@ -72,8 +71,8 @@ function App() {
             element={<WaitingAnimalDetail />}
           />
           <Route
-            path="/waitinganimal-detail"
-            element={<WaitingAnimalDetail />}
+            path="/waitinganimal-breeder"
+            element={<WaitingAnimalBreederVer />}
           />
           <Route path="/animal-upload" element={<AnimalUpload />} />
           <Route path="/breeder-detail" element={<BreederDetail />} />
