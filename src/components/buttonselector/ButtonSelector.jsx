@@ -6,6 +6,7 @@ import * as B from './ButtonSelector.style';
 export default function ButtonSelector({
   children,
   active = false,
+  paddingVertical,
   border,
   onClick,
 }) {
@@ -25,13 +26,19 @@ export default function ButtonSelector({
   if (border) {
     if (isActive) {
       return (
-        <B.ButtonSelectorBorderActive onClick={handleButtonClick}>
+        <B.ButtonSelectorBorderActive
+          $paddingVertical={paddingVertical}
+          onClick={handleButtonClick}
+        >
           {children}
         </B.ButtonSelectorBorderActive>
       );
     }
     return (
-      <B.ButtonSelectorBorderInactive onClick={handleButtonClick}>
+      <B.ButtonSelectorBorderInactive
+        $paddingVertical={paddingVertical}
+        onClick={handleButtonClick}
+      >
         {children}
       </B.ButtonSelectorBorderInactive>
     );
@@ -40,13 +47,19 @@ export default function ButtonSelector({
   // no Border
   if (isActive) {
     return (
-      <B.ButtonSelectorActive onClick={handleButtonClick}>
+      <B.ButtonSelectorActive
+        $paddingVertical={paddingVertical}
+        onClick={handleButtonClick}
+      >
         {children}
       </B.ButtonSelectorActive>
     );
   }
   return (
-    <B.ButtonSelectorInactive onClick={handleButtonClick}>
+    <B.ButtonSelectorInactive
+      $paddingVertical={paddingVertical}
+      onClick={handleButtonClick}
+    >
       {children}
     </B.ButtonSelectorInactive>
   );

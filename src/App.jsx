@@ -9,7 +9,6 @@ import store from './redux/store';
 import AnimalList from './pages/AnimalList/AnimalList';
 import BreederList from './pages/BreederList/BreederList';
 import NotFound from './pages/NotFound/NotFound';
-import ButtonBadgeSample from './pages/ButtonBadgeSample/ButtonBadgeSample';
 import CommunityQuestion from './pages/Community/Question/CommunityQuestion';
 import CommunityInformation from './pages/Community/Information/CommunityInformation';
 import CommunityDaily from './pages/Community/Daily/Daily';
@@ -17,6 +16,7 @@ import CommunityBreederInformation from './pages/Community/BreederInformation/Br
 import MyReviewPost from './pages/MyReview/Post/Post';
 import MyReviewComment from './pages/MyReview/Comment/Comment';
 import MyReview from './pages/MyReview/Review/Review';
+import ReviewForm from './pages/MyReview/Review/Form/Form';
 import MyReviewSave from './pages/MyReview/Save/Save';
 import WaitingAnimalDetail from './pages/WaitingAnimalDetail/WaitingAnimalDetail';
 import AnimalUpload from './pages/AnimalUpload/AnimalUpload';
@@ -47,7 +47,6 @@ function App() {
           <Route path="MyReview/Breeder" element={<Breeder />} />
           <Route path="/BreederList" element={<BreederList />} />
           <Route path="/" element={<AnimalList />} />
-          <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
           <Route path="/Community" element={<CommunityMain />} />
           <Route path="/Community/Question" element={<CommunityQuestion />} />
           <Route
@@ -59,9 +58,14 @@ function App() {
             path="/Community/BreederInformation"
             element={<CommunityBreederInformation />}
           />
+          <Route
+            path="/Community/BreederInformation/Form"
+            element={<WritingFormGeneral />}
+          />
           <Route path="/MyReview/Post" element={<MyReviewPost />} />
           <Route path="/MyReview/Comment" element={<MyReviewComment />} />
           <Route path="/MyReview/Review" element={<MyReview />} />
+          <Route path="/MyReview/Review/Form" element={<ReviewForm />} />
           <Route path="/MyReview/Save" element={<MyReviewSave />} />
           <Route
             path="/waitinganimal-detail"
@@ -81,7 +85,6 @@ function App() {
           <Route path="/Main" element={<Main />} />
           <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
           <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
-          <Route path="/WritingFormGeneral" element={<WritingFormGeneral />} />
           <Route
             path="/ProfileSettingGeneral"
             element={<ProfileSettingGeneral />}

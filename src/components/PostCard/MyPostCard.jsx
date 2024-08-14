@@ -16,7 +16,6 @@ export default function MyPostCard({
   postThumbnailSrc,
   timeStampKR,
   viewCount,
-  commentCount,
   bookmarkCount,
 }) {
   return (
@@ -39,10 +38,6 @@ export default function MyPostCard({
         <P.PostIconFrame>
           <PostIcon src="/icons/community_view.svg" />
           <P.PostIconContent>{viewCount}</P.PostIconContent>
-        </P.PostIconFrame>
-        <P.PostIconFrame>
-          <PostIcon src="/icons/community_comment.svg" />
-          <P.PostIconContent>{commentCount}</P.PostIconContent>
         </P.PostIconFrame>
         <P.PostIconFrame>
           <PostIcon src="/icons/community_bookmark.svg" />

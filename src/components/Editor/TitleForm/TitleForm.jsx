@@ -9,11 +9,15 @@ function TitleForm({ onTitleChange, onOptionSelect }) {
   const handleInputChange = (e) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
-    onTitleChange(newTitle); // 상위 컴포넌트로 데이터 전달
+    if (typeof onTitleChange === 'function') {
+      onTitleChange(newTitle);
+    }
   };
 
   const handleOptionClick = (option) => {
-    onOptionSelect(option); // 상위 컴포넌트로 선택된 옵션 전달
+    if (typeof onOptionSelect === 'function') {
+      onOptionSelect(option);
+    }
   };
 
   return (
@@ -29,7 +33,7 @@ function TitleForm({ onTitleChange, onOptionSelect }) {
         <S.TitleCounter>
           {title.length} / {maxTitleLength}
         </S.TitleCounter>
-        <S.CloseButton>
+        <S.CloseButton onClick={() => setTitle('')}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"

@@ -51,7 +51,8 @@ export default function WritingFormGeneral() {
           </P.TitleButtonContainer>
         </P.TitleLayout>
         <TitleForm />
-        <Editor ref={editorRef} savedData={dummyData} readMode />
+        {/* <Editor ref={editorRef} savedData={dummyData} readMode /> */}
+        <Editor ref={editorRef} />
       </P.MainContainer>
     </P.Layout>
   );
