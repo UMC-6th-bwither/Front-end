@@ -352,15 +352,27 @@ export const LinkText = styled.span`
 
   display: flex;
   align-items: center;
+
+  cursor: pointer;
 `;
 
 export const CPContainer = styled.div`
-  width: 980px;
-  height: 324px;
-  gap: 18px;
-  margin: 0 auto;
+  display: flex;
+  width: 970px;
+  height: 360px;
+  justify-content: space-between;
+`;
 
-  background-color: #fafafa;
+export const PostFirstList = styled.div`
+  width: 480px;
+  height: 324px;
+  padding: 0px 30px 10px 0;
+`;
+
+export const PostSecondList = styled.div`
+  width: 480px;
+  height: 324px;
+  padding: 0px 0px 10px 40px;
 `;
 
 export const IAContainer = styled.div`
@@ -390,7 +402,7 @@ export const InfoCard = styled.div`
   }
 `;
 
-export const InfoCardImg = styled.div`
+export const CardContainer = styled.div`
   width: 231px;
   height: 231px;
   gap: 0px;
@@ -403,12 +415,21 @@ export const InfoCardImg = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  position: relative;
+`;
+
+export const InfoCardImg = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
 `;
 
 export const InfoTitle = styled.div`
   width: 197px;
   height: 20px;
-  gap: 0px;
+  position: absolute;
+  left: 105x;
 
   font-family: 'Noto Sans KR';
   font-size: 14px;
@@ -444,7 +465,7 @@ export const ProfileImg = styled.div`
   background: #e1e1e1;
   border: 1px solid #e1e1e1;
 
-  background-color: red;
+  background-color: gray;
 `;
 
 export const ProFileName = styled.div`
@@ -495,14 +516,12 @@ export const ReviewCard = styled.div`
   }
 `;
 
-export const ReviewCardImg = styled.div`
+export const ReviewCardImg = styled.img`
   width: 313px;
   height: 207px;
-  gap: 0px;
   border-radius: 8px;
-  border: 1px 0px 0px 0px;
 
-  border: 1px solid #f2f2f2;
+  border: 1px solid #ffffff;
 
   background-color: gray;
 
