@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as P from '../Community.style';
 import ButtonSelector from '../../../components/buttonselector/ButtonSelector';
@@ -22,6 +23,7 @@ function Icon() {
 export default function CommunityBreederInformation() {
   const [page, setPage] = useState(1);
   const [sortOption, setSortOption] = useState(null);
+  const navigate = useNavigate();
 
   return (
     <P.Layout>
@@ -40,7 +42,11 @@ export default function CommunityBreederInformation() {
             </P.MainSubTitle>
           </div>
           <P.TitleButtonContainer>
-            <Button icon="/icons/pencil_orange.svg" whiteBorder>
+            <Button
+              icon="/icons/pencil_orange.svg"
+              whiteBorder
+              onClick={() => navigate('form')}
+            >
               글 작성하기
             </Button>
           </P.TitleButtonContainer>
@@ -74,7 +80,6 @@ export default function CommunityBreederInformation() {
                 postThumbnailSrc="/img/post_thumbnail_example_1.jpeg"
                 timeStampKR="2024-07-25T14:40:00+09:00"
                 viewCount={159}
-                commentCount={159}
                 bookmarkCount={159}
               />
             );

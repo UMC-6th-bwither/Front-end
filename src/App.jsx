@@ -8,7 +8,6 @@ import store from './redux/store';
 import AnimalList from './pages/AnimalList/AnimalList';
 import BreederList from './pages/BreederList/BreederList';
 import NotFound from './pages/NotFound/NotFound';
-import ButtonBadgeSample from './pages/ButtonBadgeSample/ButtonBadgeSample';
 import CommunityQuestion from './pages/Community/Question/CommunityQuestion';
 import CommunityInformation from './pages/Community/Information/CommunityInformation';
 import CommunityDaily from './pages/Community/Daily/Daily';
@@ -16,6 +15,7 @@ import CommunityBreederInformation from './pages/Community/BreederInformation/Br
 import MyReviewPost from './pages/MyReview/Post/Post';
 import MyReviewComment from './pages/MyReview/Comment/Comment';
 import MyReview from './pages/MyReview/Review/Review';
+import ReviewForm from './pages/MyReview/Review/Form/Form';
 import MyReviewSave from './pages/MyReview/Save/Save';
 import WaitingAnimalDetail from './pages/WaitingAnimalDetail/WaitingAnimalDetail';
 import AnimalUpload from './pages/AnimalUpload/AnimalUpload';
@@ -26,6 +26,10 @@ import BreederInfoEdit from './pages/BreederInfoEdit/BreederInfoEdit';
 import Main from './pages/Main/Main';
 import ChatListGeneral from './pages/ChatListGeneral/ChatListGeneral';
 import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
+import WritingFormGeneral from './pages/WritingFormGeneral/WritingFormGeneral';
+import CommunityMain from './pages/CommunityMain/CommunityMain';
+import ProfileSettingGeneral from './pages/ProfileSetting/ProfileSettingGeneral';
+import ProfileSettingBreeder from './pages/ProfileSetting/ProfileSettingBreeder';
 import Animal from './pages/MyReview/Animal/Animal';
 import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
@@ -47,13 +51,15 @@ function App() {
     <Provider store={store}>
       <Router>
         <Header />
+        <Header />
         <Routes>
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
           <Route path="/BreederList" element={<BreederList />} />
+          <Route path="/" element={<AnimalList />} />
+          <Route path="/Community" element={<CommunityMain />} />
           <Route path="/AnimalList" element={<AnimalList />} />
           <Route path="/BreederAnimalList" element={<BreederAnimalList />} />
-          <Route path="/ButtonBadgeSample" element={<ButtonBadgeSample />} />
           <Route path="/Community/Question" element={<CommunityQuestion />} />
           <Route
             path="/Community/Information"
@@ -64,9 +70,14 @@ function App() {
             path="/Community/BreederInformation"
             element={<CommunityBreederInformation />}
           />
+          <Route
+            path="/Community/BreederInformation/Form"
+            element={<WritingFormGeneral />}
+          />
           <Route path="/MyReview/Post" element={<MyReviewPost />} />
           <Route path="/MyReview/Comment" element={<MyReviewComment />} />
           <Route path="/MyReview/Review" element={<MyReview />} />
+          <Route path="/MyReview/Review/Form" element={<ReviewForm />} />
           <Route path="/MyReview/Save" element={<MyReviewSave />} />
           <Route
             path="/waitinganimal-detail"
@@ -86,6 +97,14 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
           <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
+          <Route
+            path="/ProfileSettingGeneral"
+            element={<ProfileSettingGeneral />}
+          />
+          <Route
+            path="/ProfileSettingBreeder"
+            element={<ProfileSettingBreeder />}
+          />
           <Route path="*" element={<NotFound />} />
 
           <Route path="/BwitherSignUp1" element={<BwitherSignUp1 />} />
