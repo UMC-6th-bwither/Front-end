@@ -51,7 +51,6 @@ function App() {
     <Provider store={store}>
       <Router>
         <Header />
-        <Header />
         <Routes>
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
