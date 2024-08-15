@@ -42,6 +42,7 @@ import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
 import BreederSignUp1 from './pages/SignUpBreeder/BreederSignUp1';
 import BreederSignUp3 from './pages/SignUpBreeder/BreederSignUp3';
 import BreederSignUp5 from './pages/SignUpBreeder/BreederSignUp5';
+import AdoptionSystem from './pages/AdoptionSystem/AdoptionSystem';
 
 function App() {
   return (
@@ -106,6 +107,7 @@ function App() {
           <Route path="/breeder-signup-1" element={<BreederSignUp1 />} />
           <Route path="/breeder-signup-3" element={<BreederSignUp3 />} />
           <Route path="/breeder-signup-5" element={<BreederSignUp5 />} />
+          <Route path="/adoptionsystem" element={<AdoptionSystem />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

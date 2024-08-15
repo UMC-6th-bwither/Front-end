@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 
+export const Menu = styled.div`
+  position: relative;
+  left: 50px;
+  top: 50px;
+  z-index: 1;
+`;
 export const Container = styled.div`
-  width: 50vw;
+  width: 910px;
   margin: 0 auto;
 `;
 
@@ -74,7 +80,6 @@ export const Title = styled.div`
 `;
 
 export const Text = styled.div`
-  width: 50vw;
   text-align: justify;
   color: #272727;
   font-family: 'Noto Sans KR';
@@ -98,7 +103,6 @@ export const BloodText = styled.div`
 
 export const BloodBox = styled.div`
   display: flex;
-  width: 50vw;
   padding: 40px 32px;
   flex-direction: column;
   align-items: flex-start;
@@ -133,9 +137,9 @@ export const AdoptionSection = styled.div`
 `;
 
 export const AdoptionBox = styled.div`
-  width: 50vw;
   display: flex;
-  padding: 25px 15px;
+  width: 910px;
+  padding: 40px 56px;
   justify-content: center;
   text-align: center;
   gap: 8px;
@@ -143,7 +147,7 @@ export const AdoptionBox = styled.div`
   background: #f4f4f4;
   color: #272727;
   font-family: 'Noto Sans KR';
-  font-size: 14px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -156,12 +160,18 @@ export const DownMark = styled.img`
   align-self: center;
 `;
 
+export const EndWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const EndTitle = styled(Head)`
   strong {
     color: #fe834d;
   }
   text-align: center;
-  margin-top: 250px;
+  margin-top: 170px;
 `;
 
 export const GoBtn = styled.button`
@@ -169,6 +179,7 @@ export const GoBtn = styled.button`
   padding: 12px 25px;
   justify-content: center;
   align-items: center;
+  align-self: center;
   gap: 12px;
   border-radius: 4px;
   border: 1px solid #fe834d;
@@ -185,4 +196,9 @@ export const GoBtn = styled.button`
   &:hover {
     background: #ffddc5;
   }
+`;
+
+export const Fence = styled.img`
+  margin-top: 70px;
+  margin-bottom: 80px;
 `;
