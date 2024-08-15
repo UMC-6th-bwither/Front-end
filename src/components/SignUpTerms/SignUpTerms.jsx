@@ -2,22 +2,33 @@ import { useState } from 'react';
 import * as S from './SignUpTerms.style';
 
 export default function SignUpTerms() {
-  const [allAgreed, setAllAgreed] = useState(false);
-  const [agreements, setAgreements] = useState({
-    age: false,
-    terms: false,
-    personalInfo: false,
-    location: false,
+  const [isAllChecked, setIsAllChecked] = useState(false);
+
+  const [checkedItems, setCheckedItems] = useState({
+    term1: false,
+    term2: false,
+    term3: false,
   });
-  console.log(allAgreed);
-  console.log(agreements);
 
-  const handleAgreementChange = (e) => {
-    const { name, checked } = e.target;
-    setAgreements((prevAgreements) => ({ ...prevAgreements, [name]: checked }));
+  const handleAllChecked = (event) => {
+    const isChecked = event.target.checked;
+    setIsAllChecked(isChecked);
+    setCheckedItems({
+      term1: isChecked,
+      term2: isChecked,
+      term3: isChecked,
+      term4: isChecked,
+    });
+  };
 
-    const allChecked = agreements.values.every((value) => value === true);
-    setAllAgreed(allChecked);
+  const handleItemChecked = (event) => {
+    const { name, checked } = event.target;
+    setCheckedItems((prevItems) => {
+      const updatedItems = { ...prevItems, [name]: checked };
+      const allChecked = Object.values(updatedItems).every(Boolean);
+      setIsAllChecked(allChecked);
+      return updatedItems;
+    });
   };
 
   return (
@@ -29,10 +40,8 @@ export default function SignUpTerms() {
         </S.TextBox>
         <S.Checkbox
           type="checkbox"
-          id="allCheck"
-          name="allCheck"
-          checked={allAgreed}
-          onChange={handleAgreementChange}
+          checked={isAllChecked}
+          onChange={handleAllChecked}
         />
       </S.AllWrapper>
       <S.Divider />
@@ -43,10 +52,9 @@ export default function SignUpTerms() {
         </S.TextBox>
         <S.Checkbox
           type="checkbox"
-          id="ageCheck"
-          name="ageCheck"
-          checked={agreements.age}
-          onChange={handleAgreementChange}
+          name="term1"
+          checked={checkedItems.term1}
+          onChange={handleItemChecked}
         />
       </S.Wrapper>
       <S.Wrapper>
@@ -56,10 +64,9 @@ export default function SignUpTerms() {
         </S.TextBox>
         <S.Checkbox
           type="checkbox"
-          id="termsCheck"
-          name="termsCheck"
-          checked={agreements.terms}
-          onChange={handleAgreementChange}
+          name="term2"
+          checked={checkedItems.term2}
+          onChange={handleItemChecked}
         />
       </S.Wrapper>
       <S.Wrapper>
@@ -69,10 +76,9 @@ export default function SignUpTerms() {
         </S.TextBox>
         <S.Checkbox
           type="checkbox"
-          id="personalInfoCheck"
-          name="personalInfoCheck"
-          checked={agreements.personalInfo}
-          onChange={handleAgreementChange}
+          name="term3"
+          checked={checkedItems.term3}
+          onChange={handleItemChecked}
         />
       </S.Wrapper>
       <S.Wrapper>
@@ -82,10 +88,9 @@ export default function SignUpTerms() {
         </S.TextBox>
         <S.Checkbox
           type="checkbox"
-          id="locationCheck"
-          name="locationCheck"
-          checked={agreements.location}
-          onChange={handleAgreementChange}
+          name="term4"
+          checked={checkedItems.term4}
+          onChange={handleItemChecked}
         />
       </S.Wrapper>
     </S.Container>
