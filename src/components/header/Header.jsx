@@ -17,7 +17,13 @@ export default function Header() {
           />
           <H.TextWrapper>
             <H.NavText>분양 대기 동물</H.NavText>
-            <H.NavText>브리더 찾기</H.NavText>
+            <H.NavText
+              onClick={() => {
+                navigate('/BreederList');
+              }}
+            >
+              브리더 찾기
+            </H.NavText>
             <H.NavText
               onClick={() => {
                 navigate('/adoptionsystem');
@@ -25,7 +31,13 @@ export default function Header() {
             >
               분양 시스템
             </H.NavText>
-            <H.NavText>커뮤니티</H.NavText>
+            <H.NavText
+              onClick={() => {
+                navigate('/Community');
+              }}
+            >
+              커뮤니티
+            </H.NavText>
           </H.TextWrapper>
         </H.Left>
         <H.Right>
@@ -39,7 +51,13 @@ export default function Header() {
               회원가입
             </H.AuthText>
           </H.TextWrapper>
-          <H.Button>브리더로 가입</H.Button>
+          <H.Button
+            onClick={() => {
+              navigate('/breeder-signup-1');
+            }}
+          >
+            브리더로 가입
+          </H.Button>
         </H.Right>
       </H.SubContainer>
     </H.Container>
