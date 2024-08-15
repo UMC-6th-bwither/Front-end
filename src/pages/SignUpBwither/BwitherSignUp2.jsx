@@ -1,8 +1,14 @@
+import { useState } from 'react';
 import * as B from './BwitherSignUp.style';
 import progressBar50 from '../../../public/icons/signUp/progress-bar-50.svg';
 import Button from '../../components/SignUpButton/Button';
 
 export default function BwitherSignUp2() {
+  const [firstField, setFirstField] = useState('');
+  // const [secondField, setSecondField] = useState('');
+  const [firstFieldError, setFirstFieldError] = useState('');
+  // const [secondFieldError, setSecondFieldError] = useState('');
+
   return (
     <B.Background>
       <B.WelcomeMsg>
@@ -21,7 +27,10 @@ export default function BwitherSignUp2() {
           <B.InputWrapper2>
             <B.InputTitle>현재 어디서 거주 중이신가요?</B.InputTitle>
             <B.InputBoxWrapper>
-              <B.InputBox2 placeholder="우편번호 입력" />
+              <B.InputBox2
+                placeholder="우편번호 입력"
+                autofocus={{ borderColor: '#fe834d' }}
+              />
               <B.PostCodeBtn>우편번호 찾기</B.PostCodeBtn>
             </B.InputBoxWrapper>
             <B.InputBox2 placeholder="주소 입력" />
@@ -33,18 +42,34 @@ export default function BwitherSignUp2() {
           <B.InputWrapper2>
             <B.InputTitle>거주지에서 반려동물을 키울 수 있나요?</B.InputTitle>
             <B.RadioWrapper>
-              <B.RadioBtn type="radio" name="location" />
-              <B.Label>네</B.Label>
-              <B.RadioBtn type="radio" name="location" />
-              <B.Label>아니오</B.Label>
-              <B.RadioBtn type="radio" name="location" />
-              <B.Label>모르겠어요</B.Label>
+              <B.RadioBtn type="radio" name="location" id="option1" />
+              <B.Label for="option1">네</B.Label>
+              <B.RadioBtn type="radio" name="location" id="option2" />
+              <B.Label for="option2">아니오</B.Label>
+              <B.RadioBtn type="radio" name="location" id="option3" />
+              <B.Label for="option3">모르겠어요</B.Label>
             </B.RadioWrapper>
           </B.InputWrapper2>
           <B.InputWrapper2>
             <B.InputTitle>현재 누구와 살고 계신가요?</B.InputTitle>
             <B.InputBoxWrapper>
-              <B.InputBox2 placeholder="예) 아빠, 엄마, 동생 2명" />
+              <B.InputBox2
+                placeholder="예) 아빠, 엄마, 동생 2명"
+                type="text"
+                value={firstField}
+                onChange={(e) => setFirstField(e.target.value)}
+                onBlur={() => {
+                  if (!firstField) {
+                    setFirstFieldError('가족구성원을 알려주세요');
+                  } else {
+                    setFirstFieldError('');
+                  }
+                }}
+                style={{ borderColor: firstFieldError ? '#FA5963' : '' }}
+              />
+              {firstFieldError && (
+                <div style={{ color: '#FA5963' }}>{firstFieldError}</div>
+              )}
               <B.Dropdown>본인 포함</B.Dropdown>
               <B.InputTitle>명</B.InputTitle>
             </B.InputBoxWrapper>
@@ -54,12 +79,12 @@ export default function BwitherSignUp2() {
               모든 가족 구성원 및 동거인의 동의를 받으셨나요?
             </B.InputTitle>
             <B.RadioWrapper>
-              <B.RadioBtn type="radio" name="family" />
-              <B.Label>네, 모든 동의를 받았습니다.</B.Label>
-              <B.RadioBtn type="radio" name="family" />
-              <B.Label>아니요, 반대하는 분이 계십니다.</B.Label>
-              <B.RadioBtn type="radio" name="family" />
-              <B.Label>설득 중입니다.</B.Label>
+              <B.RadioBtn type="radio" name="family" id="option4" />
+              <B.Label for="option4">네, 모든 동의를 받았습니다.</B.Label>
+              <B.RadioBtn type="radio" name="family" id="option5" />
+              <B.Label for="option5">아니요, 반대하는 분이 계십니다.</B.Label>
+              <B.RadioBtn type="radio" name="family" id="option6" />
+              <B.Label for="option6">설득 중입니다.</B.Label>
             </B.RadioWrapper>
           </B.InputWrapper2>
           <B.InputWrapper2>
@@ -67,16 +92,16 @@ export default function BwitherSignUp2() {
               현재 다니고 계신 직장 또는 학교가 있으신가요?
             </B.InputTitle>
             <B.RadioWrapper>
-              <B.RadioBtn type="radio" name="job" />
-              <B.Label>재직 중</B.Label>
-              <B.RadioBtn type="radio" name="job" />
-              <B.Label>휴직 중</B.Label>
-              <B.RadioBtn type="radio" name="job" />
-              <B.Label>재학 중</B.Label>
-              <B.RadioBtn type="radio" name="job" />
-              <B.Label>휴학 중</B.Label>
-              <B.RadioBtn type="radio" name="job" />
-              <B.Label>직업없음</B.Label>
+              <B.RadioBtn type="radio" name="job" id="option7" />
+              <B.Label for="option7">재직 중</B.Label>
+              <B.RadioBtn type="radio" name="job" id="option8" />
+              <B.Label for="option8">휴직 중</B.Label>
+              <B.RadioBtn type="radio" name="job" id="option9" />
+              <B.Label for="option9">재학 중</B.Label>
+              <B.RadioBtn type="radio" name="job" id="option10" />
+              <B.Label for="option10">휴학 중</B.Label>
+              <B.RadioBtn type="radio" name="job" id="option11" />
+              <B.Label for="option11">직업없음</B.Label>
             </B.RadioWrapper>
           </B.InputWrapper2>
           <B.InputWrapper2>
@@ -103,10 +128,10 @@ export default function BwitherSignUp2() {
           <B.InputWrapper2>
             <B.InputTitle>이전에 반려동물을 키워본 경험이 있나요?</B.InputTitle>
             <B.RadioWrapper>
-              <B.RadioBtn type="radio" name="experience" />
-              <B.Label>네</B.Label>
-              <B.RadioBtn type="radio" name="experience" />
-              <B.Label>아니요</B.Label>
+              <B.RadioBtn type="radio" name="experience" id="option12" />
+              <B.Label for="option12">네</B.Label>
+              <B.RadioBtn type="radio" name="experience" id="option13" />
+              <B.Label for="option13">아니요</B.Label>
             </B.RadioWrapper>
           </B.InputWrapper2>
           <B.InputWrapper2>
@@ -118,16 +143,16 @@ export default function BwitherSignUp2() {
           <B.InputWrapper2>
             <B.InputTitle>향후 이사나 여행 계획 등이 있으신가요?</B.InputTitle>
             <B.RadioWrapper>
-              <B.RadioBtn type="radio" name="future" />
-              <B.Label>이사 예정</B.Label>
-              <B.RadioBtn type="radio" name="future" />
-              <B.Label>단기 여행 예정</B.Label>
-              <B.RadioBtn type="radio" name="future" />
-              <B.Label>장기 여행 예정</B.Label>
-              <B.RadioBtn type="radio" name="future" />
-              <B.Label>계획 없음</B.Label>
-              <B.RadioBtn type="radio" name="future" />
-              <B.Label>기타</B.Label>
+              <B.RadioBtn type="radio" name="future" id="option14" />
+              <B.Label for="option14">이사 예정</B.Label>
+              <B.RadioBtn type="radio" name="future" id="option15" />
+              <B.Label for="option15">단기 여행 예정</B.Label>
+              <B.RadioBtn type="radio" name="future" id="option16" />
+              <B.Label for="option16">장기 여행 예정</B.Label>
+              <B.RadioBtn type="radio" name="future" id="option17" />
+              <B.Label for="option17">계획 없음</B.Label>
+              <B.RadioBtn type="radio" name="future" id="option18" />
+              <B.Label for="option18">기타</B.Label>
             </B.RadioWrapper>
           </B.InputWrapper2>
         </B.InputArea>

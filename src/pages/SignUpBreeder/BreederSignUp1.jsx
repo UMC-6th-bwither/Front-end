@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as B from './BwitherSignUp.style';
+import * as B from '../SignUpBwither/BwitherSignUp.style';
 import progressBar25 from '../../../public/icons/signUp/progress-bar-25.svg';
 import pwShow from '../../../public/icons/signUp/password-show.svg';
 import Terms from '../../components/SignUpTerms/SignUpTerms';
@@ -48,7 +48,7 @@ export default function BwitherSignUp1() {
       </B.WelcomeMsg>
       <B.Container>
         <B.ProgressBar src={progressBar25} />
-        <B.Text>브위더 계정을 만들어 보아요</B.Text>
+        <B.Text>브리더 계정을 만들어 보아요</B.Text>
         <B.InputArea>
           <B.InputWrapper>
             <B.InputTitle>이름</B.InputTitle>
@@ -104,7 +104,7 @@ export default function BwitherSignUp1() {
                 onBlur={() => {
                   if (!email) {
                     setEmailError('이메일을 입력해주세요');
-                  } else if (!validateEmail(email)) {
+                  } else if (!validateEmail(password)) {
                     setEmailError('이메일을 형식에 맞게 입력해주세요');
                   }
                 }}
@@ -190,8 +190,10 @@ export default function BwitherSignUp1() {
         </B.InputArea>
         <Terms />
         <B.BtnWrapper1>
-          <Button text="회원가입" path="bwither-signup-2" />
-          <TextButton path="breeder-signup-1" />
+          <Button text="브리더로 가입" path="breeder-signup-3" />
+          <TextButton path="bwither-signup-1">
+            일반 회원으로 가입하시나요?
+          </TextButton>
         </B.BtnWrapper1>
       </B.Container>
     </B.Background>

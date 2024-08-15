@@ -6,7 +6,7 @@ export const ButtonSelectorBase = styled.button`
   justify-content: center;
   box-sizing: border-box;
   margin: 0;
-  padding: 8px 10px;
+  padding: 8px ${(p) => (p.$paddingVertical ? p.$paddingVertical : '10px')};
   border-radius: 8px;
   border: none;
   background: none;

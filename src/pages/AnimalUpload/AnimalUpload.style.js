@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import ko from 'date-fns/locale/ko';
+import 'react-datepicker/dist/react-datepicker.css';
+
+registerLocale('ko', ko);
 
 export const Container = styled.div`
   display: flex;
@@ -42,12 +46,28 @@ export const Image = styled.div`
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  gap: 10px;
   line-height: 21px;
   width: 360px;
   height: 360px;
   border-radius: 12px;
   background-color: #f4f4f4;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  svg {
+    display: ${({ hasImage }) => (hasImage ? 'none' : 'block')};
+  }
 `;
 
 export const InfoContainer = styled.div`
@@ -78,6 +98,38 @@ export const Name = styled.input`
   }
 `;
 
+export const BreedSelect = styled.select`
+  display: flex;
+  width: 260px;
+  height: 46px;
+  padding: 8px 10px;
+  align-items: center;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+  background: #fff;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-weight: 500;
+  color: #c5c5c5;
+  margin-right: 10px;
+
+  &:focus {
+    outline: none;
+    border-color: #fe834d;
+  }
+
+  option[value=''] {
+    color: #c5c5c5;
+  }
+`;
+
+export const BreedOption = styled.option`
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 400;
+  color: #323232;
+`;
+
 export const AnimalSelectBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -91,7 +143,14 @@ export const AnimalSelect = styled.div`
   align-items: center;
   border-radius: 28px;
   border: 1px solid #e1e1e1;
-  background: #fff;
+  background: ${({ selected }) => (selected ? '#F87B45' : '#fff')};
+  color: ${({ selected }) => (selected ? '#fff' : '#000')};
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f87b45;
+    color: #fff;
+  }
 `;
 
 export const DogInfo = styled.div`
@@ -154,60 +213,128 @@ export const DogInfoInput = styled.input`
     font-weight: 500;
   }
 `;
-export const CustomDatePicker = styled(DatePicker)`
-  .react-datepicker__header {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+
+export const CalendarContainer = styled.div`
+  .react-datepicker__month-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   }
 
-  .react-datepicker__current-month,
-  .react-datepicker__day-name,
-  .react-datepicker__day,
-  .react-datepicker__time-name {
-    font-size: 0.8rem;
+  .react-datepicker__month {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+export const CustomDatePicker = styled(DatePicker)`
+  .react-datepicker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 388px;
+    padding: 32px 0 24px;
+    border-radius: 12px;
+    border: 2px solid var(--Grey_line, #f1f1f1);
+    background-color: var(--White, #fff);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .react-datepicker {
+    width: 100%;
+  }
+  .react-datepicker__header {
+    background-color: transparent;
+    border-bottom: none;
+    padding: 0;
+    text-align: center;
+  }
+
+  .react-datepicker__current-month {
+    font-size: 22px;
+    font-weight: bold;
+    color: #c5c5c5;
+    margin-bottom: 24px;
+  }
+
+  .react-datepicker__day-names {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    color: #c5c5c5;
+  }
+
+  .react-datepicker__day-name {
+    font-size: 14px;
+    color: #bdbdbd;
+  }
+
+  .react-datepicker__week {
+    display: flex;
+    justify-content: space-around;
   }
 
   .react-datepicker__day {
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 2px;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
   }
 
-  .react-datepicker {
-    font-size: 0.8rem;
-    position: absolute;
-    right: 0;
-    z-index: 1000;
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    background-color: #333;
+    color: white;
   }
 
   .react-datepicker__month-container {
-    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .react-datepicker__day-names,
-  .react-datepicker__week,
-  .react-datepicker__day {
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
+  .react-datepicker__navigation {
+    top: 10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
   }
 
-  .react-datepicker__input-container input {
-    width: 8rem;
-    height: 2rem;
-    font-size: 0.8rem;
+  .react-datepicker__navigation--previous {
+    left: 10px;
+    border-width: 7px 7px 7px 0;
+    border-color: transparent #333 transparent transparent;
+  }
+
+  .react-datepicker__navigation--next {
+    right: 10px;
+    border-width: 7px 0 7px 7px;
+    border-color: transparent transparent transparent #333;
+  }
+
+  .react-datepicker__month-year-dropdown {
+    display: none;
+  }
+
+  .react-datepicker__month-year-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
-
 export const SvgIcon = styled.svg`
   position: absolute;
-  right: 18px;
   top: 50%;
-  width: 16px;
-  height: 16px;
+  right: 10px;
   transform: translateY(-50%);
   pointer-events: none;
-  cursor: pointer;
 `;
 
 export const StatusContainer = styled.div`
@@ -243,18 +370,10 @@ export const ButtonFileName = styled.div`
 export const InfoWrapper = styled.div`
   width: 100%;
 `;
-export const SliderContainer = styled.div`
+export const ThumbnailContainer = styled.div`
   position: relative;
   overflow: visible;
   width: 970px;
-
-  .react-multi-carousel-item {
-    display: flex;
-    width: 355px;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-  }
   align-self: flex-start;
   margin-bottom: 88px;
 `;
@@ -263,45 +382,8 @@ export const Thumbnail = styled.img`
   width: 60px;
   height: 60px;
   object-fit: cover;
+  margin-right: 12px;
   border-radius: 4px;
-`;
-
-export const Arrow = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 22px;
-  height: 22px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  z-index: 2;
-  user-select: none;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-top: 2px solid #888888;
-    border-right: 2px solid #888888;
-    transform: rotate(45deg);
-  }
-
-  &.left {
-    left: -15px;
-    &::before {
-      transform: rotate(-135deg);
-    }
-  }
-
-  &.right {
-    left: 948px;
-  }
 `;
 
 export const DogInfoTitle = styled.div`
@@ -340,8 +422,8 @@ export const InfoInput = styled.textarea`
 export const InfoFileBox = styled.div`
   display: flex;
   padding: 8px 16px;
-  width: 60px;
-  height: 24px;
+  width: 90px;
+  height: 40px;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -429,6 +511,7 @@ export const ParentDogImage = styled.div`
   font-weight: 500;
   gap: 10px;
   line-height: 21px;
+  cursor: pointer;
 `;
 
 export const ParentDogInfo = styled.div`
@@ -507,6 +590,7 @@ export const ParentDogValue = styled.div`
 export const ParentDogValueInput = styled.input`
   display: flex;
   padding: 8px 10px;
+  width: 400px;
   align-items: center;
   border-radius: 10px;
   border: none;
@@ -539,8 +623,8 @@ export const InfoFileBoxNameContainerWrapper = styled.div`
 export const ParentInfoFileBox = styled.div`
   display: flex;
   padding: 8px 16px;
-  width: 60px;
-  height: 24px;
+  width: 90px;
+  height: 40px;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -567,4 +651,45 @@ export const ConfirmBtn = styled.button`
   line-height: 30px;
   letter-spacing: -0.5px;
   margin-top: 209px;
+  cursor: pointer;
+
+  &:hover {
+    background: #f57137;
+    border-color: #f57137;
+  }
+`;
+
+export const IconModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+export const IconModalContent = styled.div`
+  background: #fff;
+  padding: 50px;
+  border-radius: 10px;
+  max-width: 600px;
+  height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+export const IconCloseButton = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
