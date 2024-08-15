@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   min-width: 1050px;
@@ -41,7 +42,7 @@ export const TextWrapper = styled.div`
   gap: 18px;
 `;
 
-export const NavText = styled.div`
+export const NavText = styled(Link)`
   color: #323232;
   text-align: center;
   font-family: 'Noto Sans KR';
@@ -49,9 +50,10 @@ export const NavText = styled.div`
   font-style: normal;
   font-weight: 500;
   cursor: pointer;
+  text-decoration: none;
 `;
 
-export const AuthText = styled.div`
+export const AuthText = styled(Link)`
   color: #323232;
   text-align: center;
   font-family: 'Noto Sans KR';
@@ -59,6 +61,7 @@ export const AuthText = styled.div`
   font-style: normal;
   font-weight: 350;
   cursor: pointer;
+  text-decoration: none;
 `;
 
 export const Button = styled.button`

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Menu = styled.div`
   position: relative;
@@ -174,7 +175,15 @@ export const EndTitle = styled(Head)`
   margin-top: 170px;
 `;
 
-export const GoBtn = styled.button`
+export const GoBtnLayout = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 100px;
+`;
+
+export const GoLink = styled(Link)`
+  text-decoration: none;
   display: flex;
   padding: 12px 25px;
   justify-content: center;

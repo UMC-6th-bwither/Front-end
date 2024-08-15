@@ -40,6 +40,7 @@ import BwitherSignUp1 from './pages/SignUpBwither/BwitherSignUp1';
 import BwitherSignUp2 from './pages/SignUpBwither/BwitherSignUp2';
 import BwitherSignUp3 from './pages/SignUpBwither/BwitherSignUp3';
 import BwitherSignUp4 from './pages/SignUpBwither/BwitherSignUp4';
+import BreederSignUp4 from './pages/SignupBreeder/BreederSignUp4';
 import SignUpBreeder from './pages/SignUpBreeder/SignUpBreeder';
 import SignUpBreederChoice from './pages/SignUpBreeder/SignUpBreederChoice';
 import SignUpBreederInfo from './pages/SignUpBreeder/SignUpBreederInfo';
@@ -59,10 +60,17 @@ function App() {
       <Router>
         <Header />
         <Routes>
+          <Route path="signup/1" element={<BwitherSignUp1 />} />
+          <Route path="signup/2" element={<BwitherSignUp2 />} />
+          <Route path="signup/3" element={<BwitherSignUp3 />} />
+          <Route path="signup/4" element={<BwitherSignUp4 />} />
+          <Route path="breeder-signup/4" element={<BreederSignUp4 />} />
+          <Route path="animal-list" element={<AnimalList />} />
+          <Route path="adoptionsystem" element={<AdoptionSystem />} />
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
-          <Route path="/BreederList" element={<BreederList />} />
-          <Route path="/" element={<AnimalList />} />
+          <Route path="/Breeder-List" element={<BreederList />} />
+          <Route path="/" element={<Main />} />
           <Route path="/Community" element={<CommunityMain />} />
           <Route path="/AnimalList" element={<AnimalList />} />
           <Route path="/BreederAnimalList" element={<BreederAnimalList />} />
@@ -95,7 +103,7 @@ function App() {
           />
           <Route path="/animal-upload" element={<AnimalUpload />} />
           <Route path="/breeder-detail" element={<BreederDetail />} />
-          <Route path="/bwither-review" element={<BwitherReview />} />
+          <Route path="/community/review" element={<BwitherReview />} />
           <Route path="/breeder-review" element={<BreederReview />} />
           <Route path="/MypageGeneral" element={<MypageGeneral />} />
           <Route path="/MypageBreeder" element={<MypageBreeder />} />
@@ -113,10 +121,6 @@ function App() {
           />
           <Route path="/WritingDetail" element={<WritingDetail />} />
           <Route path="/TermsOfService" element={<TermsOfService />} />
-          <Route path="/bwither-signup-1" element={<BwitherSignUp1 />} />
-          <Route path="/bwither-signup-2" element={<BwitherSignUp2 />} />
-          <Route path="/bwither-signup-3" element={<BwitherSignUp3 />} />
-          <Route path="/bwither-signup-4" element={<BwitherSignUp4 />} />
           <Route path="/breeder-signup-1" element={<BreederSignUp1 />} />
           <Route path="/breeder-signup-3" element={<BreederSignUp3 />} />
           <Route path="/breeder-signup-5" element={<BreederSignUp5 />} />
