@@ -8,7 +8,6 @@ export const Container = styled.div`
   width: 100%;
   margin: 0 auto;
   padding: 0 0 291px 0;
-  padding-top: 208px;
 `;
 
 export const Backdrop = styled.div`
@@ -18,11 +17,11 @@ export const Backdrop = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999; // 모달 위에 다른 요소들이 나타나지 않도록 충분히 큰 z-index를 설정
+  z-index: 999;
 `;
 
 export const TopImage = styled.div`
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -34,7 +33,7 @@ export const TopImage = styled.div`
 
 export const TopImageIcon = styled.div`
   position: absolute;
-  top: 162px;
+  top: 232px;
   right: 371px;
   width: 42px;
   height: 42px;

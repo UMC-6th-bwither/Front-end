@@ -119,11 +119,19 @@ export const InputBox = styled.input`
   &::placeholder {
     color: #dadada;
   }
+  &:focus {
+    border: 2px solid #fe834d;
+    outline: none;
+  }
 `;
 
 export const InputBox2 = styled(InputBox)`
   width: 100%;
   margin-top: 8px;
+  &:focus {
+    border: 2px solid #fe834d;
+    outline: none;
+  }
 `;
 
 export const InputUnderText = styled.div`
@@ -218,6 +226,7 @@ export const Label = styled.label`
   font-style: normal;
   font-weight: 350;
   line-height: normal;
+  cursor: pointer;
 `;
 
 export const Dropdown = styled.div`

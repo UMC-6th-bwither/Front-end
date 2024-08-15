@@ -918,111 +918,6 @@ export const CommuBtn = styled.button`
   }
 `;
 
-export const CommuCategory = styled.div`
-  color: #b5b5b5;
-  font-family: 'Noto Sans KR';
-  font-size: 12px;
-  font-weight: 350;
-  line-height: 18px;
-  margin-bottom: 8px;
-`;
-
-export const CommuText1 = styled.div`
-  color: #323232;
-  font-family: 'Noto Sans KR';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 21px;
-  margin-bottom: 2px;
-`;
-
-export const CommuText2 = styled.div`
-  color: #737373;
-  font-family: 'Noto Sans KR';
-  font-size: 14px;
-  font-weight: 350;
-  line-height: 21px;
-  margin-bottom: 11px;
-`;
-
-export const CommuNumBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
-`;
-
-export const CommuNum = styled.div`
-  color: #b5b5b5;
-  font-family: 'Noto Sans KR';
-  font-size: 12px;
-  font-weight: 350;
-  line-height: 18px;
-`;
-export const CommuPostBox = styled.div`
-  border-radius: 8px;
-  border: 1px solid #f2f2f2;
-  display: flex;
-  max-width: 231px;
-  padding: 1px;
-  width: 231px;
-  height: 231px;
-  background-color: tomato;
-  flex-shrink: 0;
-  align-items: flex-end;
-  align-self: stretch;
-  justify-content: center;
-`;
-
-export const CommuPostText = styled.div`
-  color: #fff;
-  font-family: 'Noto Sans KR';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: -0.5px;
-  height: 64px;
-`;
-
-export const CommuPostFooter = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-top: 8px;
-`;
-
-export const CommuPostImage = styled.img`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-right: 8px;
-`;
-
-export const CommuPostAuthor = styled.div`
-  color: #323232;
-  font-family: 'Noto Sans KR';
-  font-size: 12px;
-  font-weight: 350;
-  line-height: 20px;
-`;
-
-export const CommuFooterBox = styled.div`
-  display: flex;
-  height: 20px;
-  justify-content: space-between;
-  align-items: center;
-  align-self: stretch;
-`;
-
-export const CommuDate = styled.div`
-  color: #b5b5b5;
-  text-align: right;
-  font-family: 'Noto Sans KR';
-  font-size: 12px;
-  font-weight: 350;
-  line-height: 18px;
-`;
-
 export const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -1103,4 +998,73 @@ export const InfoValue = styled.span`
   font-weight: 500;
   line-height: 24px;
   margin-left: 16px;
+`;
+
+// 꿀정보
+
+export const TipImgBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: calc(5 * 150px + 4 * 14px);
+  margin-bottom: 8px;
+`;
+
+export const TipImg = styled.div`
+  position: relative;
+  width: 202px;
+  height: 229px;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+`;
+
+export const TipImgWrapper = styled.div`
+  margin-bottom: 16px;
+`;
+
+export const TipImgText = styled.div`
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  color: white;
+  white-space: nowrap;
+  font-family: 'Noto Sans KR';
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  line-height: 22px;
+`;
+
+export const TipBreederInfo = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+`;
+
+export const TipBreederIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 1px solid #e1e1e1;
+  background:
+    lightgray center / cover no-repeat,
+    #e1e1e1;
+  margin-right: 8px;
+`;
+
+export const TipBreederName = styled.div`
+  color: #323232;
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-weight: 350;
+  line-height: 20px;
 `;

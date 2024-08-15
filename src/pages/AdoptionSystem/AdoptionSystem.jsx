@@ -1,6 +1,7 @@
 import * as A from './AdoptionSystem.style';
 import titleMark from '../../../public/icons/title_mark.svg';
 import downMark from '../../../public/icons/down_mark.svg';
+import fence from '../../../public/icons/fence.svg';
 
 export default function AdoptionSystem() {
   return (
@@ -195,12 +196,13 @@ export default function AdoptionSystem() {
           정보를 넘겨주어야 합니다. <br /> (사진, 병원 검진 내역 등)
         </A.AdoptionBox>
       </A.AdoptionSection>
-      <A.EndTitle>
-        브위더와 함께 <strong>가족</strong>을 만들어볼까요?
-      </A.EndTitle>
-      <A.GoBtnLayout>
-        <A.GoLink to="/animal-list">분양 대기 동물 보러 가기</A.GoLink>
-      </A.GoBtnLayout>
+      <A.EndWrapper>
+        <A.EndTitle>
+          브위더와 함께 <strong>가족</strong>을 만들어볼까요?
+        </A.EndTitle>
+        <A.GoBtn>분양 대기 동물 보러 가기</A.GoBtn>
+        <A.Fence src={fence} />
+      </A.EndWrapper>
     </A.Container>
   );
 }

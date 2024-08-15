@@ -34,7 +34,7 @@ function BreederDetail() {
     '관리 중인 강아지',
     '후기(22)',
     '질문/답변',
-    '커뮤니티',
+    '꿀정보',
   ];
 
   useEffect(() => {
@@ -71,7 +71,7 @@ function BreederDetail() {
       reviewRef.current.scrollIntoView({ behavior: 'smooth' });
     } else if (menu === '질문/답변') {
       qnaRef.current.scrollIntoView({ behavior: 'smooth' });
-    } else if (menu === '커뮤니티') {
+    } else if (menu === '꿀정보') {
       communityRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };

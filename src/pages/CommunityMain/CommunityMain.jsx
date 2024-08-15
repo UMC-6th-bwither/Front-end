@@ -106,6 +106,7 @@ function CommunityMain() {
   );
 }
 
+/* eslint-disable react/prop-types */
 function ExploreAll({ href }) {
   const navigate = useNavigate();
 

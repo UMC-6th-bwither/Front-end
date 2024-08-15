@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import * as B from './BwitherSignUp.style';
 import progressBar75 from '../../../public/icons/signUp/progress-bar-75.svg';
 import Agreement from '../../components/SignUpAgreement/Agreement';
@@ -30,6 +31,38 @@ export default function BwitherSignUp3() {
     },
   ];
 
+  const [checkedItems, setCheckedItems] = useState(
+    data.reduce((acc, content) => {
+      acc[content.id] = false;
+      return acc;
+    }, {}),
+  );
+
+  const [isAllChecked, setIsAllChecked] = useState(false);
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prevItems) => {
+      const updatedItems = { ...prevItems, [id]: !prevItems[id] };
+
+      const allChecked = Object.values(updatedItems).every(Boolean);
+      setIsAllChecked(allChecked);
+
+      return updatedItems;
+    });
+  };
+
+  const handleAllChecked = () => {
+    const newCheckedState = !isAllChecked;
+    setIsAllChecked(newCheckedState);
+
+    const updatedItems = data.reduce((acc, content) => {
+      acc[content.id] = newCheckedState;
+      return acc;
+    }, {});
+
+    setCheckedItems(updatedItems);
+  };
+
   return (
     <B.Background>
       <B.WelcomeMsg>
@@ -45,11 +78,20 @@ export default function BwitherSignUp3() {
         </B.TextWrapper>
         {data.map((content) => {
           return (
-            <Agreement key={content.id} content={content.content} checked />
+            <Agreement
+              key={content.id}
+              content={content.content}
+              checked={checkedItems[content.id]}
+              onChange={() => handleCheckboxChange(content.id)}
+            />
           );
         })}
         <B.CheckWrapper>
-          <B.CheckBox type="checkbox" />
+          <B.CheckBox
+            type="checkbox"
+            checked={isAllChecked}
+            onChange={handleAllChecked}
+          />
           <B.CheckText>모두 동의하기</B.CheckText>
         </B.CheckWrapper>
         <B.BtnWrapper2>

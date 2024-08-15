@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 
+export const PageBox = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  position: relative;
+`;
+
 export const Container = styled.div`
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,6 +16,19 @@ export const Container = styled.div`
   width: 100%;
   max-width: 970px;
   margin: 0 auto;
+  position: relative;
+`;
+
+export const Sidebar = styled.div`
+  position: absolute;
+  left: calc(50% - 485px - 194px);
+  top: 64px;
+  width: 120px;
+  height: 126px;
+`;
+
+export const Content = styled.div`
+  flex: 1;
 `;
 
 export const PencilIcon = styled.svg`
@@ -99,25 +120,19 @@ export const ReviewItem = styled.div`
   flex-direction: column;
   border-radius: 20px;
   overflow: hidden;
-  border: 2px solid rgba(241, 241, 241, 0.5);
+  border: 2px solid #f1f1f1;
   background: #fff;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  height: 100%; /* 기본 높이 설정 */
+  height: 100%;
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  &.expanded {
-    display: inline-flex;
     height: 351px;
     padding: 16px 15px 24px 15px;
-    border-radius: 20px;
-    border: 2px solid #f1f1f1;
   }
 `;
 
@@ -126,8 +141,9 @@ export const ReviewImage = styled.div`
   height: 235px;
   background: #eee;
 
-  &.hidden {
-    display: none;
+  ${ReviewItem}:hover & {
+    opacity: 0;
+    height: 0;
   }
 `;
 
@@ -138,7 +154,7 @@ export const ReviewContent = styled.div`
   gap: 8px;
   border-top: none;
 
-  &.expanded {
+  ${ReviewItem}:hover & {
     padding: 0;
     height: 100%;
     border: none;
@@ -171,10 +187,13 @@ export const ReviewText = styled.div`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+  transition: all 0.3s ease;
 
-  &.expanded {
+  ${ReviewItem}:hover & {
     -webkit-line-clamp: unset;
     display: block;
+    overflow: visible;
+    text-overflow: unset;
   }
 `;
 

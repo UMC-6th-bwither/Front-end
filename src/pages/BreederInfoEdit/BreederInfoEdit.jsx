@@ -13,7 +13,11 @@ function BreederInfoEdit() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
   const [isConfidenceModalVisible, setIsConfidenceModalVisible] =
     useState(false);
-  const [isBackdropVisible, setIsBackdropVisible] = useState(false); // State for backdrop visibility
+  const [isBackdropVisible, setIsBackdropVisible] = useState(false);
+  const [topImage, setTopImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [isReviewEventChecked, setIsReviewEventChecked] = useState(false);
+  const [reviewEventContent, setReviewEventContent] = useState('');
 
   const navigate = useNavigate();
 
@@ -21,8 +25,8 @@ function BreederInfoEdit() {
   const kennelInfoRef = useRef(null);
   const careDogRef = useRef(null);
   const qnaRef = useRef(null);
-  const fileInputRef = useRef(null);
-
+  const topImageInputRef = useRef(null);
+  const profileImageInputRef = useRef(null);
   const menuItems = [
     '브리더 정보',
     '켄넬 정보',
@@ -53,28 +57,52 @@ function BreederInfoEdit() {
     setIsBackdropVisible(false);
   };
 
-  const handleIconClick = () => {
-    fileInputRef.current.click();
+  const handleTopImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setTopImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     // 프로필 이미지 변경 로직추가
-  //     console.log('Selected file:', file);
-  //   }
-  // };
+  const handleProfileImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSaveClick = () => {
+    if (isReviewEventChecked && !reviewEventContent.trim()) {
+      alert('리뷰이벤트 내용을 입력해주세요.');
+      return;
+    }
+
     // 저장 로직 추가 예정
     navigate('/breeder-mypage'); // 브리더 마이페이지
+  };
+
+  const handleReviewEventCheck = () => {
+    setIsReviewEventChecked(!isReviewEventChecked);
+    if (!isReviewEventChecked) {
+      setReviewEventContent('');
+    }
   };
 
   return (
     <A.Container>
       {isBackdropVisible && <A.Backdrop />}
-      <A.TopImage />
-      <A.TopImageIcon>
+      <A.TopImage
+        style={topImage ? { backgroundImage: `url(${topImage})` } : {}}
+      />
+      <A.TopImageIcon onClick={() => topImageInputRef.current.click()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="42"
@@ -132,10 +160,21 @@ function BreederInfoEdit() {
           </defs>
         </svg>
       </A.TopImageIcon>
+      <input
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        ref={topImageInputRef}
+        onChange={handleTopImageChange}
+      />
       <A.TopBox>
         <A.OverlappingImageContainer>
-          <A.OverlappingImage />
-          <A.ProfileIcon onClick={handleIconClick}>
+          <A.OverlappingImage
+            style={
+              profileImage ? { backgroundImage: `url(${profileImage})` } : {}
+            }
+          />
+          <A.ProfileIcon onClick={() => profileImageInputRef.current.click()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="42"
@@ -193,6 +232,13 @@ function BreederInfoEdit() {
               </defs>
             </svg>
           </A.ProfileIcon>
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            ref={profileImageInputRef}
+            onChange={handleProfileImageChange}
+          />
         </A.OverlappingImageContainer>
         <A.TopLeftBox>
           <A.BreederInfoTitleBox>
@@ -252,9 +298,16 @@ function BreederInfoEdit() {
               height="24"
               viewBox="0 0 24 24"
               fill="none"
+              onClick={handleReviewEventCheck}
+              style={{ cursor: 'pointer' }}
             >
               <g clipPath="url(#clip0_912_16866)">
-                <rect width="24" height="24" rx="4" fill="white" />
+                <rect
+                  width="24"
+                  height="24"
+                  rx="4"
+                  fill={isReviewEventChecked ? '#FE834D' : 'white'}
+                />
                 <rect
                   x="1"
                   y="1"
@@ -265,14 +318,25 @@ function BreederInfoEdit() {
                   strokeOpacity="0.5"
                   strokeWidth="2"
                 />
-                <path
-                  d="M5.00004 12.2632L10.04 17L19 7"
-                  stroke="#C5C5C5"
-                  strokeOpacity="0.5"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+                {isReviewEventChecked && (
+                  <path
+                    d="M5.00004 12.2632L10.04 17L19 7"
+                    stroke="#FFF"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )}
+                {!isReviewEventChecked && (
+                  <path
+                    d="M5.00004 12.2632L10.04 17L19 7"
+                    stroke="#C5C5C5"
+                    strokeOpacity="0.5"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )}
               </g>
               <defs>
                 <clipPath id="clip0_912_16866">
@@ -282,9 +346,13 @@ function BreederInfoEdit() {
             </svg>
             <A.ReviewEventTitle>리뷰이벤트</A.ReviewEventTitle>
           </A.ReviewEventTitleBox>
+
           <A.ReviewEventContent
             type="text"
             placeholder="이벤트 시 제공되는 서비스를 적어주세요"
+            value={reviewEventContent}
+            onChange={(e) => setReviewEventContent(e.target.value)}
+            disabled={!isReviewEventChecked}
           />
         </A.TopLeftBox>
         <A.ConfidenceModalWrapper>

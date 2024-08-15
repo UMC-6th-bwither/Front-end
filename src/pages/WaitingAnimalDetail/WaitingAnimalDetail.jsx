@@ -30,6 +30,7 @@ RightArrow.propTypes = {
 function WaitingAnimalDetail() {
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
@@ -52,13 +53,11 @@ function WaitingAnimalDetail() {
   };
   const navigate = useNavigate();
 
-  // 브리더에게 문의하기 클릭
   const handleInquiryClick = () => {
     navigate('/breeder-chat');
-    // 브리더 id별로 채팅화면으로 이동되게 수정할 예정
+    // 채팅말고 브리더 번호 뜨도록 수정 예정!!
   };
 
-  // 공유 아이콘 클릭
   const handleCopyUrl = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -67,7 +66,6 @@ function WaitingAnimalDetail() {
     });
   };
 
-  // 하트 클릭
   const toggleFavorite = async () => {
     setIsFavorite((prev) => !prev);
     try {
@@ -94,6 +92,13 @@ function WaitingAnimalDetail() {
     }
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <A.Container>
       <A.Title>행복이의 가족이 되어주세요</A.Title>
@@ -243,7 +248,9 @@ function WaitingAnimalDetail() {
             </Badge>
           </A.StatusContainer>
           <A.ButtonContainer>
-            <Button whiteBorder>혈통서 보기</Button>
+            <Button whiteBorder onClick={openModal}>
+              혈통서 보기
+            </Button>
             <Button orange onClick={handleInquiryClick}>
               브리더에게 문의하기
             </Button>
@@ -279,6 +286,29 @@ function WaitingAnimalDetail() {
         <WaitingParentDogInfo ref={parentDogInfoRef} />
         <WaitingBreederInfo ref={breederInfoRef} />
       </A.InfoWrapper>
+      {isModalOpen && (
+        <A.ModalOverlay onClick={closeModal}>
+          <A.ModalContent onClick={(e) => e.stopPropagation()}>
+            <A.CloseButton onClick={closeModal}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M14.8964 0.396447C15.0917 0.201184 15.4083 0.201184 15.6036 0.396447C15.7988 0.591709 15.7988 0.908291 15.6036 1.10355L8.70711 8L15.6036 14.8964C15.7988 15.0917 15.7988 15.4083 15.6036 15.6036C15.4083 15.7988 15.0917 15.7988 14.8964 15.6036L8 8.70711L1.10355 15.6036C0.908291 15.7988 0.591709 15.7988 0.396446 15.6036C0.201185 15.4083 0.201185 15.0917 0.396447 14.8964L7.29289 8L0.396447 1.10355C0.201185 0.908291 0.201185 0.591709 0.396447 0.396447C0.591709 0.201184 0.908291 0.201184 1.10355 0.396447L8 7.29289L14.8964 0.396447Z"
+                  fill="#C5C5C5"
+                />
+              </svg>
+            </A.CloseButton>
+            <img src="https://via.placeholder.com/400" alt="Pedigree" />
+          </A.ModalContent>
+        </A.ModalOverlay>
+      )}
     </A.Container>
   );
 }

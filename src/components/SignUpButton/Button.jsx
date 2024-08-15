@@ -2,14 +2,17 @@
 import { useNavigate } from 'react-router-dom';
 import * as B from './Button.style';
 
-export default function Button({ white, text, path }) {
+export default function Button({ white, text, path, type }) {
   const navigate = useNavigate();
 
   if (white) {
     return (
       <B.WhiteContainer
+        type={type}
         onClick={() => {
-          navigate(`/${path}`);
+          if (type !== 'submit') {
+            navigate(`/${path}`);
+          }
         }}
       >
         {text}
@@ -19,7 +22,9 @@ export default function Button({ white, text, path }) {
   return (
     <B.Container
       onClick={() => {
-        navigate(`/${path}`);
+        if (type !== 'submit') {
+          navigate(`/${path}`);
+        }
       }}
     >
       {text}

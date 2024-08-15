@@ -27,7 +27,13 @@ export default function Header() {
             <H.AuthText>로그인</H.AuthText>
             <H.AuthText to="signup/1">회원가입</H.AuthText>
           </H.TextWrapper>
-          <H.Button>브리더로 가입</H.Button>
+          <H.Button
+            onClick={() => {
+              navigate('/breeder-signup-1');
+            }}
+          >
+            브리더로 가입
+          </H.Button>
         </H.Right>
       </H.SubContainer>
     </H.Container>
