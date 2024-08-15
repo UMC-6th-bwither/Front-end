@@ -49,6 +49,8 @@ import Login from './pages/Login/Login';
 import BreederSignUp1 from './pages/SignUpBreeder/BreederSignUp1';
 import BreederSignUp3 from './pages/SignUpBreeder/BreederSignUp3';
 import BreederSignUp5 from './pages/SignUpBreeder/BreederSignUp5';
+import WritingDetail from './pages/WritingDetail/WritingDetail';
+import TermsOfService from './pages/TermsOfService/TermsOfService';
 import AdoptionSystem from './pages/AdoptionSystem/AdoptionSystem';
 
 function App() {
@@ -109,6 +111,8 @@ function App() {
             path="/ProfileSettingBreeder"
             element={<ProfileSettingBreeder />}
           />
+          <Route path="/WritingDetail" element={<WritingDetail />} />
+          <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="/bwither-signup-1" element={<BwitherSignUp1 />} />
           <Route path="/bwither-signup-2" element={<BwitherSignUp2 />} />
           <Route path="/bwither-signup-3" element={<BwitherSignUp3 />} />
