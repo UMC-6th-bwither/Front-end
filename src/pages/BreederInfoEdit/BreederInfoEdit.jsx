@@ -13,7 +13,9 @@ function BreederInfoEdit() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
   const [isConfidenceModalVisible, setIsConfidenceModalVisible] =
     useState(false);
-  const [isBackdropVisible, setIsBackdropVisible] = useState(false); // State for backdrop visibility
+  const [isBackdropVisible, setIsBackdropVisible] = useState(false);
+  const [topImage, setTopImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   const navigate = useNavigate();
 
@@ -21,8 +23,8 @@ function BreederInfoEdit() {
   const kennelInfoRef = useRef(null);
   const careDogRef = useRef(null);
   const qnaRef = useRef(null);
-  const fileInputRef = useRef(null);
-
+  const topImageInputRef = useRef(null);
+  const profileImageInputRef = useRef(null);
   const menuItems = [
     '브리더 정보',
     '켄넬 정보',
@@ -53,17 +55,27 @@ function BreederInfoEdit() {
     setIsBackdropVisible(false);
   };
 
-  const handleIconClick = () => {
-    fileInputRef.current.click();
+  const handleTopImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setTopImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     // 프로필 이미지 변경 로직추가
-  //     console.log('Selected file:', file);
-  //   }
-  // };
+  const handleProfileImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSaveClick = () => {
     // 저장 로직 추가 예정
@@ -73,8 +85,10 @@ function BreederInfoEdit() {
   return (
     <A.Container>
       {isBackdropVisible && <A.Backdrop />}
-      <A.TopImage />
-      <A.TopImageIcon>
+      <A.TopImage
+        style={topImage ? { backgroundImage: `url(${topImage})` } : {}}
+      />
+      <A.TopImageIcon onClick={() => topImageInputRef.current.click()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="42"
@@ -132,10 +146,21 @@ function BreederInfoEdit() {
           </defs>
         </svg>
       </A.TopImageIcon>
+      <input
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        ref={topImageInputRef}
+        onChange={handleTopImageChange}
+      />
       <A.TopBox>
         <A.OverlappingImageContainer>
-          <A.OverlappingImage />
-          <A.ProfileIcon onClick={handleIconClick}>
+          <A.OverlappingImage
+            style={
+              profileImage ? { backgroundImage: `url(${profileImage})` } : {}
+            }
+          />
+          <A.ProfileIcon onClick={() => profileImageInputRef.current.click()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="42"
@@ -193,6 +218,13 @@ function BreederInfoEdit() {
               </defs>
             </svg>
           </A.ProfileIcon>
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            ref={profileImageInputRef}
+            onChange={handleProfileImageChange}
+          />
         </A.OverlappingImageContainer>
         <A.TopLeftBox>
           <A.BreederInfoTitleBox>
