@@ -39,6 +39,9 @@ import Animal from './pages/MyReview/Animal/Animal';
 import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
 import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
+import BreederSignUp1 from './pages/SignUpBreeder/BreederSignUp1';
+import BreederSignUp3 from './pages/SignUpBreeder/BreederSignUp3';
+import BreederSignUp5 from './pages/SignUpBreeder/BreederSignUp5';
 
 function App() {
   return (
@@ -100,6 +103,9 @@ function App() {
           <Route path="/bwither-signup-2" element={<BwitherSignUp2 />} />
           <Route path="/bwither-signup-3" element={<BwitherSignUp3 />} />
           <Route path="/bwither-signup-4" element={<BwitherSignUp4 />} />
+          <Route path="/breeder-signup-1" element={<BreederSignUp1 />} />
+          <Route path="/breeder-signup-3" element={<BreederSignUp3 />} />
+          <Route path="/breeder-signup-5" element={<BreederSignUp5 />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
