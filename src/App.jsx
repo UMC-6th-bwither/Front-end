@@ -34,6 +34,7 @@ import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
 import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
 import WritingDetail from './pages/WritingDetail/WritingDetail';
+import TermsOfService from './pages/TermsOfService/TermsOfService';
 
 function App() {
   return (
@@ -88,6 +89,7 @@ function App() {
             element={<ProfileSettingBreeder />}
           />
           <Route path="/WritingDetail" element={<WritingDetail />} />
+          <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

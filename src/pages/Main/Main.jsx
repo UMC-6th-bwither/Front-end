@@ -6,7 +6,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import { Carousel } from 'react-responsive-carousel';
 import * as S from './Main.style';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import PostPreviewCard from '../../components/PostPreviewCard/PostPreviewCard';
 import {
   LeftArrow,
   RightArrow,
@@ -16,65 +15,6 @@ import {
 import teleimg from '../../../public/img/telescope.png';
 import bannerimg from '../../../public/img/bannerimg.png';
 import ButtonSelector from '../../components/buttonselector/ButtonSelector';
-
-const postPreviewData = {
-  question: [
-    {
-      communityName: '질문/고민',
-      postTitle: '이거 왜이러는 건가요?',
-      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg1.png',
-      viewCount: 159,
-      commentCount: 13459,
-      bookmarkCount: 1259,
-    },
-    {
-      communityName: '질문/고민',
-      postTitle: '이거 왜이러는 건가요?',
-      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
-      viewCount: 159,
-      commentCount: 13459,
-      bookmarkCount: 1259,
-    },
-    {
-      communityName: '질문/고민',
-      postTitle: '이거 왜이러는 건가요?',
-      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg3.png',
-      viewCount: 159,
-      commentCount: 13459,
-      bookmarkCount: 1259,
-    },
-    {
-      communityName: '질문/고민',
-      postTitle: '이거 왜이러는 건가요?',
-      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg4.png',
-      viewCount: 159,
-      commentCount: 13459,
-      bookmarkCount: 1259,
-    },
-    {
-      communityName: '질문/고민',
-      postTitle: '이거 왜이러는 건가요?',
-      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg5.png',
-      viewCount: 159,
-      commentCount: 13459,
-      bookmarkCount: 1259,
-    },
-    {
-      communityName: '질문/고민',
-      postTitle: '이거 왜이러는 건가요?',
-      postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
-      viewCount: 159,
-      commentCount: 13459,
-      bookmarkCount: 1259,
-    },
-  ],
-};
 
 const fetchUserData = () => {
   return {
@@ -152,11 +92,6 @@ function CommonPage() {
       <InfoArticle />
 
       <S.Theme>
-        브위더 커뮤니티에 물어보세요 <ExploreAll href="/community" />
-      </S.Theme>
-      <CommunityPreview />
-
-      <S.Theme>
         반려동물 분양 후기 <ExploreAll href="/community/review" />
       </S.Theme>
       <AdoptionReview />
@@ -209,11 +144,6 @@ function BreederPage() {
       <S.Theme>👑이번 주 브리더 랭킹 </S.Theme>
       <BreederRankingBreederVer />
 
-      <S.Theme style={{ marginTop: '70px' }}>
-        브리더에게 궁금해요! <ExploreAll href="/community" />
-      </S.Theme>
-      <CommunityPreview />
-
       <S.Theme>
         브리더가 알려주는 반려동물 꿀정보
         <ExploreAll href="/community/breederinformation" />
@@ -225,25 +155,73 @@ function BreederPage() {
 
 function NewsBanner() {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handleBeforeChange = (current, next) => {
+    if (current < next) {
+      setCurrentPage(currentPage + 1);
+    } else {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 400,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    beforeChange: handleBeforeChange,
+    prevArrow: (
+      <S.Button disabled={currentPage === 0}>
+        <LeftArrow />
+      </S.Button>
+    ),
+    nextArrow: (
+      <S.Button disabled={currentPage === 2}>
+        <RightArrow />
+      </S.Button>
+    ),
+  };
 
   return (
     <S.BannerContainer>
-      <S.Button style={{ margin: '-20px' }}>
-        <LeftArrow />
-      </S.Button>
+      <Slider
+        dots={settings.dots}
+        infinite={settings.infinite}
+        speed={settings.speed}
+        slidesToShow={settings.slidesToShow}
+        beforeChange={settings.beforeChange}
+        prevArrow={settings.prevArrow}
+        nextArrow={settings.nextArrow}
+      >
+        <S.NewsContent
+          src={bannerimg}
+          alt="배너 뉴스"
+          className="bannernews"
+          onClick={() => {
+            navigate('/adoptionsystem');
+          }}
+        />
 
-      <S.NewsContent
-        src={bannerimg}
-        alt="배너 뉴스"
-        className="bannernews"
-        onClick={() => {
-          navigate('/adoptionsystem');
-        }}
-      />
+        <S.NewsContent
+          src={bannerimg}
+          alt="배너 뉴스"
+          className="bannernews"
+          onClick={() => {
+            navigate('/adoptionsystem');
+          }}
+        />
 
-      <S.Button style={{ margin: '-20px' }}>
-        <RightArrow />
-      </S.Button>
+        <S.NewsContent
+          src={bannerimg}
+          alt="배너 뉴스"
+          className="bannernews"
+          onClick={() => {
+            navigate('/adoptionsystem');
+          }}
+        />
+      </Slider>
     </S.BannerContainer>
   );
 }
@@ -337,105 +315,17 @@ function BreederRankingCommonVer() {
             </S.MeetingBreederText>
           </S.MeetingBreederCard>
 
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail1.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>김기도</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 8년 · 평균 2시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail2.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>김성조</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 25년 · 평균 2시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail3.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>부산몬스터트랜스-권사</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 8년 · 평균 6시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail4.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>해피켄넬</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 8년 · 평균 6시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail1.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>5</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 8년 · 평균 6시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail2.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>6</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 3년 · 평균 6시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail3.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>7</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 8년 · 평균 2시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail4.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>8</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 25년 · 평균 2시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail1.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>9</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 8년 · 평균 6시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
-
-          <S.BreederCard>
-            <S.BreederProfile
-              src="../../../public/img/breederthumbnail2.png"
-              alt="InfoCard"
-            />
-            <S.BreederName>10</S.BreederName>
-            <S.ReviewStars>⭐ 5.0</S.ReviewStars>
-            <S.BreederInfo>경력 3년 · 평균 6시간 내 응답</S.BreederInfo>
-          </S.BreederCard>
+          {breederData.map((breeder) => (
+            <S.BreederCard key={breeder.id}>
+              <S.BreederProfile src={breeder.profileImg} alt="profileImg" />
+              <S.BreederName>{breeder.name}</S.BreederName>
+              <S.ReviewStars>⭐ {breeder.rating}</S.ReviewStars>
+              <S.BreederInfo>
+                경력 {breeder.experience}년 · 평균 {breeder.responseTime}시간 내
+                응답
+              </S.BreederInfo>
+            </S.BreederCard>
+          ))}
         </Slider>
       </S.BreederList>
     </S.PBContainer>
@@ -451,86 +341,24 @@ function BreederRankingBreederVer() {
       </S.AnimalChoiceContainer>
 
       <S.BreederListVer2>
-        <S.BreederCardVer2>
-          <S.RankingNum>1</S.RankingNum>
-          <S.BreederProfileVer2 />
-          <S.BreederDetails>
-            <S.BreederNameStars>
-              <S.BreederNameVer2>김성조</S.BreederNameVer2>
-              <S.ReviewStarsVer2>⭐ 5.0</S.ReviewStarsVer2>
-            </S.BreederNameStars>
-            <S.BreederInfoVer2>경력 8년 · 평균 2시간 내 응답</S.BreederInfoVer2>
-          </S.BreederDetails>
-        </S.BreederCardVer2>
-
-        <S.BreederCardVer2>
-          <S.RankingNum>2</S.RankingNum>
-          <S.BreederProfileVer2 />
-          <S.BreederDetails>
-            <S.BreederNameStars>
-              <S.BreederNameVer2>김성도</S.BreederNameVer2>
-              <S.ReviewStarsVer2>⭐ 5.0</S.ReviewStarsVer2>
-            </S.BreederNameStars>
-            <S.BreederInfoVer2>경력 2년 · 평균 2시간 내 응답</S.BreederInfoVer2>
-          </S.BreederDetails>
-        </S.BreederCardVer2>
-
-        <S.BreederCardVer2>
-          <S.RankingNum>3</S.RankingNum>
-          <S.BreederProfileVer2 />
-          <S.BreederDetails>
-            <S.BreederNameStars>
-              <S.BreederNameVer2>부산몬스터트랜스</S.BreederNameVer2>
-              <S.ReviewStarsVer2>⭐ 5.0</S.ReviewStarsVer2>
-            </S.BreederNameStars>
-            <S.BreederInfoVer2>경력 8년 · 평균 6시간 내 응답</S.BreederInfoVer2>
-          </S.BreederDetails>
-        </S.BreederCardVer2>
-
-        <S.BreederCardVer2>
-          <S.RankingNum>4</S.RankingNum>
-          <S.BreederProfileVer2 />
-          <S.BreederDetails>
-            <S.BreederNameStars>
-              <S.BreederNameVer2>해피켄넬</S.BreederNameVer2>
-              <S.ReviewStarsVer2>⭐ 5.0</S.ReviewStarsVer2>
-            </S.BreederNameStars>
-            <S.BreederInfoVer2>경력 3년 · 평균 6시간 내 응답</S.BreederInfoVer2>
-          </S.BreederDetails>
-        </S.BreederCardVer2>
-
-        <S.BreederCardVer2>
-          <S.RankingNum>5</S.RankingNum>
-          <S.BreederProfileVer2 />
-          <S.BreederDetails>
-            <S.BreederNameStars>
-              <S.BreederNameVer2>김기덕</S.BreederNameVer2>
-              <S.ReviewStarsVer2>⭐ 5.0</S.ReviewStarsVer2>
-            </S.BreederNameStars>
-            <S.BreederInfoVer2>경력 5년 · 평균 2시간 내 응답</S.BreederInfoVer2>
-          </S.BreederDetails>
-        </S.BreederCardVer2>
+        {breederData.slice(0, 5).map((breeder, index) => (
+          <S.BreederCardVer2 key={breeder.id}>
+            <S.RankingNum>{index + 1}</S.RankingNum>
+            <S.BreederProfileVer2 src={breeder.profileImg} alt="profileImg" />
+            <S.BreederDetails>
+              <S.BreederNameStars>
+                <S.BreederNameVer2>{breeder.name}</S.BreederNameVer2>
+                <S.ReviewStarsVer2>⭐ {breeder.rating}</S.ReviewStarsVer2>
+              </S.BreederNameStars>
+              <S.BreederInfoVer2>
+                경력 {breeder.experience}년 · 평균 {breeder.responseTime}시간 내
+                응답
+              </S.BreederInfoVer2>
+            </S.BreederDetails>
+          </S.BreederCardVer2>
+        ))}
       </S.BreederListVer2>
     </S.PBContainerVer2>
-  );
-}
-
-function CommunityPreview() {
-  const firstPostsList = postPreviewData.question.slice(0, 3);
-  const secondPostsList = postPreviewData.question.slice(3, 6);
-  return (
-    <S.CPContainer>
-      <S.PostFirstList>
-        {firstPostsList.map((post, index) => (
-          <PostPreviewCard key={index} {...post} />
-        ))}
-      </S.PostFirstList>
-      <S.PostSecondList>
-        {secondPostsList.map((post, index) => (
-          <PostPreviewCard key={index} {...post} />
-        ))}
-      </S.PostSecondList>
-    </S.CPContainer>
   );
 }
 
@@ -576,151 +404,18 @@ function InfoArticle() {
         prevArrow={settings.prevArrow}
         nextArrow={settings.nextArrow}
       >
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail1.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>강아지를 훈육하려면?</S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>남서연</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail2.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>
-              견주만 휴가를 가나요, 반려견도 어쩌구 저쩌구
-            </S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>써니</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail3.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>
-              고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구
-            </S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>이원비(Racdfkfekk)</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail4.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>견주가 처음인 당신에게</S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>해피켄넬</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail1.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>
-              고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구
-            </S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>남서연</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail2.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>6</S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>써니</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail3.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>7</S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>이원비(Racdfkfekk)</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail4.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>8</S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>해피켄넬</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail1.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>9</S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>이원비(Racdfkfekk)</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
-
-        <S.InfoCard>
-          <S.CardContainer>
-            <S.InfoCardImg
-              src="../../../public/img/mainpagethumbnail2.png"
-              alt="InfoCard"
-            />
-            <S.InfoTitle>10</S.InfoTitle>
-          </S.CardContainer>
-          <S.ProFileContainer>
-            <S.ProfileImg />
-            <S.ProFileName>해피켄넬</S.ProFileName>
-          </S.ProFileContainer>
-        </S.InfoCard>
+        {infoData.map((info) => (
+          <S.InfoCard key={info.id}>
+            <S.CardContainer>
+              <S.InfoCardImg src={info.imgSrc} alt="InfoCard" />
+              <S.InfoTitle>{info.title}</S.InfoTitle>
+            </S.CardContainer>
+            <S.ProFileContainer>
+              <S.ProfileImg />
+              <S.ProFileName>{info.profileName}</S.ProFileName>
+            </S.ProFileContainer>
+          </S.InfoCard>
+        ))}
       </Slider>
     </S.IAContainer>
   );
@@ -767,89 +462,190 @@ function AdoptionReview() {
         prevArrow={settings.prevArrow}
         nextArrow={settings.nextArrow}
       >
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail5.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>
-            아주 귀엽쥬? 금방 적응해서 이젠 잘 웃네요
-          </S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail6.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>최궁민 브리더님께 분양 받았습니다!</S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail7.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>이제 3주 된 애기예요~~~ 너무 예쁘죠</S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail5.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>4</S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail5.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>5</S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail5.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>6</S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail5.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>7</S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail5.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>8</S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail5.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>9</S.ReviewDetail>
-        </S.ReviewCard>
-
-        <S.ReviewCard>
-          <S.ReviewCardImg
-            src="../../../public/img/mainpagethumbnail5.png"
-            alt="InfoCard"
-          />
-          <S.ReviewDetail>10</S.ReviewDetail>
-        </S.ReviewCard>
+        {reviewData.map((review) => (
+          <S.ReviewCard key={review.id}>
+            <S.ReviewCardImg src={review.imgSrc} alt="InfoCard" />
+            <S.ReviewDetail>{review.detail}</S.ReviewDetail>
+          </S.ReviewCard>
+        ))}
       </Slider>
     </S.ARContainer>
   );
 }
+
+const breederData = [
+  {
+    id: 1,
+    name: '김기도',
+    profileImg: '../../../public/img/breederthumbnail1.png',
+    experience: 8,
+    responseTime: 2,
+    rating: 5.0,
+  },
+  {
+    id: 2,
+    name: '김성조',
+    profileImg: '../../../public/img/breederthumbnail2.png',
+    experience: 25,
+    responseTime: 2,
+    rating: 5.0,
+  },
+  {
+    id: 3,
+    name: '부산몬스터트랜스-권사',
+    profileImg: '../../../public/img/breederthumbnail3.png',
+    experience: 8,
+    responseTime: 6,
+    rating: 5.0,
+  },
+  {
+    id: 4,
+    name: '해피켄넬',
+    profileImg: '../../../public/img/breederthumbnail4.png',
+    experience: 8,
+    responseTime: 6,
+    rating: 5.0,
+  },
+  {
+    id: 5,
+    name: '5',
+    profileImg: '../../../public/img/breederthumbnail1.png',
+    experience: 8,
+    responseTime: 6,
+    rating: 5.0,
+  },
+  {
+    id: 6,
+    name: '6',
+    profileImg: '../../../public/img/breederthumbnail2.png',
+    experience: 3,
+    responseTime: 6,
+    rating: 5.0,
+  },
+  {
+    id: 7,
+    name: '7',
+    profileImg: '../../../public/img/breederthumbnail3.png',
+    experience: 8,
+    responseTime: 2,
+    rating: 5.0,
+  },
+  {
+    id: 8,
+    name: '8',
+    profileImg: '../../../public/img/breederthumbnail4.png',
+    experience: 25,
+    responseTime: 2,
+    rating: 5.0,
+  },
+  {
+    id: 9,
+    name: '9',
+    profileImg: '../../../public/img/breederthumbnail1.png',
+    experience: 8,
+    responseTime: 6,
+    rating: 5.0,
+  },
+  {
+    id: 10,
+    name: '10',
+    profileImg: '../../../public/img/breederthumbnail2.png',
+    experience: 3,
+    responseTime: 6,
+    rating: 5.0,
+  },
+];
+
+const infoData = [
+  {
+    id: 1,
+    imgSrc: '../../../public/img/mainpagethumbnail1.png',
+    title: '강아지를 훈육하려면?',
+    profileName: '남서연',
+  },
+  {
+    id: 2,
+    imgSrc: '../../../public/img/mainpagethumbnail2.png',
+    title: '견주만 휴가를 가나요, 반려견도 어쩌구 저쩌구',
+    profileName: '써니',
+  },
+  {
+    id: 3,
+    imgSrc: '../../../public/img/mainpagethumbnail3.png',
+    title: '고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구',
+    profileName: '이원비(Racdfkfekk)',
+  },
+  {
+    id: 4,
+    imgSrc: '../../../public/img/mainpagethumbnail4.png',
+    title: '견주가 처음인 당신에게',
+    profileName: '해피켄넬',
+  },
+  {
+    id: 5,
+    imgSrc: '../../../public/img/mainpagethumbnail1.png',
+    title: '고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구',
+    profileName: '남서연',
+  },
+  {
+    id: 6,
+    imgSrc: '../../../public/img/mainpagethumbnail2.png',
+    title: '6',
+    profileName: '써니',
+  },
+  {
+    id: 7,
+    imgSrc: '../../../public/img/mainpagethumbnail3.png',
+    title: '7',
+    profileName: '이원비(Racdfkfekk)',
+  },
+  {
+    id: 8,
+    imgSrc: '../../../public/img/mainpagethumbnail4.png',
+    title: '8',
+    profileName: '해피켄넬',
+  },
+  {
+    id: 9,
+    imgSrc: '../../../public/img/mainpagethumbnail1.png',
+    title: '9',
+    profileName: '이원비(Racdfkfekk)',
+  },
+  {
+    id: 10,
+    imgSrc: '../../../public/img/mainpagethumbnail2.png',
+    title: '10',
+    profileName: '해피켄넬',
+  },
+];
+
+const reviewData = [
+  {
+    id: 1,
+    imgSrc: '../../../public/img/mainpagethumbnail5.png',
+    detail: '아주 귀엽쥬? 금방 적응해서 이젠 잘 웃네요',
+  },
+  {
+    id: 2,
+    imgSrc: '../../../public/img/mainpagethumbnail6.png',
+    detail: '최궁민 브리더님께 분양 받았습니다!',
+  },
+  {
+    id: 3,
+    imgSrc: '../../../public/img/mainpagethumbnail7.png',
+    detail: '이제 3주 된 애기예요~~~ 너무 예쁘죠',
+  },
+  { id: 4, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '4' },
+  { id: 5, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '5' },
+  { id: 6, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '6' },
+  { id: 7, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '7' },
+  { id: 8, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '8' },
+  { id: 9, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '9' },
+  {
+    id: 10,
+    imgSrc: '../../../public/img/mainpagethumbnail5.png',
+    detail: '10',
+  },
+];
+
 export default Main;

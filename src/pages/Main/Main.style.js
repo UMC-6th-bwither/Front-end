@@ -53,11 +53,16 @@ export const HeadLiner = styled.h1`
 `;
 
 export const BannerContainer = styled.div`
-  display: flex;
-  justify-content: center;
+  width: 980px;
+  height: 316px;
+  gap: 16px;
   align-items: center;
-  width: 100%;
-  gap: 0px;
+  justify-content: center;
+
+  .slick-prev:before,
+  .slick-next:before {
+    display: none;
+  }
 `;
 
 export const NewsContent = styled.img`
@@ -244,6 +249,7 @@ export const PBContainerVer2 = styled.div`
   width: 970px;
   height: 680px;
   gap: 20px;
+  margin-bottom: 50px;
 `;
 
 export const BreederListVer2 = styled.div`

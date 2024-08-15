@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import * as S from './WritingDetail.style';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
+import TimeStampParser from '../../components/TimeStampParser/TimeStampParser';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -29,17 +30,31 @@ function WritingDetail() {
   // 데이터 예시
   const content = [
     {
+      id: 1,
       type: 'text',
       value:
         '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이들더라구요. 이럴 땐 굉장히 당황스럽 어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽',
     },
-    { type: 'image', value: '../../../public/img/WritingDetailSample.png' },
-    { type: 'image', value: '../../../public/img/WritingDetailSample.png' },
     {
+      id: 2,
+      type: 'image',
+      value: '../../../public/img/WritingDetailSample.png',
+    },
+    {
+      id: 3,
+      type: 'image',
+      value: '../../../public/img/WritingDetailSample.png',
+    },
+    {
+      id: 4,
       type: 'text',
       value: '어떻게 해야 할까요?',
     },
-    { type: 'image', value: '../../../public/img/WritingDetailSample.png' },
+    {
+      id: 5,
+      type: 'image',
+      value: '../../../public/img/WritingDetailSample.png',
+    },
   ];
 
   return (
@@ -115,13 +130,15 @@ function WritingDetail() {
             <S.ProfileContainer>
               <S.ProfileImg />
               <S.ProfileName>김*숙</S.ProfileName>
-              <S.Time>어제</S.Time>
+              <S.Time>
+                <TimeStampParser>2024-08-14 15:52:36</TimeStampParser>
+              </S.Time>
             </S.ProfileContainer>
           </S.TitleContainer>
 
           <S.ContentContainer>
             {content.map((item, index) => (
-              <React.Fragment key={index}>
+              <React.Fragment key={item.id}>
                 {item.type === 'text' ? (
                   <S.ContentText>{item.value}</S.ContentText>
                 ) : (
