@@ -53,8 +53,8 @@ export default function BwitherSignUp3() {
           <B.CheckText>모두 동의하기</B.CheckText>
         </B.CheckWrapper>
         <B.BtnWrapper2>
-          <Button white text="이전" path="bwither-signup-2" />
-          <Button text="완료" path="bwither-signup-4" />
+          <Button white text="이전" path="signup/2" />
+          <Button text="완료" path="signup/4" />
         </B.BtnWrapper2>
       </B.Container>
     </B.Background>

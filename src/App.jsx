@@ -1,7 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-
 import { Provider } from 'react-redux';
 import Header from './components/header/Header';
 import Footer from './components/Footer/Footer';
@@ -35,18 +34,30 @@ import Animal from './pages/MyReview/Animal/Animal';
 import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
 import MypageBreeder from './pages/MypageBreeder/MypageBreeder';
+import BwitherSignUp1 from './pages/SignUpBwither/BwitherSignUp1';
+import BwitherSignUp2 from './pages/SignUpBwither/BwitherSignUp2';
+import BwitherSignUp3 from './pages/SignUpBwither/BwitherSignUp3';
+import BwitherSignUp4 from './pages/SignUpBwither/BwitherSignUp4';
+import AdoptionSystem from './pages/AdoptionSystem/AdoptionSystem';
+import BreederSignUp4 from './pages/SignupBreeder/BreederSignUp4';
 
 function App() {
   return (
-
     <Provider store={store}>
       <Router>
         <Header />
         <Routes>
+          <Route path="signup/1" element={<BwitherSignUp1 />} />
+          <Route path="signup/2" element={<BwitherSignUp2 />} />
+          <Route path="signup/3" element={<BwitherSignUp3 />} />
+          <Route path="signup/4" element={<BwitherSignUp4 />} />
+          <Route path="breeder-signup/4" element={<BreederSignUp4 />} />
+          <Route path="animal-list" element={<AnimalList />} />
+          <Route path="adoptionsystem" element={<AdoptionSystem />} />
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
-          <Route path="/BreederList" element={<BreederList />} />
-          <Route path="/" element={<AnimalList />} />
+          <Route path="/Breeder-List" element={<BreederList />} />
+          <Route path="/" element={<Main />} />
           <Route path="/Community" element={<CommunityMain />} />
           <Route path="/Community/Question" element={<CommunityQuestion />} />
           <Route
@@ -71,13 +82,9 @@ function App() {
             path="/waitinganimal-detail"
             element={<WaitingAnimalDetail />}
           />
-          <Route
-            path="/waitinganimal-detail"
-            element={<WaitingAnimalDetail />}
-          />
           <Route path="/animal-upload" element={<AnimalUpload />} />
           <Route path="/breeder-detail" element={<BreederDetail />} />
-          <Route path="/bwither-review" element={<BwitherReview />} />
+          <Route path="/community/review" element={<BwitherReview />} />
           <Route path="/breeder-review" element={<BreederReview />} />
           <Route path="/MypageGeneral" element={<MypageGeneral />} />
           <Route path="/MypageBreeder" element={<MypageBreeder />} />
