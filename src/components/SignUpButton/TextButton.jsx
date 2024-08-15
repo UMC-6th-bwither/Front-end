@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import * as T from './TextButton.style';
 
 // eslint-disable-next-line
-export default function TextButton({ path }) {
+export default function TextButton({ path, text }) {
   const navigate = useNavigate();
   return (
     <T.Container
@@ -10,7 +10,7 @@ export default function TextButton({ path }) {
         navigate(`/${path}`);
       }}
     >
-      브리더로 가입하시나요?
+      {text}
     </T.Container>
   );
 }
