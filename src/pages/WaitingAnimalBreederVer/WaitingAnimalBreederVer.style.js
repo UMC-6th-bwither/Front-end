@@ -10,6 +10,19 @@ export const Container = styled.div`
   padding: 64px 0 291px 0;
 `;
 
+export const EditBtn = styled.button`
+  border-radius: 12px;
+  border: 1px solid var(--Grey_icon, #c5c5c5);
+  background: var(--Grey_block, #f4f4f4);
+  width: 50px;
+  height: 34px;
+  color: #444;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 21px;
+`;
+
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;

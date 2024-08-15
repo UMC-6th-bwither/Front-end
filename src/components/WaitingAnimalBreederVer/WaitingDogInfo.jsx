@@ -155,20 +155,7 @@ const WaitingDogInfo = React.forwardRef((props, ref) => {
         <A.ModalOverlay onClick={closeModal}>
           <A.ModalContent onClick={(e) => e.stopPropagation()}>
             <A.CloseButton onClick={closeModal}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M14.8964 0.396447C15.0917 0.201184 15.4083 0.201184 15.6036 0.396447C15.7988 0.591709 15.7988 0.908291 15.6036 1.10355L8.70711 8L15.6036 14.8964C15.7988 15.0917 15.7988 15.4083 15.6036 15.6036C15.4083 15.7988 15.0917 15.7988 14.8964 15.6036L8 8.70711L1.10355 15.6036C0.908291 15.7988 0.591709 15.7988 0.396446 15.6036C0.201185 15.4083 0.201185 15.0917 0.396446 14.8964L7.29289 8L0.396447 1.10355C0.201185 0.908291 0.201185 0.591709 0.396447 0.396447C0.591709 0.201184 0.908291 0.201184 1.10355 0.396447L8 7.29289L14.8964 0.396447Z"
-                  fill="#C5C5C5"
-                />
-              </svg>
+              {/* 닫기 버튼 SVG */}
             </A.CloseButton>
             {selectedItem === 'food' && (
               <img src="food_image_url" alt="사료 및 간식 사진" />

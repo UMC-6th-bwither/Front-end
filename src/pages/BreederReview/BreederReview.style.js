@@ -100,12 +100,19 @@ export const ModalAuthorRatingContainer = styled.div`
   margin-bottom: 10px;
   margin-top: 15px;
 `;
+export const ModalAuthorContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-right: 15px;
+  gap: 10px;
+  margin-right: 25px;
+`;
 
 export const ModalAuthor = styled.div`
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 10px;
-  margin-right: 15px;
 `;
 
 export const ModalRating = styled.div`
@@ -231,7 +238,7 @@ export const ReviewItem = styled.div`
   flex-direction: column;
   border-radius: 20px;
   overflow: hidden;
-  border: 2px solid rgba(241, 241, 241, 0.5);
+  border: 2px solid #f1f1f1;
   background: #fff;
   transition:
     transform 0.3s ease,
@@ -284,10 +291,6 @@ export const ReviewContent = styled.div`
   flex-direction: column;
   padding: 16px 15px 24px 15px;
   gap: 8px;
-  border-top: none;
-  border-right: 2px solid #f1f1f1;
-  border-bottom: 2px solid #f1f1f1;
-  border-left: 2px solid #f1f1f1;
 
   &.expanded {
     padding: 0;

@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
-import Header from './components/header/Header';
+import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import store from './redux/store';
 import AnimalList from './pages/AnimalList/AnimalList';
@@ -17,6 +17,7 @@ import MyReviewComment from './pages/MyReview/Comment/Comment';
 import MyReview from './pages/MyReview/Review/Review';
 import ReviewForm from './pages/MyReview/Review/Form/Form';
 import MyReviewSave from './pages/MyReview/Save/Save';
+import WaitingAnimalBreederVer from './pages/WaitingAnimalBreederVer/WaitingAnimalBreederVer';
 import WaitingAnimalDetail from './pages/WaitingAnimalDetail/WaitingAnimalDetail';
 import AnimalUpload from './pages/AnimalUpload/AnimalUpload';
 import BreederDetail from './pages/BreederDetail/BreederDetail';
@@ -45,6 +46,10 @@ import SignUpBreederInfo from './pages/SignUpBreeder/SignUpBreederInfo';
 import SignUpBreederInfo2 from './pages/SignUpBreeder/SignUpBreederInfo2';
 import SignUpBreederDone from './pages/SignUpBreeder/SignUpBreederDone';
 import Login from './pages/Login/Login';
+import BreederSignUp1 from './pages/SignUpBreeder/BreederSignUp1';
+import BreederSignUp3 from './pages/SignUpBreeder/BreederSignUp3';
+import BreederSignUp5 from './pages/SignUpBreeder/BreederSignUp5';
+import AdoptionSystem from './pages/AdoptionSystem/AdoptionSystem';
 
 function App() {
   return (
@@ -83,8 +88,8 @@ function App() {
             element={<WaitingAnimalDetail />}
           />
           <Route
-            path="/waitinganimal-detail"
-            element={<WaitingAnimalDetail />}
+            path="/waitinganimal-breeder"
+            element={<WaitingAnimalBreederVer />}
           />
           <Route path="/animal-upload" element={<AnimalUpload />} />
           <Route path="/breeder-detail" element={<BreederDetail />} />
@@ -104,12 +109,15 @@ function App() {
             path="/ProfileSettingBreeder"
             element={<ProfileSettingBreeder />}
           />
+          <Route path="/bwither-signup-1" element={<BwitherSignUp1 />} />
+          <Route path="/bwither-signup-2" element={<BwitherSignUp2 />} />
+          <Route path="/bwither-signup-3" element={<BwitherSignUp3 />} />
+          <Route path="/bwither-signup-4" element={<BwitherSignUp4 />} />
+          <Route path="/breeder-signup-1" element={<BreederSignUp1 />} />
+          <Route path="/breeder-signup-3" element={<BreederSignUp3 />} />
+          <Route path="/breeder-signup-5" element={<BreederSignUp5 />} />
+          <Route path="/adoptionsystem" element={<AdoptionSystem />} />
           <Route path="*" element={<NotFound />} />
-
-          <Route path="/BwitherSignUp1" element={<BwitherSignUp1 />} />
-          <Route path="/BwitherSignUp2" element={<BwitherSignUp2 />} />
-          <Route path="/BwitherSignUp3" element={<BwitherSignUp3 />} />
-          <Route path="/BwitherSignUp4" element={<BwitherSignUp4 />} />
           <Route path="/SignUpBreeder" element={<SignUpBreeder />} />
           <Route
             path="/SignUpBreederChoice"

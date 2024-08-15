@@ -658,3 +658,38 @@ export const ConfirmBtn = styled.button`
     border-color: #f57137;
   }
 `;
+
+export const IconModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+export const IconModalContent = styled.div`
+  background: #fff;
+  padding: 50px;
+  border-radius: 10px;
+  max-width: 600px;
+  height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+export const IconCloseButton = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
