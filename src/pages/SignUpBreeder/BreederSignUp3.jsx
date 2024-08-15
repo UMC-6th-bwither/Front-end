@@ -177,8 +177,8 @@ export default function BwitherSignUp1() {
           </B.InputWrapper>
         </B.InputArea>
         <B.BtnWrapper2>
-          <Button white text="이전" path="breeder-signup-1" />
-          <Button text="다음" path="breeder-signup-5" />
+          <Button white text="이전" path="breeder-signup-2" />
+          <Button text="다음" path="breeder-signup-4" />
         </B.BtnWrapper2>
       </B.Container>
     </B.Background>

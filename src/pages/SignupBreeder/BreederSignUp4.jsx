@@ -286,8 +286,8 @@ export default function BreederSignUp4() {
           </B.InputWrapper2>
         </B.InputArea>
         <B.BtnWrapper2>
-          <Button white text="이전" path="signup/1" />
-          <Button text="다음" path="signup/3" />
+          <Button white text="이전" path="breeder-signup-3" />
+          <Button text="다음" path="breeder-signup-5" />
         </B.BtnWrapper2>
       </B.Container>
     </B.Background>

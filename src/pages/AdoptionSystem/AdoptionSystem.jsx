@@ -200,7 +200,7 @@ export default function AdoptionSystem() {
         <A.EndTitle>
           브위더와 함께 <strong>가족</strong>을 만들어볼까요?
         </A.EndTitle>
-        <A.GoBtn>분양 대기 동물 보러 가기</A.GoBtn>
+        <A.GoLink to="/animal-list">분양 대기 동물 보러 가기</A.GoLink>
         <A.Fence src={fence} />
       </A.EndWrapper>
     </A.Container>

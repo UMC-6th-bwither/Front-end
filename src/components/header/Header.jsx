@@ -24,7 +24,7 @@ export default function Header() {
         </H.Left>
         <H.Right>
           <H.TextWrapper>
-            <H.AuthText>로그인</H.AuthText>
+            <H.AuthText to="/login">로그인</H.AuthText>
             <H.AuthText to="signup/1">회원가입</H.AuthText>
           </H.TextWrapper>
           <H.Button

@@ -66,6 +66,7 @@ const SubInfo = styled.div`
 const CareerBadge = styled.div`
   width: 140px;
   height: 24px;
+  padding-top: 10px;
   gap: 6px;
   opacity: 0px;
 
