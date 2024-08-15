@@ -101,8 +101,8 @@ export default function SingUpBreederChoice() {
           </B.TagWrapper>
         </B.ContentWrapper>
         <B.BtnWrapper2>
-          <Button white text="이전" path="SignUpBreeder" />
-          <Button text="다음" path="SignUpBreederInfo" />
+          <Button white text="이전" path="breeder-signup-1" />
+          <Button text="다음" path="breeder-signup-3" />
         </B.BtnWrapper2>
       </B.Container>
     </B.Background>

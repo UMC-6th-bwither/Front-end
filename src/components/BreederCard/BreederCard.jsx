@@ -5,6 +5,7 @@ import {
   BookmarkActive,
   BookmarkInactive,
 } from '../../../public/img/BookmarkIcon';
+import BadgeVariant from '../badge/BadgeVariant';
 
 function BreederCard({
   photo,
@@ -34,14 +35,10 @@ function BreederCard({
 
         <S.CareerBadge>
           {breederExperience > 0 && (
-            <p className="badge">
-              <strong>{breederExperience}년 경력</strong>
-            </p>
+            <BadgeVariant content={`${breederExperience}년 경력`} />
           )}
           {numberOfCertifications > 0 && (
-            <p className="badge">
-              <strong>자격증 {numberOfCertifications}개</strong>
-            </p>
+            <BadgeVariant content={`자격증 ${numberOfCertifications}개`} />
           )}
         </S.CareerBadge>
 

@@ -190,7 +190,7 @@ export default function BwitherSignUp1() {
         </B.InputArea>
         <Terms />
         <B.BtnWrapper1>
-          <Button text="브리더로 가입" path="breeder-signup-3" />
+          <Button text="브리더로 가입" path="breeder-signup-2" />
           <TextButton path="bwither-signup-1">
             일반 회원으로 가입하시나요?
           </TextButton>
