@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
-import Header from './components/header/Header';
+import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import store from './redux/store';
 import AnimalList from './pages/AnimalList/AnimalList';
@@ -31,6 +31,10 @@ import WritingFormGeneral from './pages/WritingFormGeneral/WritingFormGeneral';
 import CommunityMain from './pages/CommunityMain/CommunityMain';
 import ProfileSettingGeneral from './pages/ProfileSetting/ProfileSettingGeneral';
 import ProfileSettingBreeder from './pages/ProfileSetting/ProfileSettingBreeder';
+import BwitherSignUp1 from './pages/SignUpBwither/BwitherSignUp1';
+import BwitherSignUp2 from './pages/SignUpBwither/BwitherSignUp2';
+import BwitherSignUp3 from './pages/SignUpBwither/BwitherSignUp3';
+import BwitherSignUp4 from './pages/SignUpBwither/BwitherSignUp4';
 import Animal from './pages/MyReview/Animal/Animal';
 import Breeder from './pages/MyReview/Breeder/Breeder';
 import MypageGeneral from './pages/MypageGeneral/MypageGeneral';
@@ -92,6 +96,10 @@ function App() {
             path="/ProfileSettingBreeder"
             element={<ProfileSettingBreeder />}
           />
+          <Route path="/bwither-signup-1" element={<BwitherSignUp1 />} />
+          <Route path="/bwither-signup-2" element={<BwitherSignUp2 />} />
+          <Route path="/bwither-signup-3" element={<BwitherSignUp3 />} />
+          <Route path="/bwither-signup-4" element={<BwitherSignUp4 />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
