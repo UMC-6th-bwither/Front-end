@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../../components/button/Button';
 import * as S from './ProfileSetting.style';
 
 function ProfileSettingGeneral() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordCheckVisible, setIsPasswordCheckVisible] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordCheckError, setPasswordCheckError] = useState('');
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -14,9 +18,45 @@ function ProfileSettingGeneral() {
     setIsPasswordCheckVisible(!isPasswordCheckVisible);
   };
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handlePasswordCheckChange = (e) => {
+    setPasswordCheck(e.target.value);
+  };
+
+  const validatePassword = () => {
+    const passwordPattern =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordPattern.test(password)) {
+      setPasswordError('조건에 맞지 않아요.');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const validatePasswordCheck = () => {
+    if (password !== passwordCheck) {
+      setPasswordCheckError('비밀번호가 일치하지 않아요.');
+    } else {
+      setPasswordCheckError('');
+    }
+  };
+
+  useEffect(() => {
+    validatePassword();
+  }, [password]);
+
+  useEffect(() => {
+    validatePasswordCheck();
+  }, [password, passwordCheck]);
+
   const handleSubmitClick = () => {
-    alert('변경된 내용이 저장되었습니다');
-    // myback(back)이동 로직 구현
+    if (!passwordError && !passwordCheckError) {
+      alert('변경된 내용이 저장되었습니다');
+      // myback(back)이동 로직 구현
+    }
   };
 
   return (
@@ -68,6 +108,8 @@ function ProfileSettingGeneral() {
             <S.PWInput
               type={isPasswordVisible ? 'text' : 'password'}
               placeholder="영문, 숫자, 특수문자 포함 8자 이상 적어주세요"
+              value={password}
+              onChange={handlePasswordChange}
             />
             <S.IconWrapper onClick={togglePasswordVisibility}>
               {isPasswordVisible ? (
@@ -103,12 +145,18 @@ function ProfileSettingGeneral() {
               )}
             </S.IconWrapper>
           </S.InputContainer>
+          {passwordError && <S.ErrorMessage>{passwordError}</S.ErrorMessage>}
         </div>
 
         <div>
           <p>비밀번호 확인</p>
           <S.InputContainer>
-            <S.PWInput type={isPasswordCheckVisible ? 'text' : 'password'} />
+            <S.PWInput
+              type={isPasswordCheckVisible ? 'text' : 'password'}
+              value={passwordCheck}
+              onChange={handlePasswordCheckChange}
+            />
+
             <S.IconWrapper onClick={togglePasswordCheckVisibility}>
               {isPasswordCheckVisible ? (
                 <svg
@@ -143,6 +191,9 @@ function ProfileSettingGeneral() {
               )}
             </S.IconWrapper>
           </S.InputContainer>
+          {passwordCheckError && (
+            <S.ErrorMessage>{passwordCheckError}</S.ErrorMessage>
+          )}
         </div>
       </S.AccountContainer>
 

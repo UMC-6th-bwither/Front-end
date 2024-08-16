@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../../components/button/Button';
 import * as S from './ProfileSetting.style';
 import ProfileSettingDropBox from '../../components/ProfileSettingDropBox/ProfileSettingDropBox';
@@ -6,6 +6,17 @@ import ProfileSettingDropBox from '../../components/ProfileSettingDropBox/Profil
 function ProfileSettingBreeder() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordCheckVisible, setIsPasswordCheckVisible] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const [phoneNum, setPhoneNum] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordCheckError, setPasswordCheckError] = useState('');
+  const [phoneNumError, setPhoneNumError] = useState('');
+  const [roommateNum, setRoommateNum] = useState('5');
+
+  const handleRoommateNumChange = (value) => {
+    setRoommateNum(value);
+  };
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -15,15 +26,62 @@ function ProfileSettingBreeder() {
     setIsPasswordCheckVisible(!isPasswordCheckVisible);
   };
 
-  const handleSubmitClick = () => {
-    alert('변경된 내용이 저장되었습니다');
-    // myback(back)이동 로직 구현
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
   };
 
-  const [roommateNum, setRoommateNum] = useState('5');
+  const handlePasswordCheckChange = (e) => {
+    setPasswordCheck(e.target.value);
+  };
 
-  const handleRoommateNumChange = (value) => {
-    setRoommateNum(value);
+  const handlePhoneNumChange = (e) => {
+    setPhoneNum(e.target.value);
+  };
+
+  const validatePassword = () => {
+    const passwordPattern =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordPattern.test(password)) {
+      setPasswordError('조건에 맞지 않아요.');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const validatePasswordCheck = () => {
+    if (password !== passwordCheck) {
+      setPasswordCheckError('비밀번호가 일치하지 않아요.');
+    } else {
+      setPasswordCheckError('');
+    }
+  };
+
+  const validatePhoneNum = () => {
+    const phoneNumPattern = /^\d{3}-\d{4}-\d{4}$/;
+    if (!phoneNumPattern.test(phoneNum)) {
+      setPhoneNumError('전화번호를 형식에 맞게 입력해주세요.');
+    } else {
+      setPhoneNumError('');
+    }
+  };
+
+  useEffect(() => {
+    validatePassword();
+  }, [password]);
+
+  useEffect(() => {
+    validatePasswordCheck();
+  }, [password, passwordCheck]);
+
+  useEffect(() => {
+    validatePhoneNum();
+  }, [phoneNum]);
+
+  const handleSubmitClick = () => {
+    if (!passwordError && !passwordCheckError && !phoneNumError) {
+      alert('변경된 내용이 저장되었습니다');
+      // myback(back)이동 로직 구현
+    }
   };
 
   return (
@@ -76,6 +134,8 @@ function ProfileSettingBreeder() {
               <S.PWInput
                 type={isPasswordVisible ? 'text' : 'password'}
                 placeholder="영문, 숫자, 특수문자 포함 8자 이상 적어주세요"
+                value={password}
+                onChange={handlePasswordChange}
               />
               <S.IconWrapper onClick={togglePasswordVisibility}>
                 {isPasswordVisible ? (
@@ -111,12 +171,17 @@ function ProfileSettingBreeder() {
                 )}
               </S.IconWrapper>
             </S.InputContainer>
+            {passwordError && <S.ErrorMessage>{passwordError}</S.ErrorMessage>}
           </div>
 
           <div>
             <p>비밀번호 확인</p>
             <S.InputContainer>
-              <S.PWInput type={isPasswordCheckVisible ? 'text' : 'password'} />
+              <S.PWInput
+                type={isPasswordCheckVisible ? 'text' : 'password'}
+                value={passwordCheck}
+                onChange={handlePasswordCheckChange}
+              />
               <S.IconWrapper onClick={togglePasswordCheckVisibility}>
                 {isPasswordCheckVisible ? (
                   <svg
@@ -151,6 +216,9 @@ function ProfileSettingBreeder() {
                 )}
               </S.IconWrapper>
             </S.InputContainer>
+            {passwordCheckError && (
+              <S.ErrorMessage>{passwordCheckError}</S.ErrorMessage>
+            )}
           </div>
         </div>
       </S.AccountContainer>
@@ -163,14 +231,20 @@ function ProfileSettingBreeder() {
         <S.AdopterInfoContainer>
           <div>
             <p>전화번호</p>
-            <S.PhoneNumInput type="text" placeholder="010-1234-5678" />
+            <S.PhoneNumInput
+              type="text"
+              placeholder="010-1234-5678"
+              value={phoneNum}
+              onChange={handlePhoneNumChange}
+            />
+            {phoneNumError && <S.ErrorMessage>{phoneNumError}</S.ErrorMessage>}
           </div>
 
           <div>
             <S.AdressContainer>
               <p>현재 어디서 거주 중이신가요?</p>
               <S.PostCodeContainer>
-                <S.PostCodeInput type="text" placeholder="11111" />
+                <S.PostCodeInput type="text" placeholder="11111" readOnly />
                 <S.PostCodeBtn>우편번호 찾기</S.PostCodeBtn>
               </S.PostCodeContainer>
               <S.ResidentInput type="text" placeholder="서울 브위더로11 22" />

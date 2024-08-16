@@ -252,7 +252,7 @@ export const AdopterInfoContainer = styled.div`
 
 export const PhoneNumInput = styled.input`
   width: 420px;
-  margin-top: 10px;
+  margin: 10px 0;
 `;
 
 export const AdressContainer = styled.div`
@@ -415,4 +415,13 @@ export const CommuteTimeInput = styled.input`
 export const BreedInput = styled.input`
   width: 970px;
   margin-top: 10px;
+`;
+
+export const ErrorMessage = styled.div`
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--Red, #e76467);
+  padding-left: 5px;
 `;
