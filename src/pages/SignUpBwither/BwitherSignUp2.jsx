@@ -2,12 +2,15 @@ import { useState } from 'react';
 import * as B from './BwitherSignUp.style';
 import progressBar50 from '../../../public/icons/signUp/progress-bar-50.svg';
 import Button from '../../components/SignUpButton/Button';
+import failX from '../../../public/icons/signUp/fail_x.svg';
 
 export default function BwitherSignUp2() {
   const [firstField, setFirstField] = useState('');
   // const [secondField, setSecondField] = useState('');
   const [firstFieldError, setFirstFieldError] = useState('');
   // const [secondFieldError, setSecondFieldError] = useState('');
+
+  const [view, setView] = useState(false);
 
   return (
     <B.Background>
@@ -53,24 +56,31 @@ export default function BwitherSignUp2() {
           <B.InputWrapper2>
             <B.InputTitle>현재 누구와 살고 계신가요?</B.InputTitle>
             <B.InputBoxWrapper>
-              <B.InputBox2
-                placeholder="예) 아빠, 엄마, 동생 2명"
-                type="text"
-                value={firstField}
-                onChange={(e) => setFirstField(e.target.value)}
-                onBlur={() => {
-                  if (!firstField) {
-                    setFirstFieldError('가족구성원을 알려주세요');
-                  } else {
-                    setFirstFieldError('');
-                  }
-                }}
-                style={{ borderColor: firstFieldError ? '#FA5963' : '' }}
-              />
-              {firstFieldError && (
-                <div style={{ color: '#FA5963' }}>{firstFieldError}</div>
-              )}
-              <B.Dropdown>본인 포함</B.Dropdown>
+              <B.InputBoxWrapper2>
+                <B.InputBox2
+                  placeholder="예) 아빠, 엄마, 동생 2명"
+                  type="text"
+                  value={firstField}
+                  onChange={(e) => setFirstField(e.target.value)}
+                  onBlur={() => {
+                    if (!firstField) {
+                      setFirstFieldError('가족구성원을 알려주세요');
+                    } else {
+                      setFirstFieldError('');
+                    }
+                  }}
+                  style={{ borderColor: firstFieldError ? '#FA5963' : '' }}
+                />
+                {firstFieldError && (
+                  <B.ErrorWrapper>
+                    <B.FailX src={failX} />
+                    <div style={{ color: '#FA5963' }}>{firstFieldError}</div>
+                  </B.ErrorWrapper>
+                )}
+              </B.InputBoxWrapper2>
+              <div onClick={() => setView(!view)} placeholder="본인 포함">
+                <B.Dropdown />
+              </div>
               <B.InputTitle>명</B.InputTitle>
             </B.InputBoxWrapper>
           </B.InputWrapper2>

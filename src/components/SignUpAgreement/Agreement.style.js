@@ -21,15 +21,17 @@ export const Content = styled.div`
   line-height: normal;
 `;
 
-export const CheckWrapper = styled.div`
+export const CheckWrapper = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 9px;
   align-self: self-end;
+  cursor: pointer;
 `;
 
 export const Checkbox = styled.input`
+  display: none;
   width: 21px;
   height: 21px;
 `;
@@ -41,4 +43,10 @@ export const Text = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+`;
+
+export const Check = styled.img`
+  width: 21px;
+  height: 21px;
+  cursor: pointer;
 `;
