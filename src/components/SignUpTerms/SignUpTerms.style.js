@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   width: 420px;
@@ -22,15 +23,20 @@ export const TextBox = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `;
 
-export const AllText = styled.div`
+export const AllText = styled(Link)`
   color: #272727;
   font-family: 'Noto Sans KR';
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  text-decoration: none;
+  &:hover {
+    color: #fe834d;
+  }
 `;
 
 export const Text = styled(AllText)`
@@ -44,16 +50,7 @@ export const SubText = styled(Text)`
 `;
 
 export const Checkbox = styled.input`
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  background: #ffffff;
-  border: 2px solid #c5c5c580;
-  border-radius: 5px;
-
-  &:checked {
-    background-color: #fe834d;
-  }
+  display: none;
 `;
 
 export const Divider = styled.div`
@@ -61,4 +58,16 @@ export const Divider = styled.div`
   height: 2px;
   background: #f1f1f1;
   margin-bottom: 32px;
+`;
+
+export const Check = styled.img`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+`;
+
+export const Label = styled.label`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
