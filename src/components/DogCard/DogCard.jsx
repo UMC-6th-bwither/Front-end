@@ -7,6 +7,7 @@ import {
 } from '../../../public/img/BookmarkIcon';
 
 function DogCard({
+  to,
   photo,
   location,
   name,
@@ -22,7 +23,7 @@ function DogCard({
     setIsBookmarked(!isBookmarked);
   };
   return (
-    <S.CardBox>
+    <S.CardBox to={to}>
       {waitlistCount > 0 && <S.ReservationBadge>예약중</S.ReservationBadge>}
       <S.PhotoContainer>
         <img src={photo} alt={name} className="photo" />
@@ -66,6 +67,7 @@ function DogCard({
 }
 
 DogCard.propTypes = {
+  to: PropTypes.string.isRequired,
   photo: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
