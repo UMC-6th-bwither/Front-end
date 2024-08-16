@@ -157,8 +157,8 @@ export default function BwitherSignUp2() {
           </B.InputWrapper2>
         </B.InputArea>
         <B.BtnWrapper2>
-          <Button white text="이전" path="bwither-signup-1" />
-          <Button text="다음" path="bwither-signup-3" />
+          <Button white text="이전" path="signup/1" />
+          <Button text="다음" path="signup/3" />
         </B.BtnWrapper2>
       </B.Container>
     </B.Background>

@@ -106,7 +106,7 @@ function MypageGeneral() {
                     />
                   </div>
                   <button type="button" className="rightArrowButton">
-                    {/* onClick={() => navigator(`/`)} */}
+                    {/* onClick={() => navigate(`/`)} */}
                     <img
                       src={rightArrow}
                       alt="rightArrow"

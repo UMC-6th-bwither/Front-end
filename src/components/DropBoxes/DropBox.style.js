@@ -9,7 +9,7 @@ export const Container = styled.div`
   background: #f4f4f4;
   color: #272727;
   cursor: pointer;
-  bottom: 8px;
+  /* bottom: 8px; */
   .dropdown-checkbox {
     left: 0;
     visibility: hidden;

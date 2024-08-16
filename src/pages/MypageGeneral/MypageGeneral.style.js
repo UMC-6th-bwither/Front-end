@@ -120,7 +120,7 @@ export const ResContent = styled.div`
 
   .content {
     ${commonFlexColumn}
-    gap: 20px;
+    gap: 12px;
     flex: 1 0 0;
     width: 894px;
     font-family: 'Noto Sans KR';

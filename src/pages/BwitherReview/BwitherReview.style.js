@@ -1,8 +1,15 @@
 import styled from 'styled-components';
 
+export const Layout = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8vw;
+  padding: 80px 0;
+`;
+
 export const PageBox = styled.div`
   display: flex;
-  width: 100%;
   justify-content: center;
   position: relative;
 `;
@@ -32,7 +39,6 @@ export const Content = styled.div`
 `;
 
 export const PencilIcon = styled.svg`
-  margin: 64px 0 0 0;
   align-self: flex-start;
 `;
 
@@ -50,6 +56,7 @@ export const SubTitle = styled.div`
   color: #272727;
   font-family: 'Noto Sans KR';
   font-size: 20px;
+  padding-top: 8px;
   align-self: flex-start;
 `;
 
@@ -111,6 +118,8 @@ export const ReviewList = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   width: 100%;
+  min-width: 970px;
+  min-height: 1px;
 `;
 
 export const ReviewItem = styled.div`
