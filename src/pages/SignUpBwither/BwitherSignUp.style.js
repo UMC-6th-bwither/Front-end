@@ -71,7 +71,7 @@ export const InputArea = styled.div`
 
 export const InputWrapper = styled.div`
   width: 420px;
-  height: 86px;
+  height: 90px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -91,15 +91,29 @@ export const InputTitle = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  .subtext {
+    color: #737373;
+    font-size: 12px;
+    font-weight: 350;
+    line-height: 18px;
+  }
 `;
 
 export const InputBoxWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 18px;
   width: 678px;
+`;
+
+export const InputBoxWrapper2 = styled.div`
+  width: 495px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 export const InputBox = styled.input`
@@ -158,6 +172,7 @@ export const Button = styled.button`
   position: relative;
   left: 320px;
   top: -44px;
+  z-index: 99;
 
   color: #fff;
   font-family: 'Noto Sans KR';
@@ -210,13 +225,26 @@ export const PwShowIcon = styled.img`
 export const RadioWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 5px;
 `;
 
 export const RadioBtn = styled.input`
-  width: 24px;
-  height: 24px;
-  padding: 8px;
+  width: 10px;
+  height: 10px;
+  padding: 6px;
+  appearance: none;
+  fill: #fff;
+  border: 5px solid rgba(197, 197, 197, 0.5);
+  border-radius: 50%;
+  &:checked {
+    width: 4px;
+    height: 4px;
+    padding: 5px;
+    background-color: #fe834d; // 체크 시 내부 원 색상
+    border: 3px solid #fff; // 라인이 아닌, 라인과 원 사이 색상
+    box-shadow: 0 0 0 3px #fe834d; // 라인
+  }
 `;
 
 export const Label = styled.label`
@@ -227,9 +255,12 @@ export const Label = styled.label`
   font-weight: 350;
   line-height: normal;
   cursor: pointer;
+  &:hover {
+    color: #fe834d;
+  }
 `;
 
-export const Dropdown = styled.div`
+export const Dropdown = styled.input`
   display: flex;
   width: 136px;
   height: 52px;
@@ -286,7 +317,7 @@ export const BtnWrapper2 = styled.div`
   gap: 18px;
 `;
 
-export const CheckWrapper = styled.div`
+export const CheckWrapper = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -296,8 +327,13 @@ export const CheckWrapper = styled.div`
 `;
 
 export const CheckBox = styled.input`
+  display: none;
+`;
+
+export const Check = styled.img`
   width: 21px;
   height: 21px;
+  cursor: pointer;
 `;
 
 export const CheckText = styled.div`
@@ -312,4 +348,37 @@ export const CheckText = styled.div`
 export const Gap = styled.div`
   height: 10px;
   border: none;
+`;
+
+export const ErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const Error = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #e76467;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px;
+`;
+
+export const FailX = styled.img`
+  display: flex;
+  width: 18px;
+  height: 18px;
+  padding: 4px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 1000px;
+  background: #e76467;
 `;
