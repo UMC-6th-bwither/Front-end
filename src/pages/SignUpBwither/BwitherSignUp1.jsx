@@ -73,7 +73,7 @@ export default function BwitherSignUp1() {
                 }
               }}
               style={{ borderColor: nameError ? '#FA5963' : '' }}
-              autofocus={{ borderColor: '#fe834d' }}
+              autoFocus={{ borderColor: '#fe834d' }}
             />
             {nameError && (
               <B.ErrorWrapper>
