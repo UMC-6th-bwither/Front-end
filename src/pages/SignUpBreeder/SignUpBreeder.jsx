@@ -116,24 +116,9 @@ export default function SignUpBreeder() {
               <B.InputBox
                 type="tel"
                 placeholder="문자로 전송된 인증번호 6자리"
-                {...register('phone', {
-                  required: '전화번호를 입력해주세요',
-                  pattern: {
-                    value: /^\d{3}-\d{4}-\d{4}$/,
-                    message: '전화번호를 형식에 맞게 입력해주세요',
-                  },
-                })}
               />
               <B.CodeRequestButton>인증하기</B.CodeRequestButton>
             </div>
-            {errors.phone && (
-              <B.Error>
-                <B.FailX>
-                  <img src={failX} alt="X" />
-                </B.FailX>
-                <div>{errors.phone.message}</div>
-              </B.Error>
-            )}
           </B.InputWrapper>
           <B.InputWrapper>
             <B.InputTitle>아이디</B.InputTitle>
@@ -147,12 +132,12 @@ export default function SignUpBreeder() {
               />
               <B.CodeRequestButton>중복확인</B.CodeRequestButton>
             </div>
-            {errors.phone && (
+            {errors.username && (
               <B.Error>
                 <B.FailX>
                   <img src={failX} alt="X" />
                 </B.FailX>
-                <div>{errors.name.message}</div>
+                <div>{errors.username.message}</div>
               </B.Error>
             )}
           </B.InputWrapper>
