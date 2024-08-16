@@ -53,7 +53,7 @@ export default function BwitherSignUp1() {
                 }
               }}
               style={{ borderColor: nameError ? '#FA5963' : '' }}
-              autofocus={{ borderColor: '#fe834d' }}
+              autoFocus={{ borderColor: '#fe834d' }}
             />
 
             {nameError && (
@@ -131,7 +131,6 @@ export default function BwitherSignUp1() {
                   }
                 }}
                 style={{ borderColor: ownerNameError ? '#FA5963' : '' }}
-                autofocus={{ borderColor: '#fe834d' }}
               />
               {ownerNameError && (
                 <B.ErrorWrapper>
@@ -157,7 +156,6 @@ export default function BwitherSignUp1() {
                   }
                 }}
                 style={{ borderColor: businessNumError ? '#FA5963' : '' }}
-                autofocus={{ borderColor: '#fe834d' }}
               />
               {businessNumError && (
                 <B.ErrorWrapper>
@@ -183,7 +181,6 @@ export default function BwitherSignUp1() {
                   }
                 }}
                 style={{ borderColor: permitNumError ? '#FA5963' : '' }}
-                autofocus={{ borderColor: '#fe834d' }}
               />
               {permitNumError && (
                 <B.ErrorWrapper>
