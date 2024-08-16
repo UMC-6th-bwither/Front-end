@@ -255,13 +255,13 @@ export const PhoneNumInput = styled.input`
   margin: 10px 0;
 `;
 
-export const AdressContainer = styled.div`
+export const AddressContainer = styled.div`
   display: flex;
   flex-direction: column;
 
   p:last-child {
     width: 249px;
-    height: 21px;
+    height: 0px;
     font-family: 'Noto Sans KR';
     font-size: 14px;
     font-weight: 350;
@@ -366,7 +366,7 @@ export const RoommateNumContainer = styled.div`
   justify-content: space-between;
   padding-top: 10px;
   width: 162px;
-  height: 52px;
+  height: 0px;
 
   span {
     width: 17px;
@@ -410,6 +410,12 @@ export const CommuteTimeInput = styled.input`
   &::placeholder {
     text-align: center;
   }
+`;
+
+export const TurnAroundTimeContainer = styled.section`
+  align-items: center;
+  justify-content: space-between;
+  height: 45px;
 `;
 
 export const BreedInput = styled.input`

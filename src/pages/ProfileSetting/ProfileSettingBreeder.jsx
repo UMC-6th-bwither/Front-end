@@ -6,16 +6,30 @@ import ProfileSettingDropBox from '../../components/ProfileSettingDropBox/Profil
 function ProfileSettingBreeder() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordCheckVisible, setIsPasswordCheckVisible] = useState(false);
+
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
+  const [postcode, setPostcode] = useState('');
+  const [address, setAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [roommate, setRoommate] = useState('');
+
   const [passwordError, setPasswordError] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState('');
   const [phoneNumError, setPhoneNumError] = useState('');
+  const [addressError, setAddressError] = useState('');
+  const [RoommateError, setRoommateError] = useState('');
+
   const [roommateNum, setRoommateNum] = useState('5');
+  const [commuteTime, setCommuteTime] = useState('2');
 
   const handleRoommateNumChange = (value) => {
     setRoommateNum(value);
+  };
+
+  const handleCommuteTimeChange = (value) => {
+    setCommuteTime(value);
   };
 
   const togglePasswordVisibility = () => {
@@ -28,37 +42,28 @@ function ProfileSettingBreeder() {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  };
-
-  const handlePasswordCheckChange = (e) => {
-    setPasswordCheck(e.target.value);
-  };
-
-  const handlePhoneNumChange = (e) => {
-    setPhoneNum(e.target.value);
-  };
-
-  const validatePassword = () => {
     const passwordPattern =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordPattern.test(password)) {
+      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!passwordPattern.test(e.target.value)) {
       setPasswordError('조건에 맞지 않아요.');
     } else {
       setPasswordError('');
     }
   };
 
-  const validatePasswordCheck = () => {
-    if (password !== passwordCheck) {
+  const handlePasswordCheckChange = (e) => {
+    setPasswordCheck(e.target.value);
+    if (password !== e.target.value) {
       setPasswordCheckError('비밀번호가 일치하지 않아요.');
     } else {
       setPasswordCheckError('');
     }
   };
 
-  const validatePhoneNum = () => {
+  const handlePhoneNumChange = (e) => {
+    setPhoneNum(e.target.value);
     const phoneNumPattern = /^\d{3}-\d{4}-\d{4}$/;
-    if (!phoneNumPattern.test(phoneNum)) {
+    if (!phoneNumPattern.test(e.target.value)) {
       setPhoneNumError('전화번호를 형식에 맞게 입력해주세요.');
     } else {
       setPhoneNumError('');
@@ -66,21 +71,69 @@ function ProfileSettingBreeder() {
   };
 
   useEffect(() => {
-    validatePassword();
-  }, [password]);
+    if (postcode === '' || address === '' || detailAddress === '') {
+      setAddressError('주소를 입력해주세요.');
+    } else {
+      setAddressError('');
+    }
+  }, [postcode, address, detailAddress]);
 
-  useEffect(() => {
-    validatePasswordCheck();
-  }, [password, passwordCheck]);
+  const handleAddressChange = (e) => {
+    setDetailAddress(e.target.value);
+  };
 
-  useEffect(() => {
-    validatePhoneNum();
-  }, [phoneNum]);
+  const handleRoommateChange = (e) => {
+    setRoommate(e.target.value);
+    if (roommate === '') {
+      setRoommateError('가족구성원을 알려주세요.');
+    } else {
+      setRoommateError('');
+    }
+  };
+
+  // 우편번호 찾기 api
+  const handlePostcodeSearch = () => {
+    const script = document.createElement('script');
+    script.src =
+      '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+    script.id = 'postcode-script';
+    script.onload = () => {
+      new daum.Postcode({
+        oncomplete: (data) => {
+          setPostcode(data.zonecode);
+          setAddress(data.address);
+        },
+      }).open();
+    };
+    document.body.appendChild(script);
+  };
 
   const handleSubmitClick = () => {
-    if (!passwordError && !passwordCheckError && !phoneNumError) {
+    let hasError = false;
+
+    if (passwordError || password.length === 0) {
+      setPasswordError('조건에 맞지 않아요.');
+      alert('비밀번호를 입력해주세요');
+      hasError = true;
+    } else if (passwordCheckError || password !== passwordCheck) {
+      setPasswordCheckError('비밀번호가 일치하지 않아요.');
+      alert('비밀번호가 일치하지 않습니다');
+      hasError = true;
+    } else if (phoneNumError || phoneNum.length === 0) {
+      setPhoneNumError('전화번호를 형식에 맞게 입력해주세요.');
+      alert('전화번호를 입력해주세요');
+      hasError = true;
+    } else if (addressError || address.length === 0) {
+      setAddressError('주소를 입력해주세요.');
+      alert('주소를 입력해주세요');
+      hasError = true;
+    } else if (RoommateError || !roommate) {
+      setRoommateError('가족구성원을 알려주세요.');
+      alert('동거인을 입력해주세요');
+      hasError = true;
+    } else if (!hasError) {
       alert('변경된 내용이 저장되었습니다');
-      // myback(back)이동 로직 구현
+      // myback(back) 이동 로직 구현
     }
   };
 
@@ -241,22 +294,40 @@ function ProfileSettingBreeder() {
           </div>
 
           <div>
-            <S.AdressContainer>
+            <S.AddressContainer>
               <p>현재 어디서 거주 중이신가요?</p>
               <S.PostCodeContainer>
-                <S.PostCodeInput type="text" placeholder="11111" readOnly />
-                <S.PostCodeBtn>우편번호 찾기</S.PostCodeBtn>
+                <S.PostCodeInput
+                  type="text"
+                  value={postcode}
+                  placeholder="11111"
+                  readOnly
+                />
+                <S.PostCodeBtn onClick={handlePostcodeSearch}>
+                  우편번호 찾기
+                </S.PostCodeBtn>
               </S.PostCodeContainer>
-              <S.ResidentInput type="text" placeholder="서울 브위더로11 22" />
-              <S.ResidentInput type="text" placeholder="106호" />
+              <S.ResidentInput
+                type="text"
+                value={address}
+                placeholder="서울 브위더로11 22"
+                readOnly
+              />
+              <S.ResidentInput
+                type="text"
+                placeholder="106호"
+                value={detailAddress}
+                onChange={handleAddressChange}
+              />
               <p>문의한 브리더에게는 시, 구까지만 공개돼요</p>
-            </S.AdressContainer>
+            </S.AddressContainer>
+            {addressError && <S.ErrorMessage>{addressError}</S.ErrorMessage>}
           </div>
 
           <div>
             <p>거주지에서 반려동물을 키울 수 있나요?</p>
             <S.RadioContainer>
-              <S.RadioBtn type="radio" id="yes" name="location" />
+              <S.RadioBtn type="radio" id="yes" name="location" checked />
               <S.Label htmlFor="yes">
                 <S.RadioIcon />네
               </S.Label>
@@ -277,8 +348,13 @@ function ProfileSettingBreeder() {
 
           <div>
             <p>현재 누구와 살고 계신가요?</p>
-            <S.RoommateContainer>
-              <S.RoommateInput type="text" placeholder="아빠, 엄마, 동생 2명" />
+            <S.RoommateContainer style={{ marginBottom: '20px' }}>
+              <S.RoommateInput
+                type="text"
+                placeholder="아빠, 엄마, 동생 2명"
+                value={roommate}
+                onChange={handleRoommateChange}
+              />
               <S.RoommateNumContainer>
                 <ProfileSettingDropBox
                   id="RoommateNum-dropbox"
@@ -296,12 +372,13 @@ function ProfileSettingBreeder() {
                 <span>명</span>
               </S.RoommateNumContainer>
             </S.RoommateContainer>
+            {RoommateError && <S.ErrorMessage>{RoommateError}</S.ErrorMessage>}
           </div>
 
           <div>
             <p>모든 가족 구성원 및 동거인의 동의를 받으셨나요?</p>
             <S.RadioContainer>
-              <S.RadioBtn type="radio" id="agree" name="family" />
+              <S.RadioBtn type="radio" id="agree" name="family" checked />
               <S.Label htmlFor="agree">
                 <S.RadioIcon />
                 네, 모든 동의를 받았습니다.
@@ -322,7 +399,7 @@ function ProfileSettingBreeder() {
           <div>
             <p>현재 다니고 계신 직장 또는 학교가 있으신가요?</p>
             <S.RadioContainer>
-              <S.RadioBtn type="radio" id="employed" name="job" />
+              <S.RadioBtn type="radio" id="employed" name="job" checked />
               <S.Label htmlFor="employed">
                 <S.RadioIcon />
                 재직 중
@@ -360,7 +437,21 @@ function ProfileSettingBreeder() {
                 <span>퇴근</span>
                 <S.CommuteTimeInput type="text" placeholder="18:00" />
                 <span>왕복</span>
-                <S.CommuteTimeInput type="text" placeholder="2" />
+                <S.TurnAroundTimeContainer>
+                  <ProfileSettingDropBox
+                    id="CommuteTime-dropbox"
+                    label="2"
+                    options={[
+                      { value: '1', label: '1' },
+                      { value: '2', label: '2' },
+                      { value: '3', label: '3' },
+                      { value: '4', label: '4' },
+                      { value: '5', label: '5' },
+                      { value: '6+', label: '6시간 이상' },
+                    ]}
+                    onChange={handleCommuteTimeChange}
+                  />
+                </S.TurnAroundTimeContainer>
                 <span>시간</span>
               </S.CommuteTimeContainer>
             </p>
@@ -369,7 +460,12 @@ function ProfileSettingBreeder() {
           <div>
             <p>이전에 반려동물을 키워본 경험이 있나요?</p>
             <S.RadioContainer>
-              <S.RadioBtn type="radio" id="experience_yes" name="experience" />
+              <S.RadioBtn
+                type="radio"
+                id="experience_yes"
+                name="experience"
+                checked
+              />
               <S.Label htmlFor="experience_yes">
                 <S.RadioIcon />네
               </S.Label>
@@ -392,7 +488,12 @@ function ProfileSettingBreeder() {
           <div>
             <p>향후 이사나 여행 계획 등이 있으신가요?</p>
             <S.RadioContainer>
-              <S.RadioBtn type="radio" id="moving_yes" name="movingplan" />
+              <S.RadioBtn
+                type="radio"
+                id="moving_yes"
+                name="movingplan"
+                checked
+              />
               <S.Label htmlFor="moving_yes">
                 <S.RadioIcon />
                 이사 예정

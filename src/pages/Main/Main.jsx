@@ -167,8 +167,10 @@ function NewsBanner() {
 
   const settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
+    autoplay: true,
     speed: 400,
+    autoplaySpeed: 5000,
     slidesToShow: 1,
     slidesToScroll: 1,
     beforeChange: handleBeforeChange,
@@ -178,7 +180,7 @@ function NewsBanner() {
       </S.Button>
     ),
     nextArrow: (
-      <S.Button disabled={currentPage === 2}>
+      <S.Button disabled={currentPage === 3}>
         <RightArrow />
       </S.Button>
     ),
@@ -189,32 +191,40 @@ function NewsBanner() {
       <Slider
         dots={settings.dots}
         infinite={settings.infinite}
+        autoplay={settings.autoplay}
         speed={settings.speed}
+        autoplayspeed={settings.autoplaySpeed}
         slidesToShow={settings.slidesToShow}
         beforeChange={settings.beforeChange}
         prevArrow={settings.prevArrow}
         nextArrow={settings.nextArrow}
       >
         <S.NewsContent
-          src={bannerimg}
+          src="../../../public/img/bannerimg.png"
           alt="배너 뉴스"
           className="bannernews"
           onClick={() => {
             navigate('/adoptionsystem');
           }}
         />
-
         <S.NewsContent
-          src={bannerimg}
+          src="../../../public/img/bannerimg2.png"
           alt="배너 뉴스"
           className="bannernews"
           onClick={() => {
             navigate('/adoptionsystem');
           }}
         />
-
         <S.NewsContent
-          src={bannerimg}
+          src="../../../public/img/bannerimg3.png"
+          alt="배너 뉴스"
+          className="bannernews"
+          onClick={() => {
+            navigate('/adoptionsystem');
+          }}
+        />
+        <S.NewsContent
+          src="../../../public/img/bannerimg4.png"
           alt="배너 뉴스"
           className="bannernews"
           onClick={() => {

@@ -20,37 +20,23 @@ function ProfileSettingGeneral() {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  };
-
-  const handlePasswordCheckChange = (e) => {
-    setPasswordCheck(e.target.value);
-  };
-
-  const validatePassword = () => {
     const passwordPattern =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordPattern.test(password)) {
+      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!passwordPattern.test(e.target.value)) {
       setPasswordError('조건에 맞지 않아요.');
     } else {
       setPasswordError('');
     }
   };
 
-  const validatePasswordCheck = () => {
-    if (password !== passwordCheck) {
+  const handlePasswordCheckChange = (e) => {
+    setPasswordCheck(e.target.value);
+    if (password !== e.target.value) {
       setPasswordCheckError('비밀번호가 일치하지 않아요.');
     } else {
       setPasswordCheckError('');
     }
   };
-
-  useEffect(() => {
-    validatePassword();
-  }, [password]);
-
-  useEffect(() => {
-    validatePasswordCheck();
-  }, [password, passwordCheck]);
 
   const handleSubmitClick = () => {
     if (!passwordError && !passwordCheckError) {
