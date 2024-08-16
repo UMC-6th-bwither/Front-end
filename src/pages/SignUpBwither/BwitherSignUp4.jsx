@@ -15,7 +15,7 @@ export default function BwitherSignUp4() {
           <B.SubText>브위더에서 신뢰할 수 있는 브리더를 만나보세요</B.SubText>
         </B.TextWrapper>
         <B.Gap />
-        <Button text="로그인 하기" path="" />
+        <Button text="로그인 하기" path="login" />
       </B.Container>
     </B.Background>
   );

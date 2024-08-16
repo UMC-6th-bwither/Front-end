@@ -23,10 +23,11 @@ export const WelcomeMsg = styled.div`
 `;
 
 export const Container = styled.form`
-  width: 1000px;
-  padding: 52px 200px 100px 200px;
+  width: 574px;
+  padding: 72px 0px 52px 0px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 48px;
   border-radius: 40px;
@@ -105,8 +106,51 @@ export const CheckWrapper = styled.div`
   letter-spacing: 0.72px;
 `;
 
+export const Checkbox = styled.input`
+  display: none;
+`;
+
+export const Text = styled.div`
+  color: #737373;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+
 export const BtnWrapper1 = styled.div`
   display: flex;
   flex-direction: column;
   gap: 18px;
+`;
+
+export const Check = styled.img`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+`;
+
+export const PwShowIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  fill: #c5c5c5;
+
+  position: relative;
+  left: 380px;
+  top: -34px;
+
+  cursor: pointer;
+  &:hover {
+    fill: #f87b45;
+  }
+`;
+
+export const Label = styled.label`
+  width: 420px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 `;
