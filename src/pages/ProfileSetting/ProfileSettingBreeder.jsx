@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Button from '../../components/button/Button';
 import * as S from './ProfileSetting.style';
+import ProfileSettingDropBox from '../../components/ProfileSettingDropBox/ProfileSettingDropBox';
 
 function ProfileSettingBreeder() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -17,6 +18,12 @@ function ProfileSettingBreeder() {
   const handleSubmitClick = () => {
     alert('변경된 내용이 저장되었습니다');
     // myback(back)이동 로직 구현
+  };
+
+  const [roommateNum, setRoommateNum] = useState('5');
+
+  const handleRoommateNumChange = (value) => {
+    setRoommateNum(value);
   };
 
   return (
@@ -198,12 +205,22 @@ function ProfileSettingBreeder() {
             <p>현재 누구와 살고 계신가요?</p>
             <S.RoommateContainer>
               <S.RoommateInput type="text" placeholder="아빠, 엄마, 동생 2명" />
-              <S.RoommateNumInput
-                type="number"
-                class="no-spinner"
-                placeholder="5"
-              />
-              <p>명</p>
+              <S.RoommateNumContainer>
+                <ProfileSettingDropBox
+                  id="RoommateNum-dropbox"
+                  label="5"
+                  options={[
+                    { value: '1', label: '1' },
+                    { value: '2', label: '2' },
+                    { value: '3', label: '3' },
+                    { value: '4', label: '4' },
+                    { value: '5', label: '5' },
+                    { value: '6+', label: '6명 이상' },
+                  ]}
+                  onChange={handleRoommateNumChange}
+                />
+                <span>명</span>
+              </S.RoommateNumContainer>
             </S.RoommateContainer>
           </div>
 
