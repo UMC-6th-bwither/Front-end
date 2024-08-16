@@ -21,11 +21,11 @@ const menuItems1 = [
 const menuItems2 = [
   {
     name: '저장한 동물',
-    href: '/myreview/save',
+    href: '/myreview/animal',
   },
   {
     name: '저장한 브리더',
-    href: '/myreview/review',
+    href: '/myreview/breeder',
   },
 ];
 

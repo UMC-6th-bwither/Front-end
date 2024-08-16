@@ -1,12 +1,24 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
 import * as A from './Animal.style';
+import * as P from '../MyReview.style';
 import bookmark from '../../../../public/img/bookmark.svg';
 import footprint from '../../../../public/img/footprint.svg';
 import { animalBreeds, 전체DogCard } from '../../selectData';
 import DogCard from '../../../components/DogCard/DogCard';
 import DropBox from '../../../components/DropBoxes/DropBox';
 import Pagination from '../../../components/Pagination/Pagination';
+import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
+
+const menuItems1 = [
+  { name: '저장한 글', href: '/myreview/save' },
+  { name: '나의 후기', href: '/myreview/review' },
+];
+
+const menuItems2 = [
+  { name: '저장한 동물', href: '/myreview/animal' },
+  { name: '저장한 브리더', href: '/myreview/breeder' },
+];
 
 function Animal() {
   const [selectedAnimal, setSelectedAnimal] = useState('');
@@ -49,34 +61,16 @@ function Animal() {
   return (
     <A.Border>
       <A.SideHeader>
-        <div className="community">
-          <A.MenuTitle>커뮤니티</A.MenuTitle>
-          <A.MenuSubtitleContainer>
-            <A.MenuSubtitleInActive to="/myreview/post">
-              내가 쓴 글
-            </A.MenuSubtitleInActive>
-            <A.MenuSubtitleInActive to="/myreview/comment">
-              내가 단 글
-            </A.MenuSubtitleInActive>
-            <A.MenuSubtitleInActive to="/myreview/review">
-              나의 후기
-            </A.MenuSubtitleInActive>
-          </A.MenuSubtitleContainer>
-        </div>
-        <div className="scrap">
-          <A.MenuTitle>스크랩</A.MenuTitle>
-          <A.MenuSubtitleContainer>
-            <A.MenuSubtitleInActive to="/myreview/animal">
-              저장한 동물
-            </A.MenuSubtitleInActive>
-            <A.MenuSubtitleInActive to="/myreview/breeder">
-              저장한 브리더
-            </A.MenuSubtitleInActive>
-            <A.MenuSubtitleActive to="/myreview/save">
-              저장한 글
-            </A.MenuSubtitleActive>
-          </A.MenuSubtitleContainer>
-        </div>
+        <VerticalMenuSelector
+          activeItemName=""
+          items={menuItems1}
+          title="커뮤니티"
+        />
+        <VerticalMenuSelector
+          activeItemName="저장한 동물"
+          items={menuItems2}
+          title="스크랩"
+        />
       </A.SideHeader>
       <A.MainContainer>
         <A.TopContainer>
