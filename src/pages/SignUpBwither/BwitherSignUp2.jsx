@@ -32,7 +32,7 @@ export default function BwitherSignUp2() {
             <B.InputBoxWrapper>
               <B.InputBox2
                 placeholder="우편번호 입력"
-                autofocus={{ borderColor: '#fe834d' }}
+                autoFocus={{ borderColor: '#fe834d' }}
               />
               <B.PostCodeBtn>우편번호 찾기</B.PostCodeBtn>
             </B.InputBoxWrapper>
