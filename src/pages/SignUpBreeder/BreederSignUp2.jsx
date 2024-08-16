@@ -157,7 +157,7 @@ export default function BreederSignUp2() {
 
   const handleAnimalSelect = (animal) => {
     setSelectedAnimal(animal);
-    // setTags([]); // 동물을 변경할 때 태그 초기화
+    setTags([]); // 동물을 변경할 때 태그 초기화
   };
 
   return (
