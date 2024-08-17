@@ -39,14 +39,12 @@ function BreederDetail() {
   useEffect(() => {
     const fetchBreederDetail = async () => {
       try {
+        // 브리더 목록에서 id 가져와야함 api 추가예정
         const breederResponse = await api.get('/breeder/1');
         const breederData = breederResponse.data.result;
         setBreederInfo(breederData);
-
-        // Top image를 가져오는 API 호출 추가 예정
-        const topImageResponse = await api.get('/breeder/1');
-        setTopImage(topImageResponse.data.image || '/img/breederinfoedit.png');
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('브리더 정보를 불러오는 중 에러 발생:', error);
         setBreederInfo(null);
         setTopImage('/img/breederinfoedit.png');
@@ -90,20 +88,39 @@ function BreederDetail() {
     });
   };
 
-  // 하트 클릭시
   const toggleFavorite = async () => {
-    setIsFavorite((prev) => !prev);
     try {
-      // api 수정해야됨
-      await api.post('/api/~~', {
-        breederId: 'BREEDER_ID',
-        favorite: !isFavorite,
-      });
-      // eslint-disable-next-line no-console
-      console.log('저장 완료');
+      const endpoint = `/breeder/${breederInfo.breederId}/bookmark`;
+      const token = localStorage.getItem('token');
+
+      if (isFavorite) {
+        // 북마크 해제
+        await api.delete(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // eslint-disable-next-line no-console
+        console.log('북마크 해제');
+      } else {
+        // 북마크 추가
+        await api.post(
+          endpoint,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        // eslint-disable-next-line no-console
+        console.log('북마크 성공');
+      }
+
+      setIsFavorite((prev) => !prev); // 북마크 상태 토글
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('저장 실패:', error);
+      console.error('북마크 에러 발생:', error);
     }
   };
 
