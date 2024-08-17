@@ -2,6 +2,7 @@ import { useState } from 'react';
 import * as B from '../SignUpBwither/BwitherSignUp.style';
 import progressBar75 from '../../../public/icons/signUp/progress-bar-75.svg';
 import Button from '../../components/SignUpButton/Button';
+import failX from '../../../public/icons/signUp/fail_x.svg';
 
 export default function BwitherSignUp1() {
   const validateEmail = (email) => {
@@ -52,9 +53,15 @@ export default function BwitherSignUp1() {
                 }
               }}
               style={{ borderColor: nameError ? '#FA5963' : '' }}
-              autofocus={{ borderColor: '#fe834d' }}
+              autoFocus={{ borderColor: '#fe834d' }}
             />
-            {nameError && <span style={{ color: '#FA5963' }}>{nameError}</span>}
+
+            {nameError && (
+              <B.ErrorWrapper>
+                <B.FailX src={failX} />
+                <span style={{ color: '#FA5963' }}>{nameError}</span>
+              </B.ErrorWrapper>
+            )}
           </B.InputWrapper>
           <B.InputWrapper>
             <B.InputTitle>전화번호</B.InputTitle>
@@ -75,7 +82,10 @@ export default function BwitherSignUp1() {
               style={{ borderColor: phoneError ? '#FA5963' : '' }}
             />
             {phoneError && (
-              <span style={{ color: '#FA5963' }}>{phoneError}</span>
+              <B.ErrorWrapper>
+                <B.FailX src={failX} />
+                <span style={{ color: '#FA5963' }}>{phoneError}</span>
+              </B.ErrorWrapper>
             )}
           </B.InputWrapper>
           <B.InputWrapper>
@@ -91,12 +101,17 @@ export default function BwitherSignUp1() {
                     setEmailError('이메일을 입력해주세요');
                   } else if (!validateEmail(email)) {
                     setEmailError('이메일을 형식에 맞게 입력해주세요');
+                  } else {
+                    setEmailError('');
                   }
                 }}
                 style={{ borderColor: emailError ? '#FA5963' : '' }}
               />
               {emailError && (
-                <span style={{ color: '#FA5963' }}>{emailError}</span>
+                <B.ErrorWrapper>
+                  <B.FailX src={failX} />
+                  <span style={{ color: '#FA5963' }}>{emailError}</span>
+                </B.ErrorWrapper>
               )}
             </div>
           </B.InputWrapper>
@@ -116,10 +131,12 @@ export default function BwitherSignUp1() {
                   }
                 }}
                 style={{ borderColor: ownerNameError ? '#FA5963' : '' }}
-                autofocus={{ borderColor: '#fe834d' }}
               />
               {ownerNameError && (
-                <span style={{ color: '#FA5963' }}>{ownerNameError}</span>
+                <B.ErrorWrapper>
+                  <B.FailX src={failX} />
+                  <span style={{ color: '#FA5963' }}>{ownerNameError}</span>
+                </B.ErrorWrapper>
               )}
             </div>
           </B.InputWrapper>
@@ -139,10 +156,12 @@ export default function BwitherSignUp1() {
                   }
                 }}
                 style={{ borderColor: businessNumError ? '#FA5963' : '' }}
-                autofocus={{ borderColor: '#fe834d' }}
               />
               {businessNumError && (
-                <span style={{ color: '#FA5963' }}>{businessNumError}</span>
+                <B.ErrorWrapper>
+                  <B.FailX src={failX} />
+                  <span style={{ color: '#FA5963' }}>{businessNumError}</span>
+                </B.ErrorWrapper>
               )}
             </div>
           </B.InputWrapper>
@@ -156,29 +175,33 @@ export default function BwitherSignUp1() {
                 onChange={(e) => setPermitNum(e.target.value)}
                 onBlur={() => {
                   if (!permitNum) {
-                    setPermitNumError('대표자명을 입력해주세요');
+                    setPermitNumError('동물생산업 인허가 번호를 입력해주세요');
                   } else {
                     setPermitNumError('');
                   }
                 }}
                 style={{ borderColor: permitNumError ? '#FA5963' : '' }}
-                autofocus={{ borderColor: '#fe834d' }}
               />
               {permitNumError && (
-                <span style={{ color: '#FA5963' }}>{permitNumError}</span>
+                <B.ErrorWrapper>
+                  <B.FailX src={failX} />
+                  <span style={{ color: '#FA5963' }}>{permitNumError}</span>
+                </B.ErrorWrapper>
               )}
             </div>
           </B.InputWrapper>
           <B.InputWrapper>
-            <B.InputTitle>홈페이지/SNS 주소</B.InputTitle>
+            <B.InputTitle>
+              홈페이지/SNS 주소 <span className="subtext">(선택)</span>
+            </B.InputTitle>
             <div>
               <B.InputBox type="text" placeholder="" />
             </div>
           </B.InputWrapper>
         </B.InputArea>
         <B.BtnWrapper2>
-          <Button white text="이전" path="breeder-signup-2" />
-          <Button text="다음" path="breeder-signup-4" />
+          <Button white text="이전" path="breeder-signup/2" />
+          <Button text="다음" path="breeder-signup/4" />
         </B.BtnWrapper2>
       </B.Container>
     </B.Background>

@@ -69,7 +69,7 @@ export const Border = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 210px;
+  gap: 8vw;
   padding: 80px 0;
 `;
 

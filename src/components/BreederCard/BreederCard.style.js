@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const CardBox = styled.div`
+const CardBox = styled(Link)`
   display: flex;
   flex-direction: row;
   position: relative;
@@ -8,6 +9,8 @@ const CardBox = styled.div`
   height: 188px;
   justify: space-between;
   opacity: 0px;
+  cursor: pointer;
+  text-decoration: none;
 `;
 const PhotoContainer = styled.div`
   width: 188px;

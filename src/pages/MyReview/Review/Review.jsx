@@ -33,10 +33,10 @@ export default function MyReview() {
         <div>
           <P.MenuTitle>스크랩</P.MenuTitle>
           <P.MenuSubtitleContainer>
-            <P.MenuSubtitleInActive to="/myreview/post">
+            <P.MenuSubtitleInActive to="/myreview/animal">
               저장한 동물
             </P.MenuSubtitleInActive>
-            <P.MenuSubtitleInActive to="/myreview/comment">
+            <P.MenuSubtitleInActive to="/myreview/breeder">
               저장한 브리더
             </P.MenuSubtitleInActive>
           </P.MenuSubtitleContainer>

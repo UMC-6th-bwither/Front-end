@@ -163,6 +163,12 @@ export const AddMoreInputButtonContainer = styled.button`
 
   border-radius: 20px;
   background: var(--main, #fe834d);
+
+  &:hover {
+    background: #d97143;
+  }
+
+  cursor: pointer;
 `;
 
 export const AddMoreInputButtonIcon = styled.div`
@@ -207,6 +213,10 @@ export const BreedingInfoInput = styled.input`
 
   &::placeholder {
     color: #dadada;
+  }
+  &:focus {
+    border: 2px solid #fe834d;
+    outline: none;
   }
 `;
 
@@ -265,8 +275,10 @@ export const BreedingInfoInputPeriodDash = styled.div`
   background: #d9d9d9;
 `;
 
-export const BreedingInfoWorkingLayout = styled.div`
+export const BreedingInfoWorkingLayout = styled.label`
   display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 8px;
   padding-top: 2px;
 `;
@@ -312,6 +324,10 @@ export const InputBox = styled.input`
 export const InputBox2 = styled(InputBox)`
   width: 100%;
   margin-top: 8px;
+  &:focus {
+    border: 2px solid #fe834d;
+    outline: none;
+  }
 `;
 
 export const InputUnderText = styled.div`
@@ -477,6 +493,7 @@ export const CheckWrapper = styled.div`
 export const CheckBox = styled.input`
   width: 21px;
   height: 21px;
+  display: none;
 `;
 
 export const CheckText = styled.div`
@@ -491,4 +508,10 @@ export const CheckText = styled.div`
 export const Gap = styled.div`
   height: 10px;
   border: none;
+`;
+
+export const Check = styled.img`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 `;

@@ -128,6 +128,7 @@ function BreederList() {
             {filteredBreederCards.map((breeder, index) => (
               <BreederCard
                 key={index}
+                to="/breeder-detail"
                 photo={breeder.photo}
                 location={breeder.location}
                 name={breeder.name}

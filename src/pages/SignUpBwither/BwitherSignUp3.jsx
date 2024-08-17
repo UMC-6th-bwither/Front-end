@@ -3,6 +3,8 @@ import * as B from './BwitherSignUp.style';
 import progressBar75 from '../../../public/icons/signUp/progress-bar-75.svg';
 import Agreement from '../../components/SignUpAgreement/Agreement';
 import Button from '../../components/SignUpButton/Button';
+import beforeCheck from '../../../public/icons/signUp/check_before.svg';
+import afterCheck from '../../../public/icons/signUp/check_after.svg';
 
 export default function BwitherSignUp3() {
   const data = [
@@ -92,6 +94,7 @@ export default function BwitherSignUp3() {
             checked={isAllChecked}
             onChange={handleAllChecked}
           />
+          <B.Check src={isAllChecked ? afterCheck : beforeCheck} />
           <B.CheckText>모두 동의하기</B.CheckText>
         </B.CheckWrapper>
         <B.BtnWrapper2>

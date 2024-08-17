@@ -2,7 +2,7 @@ import * as B from '../SignUpBwither/BwitherSignUp.style';
 import progressBar100 from '../../../public/icons/signUp/progress-bar-100.svg';
 import Button from '../../components/SignUpButton/Button';
 
-export default function BwitherSignUp4() {
+export default function BreederSignUp4() {
   return (
     <B.Background>
       <B.WelcomeMsg>
@@ -15,7 +15,7 @@ export default function BwitherSignUp4() {
           <B.SubText>브위더에서 가족을 만들어주세요</B.SubText>
         </B.TextWrapper>
         <B.Gap />
-        <Button text="로그인 하기" path="" />
+        <Button text="로그인 하기" path="login" />
       </B.Container>
     </B.Background>
   );

@@ -8,6 +8,7 @@ import {
 import BadgeVariant from '../badge/BadgeVariant';
 
 function BreederCard({
+  to,
   photo,
   location,
   name,
@@ -24,7 +25,7 @@ function BreederCard({
     setIsBookmarked(!isBookmarked);
   };
   return (
-    <S.CardBox>
+    <S.CardBox to={to}>
       <S.PhotoContainer>
         <img src={photo} alt={name} className="photo" />
       </S.PhotoContainer>
@@ -71,6 +72,7 @@ function BreederCard({
 }
 
 BreederCard.propTypes = {
+  to: PropTypes.string.isRequired,
   photo: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
