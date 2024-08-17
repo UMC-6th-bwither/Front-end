@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
-import Header from './components/Header/Header';
+import Header from './components/header/Header';
 import Footer from './components/Footer/Footer';
 import store from './redux/store';
 import AnimalList from './pages/AnimalList/AnimalList';
