@@ -13,6 +13,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
     enrollmentDate,
     graduationDate,
     breedingCareers,
+    schoolName,
   } = props;
 
   const [showMore, setShowMore] = useState(false);
@@ -127,25 +128,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
               fill="#737373"
             />
           </svg>
-          <A.InfoContent>블로그</A.InfoContent>
-          <A.InfoContentDetail>{snsAddress || 'N/A'} </A.InfoContentDetail>
-        </A.InfoContentBox>
-        <A.InfoContentBox>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M6.85714 14.8571C6.85714 15.4883 7.36882 16 8 16C8.63118 16 9.14286 15.4883 9.14286 14.8571V9.14286H14.8571C15.4883 9.14286 16 8.63118 16 8C16 7.36882 15.4883 6.85714 14.8571 6.85714H9.14286V1.14286C9.14286 0.511675 8.63118 0 8 0C7.36882 0 6.85714 0.511674 6.85714 1.14286V6.85714H1.14286C0.511675 6.85714 0 7.36882 0 8C0 8.63118 0.511674 9.14286 1.14286 9.14286H6.85714V14.8571Z"
-              fill="#737373"
-            />
-          </svg>
-          <A.InfoContent>인스타그램</A.InfoContent>
+          <A.InfoContent>SNS</A.InfoContent>
           <A.InfoContentDetail>{snsAddress || 'N/A'} </A.InfoContentDetail>
         </A.InfoContentBox>
       </A.InfoItem>
@@ -226,7 +209,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
       </A.InfoItemSecond>
       <A.InfoItemSecond>
         <A.InfoTitle>학력</A.InfoTitle>
-        <A.MiniTitle>{departmentName || 'N/A'}</A.MiniTitle>
+        <A.MiniTitle>{schoolName || 'N/A'}</A.MiniTitle>
         <A.MiniContent>
           {formattedEnrollmentDate} - {formattedGraduationDate}
         </A.MiniContent>
@@ -317,6 +300,7 @@ BreederInfo.propTypes = {
       description: PropTypes.string,
     }),
   ),
+  schoolName: PropTypes.string,
 };
 
 // defaultProps 정의
@@ -330,5 +314,6 @@ BreederInfo.defaultProps = {
   enrollmentDate: null,
   graduationDate: null,
   breedingCareers: [],
+  schoolName: 'N/A',
 };
 export default BreederInfo;

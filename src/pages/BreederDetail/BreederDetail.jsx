@@ -384,11 +384,30 @@ function BreederDetail() {
           activeMenu={activeMenu}
           setActiveMenu={handleMenuClick}
         />
-        <BreederInfo ref={breederInfoRef} />
+        <BreederInfo
+          ref={breederInfoRef}
+          tradePhone={breederInfo.tradePhone}
+          snsAddress={breederInfo.snsAddress}
+          detailDescription={breederInfo.detailDescription}
+          species={breederInfo.species}
+          careerYear={breederInfo.careerYear}
+          departmentName={breederInfo.departmentName}
+          enrollmentDate={breederInfo.enrollmentDate}
+          graduationDate={breederInfo.graduationDate}
+          breedingCareers={breederInfo.breedingCareers}
+          schoolName={breederInfo.schoolName}
+        />
         <KennelInfo ref={kennelInfoRef} />
         <CareDog ref={careDogRef} />
         <BreederReview ref={reviewRef} />
-        <BreederQna ref={qnaRef} />
+        <BreederQna
+          ref={qnaRef}
+          questionGuarantee={breederInfo.questionGuarantee}
+          questionPedigree={breederInfo.questionPedigree}
+          questionBaby={breederInfo.questionBaby}
+          questionPeriod={breederInfo.questionPeriod}
+          questionSupport={breederInfo.questionSupport}
+        />
         <BreederCommunity ref={communityRef} />
       </A.InfoWrapper>
     </A.Container>
