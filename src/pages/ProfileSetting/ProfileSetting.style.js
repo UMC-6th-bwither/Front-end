@@ -353,16 +353,6 @@ export const RoommateContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 970px;
-
-  p {
-    margin-top: 20px;
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
 `;
 
 export const RoommateInput = styled.input`
@@ -370,12 +360,22 @@ export const RoommateInput = styled.input`
   margin-top: 10px;
 `;
 
-export const RoommateNumInput = styled.input`
-  width: 136px;
-  margin-top: 10px;
+export const RoommateNumContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 10px;
+  width: 162px;
+  height: 52px;
 
-  &::placeholder {
-    text-align: center;
+  span {
+    width: 17px;
+    font-family: 'Noto Sans KR';
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 50.06px;
+    text-align: left;
+    color: var(--black, #272727);
   }
 `;
 

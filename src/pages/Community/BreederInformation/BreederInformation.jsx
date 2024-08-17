@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +9,11 @@ import Pagination from '../../../components/Pagination/Pagination';
 import PostCard from '../../../components/PostCard/PostCard';
 import Dropbox from '../../../components/DropBoxes/Dropbox2';
 import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
-import { menuItems } from '../menuItems';
+
+const menuItems = [
+  { name: '브리더의 꿀정보', href: '/community/breederinformation' },
+  { name: '브위더 후기', href: '/community/review' },
+];
 
 function Icon() {
   return (
@@ -23,7 +26,12 @@ function Icon() {
 export default function CommunityBreederInformation() {
   const [page, setPage] = useState(1);
   const [sortOption, setSortOption] = useState(null);
+  const [activeFilter, setActiveFilter] = useState('전체'); // 활성화된 필터를 관리할 상태 추가
   const navigate = useNavigate();
+
+  const handleFilterClick = (filterName) => {
+    setActiveFilter(filterName); // 필터 클릭 시 활성화된 필터 상태 업데이트
+  };
 
   return (
     <P.Layout>
@@ -54,9 +62,15 @@ export default function CommunityBreederInformation() {
 
         <P.FilterContainer>
           <P.FiltersContainer>
-            <ButtonSelector>전체</ButtonSelector>
-            <ButtonSelector>강아지</ButtonSelector>
-            <ButtonSelector>고양이</ButtonSelector>
+            {['전체', '강아지', '고양이'].map((filter) => (
+              <P.Filter
+                key={filter}
+                $active={activeFilter === filter} // 활성화된 필터에만 $active prop 전달
+                onClick={() => handleFilterClick(filter)} // 클릭 시 필터 업데이트
+              >
+                {filter}
+              </P.Filter>
+            ))}
           </P.FiltersContainer>
           <P.SortContainer>
             <Dropbox

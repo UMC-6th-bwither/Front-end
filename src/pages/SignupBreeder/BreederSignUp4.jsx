@@ -5,6 +5,8 @@ import * as B from './BreederSignUp.style';
 import progressBar90 from '../../../public/icons/signUp/progress-bar-90.svg';
 import Button from '../../components/SignUpButton/Button';
 import 'react-datepicker/dist/react-datepicker.css';
+import beforeCheck from '../../../public/icons/signUp/check_before.svg';
+import afterCheck from '../../../public/icons/signUp/check_after.svg';
 
 function MoreIcon() {
   return (
@@ -66,6 +68,12 @@ export default function BreederSignUp4() {
       showEndPicker: false,
     },
   ]);
+
+  const [checked, setChecked] = useState(false);
+
+  const handleCheck = () => {
+    setChecked(!checked);
+  };
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -189,7 +197,8 @@ export default function BreederSignUp4() {
                         onChange={(date) =>
                           handleDateChange(index, 'startDate', date)
                         }
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="yyyy-MM"
+                        displayFormat="yyyy-MM"
                         customInput={
                           <B.BreedingInfoInputPeriod
                             type="text"
@@ -234,7 +243,8 @@ export default function BreederSignUp4() {
                         onChange={(date) =>
                           handleDateChange(index, 'endDate', date)
                         }
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="yyyy-MM"
+                        displayFormat="yyyy-MM"
                         customInput={
                           <B.BreedingInfoInputPeriod
                             type="text"
@@ -273,7 +283,12 @@ export default function BreederSignUp4() {
                   </B.BreedingInfoInputPeriodLayout>
                 </B.BreedingInfoInputLayout>
                 <B.BreedingInfoWorkingLayout>
-                  <B.CheckBox type="checkbox" />
+                  <B.CheckBox
+                    type="checkbox"
+                    checked={checked}
+                    onClick={handleCheck}
+                  />
+                  <B.Check src={checked ? afterCheck : beforeCheck} />
                   <B.BreedingInfoWorkingLabel>
                     재직중
                   </B.BreedingInfoWorkingLabel>
@@ -286,8 +301,8 @@ export default function BreederSignUp4() {
           </B.InputWrapper2>
         </B.InputArea>
         <B.BtnWrapper2>
-          <Button white text="이전" path="signup/1" />
-          <Button text="다음" path="signup/3" />
+          <Button white text="이전" path="breeder-signup/3" />
+          <Button text="다음" path="breeder-signup/5" />
         </B.BtnWrapper2>
       </B.Container>
     </B.Background>

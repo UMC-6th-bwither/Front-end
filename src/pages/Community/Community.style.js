@@ -118,7 +118,28 @@ export const TitleButtonContainer = styled.div`
 export const FiltersContainer = styled.div`
   padding-top: 88px;
   display: flex;
+  align-items: flex-end;
   gap: 6px;
+`;
+
+export const Filter = styled.button`
+  display: flex;
+  height: 32px;
+  padding: 5px 13px 6px 13px;
+  align-items: center;
+  border-radius: 28px;
+  box-shadow: ${(p) => (p.$active ? 'none' : 'inset 0 0 0 1px #e1e1e1')};
+  border: none;
+  background: ${(p) => (p.$active ? '#f87b45' : '#fff')};
+  cursor: pointer;
+  text-decoration: none;
+
+  color: ${(p) => (p.$active ? '#fff' : '#737373')};
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 21px; /* 150% */
 `;
 
 export const FilterContainer = styled.div`

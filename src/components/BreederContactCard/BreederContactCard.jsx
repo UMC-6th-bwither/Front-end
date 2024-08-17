@@ -2,6 +2,7 @@
 
 import * as S from './BreederContactCard.style';
 import Button from '../button/Button';
+import { useNavigate } from 'react-router-dom';
 
 export default function BreederContactCard({
   breederLocation,
@@ -9,6 +10,8 @@ export default function BreederContactCard({
   badgeComponents,
   noButton = false,
 }) {
+  const navigate = useNavigate();
+
   return (
     <S.Container>
       <S.SpanningContainer>
@@ -60,7 +63,12 @@ export default function BreederContactCard({
       </S.SpanningContainer>
       {!noButton && (
         <div>
-          <Button orange width="auto" paddingHorizontal={14}>
+          <Button
+            orange
+            width="auto"
+            paddingHorizontal={14}
+            onClick={() => navigate('form')}
+          >
             후기 등록
           </Button>
         </div>

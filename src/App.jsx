@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 import Header from './components/header/Header';
+import Header from './components/header/Header';
 import Footer from './components/Footer/Footer';
 import store from './redux/store';
 import AnimalList from './pages/AnimalList/AnimalList';
@@ -48,7 +49,9 @@ import SignUpBreederInfo2 from './pages/SignUpBreeder/SignUpBreederInfo2';
 import SignUpBreederDone from './pages/SignUpBreeder/SignUpBreederDone';
 import Login from './pages/Login/Login';
 import BreederSignUp1 from './pages/SignUpBreeder/BreederSignUp1';
+import BreederSignUp2 from './pages/SignUpBreeder/BreederSignUp2';
 import BreederSignUp3 from './pages/SignUpBreeder/BreederSignUp3';
+import BreederSignUp4 from './pages/SignUpBreeder/BreederSignUp4';
 import BreederSignUp5 from './pages/SignUpBreeder/BreederSignUp5';
 import WritingDetail from './pages/WritingDetail/WritingDetail';
 import TermsOfService from './pages/TermsOfService/TermsOfService';
@@ -60,13 +63,7 @@ function App() {
       <Router>
         <Header />
         <Routes>
-          <Route path="signup/1" element={<BwitherSignUp1 />} />
-          <Route path="signup/2" element={<BwitherSignUp2 />} />
-          <Route path="signup/3" element={<BwitherSignUp3 />} />
-          <Route path="signup/4" element={<BwitherSignUp4 />} />
-          <Route path="breeder-signup/4" element={<BreederSignUp4 />} />
           <Route path="animal-list" element={<AnimalList />} />
-          <Route path="adoptionsystem" element={<AdoptionSystem />} />
           <Route path="MyReview/Animal" element={<Animal />} />
           <Route path="MyReview/Breeder" element={<Breeder />} />
           <Route path="/Breeder-List" element={<BreederList />} />
@@ -108,7 +105,6 @@ function App() {
           <Route path="/MypageGeneral" element={<MypageGeneral />} />
           <Route path="/MypageBreeder" element={<MypageBreeder />} />
           <Route path="/breederinfo-edit" element={<BreederInfoEdit />} />
-          <Route path="/" element={<Main />} />
           <Route path="/ChatListGeneral" element={<ChatListGeneral />} />
           <Route path="/ChatDetailGeneral" element={<ChatDetailGeneral />} />
           <Route
@@ -121,11 +117,20 @@ function App() {
           />
           <Route path="/WritingDetail" element={<WritingDetail />} />
           <Route path="/TermsOfService" element={<TermsOfService />} />
-          <Route path="/breeder-signup-1" element={<BreederSignUp1 />} />
-          <Route path="/breeder-signup-3" element={<BreederSignUp3 />} />
-          <Route path="/breeder-signup-5" element={<BreederSignUp5 />} />
+          <Route path="/signup/1" element={<BwitherSignUp1 />} />
+          <Route path="/signup/2" element={<BwitherSignUp2 />} />
+          <Route path="/signup/3" element={<BwitherSignUp3 />} />
+          <Route path="/signup/4" element={<BwitherSignUp4 />} />
+
+          <Route path="/breeder-signup/1" element={<BreederSignUp1 />} />
+          <Route path="/breeder-signup/2" element={<BreederSignUp2 />} />
+          <Route path="/breeder-signup/3" element={<BreederSignUp3 />} />
+          <Route path="/breeder-signup/4" element={<BreederSignUp4 />} />
+          <Route path="/breeder-signup/5" element={<BreederSignUp5 />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/adoptionsystem" element={<AdoptionSystem />} />
           <Route path="*" element={<NotFound />} />
+
           <Route path="/SignUpBreeder" element={<SignUpBreeder />} />
           <Route
             path="/SignUpBreederChoice"
@@ -134,7 +139,6 @@ function App() {
           <Route path="/SignUpBreederInfo" element={<SignUpBreederInfo />} />
           <Route path="/SignUpBreederInfo2" element={<SignUpBreederInfo2 />} />
           <Route path="/SignUpBreederDone" element={<SignUpBreederDone />} />
-          <Route path="/Login" element={<Login />} />
         </Routes>
       </Router>
       <Footer />
