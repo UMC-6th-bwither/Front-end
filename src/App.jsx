@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 import Header from './components/header/Header';
-import Header from './components/header/Header';
 import Footer from './components/Footer/Footer';
 import store from './redux/store';
 import AnimalList from './pages/AnimalList/AnimalList';
@@ -41,7 +40,6 @@ import BwitherSignUp1 from './pages/SignUpBwither/BwitherSignUp1';
 import BwitherSignUp2 from './pages/SignUpBwither/BwitherSignUp2';
 import BwitherSignUp3 from './pages/SignUpBwither/BwitherSignUp3';
 import BwitherSignUp4 from './pages/SignUpBwither/BwitherSignUp4';
-import BreederSignUp4 from './pages/SignUpBreeder/BreederSignUp4';
 import SignUpBreeder from './pages/SignUpBreeder/SignUpBreeder';
 import SignUpBreederChoice from './pages/SignUpBreeder/SignUpBreederChoice';
 import SignUpBreederInfo from './pages/SignUpBreeder/SignUpBreederInfo';
