@@ -3,21 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederInfoEdit.style';
 import 'react-multi-carousel/lib/styles.css';
-import Button from '../../components/button/Button';
 import BreederInfo from '../../components/BreederInfoEdit/BreederInfo';
 import KennelInfo from '../../components/BreederInfoEdit/KennelInfo';
 import BreederQna from '../../components/BreederInfoEdit/BreederQna';
-import ConfidenceLevelModal from '../../components/ConfidenceLevelModal/ConfidenceLevelModal';
 
 function BreederInfoEdit() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
-  const [isConfidenceModalVisible, setIsConfidenceModalVisible] =
-    useState(false);
-  const [isBackdropVisible, setIsBackdropVisible] = useState(false);
   const [topImage, setTopImage] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   const [isReviewEventChecked, setIsReviewEventChecked] = useState(false);
   const [reviewEventContent, setReviewEventContent] = useState('');
+  const [breederName, setBreederName] = useState('');
+  const [breederIntro, setBreederIntro] = useState('');
+  const [businessFileName, setBusinessFileName] = useState('');
 
   const navigate = useNavigate();
 
@@ -47,14 +45,18 @@ function BreederInfoEdit() {
     }
   };
 
-  const openConfidenceModal = () => {
-    setIsConfidenceModalVisible(true);
-    setIsBackdropVisible(true);
+  const handleBreederNameChange = (e) => {
+    const { value } = e.target;
+    if (value.length <= 20) {
+      setBreederName(value);
+    }
   };
 
-  const closeConfidenceModal = () => {
-    setIsConfidenceModalVisible(false);
-    setIsBackdropVisible(false);
+  const handleBreederIntroChange = (e) => {
+    const { value } = e.target;
+    if (value.length <= 180) {
+      setBreederIntro(value);
+    }
   };
 
   const handleTopImageChange = (event) => {
@@ -66,6 +68,18 @@ function BreederInfoEdit() {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  // 파일 선택
+  const handleBusinessFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setBusinessFileName(file.name);
+    }
+  };
+  // 파일 삭제
+  const handleBusinessFileRemove = () => {
+    setBusinessFileName('');
   };
 
   const handleProfileImageChange = (event) => {
@@ -98,7 +112,6 @@ function BreederInfoEdit() {
 
   return (
     <A.Container>
-      {isBackdropVisible && <A.Backdrop />}
       <A.TopImage
         style={topImage ? { backgroundImage: `url(${topImage})` } : {}}
       />
@@ -245,10 +258,11 @@ function BreederInfoEdit() {
             <A.BreederInfoTitle
               type="text"
               placeholder="켄넬/캐터리 이름을 입력하세요"
+              value={breederName}
+              onChange={handleBreederNameChange}
             />
             <A.BreederInfoTitleBoxRight>
-              <div>0/20</div>
-
+              <div>{breederName.length}/20</div>
               <A.CertificateIconBox2>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -271,26 +285,55 @@ function BreederInfoEdit() {
             </A.BreederInfoTitleBoxRight>
           </A.BreederInfoTitleBox>
 
-          <A.BreederInfoSubTitle
-            type="text"
-            placeholder="켄넬 / 캐터리에 대한 간략한 소개를 해주세요."
-          />
+          <A.BreederInfoSubTitleWrapper>
+            <A.BreederInfoSubTitle
+              type="text"
+              placeholder="켄넬 / 캐터리에 대한 간략한 소개를 해주세요."
+              value={breederIntro}
+              onChange={handleBreederIntroChange}
+            />
+            <A.CharCount>{breederIntro.length}/180</A.CharCount>
+          </A.BreederInfoSubTitleWrapper>
+
           <A.BreederInfoSubBtnBox>
-            <Button whiteBorder>사업자 등록증 업로드</Button>
-            <A.BreederInfoSubBtnText>파일명.jpg</A.BreederInfoSubBtnText>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
+            <A.UploadButton
+              whiteBorder
+              onClick={() =>
+                document.getElementById('businessFileInput').click()
+              }
             >
-              <path
-                d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29095 13.8916 3.18685 13.9347C3.08274 13.9778 2.97117 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
-                fill="#737373"
-              />
-            </svg>
+              사업자 등록증 업로드
+            </A.UploadButton>
+
+            {businessFileName && (
+              <>
+                <A.BreederInfoSubBtnText>
+                  {businessFileName}
+                </A.BreederInfoSubBtnText>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  onClick={handleBusinessFileRemove}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <path
+                    d="M2.25176 2.25176C2.33137 2.17196 2.42593 2.10864 2.53004 2.06544C2.63416 2.02224 2.74577 2 2.85849 2C2.97121 2 3.08282 2.02224 3.18693 2.06544C3.29104 2.10864 3.38561 2.17196 3.46521 2.25176L8.00022 6.78849L12.5352 2.25176C12.6149 2.17209 12.7095 2.10888 12.8136 2.06576C12.9177 2.02264 13.0293 2.00045 13.142 2.00045C13.2546 2.00045 13.3662 2.02264 13.4703 2.06576C13.5744 2.10888 13.669 2.17209 13.7487 2.25176C13.8284 2.33144 13.8916 2.42603 13.9347 2.53013C13.9778 2.63423 14 2.74581 14 2.85849C14 2.97117 13.9778 3.08274 13.9347 3.18685C13.8916 3.29095 13.8284 3.38554 13.7487 3.46521L9.21196 8.00022L13.7487 12.5352C13.8284 12.6149 13.8916 12.7095 13.9347 12.8136C13.9778 12.9177 14 13.0293 14 13.142C14 13.2546 13.9778 13.3662 13.9347 13.4703C13.8916 13.5744 13.8284 13.669 13.7487 13.7487C13.669 13.8284 13.5744 13.8916 13.4703 13.9347C13.3662 13.9778 13.2546 14 13.142 14C13.0293 14 12.9177 13.9778 12.8136 13.9347C12.7095 13.8916 12.6149 13.8284 12.5352 13.7487L8.00022 9.21196L3.46521 13.7487C3.38554 13.8284 3.29104 13.8916 3.18693 13.9347C3.08282 13.9778 2.97121 14 2.85849 14C2.74581 14 2.63423 13.9778 2.53013 13.9347C2.42603 13.8916 2.33144 13.8284 2.25176 13.7487C2.17209 13.669 2.10888 13.5744 2.06576 13.4703C2.02264 13.3662 2.00045 13.2546 2.00045 13.142C2.00045 13.0293 2.02264 12.9177 2.06576 12.8136C2.10888 12.7095 2.17209 12.6149 2.25176 12.5352L6.78849 8.00022L2.25176 3.46521C2.17196 3.38561 2.10864 3.29104 2.06544 3.18693C2.02224 3.08282 2 2.97121 2 2.85849C2 2.74577 2.02224 2.63416 2.06544 2.53004C2.10864 2.42593 2.17196 2.33137 2.25176 2.25176Z"
+                    fill="#737373"
+                  />
+                </svg>
+              </>
+            )}
+            <input
+              type="file"
+              id="businessFileInput"
+              style={{ display: 'none' }}
+              onChange={handleBusinessFileChange}
+            />
           </A.BreederInfoSubBtnBox>
+
           <A.ReviewEventTitleBox>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -355,40 +398,8 @@ function BreederInfoEdit() {
             disabled={!isReviewEventChecked}
           />
         </A.TopLeftBox>
-        <A.ConfidenceModalWrapper>
-          <A.ConfidenceModal>
-            <A.ConfidenceModalTop>
-              <A.ConfidenceModalTopText>신뢰 등급</A.ConfidenceModalTopText>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                style={{ cursor: 'pointer' }}
-                onClick={openConfidenceModal}
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10ZM20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10ZM10.4047 9.15353C9.79772 9.88252 9.12157 10.6945 9.301 11.958H10.627C10.5121 10.944 11.0826 10.2675 11.6568 9.5866C12.1868 8.95807 12.72 8.32582 12.72 7.421C12.72 5.887 11.68 5.029 10.159 5.029C9.067 5.029 8.196 5.549 7.559 6.277L8.404 7.057C8.846 6.563 9.379 6.264 9.99 6.264C10.809 6.264 11.264 6.797 11.264 7.525C11.264 8.12158 10.8532 8.61489 10.4047 9.15353ZM8.989 14.129C8.989 14.74 9.418 15.182 9.99 15.182C10.549 15.182 10.991 14.74 10.991 14.129C10.991 13.505 10.549 13.076 9.99 13.076C9.418 13.076 8.989 13.505 8.989 14.129Z"
-                  fill="#737373"
-                />
-              </svg>
-            </A.ConfidenceModalTop>
-            <A.ConfidenceModalBottom>
-              필수 항목에 대한 업로드 불이행 시 신뢰등급에 영향을 줄 수
-              있습니다. 신뢰등급을 높게 유지하기 위해서는 주기적인 정보 업로드가
-              필요합니다.
-            </A.ConfidenceModalBottom>
-          </A.ConfidenceModal>
-        </A.ConfidenceModalWrapper>
       </A.TopBox>
-      {isConfidenceModalVisible && (
-        <A.AbsolutePositionedModal>
-          <ConfidenceLevelModal onClose={closeConfidenceModal} />
-        </A.AbsolutePositionedModal>
-      )}
+
       <A.InfoWrapper>
         <MenuSelect
           menus={menuItems}

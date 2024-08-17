@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
+import Button from '../../components/button/Button';
 
 export const Container = styled.div`
   display: flex;
@@ -8,16 +9,6 @@ export const Container = styled.div`
   width: 100%;
   margin: 0 auto;
   padding: 0 0 291px 0;
-`;
-
-export const Backdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
 `;
 
 export const TopImage = styled.div`
@@ -44,7 +35,6 @@ export const TopBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 111px;
   margin-top: 91px;
   position: relative;
   margin-bottom: 158px;
@@ -128,6 +118,7 @@ export const TopLeftBox = styled.div`
   font-family: 'Noto Sans KR';
   font-size: 16px;
   font-weight: 350;
+  width: 683px;
 `;
 
 export const BreederInfoTitleBox = styled.div`
@@ -167,6 +158,11 @@ export const BreederInfoTitle = styled.input`
   }
 `;
 
+export const BreederInfoSubTitleWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
 export const BreederInfoSubTitle = styled.textarea`
   display: flex;
   width: 100%;
@@ -178,33 +174,63 @@ export const BreederInfoSubTitle = styled.textarea`
   border: 2px solid #f1f1f1;
   height: 112px;
   margin-bottom: 18px;
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
   background: var(--White, #fff);
   &::placeholder {
     color: #737373;
-    font-family: 'Noto Sans KR';
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 16px;
-    font-weight: 350;
+    font-weight: 400;
+    font-style: normal;
     line-height: 24px;
   }
 `;
+export const CharCount = styled.div`
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
+`;
+
 export const BreederInfoSubBtnBox = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  width: 100%;
   margin-bottom: 48px;
 `;
+
+export const UploadButton = styled(Button)`
+  width: 238px;
+  flex-shrink: 0;
+`;
+
 export const BreederInfoSubBtnText = styled.div`
   overflow: hidden;
+  flex-grow: 1;
   color: var(--Grey_text, #737373);
   text-overflow: ellipsis;
   font-family: 'Noto Sans KR';
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
-  margin-left: 75px;
-  margin-right: 282px;
+  margin-left: 70px;
+  text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+export const RemoveIcon = styled.div`
+  flex-shrink: 0;
+  margin-left: 12px;
+  cursor: pointer;
 `;
 
 export const ReviewEventTitleBox = styled.div`
@@ -231,6 +257,10 @@ export const ReviewEventContent = styled.textarea`
   border-radius: 10px;
   border: 2px solid #f1f1f1;
   background: #fff;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
   margin-top: 12px;
   &::placeholder {
     color: #737373;
@@ -410,6 +440,10 @@ export const InfoInputContentBox = styled.textarea`
   border-radius: 10px;
   border: 2px solid var(--Grey_line, #f1f1f1);
   background: var(--White, #fff);
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
   &::placeholder {
     color: #737373;
     font-family: 'Noto Sans KR';
@@ -456,6 +490,10 @@ export const InfoInputContentLine = styled.input`
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
   border-radius: 10px;
   border: 2px solid var(--Grey_line, #f1f1f1);
   background: var(--White, #fff);
@@ -484,6 +522,10 @@ export const InfoInputContentLine22 = styled.div`
 export const InfoInputContentLine2 = styled.input`
   display: flex;
   width: 184px;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
   height: 40px;
   padding: 8px 18px;
   justify-content: space-between;
@@ -512,6 +554,10 @@ export const InfoInputContentLine3Box = styled.div`
 export const InfoInputContentLine3 = styled.input`
   display: flex;
   width: 562px;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
   height: 40px;
   padding: 8px 10px 8px 18px;
   justify-content: space-between;
@@ -539,6 +585,10 @@ export const InfoInputContentLine4 = styled.input`
   border: 2px solid #f1f1f1;
   background: #fff;
   flex-shrink: 0;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
   &::placeholder {
     color: #737373;
     font-family: 'Noto Sans KR';

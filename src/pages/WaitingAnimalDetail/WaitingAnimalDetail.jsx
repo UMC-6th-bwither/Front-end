@@ -107,7 +107,7 @@ function WaitingAnimalDetail() {
         <A.InfoContainer>
           <A.Reservation>
             <A.TextContainer>
-              <A.ReservationPoint>10명</A.ReservationPoint>의 대기 예약자가
+              <A.ReservationPoint>10명</A.ReservationPoint>의 분양 희망자가
               있어요.
             </A.TextContainer>
             <A.IconContainer>
@@ -252,7 +252,7 @@ function WaitingAnimalDetail() {
               혈통서 보기
             </Button>
             <Button orange onClick={handleInquiryClick}>
-              브리더에게 문의하기
+              브리더에게 문의 요청
             </Button>
           </A.ButtonContainer>
         </A.InfoContainer>
