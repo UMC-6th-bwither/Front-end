@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
-
+import api from '../../api/api';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederDetail.style';
 import 'react-multi-carousel/lib/styles.css';
@@ -40,12 +39,12 @@ function BreederDetail() {
   useEffect(() => {
     const fetchBreederDetail = async () => {
       try {
-        const breederResponse = await axios.get('baseurl/breeder/{breederId}');
+        const breederResponse = await api.get('/breeder/1');
         const breederData = breederResponse.data.result;
         setBreederInfo(breederData);
 
         // Top image를 가져오는 API 호출 추가 예정
-        const topImageResponse = await axios.get('/api/top/image');
+        const topImageResponse = await api.get('/breeder/1');
         setTopImage(topImageResponse.data.image || '/img/breederinfoedit.png');
       } catch (error) {
         console.error('브리더 정보를 불러오는 중 에러 발생:', error);
@@ -95,7 +94,8 @@ function BreederDetail() {
   const toggleFavorite = async () => {
     setIsFavorite((prev) => !prev);
     try {
-      await axios.post('/api/favorite/breeder', {
+      // api 수정해야됨
+      await api.post('/api/~~', {
         breederId: 'BREEDER_ID',
         favorite: !isFavorite,
       });
