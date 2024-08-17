@@ -1,13 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import * as A from '../../pages/WaitingAnimalDetail/WaitingAnimalDetail.style';
 import Badge from '../badge/Badge';
 
-const WaitingBreederInfo = React.forwardRef((props, ref) => {
+const WaitingBreederInfo = React.forwardRef(({ breeder }, ref) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate('/breeder-detail');
+    navigate(`/breeder/${breeder.breederId}`);
     // 브리더 id별로 이동되게 수정할 예정
   };
 
@@ -17,7 +19,7 @@ const WaitingBreederInfo = React.forwardRef((props, ref) => {
         <A.InfoTitle>브리더 정보</A.InfoTitle>
         <A.BreederInfoTitleBox>
           <A.BreederInfoTitle onClick={handleNavigate}>
-            😊 행복한 분양의 시작 - 해피 브리더
+            😊 {breeder.name}
           </A.BreederInfoTitle>
           <A.BreederInfoLocation>
             <A.BreederInfoLocationIcon1
@@ -53,7 +55,7 @@ const WaitingBreederInfo = React.forwardRef((props, ref) => {
                 </clipPath>
               </defs>
             </A.BreederInfoLocationIcon1>
-            서울시 강서구
+            {breeder.location}
             <A.BreederInfoLocationIcon2
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -74,10 +76,8 @@ const WaitingBreederInfo = React.forwardRef((props, ref) => {
             </A.BreederInfoLocationIcon2>
           </A.BreederInfoLocation>
         </A.BreederInfoTitleBox>
-        <A.InfoContent>
-          비글, 골든 리트리버 전문 브리더로, 대표가 직접 방문하는 ✨해피
-          브리더✨ 입니다.
-        </A.InfoContent>
+        <A.InfoContent>{breeder.description}</A.InfoContent>
+
         <A.BreederInfoLabelBox>
           <Badge
             color="#2257DF"
@@ -173,7 +173,9 @@ const WaitingBreederInfo = React.forwardRef((props, ref) => {
         <A.BreederInfoBottomBox>
           <A.BreederInfoBottom1>
             <A.BreederInfoBottomTitle>개체수</A.BreederInfoBottomTitle>
-            <A.BreederInfoBottomContent>5마리</A.BreederInfoBottomContent>
+            <A.BreederInfoBottomContent>
+              {breeder.totalAnimals}마리
+            </A.BreederInfoBottomContent>
           </A.BreederInfoBottom1>
           <A.BreederInfoBottom2>
             <A.BreederInfoBottomTitle>리뷰</A.BreederInfoBottomTitle>
@@ -223,5 +225,16 @@ const WaitingBreederInfo = React.forwardRef((props, ref) => {
 });
 
 WaitingBreederInfo.displayName = 'WaitingBreederInfo';
+
+WaitingBreederInfo.propTypes = {
+  breeder: PropTypes.shape({
+    breederId: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    totalAnimals: PropTypes.number.isRequired,
+    trustLevel: PropTypes.number,
+  }).isRequired,
+};
 
 export default WaitingBreederInfo;
