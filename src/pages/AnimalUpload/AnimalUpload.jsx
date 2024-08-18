@@ -6,6 +6,7 @@ import Button from '../../components/button/Button';
 import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
 import 'react-datepicker/dist/react-datepicker.css';
+import api from '../../api/api';
 
 const dogBreeds = [
   '직접입력',
@@ -100,6 +101,16 @@ DogInfoInput.displayName = 'DogInfoInput';
 function AnimalUpload() {
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [birthDate, setBirthDate] = useState(null);
+  const [dogInfoData, setDogInfoData] = useState({
+    character: '',
+    feature: '',
+    feeding: '',
+    vaccination: '',
+    virusCheck: '',
+    parasitic: '',
+    healthCheck: '',
+  });
+
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
   const [name, setName] = useState('');
@@ -118,6 +129,13 @@ function AnimalUpload() {
     } else if (menu === '부모 강아지 정보') {
       parentDogInfoRef.current.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleDogInfoChange = (field, value) => {
+    setDogInfoData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleImageUpload = (event) => {
@@ -170,6 +188,51 @@ function AnimalUpload() {
   };
 
   const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+
+    if (pedigreeFile) {
+      formData.append('files.pedigreeImage', pedigreeFile);
+    }
+
+    const animalCreateDTO = {
+      name,
+      type: selectedAnimal === '강아지' ? 'DOG' : 'CAT',
+      breed: selectedBreed === '직접입력' ? customBreed : selectedBreed,
+      gender: selectedGender === '수컷' ? 'MALE' : 'FEMALE',
+      birthDate: birthDate ? birthDate.toISOString().split('T')[0] : null,
+      ...dogInfoData,
+    };
+
+    formData.append('animalCreateDTO', JSON.stringify(animalCreateDTO));
+
+    const token = localStorage.getItem('authToken');
+
+    try {
+      const response = await api.post('/animals', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.isSuccess) {
+        // eslint-disable-next-line no-console
+        console.log('등록 성공');
+
+        const animalId = response.data.data.animal_id;
+        localStorage.setItem('animalId', animalId);
+      } else {
+        // 실패 시 처리 (isSuccess가 false일 때)
+        // eslint-disable-next-line no-console
+        console.error('등록 실패');
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('등록 요청 실패:', error);
+    }
+  };
 
   return (
     <A.Container>
@@ -328,14 +391,18 @@ function AnimalUpload() {
           setActiveMenu={handleMenuClick}
         />
         <A.MenuContentWrapper>
-          <UploadDogInfo ref={dogInfoRef} name={name} />
+          <UploadDogInfo
+            ref={dogInfoRef}
+            name={name}
+            onChange={handleDogInfoChange}
+          />
           <UploadParentDogInfo
             ref={parentDogInfoRef}
             selectedAnimal={selectedAnimal}
           />
         </A.MenuContentWrapper>
       </A.InfoWrapper>
-      <A.ConfirmBtn>확인</A.ConfirmBtn>
+      <A.ConfirmBtn onClick={handleSubmit}>확인</A.ConfirmBtn>
     </A.Container>
   );
 }
