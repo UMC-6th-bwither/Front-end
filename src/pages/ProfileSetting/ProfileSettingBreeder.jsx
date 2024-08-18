@@ -1,36 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Button from '../../components/button/Button';
 import * as S from './ProfileSetting.style';
-import ProfileSettingDropBox from '../../components/ProfileSettingDropBox/ProfileSettingDropBox';
+import api from '../../api/api';
 
-function ProfileSettingBreeder() {
+function ProfileSettingGeneral() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordCheckVisible, setIsPasswordCheckVisible] = useState(false);
 
+  const [profileImage, setProfileImage] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
-  const [phoneNum, setPhoneNum] = useState('');
-  const [postcode, setPostcode] = useState('');
-  const [address, setAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
-  const [roommate, setRoommate] = useState('');
-
   const [passwordError, setPasswordError] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState('');
-  const [phoneNumError, setPhoneNumError] = useState('');
-  const [addressError, setAddressError] = useState('');
-  const [RoommateError, setRoommateError] = useState('');
-
-  const [roommateNum, setRoommateNum] = useState('5');
-  const [commuteTime, setCommuteTime] = useState('2');
-
-  const handleRoommateNumChange = (value) => {
-    setRoommateNum(value);
-  };
-
-  const handleCommuteTimeChange = (value) => {
-    setCommuteTime(value);
-  };
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -38,6 +19,20 @@ function ProfileSettingBreeder() {
 
   const togglePasswordCheckVisibility = () => {
     setIsPasswordCheckVisible(!isPasswordCheckVisible);
+  };
+
+  // 이미지 변경 핸들러
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
+    }
+  };
+  const handleImageClick = () => {
+    fileInputRef.current.click(); // 숨겨진 파일 입력 필드를 클릭
   };
 
   const handlePasswordChange = (e) => {
@@ -60,82 +55,45 @@ function ProfileSettingBreeder() {
     }
   };
 
-  const handlePhoneNumChange = (e) => {
-    setPhoneNum(e.target.value);
-    const phoneNumPattern = /^\d{3}-\d{4}-\d{4}$/;
-    if (!phoneNumPattern.test(e.target.value)) {
-      setPhoneNumError('전화번호를 형식에 맞게 입력해주세요.');
-    } else {
-      setPhoneNumError('');
-    }
-  };
-
-  useEffect(() => {
-    if (postcode === '' || address === '' || detailAddress === '') {
-      setAddressError('주소를 입력해주세요.');
-    } else {
-      setAddressError('');
-    }
-  }, [postcode, address, detailAddress]);
-
-  const handleAddressChange = (e) => {
-    setDetailAddress(e.target.value);
-  };
-
-  const handleRoommateChange = (e) => {
-    setRoommate(e.target.value);
-    if (roommate === '') {
-      setRoommateError('가족구성원을 알려주세요.');
-    } else {
-      setRoommateError('');
-    }
-  };
-
-  // 우편번호 찾기 api
-  const handlePostcodeSearch = () => {
-    const script = document.createElement('script');
-    script.src =
-      '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-    script.id = 'postcode-script';
-    script.onload = () => {
-      new daum.Postcode({
-        oncomplete: (data) => {
-          setPostcode(data.zonecode);
-          setAddress(data.address);
-        },
-      }).open();
-    };
-    document.body.appendChild(script);
-  };
-
   const handleSubmitClick = () => {
-    let hasError = false;
-
-    if (passwordError || password.length === 0) {
-      setPasswordError('조건에 맞지 않아요.');
-      alert('비밀번호를 입력해주세요');
-      hasError = true;
-    } else if (passwordCheckError || password !== passwordCheck) {
-      setPasswordCheckError('비밀번호가 일치하지 않아요.');
-      alert('비밀번호가 일치하지 않습니다');
-      hasError = true;
-    } else if (phoneNumError || phoneNum.length === 0) {
-      setPhoneNumError('전화번호를 형식에 맞게 입력해주세요.');
-      alert('전화번호를 입력해주세요');
-      hasError = true;
-    } else if (addressError || address.length === 0) {
-      setAddressError('주소를 입력해주세요.');
-      alert('주소를 입력해주세요');
-      hasError = true;
-    } else if (RoommateError || !roommate) {
-      setRoommateError('가족구성원을 알려주세요.');
-      alert('동거인을 입력해주세요');
-      hasError = true;
-    } else if (!hasError) {
+    if (!passwordError && !passwordCheckError) {
       alert('변경된 내용이 저장되었습니다');
-      // myback(back) 이동 로직 구현
+      // myback(back)이동 로직 구현
     }
   };
+
+  // 기본 정보 불러오기
+  useEffect(() => {
+    const getUserInfo = async () => {
+      // 토큰을 로컬 스토리지에서 가져옵니다.
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        console.error('토큰이 없습니다.');
+        return;
+      }
+
+      try {
+        // 사용자 정보를 요청합니다.
+        const response = await api.get('/post/1', {
+          headers: {
+            'Content-Type': 'application/json', // GET 요청에는 보통 application/json을 사용합니다.
+            Authorization: `Bearer ${token}`, // Bearer 타입으로 토큰을 전달합니다.
+          },
+        });
+        const Data = response.data.result;
+
+        // 요청이 성공하면 결과를 콘솔에 출력합니다.
+        console.log('우왕 성공 User info:', Data);
+      } catch (error) {
+        // 요청이 실패하면 에러 메시지를 콘솔에 출력합니다.
+        console.error('응 실패:', error);
+      }
+    };
+
+    // 컴포넌트가 마운트될 때 데이터를 가져옴
+    getUserInfo();
+  }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨
 
   return (
     <S.MainContainer>
@@ -144,8 +102,11 @@ function ProfileSettingBreeder() {
 
         <S.ProfileCard>
           <S.ImgContainer>
-            <img src="" alt="" />
-            <S.CameraIcon>
+            <S.ProfileImage
+              src={profileImage || 'default-image-url'}
+              alt="Profile"
+            />
+            <S.CameraIcon onClick={handleImageClick}>
               <svg
                 width="17"
                 height="15"
@@ -159,6 +120,13 @@ function ProfileSettingBreeder() {
                 />
               </svg>
             </S.CameraIcon>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+            />
           </S.ImgContainer>
 
           <S.ProfileInfoContainer>
@@ -180,360 +148,100 @@ function ProfileSettingBreeder() {
           <p>examplePW</p>
         </div>
 
-        <div className="passwordcontainer">
-          <div>
-            <p>비밀번호 재설정</p>
-            <S.InputContainer>
-              <S.PWInput
-                type={isPasswordVisible ? 'text' : 'password'}
-                placeholder="영문, 숫자, 특수문자 포함 8자 이상 적어주세요"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-              <S.IconWrapper onClick={togglePasswordVisibility}>
-                {isPasswordVisible ? (
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M2.5731 8.95043C2.15272 9.59594 2.15272 10.4041 2.5731 11.0496C3.52804 12.5159 5.76989 15 9.99901 15C14.2281 15 16.47 12.5159 17.4249 11.0496C17.8453 10.4041 17.8453 9.59594 17.4249 8.95043C16.47 7.48409 14.2281 5 9.99901 5C5.76989 5 3.52805 7.48408 2.5731 8.95043ZM9.99888 12C11.1035 12 11.9989 11.1046 11.9989 10C11.9989 8.89543 11.1035 8 9.99888 8C8.89431 8 7.99888 8.89543 7.99888 10C7.99888 11.1046 8.89431 12 9.99888 12Z"
-                      fill="#C5C5C5"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    width="16"
-                    height="10"
-                    viewBox="0 0 16 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M0.669922 0.806414C1.18886 0.624784 1.75657 0.896191 1.94166 1.41293L1.9469 1.42648C1.95325 1.44247 1.96517 1.47152 1.98329 1.51178C2.01959 1.59245 2.08033 1.71716 2.1703 1.8714C2.3507 2.18065 2.64491 2.60231 3.08993 3.02613C3.96135 3.85606 5.46704 4.75027 8.00027 4.75027C10.5335 4.75027 12.0392 3.85606 12.9106 3.02613C13.3556 2.60231 13.6498 2.18065 13.8302 1.8714C13.9202 1.71716 13.981 1.59245 14.0173 1.51178C14.0354 1.47152 14.0473 1.44247 14.0536 1.42648L14.0589 1.41292C14.244 0.896189 14.8117 0.624785 15.3306 0.806414C15.8519 0.988862 16.1266 1.55934 15.9441 2.08062L15.0003 1.75027C15.9441 2.08062 15.9439 2.08121 15.9437 2.08182L15.9433 2.08311L15.9422 2.08597L15.9398 2.09282L15.9332 2.11088C15.928 2.12484 15.9212 2.1426 15.9127 2.16391C15.8958 2.20652 15.8722 2.2634 15.8411 2.33251C15.779 2.4706 15.6866 2.65839 15.5578 2.87914C15.3007 3.31989 14.8949 3.89823 14.2899 4.47441C14.0842 4.6703 13.8571 4.86438 13.6071 5.05177L14.4913 6.5833C14.7674 7.0616 14.6036 7.67319 14.1253 7.94933C13.647 8.22547 13.0354 8.0616 12.7592 7.5833L11.8669 6.03777C11.0586 6.37167 10.1092 6.61646 9.00027 6.70933V8.25027C9.00027 8.80256 8.55256 9.25027 8.00027 9.25027C7.44799 9.25027 7.00027 8.80256 7.00027 8.25027V6.70933C5.85606 6.61351 4.88172 6.35595 4.05694 6.00565L3.14608 7.5833C2.86994 8.0616 2.25835 8.22547 1.78006 7.94933C1.30177 7.67319 1.13789 7.0616 1.41403 6.5833L2.32725 5.00157C2.10317 4.82981 1.89799 4.65286 1.71062 4.47441C1.10563 3.89823 0.699847 3.31989 0.442744 2.87914C0.313968 2.65839 0.221584 2.4706 0.159445 2.33251C0.128344 2.2634 0.10472 2.20652 0.0878211 2.16391C0.0793683 2.1426 0.072588 2.12484 0.0673871 2.11088L0.0607546 2.09282L0.0583025 2.08597L0.0572884 2.08311L0.0568339 2.08182C0.0566211 2.08121 0.0564141 2.08062 1.00027 1.75027L0.0564141 2.08062C-0.126033 1.55934 0.148643 0.988862 0.669922 0.806414Z"
-                      fill="#C5C5C5"
-                    />
-                  </svg>
-                )}
-              </S.IconWrapper>
-            </S.InputContainer>
-            {passwordError && <S.ErrorMessage>{passwordError}</S.ErrorMessage>}
-          </div>
+        <div>
+          <p>비밀번호 재설정</p>
+          <S.InputContainer>
+            <S.PWInput
+              type={isPasswordVisible ? 'text' : 'password'}
+              placeholder="영문, 숫자, 특수문자 포함 8자 이상 적어주세요"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <S.IconWrapper onClick={togglePasswordVisibility}>
+              {isPasswordVisible ? (
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M2.5731 8.95043C2.15272 9.59594 2.15272 10.4041 2.5731 11.0496C3.52804 12.5159 5.76989 15 9.99901 15C14.2281 15 16.47 12.5159 17.4249 11.0496C17.8453 10.4041 17.8453 9.59594 17.4249 8.95043C16.47 7.48409 14.2281 5 9.99901 5C5.76989 5 3.52805 7.48408 2.5731 8.95043ZM9.99888 12C11.1035 12 11.9989 11.1046 11.9989 10C11.9989 8.89543 11.1035 8 9.99888 8C8.89431 8 7.99888 8.89543 7.99888 10C7.99888 11.1046 8.89431 12 9.99888 12Z"
+                    fill="#C5C5C5"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  width="16"
+                  height="10"
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0.669922 0.806414C1.18886 0.624784 1.75657 0.896191 1.94166 1.41293L1.9469 1.42648C1.95325 1.44247 1.96517 1.47152 1.98329 1.51178C2.01959 1.59245 2.08033 1.71716 2.1703 1.8714C2.3507 2.18065 2.64491 2.60231 3.08993 3.02613C3.96135 3.85606 5.46704 4.75027 8.00027 4.75027C10.5335 4.75027 12.0392 3.85606 12.9106 3.02613C13.3556 2.60231 13.6498 2.18065 13.8302 1.8714C13.9202 1.71716 13.981 1.59245 14.0173 1.51178C14.0354 1.47152 14.0473 1.44247 14.0536 1.42648L14.0589 1.41292C14.244 0.896189 14.8117 0.624785 15.3306 0.806414C15.8519 0.988862 16.1266 1.55934 15.9441 2.08062L15.0003 1.75027C15.9441 2.08062 15.9439 2.08121 15.9437 2.08182L15.9433 2.08311L15.9422 2.08597L15.9398 2.09282L15.9332 2.11088C15.928 2.12484 15.9212 2.1426 15.9127 2.16391C15.8958 2.20652 15.8722 2.2634 15.8411 2.33251C15.779 2.4706 15.6866 2.65839 15.5578 2.87914C15.3007 3.31989 14.8949 3.89823 14.2899 4.47441C14.0842 4.6703 13.8571 4.86438 13.6071 5.05177L14.4913 6.5833C14.7674 7.0616 14.6036 7.67319 14.1253 7.94933C13.647 8.22547 13.0354 8.0616 12.7592 7.5833L11.8669 6.03777C11.0586 6.37167 10.1092 6.61646 9.00027 6.70933V8.25027C9.00027 8.80256 8.55256 9.25027 8.00027 9.25027C7.44799 9.25027 7.00027 8.80256 7.00027 8.25027V6.70933C5.85606 6.61351 4.88172 6.35595 4.05694 6.00565L3.14608 7.5833C2.86994 8.0616 2.25835 8.22547 1.78006 7.94933C1.30177 7.67319 1.13789 7.0616 1.41403 6.5833L2.32725 5.00157C2.10317 4.82981 1.89799 4.65286 1.71062 4.47441C1.10563 3.89823 0.699847 3.31989 0.442744 2.87914C0.313968 2.65839 0.221584 2.4706 0.159445 2.33251C0.128344 2.2634 0.10472 2.20652 0.0878211 2.16391C0.0793683 2.1426 0.072588 2.12484 0.0673871 2.11088L0.0607546 2.09282L0.0583025 2.08597L0.0572884 2.08311L0.0568339 2.08182C0.0566211 2.08121 0.0564141 2.08062 1.00027 1.75027L0.0564141 2.08062C-0.126033 1.55934 0.148643 0.988862 0.669922 0.806414Z"
+                    fill="#C5C5C5"
+                  />
+                </svg>
+              )}
+            </S.IconWrapper>
+          </S.InputContainer>
+          {passwordError && <S.ErrorMessage>{passwordError}</S.ErrorMessage>}
+        </div>
 
-          <div>
-            <p>비밀번호 확인</p>
-            <S.InputContainer>
-              <S.PWInput
-                type={isPasswordCheckVisible ? 'text' : 'password'}
-                value={passwordCheck}
-                onChange={handlePasswordCheckChange}
-              />
-              <S.IconWrapper onClick={togglePasswordCheckVisibility}>
-                {isPasswordCheckVisible ? (
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M2.5731 8.95043C2.15272 9.59594 2.15272 10.4041 2.5731 11.0496C3.52804 12.5159 5.76989 15 9.99901 15C14.2281 15 16.47 12.5159 17.4249 11.0496C17.8453 10.4041 17.8453 9.59594 17.4249 8.95043C16.47 7.48409 14.2281 5 9.99901 5C5.76989 5 3.52805 7.48408 2.5731 8.95043ZM9.99888 12C11.1035 12 11.9989 11.1046 11.9989 10C11.9989 8.89543 11.1035 8 9.99888 8C8.89431 8 7.99888 8.89543 7.99888 10C7.99888 11.1046 8.89431 12 9.99888 12Z"
-                      fill="#C5C5C5"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    width="16"
-                    height="10"
-                    viewBox="0 0 16 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M0.669922 0.806414C1.18886 0.624784 1.75657 0.896191 1.94166 1.41293L1.9469 1.42648C1.95325 1.44247 1.96517 1.47152 1.98329 1.51178C2.01959 1.59245 2.08033 1.71716 2.1703 1.8714C2.3507 2.18065 2.64491 2.60231 3.08993 3.02613C3.96135 3.85606 5.46704 4.75027 8.00027 4.75027C10.5335 4.75027 12.0392 3.85606 12.9106 3.02613C13.3556 2.60231 13.6498 2.18065 13.8302 1.8714C13.9202 1.71716 13.981 1.59245 14.0173 1.51178C14.0354 1.47152 14.0473 1.44247 14.0536 1.42648L14.0589 1.41292C14.244 0.896189 14.8117 0.624785 15.3306 0.806414C15.8519 0.988862 16.1266 1.55934 15.9441 2.08062L15.0003 1.75027C15.9441 2.08062 15.9439 2.08121 15.9437 2.08182L15.9433 2.08311L15.9422 2.08597L15.9398 2.09282L15.9332 2.11088C15.928 2.12484 15.9212 2.1426 15.9127 2.16391C15.8958 2.20652 15.8722 2.2634 15.8411 2.33251C15.779 2.4706 15.6866 2.65839 15.5578 2.87914C15.3007 3.31989 14.8949 3.89823 14.2899 4.47441C14.0842 4.6703 13.8571 4.86438 13.6071 5.05177L14.4913 6.5833C14.7674 7.0616 14.6036 7.67319 14.1253 7.94933C13.647 8.22547 13.0354 8.0616 12.7592 7.5833L11.8669 6.03777C11.0586 6.37167 10.1092 6.61646 9.00027 6.70933V8.25027C9.00027 8.80256 8.55256 9.25027 8.00027 9.25027C7.44799 9.25027 7.00027 8.80256 7.00027 8.25027V6.70933C5.85606 6.61351 4.88172 6.35595 4.05694 6.00565L3.14608 7.5833C2.86994 8.0616 2.25835 8.22547 1.78006 7.94933C1.30177 7.67319 1.13789 7.0616 1.41403 6.5833L2.32725 5.00157C2.10317 4.82981 1.89799 4.65286 1.71062 4.47441C1.10563 3.89823 0.699847 3.31989 0.442744 2.87914C0.313968 2.65839 0.221584 2.4706 0.159445 2.33251C0.128344 2.2634 0.10472 2.20652 0.0878211 2.16391C0.0793683 2.1426 0.072588 2.12484 0.0673871 2.11088L0.0607546 2.09282L0.0583025 2.08597L0.0572884 2.08311L0.0568339 2.08182C0.0566211 2.08121 0.0564141 2.08062 1.00027 1.75027L0.0564141 2.08062C-0.126033 1.55934 0.148643 0.988862 0.669922 0.806414Z"
-                      fill="#C5C5C5"
-                    />
-                  </svg>
-                )}
-              </S.IconWrapper>
-            </S.InputContainer>
-            {passwordCheckError && (
-              <S.ErrorMessage>{passwordCheckError}</S.ErrorMessage>
-            )}
-          </div>
+        <div>
+          <p>비밀번호 확인</p>
+          <S.InputContainer>
+            <S.PWInput
+              type={isPasswordCheckVisible ? 'text' : 'password'}
+              value={passwordCheck}
+              onChange={handlePasswordCheckChange}
+            />
+
+            <S.IconWrapper onClick={togglePasswordCheckVisibility}>
+              {isPasswordCheckVisible ? (
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M2.5731 8.95043C2.15272 9.59594 2.15272 10.4041 2.5731 11.0496C3.52804 12.5159 5.76989 15 9.99901 15C14.2281 15 16.47 12.5159 17.4249 11.0496C17.8453 10.4041 17.8453 9.59594 17.4249 8.95043C16.47 7.48409 14.2281 5 9.99901 5C5.76989 5 3.52805 7.48408 2.5731 8.95043ZM9.99888 12C11.1035 12 11.9989 11.1046 11.9989 10C11.9989 8.89543 11.1035 8 9.99888 8C8.89431 8 7.99888 8.89543 7.99888 10C7.99888 11.1046 8.89431 12 9.99888 12Z"
+                    fill="#C5C5C5"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  width="16"
+                  height="10"
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0.669922 0.806414C1.18886 0.624784 1.75657 0.896191 1.94166 1.41293L1.9469 1.42648C1.95325 1.44247 1.96517 1.47152 1.98329 1.51178C2.01959 1.59245 2.08033 1.71716 2.1703 1.8714C2.3507 2.18065 2.64491 2.60231 3.08993 3.02613C3.96135 3.85606 5.46704 4.75027 8.00027 4.75027C10.5335 4.75027 12.0392 3.85606 12.9106 3.02613C13.3556 2.60231 13.6498 2.18065 13.8302 1.8714C13.9202 1.71716 13.981 1.59245 14.0173 1.51178C14.0354 1.47152 14.0473 1.44247 14.0536 1.42648L14.0589 1.41292C14.244 0.896189 14.8117 0.624785 15.3306 0.806414C15.8519 0.988862 16.1266 1.55934 15.9441 2.08062L15.0003 1.75027C15.9441 2.08062 15.9439 2.08121 15.9437 2.08182L15.9433 2.08311L15.9422 2.08597L15.9398 2.09282L15.9332 2.11088C15.928 2.12484 15.9212 2.1426 15.9127 2.16391C15.8958 2.20652 15.8722 2.2634 15.8411 2.33251C15.779 2.4706 15.6866 2.65839 15.5578 2.87914C15.3007 3.31989 14.8949 3.89823 14.2899 4.47441C14.0842 4.6703 13.8571 4.86438 13.6071 5.05177L14.4913 6.5833C14.7674 7.0616 14.6036 7.67319 14.1253 7.94933C13.647 8.22547 13.0354 8.0616 12.7592 7.5833L11.8669 6.03777C11.0586 6.37167 10.1092 6.61646 9.00027 6.70933V8.25027C9.00027 8.80256 8.55256 9.25027 8.00027 9.25027C7.44799 9.25027 7.00027 8.80256 7.00027 8.25027V6.70933C5.85606 6.61351 4.88172 6.35595 4.05694 6.00565L3.14608 7.5833C2.86994 8.0616 2.25835 8.22547 1.78006 7.94933C1.30177 7.67319 1.13789 7.0616 1.41403 6.5833L2.32725 5.00157C2.10317 4.82981 1.89799 4.65286 1.71062 4.47441C1.10563 3.89823 0.699847 3.31989 0.442744 2.87914C0.313968 2.65839 0.221584 2.4706 0.159445 2.33251C0.128344 2.2634 0.10472 2.20652 0.0878211 2.16391C0.0793683 2.1426 0.072588 2.12484 0.0673871 2.11088L0.0607546 2.09282L0.0583025 2.08597L0.0572884 2.08311L0.0568339 2.08182C0.0566211 2.08121 0.0564141 2.08062 1.00027 1.75027L0.0564141 2.08062C-0.126033 1.55934 0.148643 0.988862 0.669922 0.806414Z"
+                    fill="#C5C5C5"
+                  />
+                </svg>
+              )}
+            </S.IconWrapper>
+          </S.InputContainer>
+          {passwordCheckError && (
+            <S.ErrorMessage>{passwordCheckError}</S.ErrorMessage>
+          )}
         </div>
       </S.AccountContainer>
-
-      <S.AdopterContainer>
-        <S.Title>
-          분양자 정보<p>브리더 문의 시 브리더에게 보이게 될 정보예요</p>
-        </S.Title>
-
-        <S.AdopterInfoContainer>
-          <div>
-            <p>전화번호</p>
-            <S.PhoneNumInput
-              type="text"
-              placeholder="010-1234-5678"
-              value={phoneNum}
-              onChange={handlePhoneNumChange}
-            />
-            {phoneNumError && <S.ErrorMessage>{phoneNumError}</S.ErrorMessage>}
-          </div>
-
-          <div>
-            <S.AddressContainer>
-              <p>현재 어디서 거주 중이신가요?</p>
-              <S.PostCodeContainer>
-                <S.PostCodeInput
-                  type="text"
-                  value={postcode}
-                  placeholder="11111"
-                  readOnly
-                />
-                <S.PostCodeBtn onClick={handlePostcodeSearch}>
-                  우편번호 찾기
-                </S.PostCodeBtn>
-              </S.PostCodeContainer>
-              <S.ResidentInput
-                type="text"
-                value={address}
-                placeholder="서울 브위더로11 22"
-                readOnly
-              />
-              <S.ResidentInput
-                type="text"
-                placeholder="106호"
-                value={detailAddress}
-                onChange={handleAddressChange}
-              />
-              <p>문의한 브리더에게는 시, 구까지만 공개돼요</p>
-            </S.AddressContainer>
-            {addressError && <S.ErrorMessage>{addressError}</S.ErrorMessage>}
-          </div>
-
-          <div>
-            <p>거주지에서 반려동물을 키울 수 있나요?</p>
-            <S.RadioContainer>
-              <S.RadioBtn type="radio" id="yes" name="location" checked />
-              <S.Label htmlFor="yes">
-                <S.RadioIcon />네
-              </S.Label>
-
-              <S.RadioBtn type="radio" id="no" name="location" />
-              <S.Label htmlFor="no">
-                <S.RadioIcon />
-                아니오
-              </S.Label>
-
-              <S.RadioBtn type="radio" id="unknown" name="location" />
-              <S.Label htmlFor="unknown">
-                <S.RadioIcon />
-                모르겠어요
-              </S.Label>
-            </S.RadioContainer>
-          </div>
-
-          <div>
-            <p>현재 누구와 살고 계신가요?</p>
-            <S.RoommateContainer style={{ marginBottom: '20px' }}>
-              <S.RoommateInput
-                type="text"
-                placeholder="아빠, 엄마, 동생 2명"
-                value={roommate}
-                onChange={handleRoommateChange}
-              />
-              <S.RoommateNumContainer>
-                <ProfileSettingDropBox
-                  id="RoommateNum-dropbox"
-                  label="5"
-                  options={[
-                    { value: '1', label: '1' },
-                    { value: '2', label: '2' },
-                    { value: '3', label: '3' },
-                    { value: '4', label: '4' },
-                    { value: '5', label: '5' },
-                    { value: '6+', label: '6명 이상' },
-                  ]}
-                  onChange={handleRoommateNumChange}
-                />
-                <span>명</span>
-              </S.RoommateNumContainer>
-            </S.RoommateContainer>
-            {RoommateError && <S.ErrorMessage>{RoommateError}</S.ErrorMessage>}
-          </div>
-
-          <div>
-            <p>모든 가족 구성원 및 동거인의 동의를 받으셨나요?</p>
-            <S.RadioContainer>
-              <S.RadioBtn type="radio" id="agree" name="family" checked />
-              <S.Label htmlFor="agree">
-                <S.RadioIcon />
-                네, 모든 동의를 받았습니다.
-              </S.Label>
-              <S.RadioBtn type="radio" id="disagree" name="family" />
-              <S.Label htmlFor="disagree">
-                <S.RadioIcon />
-                아니요, 반대하는 분이 계십니다.
-              </S.Label>
-              <S.RadioBtn type="radio" id="persuading" name="family" />
-              <S.Label htmlFor="persuading">
-                <S.RadioIcon />
-                설득 중입니다.
-              </S.Label>
-            </S.RadioContainer>
-          </div>
-
-          <div>
-            <p>현재 다니고 계신 직장 또는 학교가 있으신가요?</p>
-            <S.RadioContainer>
-              <S.RadioBtn type="radio" id="employed" name="job" checked />
-              <S.Label htmlFor="employed">
-                <S.RadioIcon />
-                재직 중
-              </S.Label>
-              <S.RadioBtn type="radio" id="on_leave" name="job" />
-              <S.Label htmlFor="on_leave">
-                <S.RadioIcon />
-                휴직 중
-              </S.Label>
-              <S.RadioBtn type="radio" id="student" name="job" />
-              <S.Label htmlFor="student">
-                <S.RadioIcon />
-                재학 중
-              </S.Label>
-              <S.RadioBtn type="radio" id="on_break" name="job" />
-              <S.Label htmlFor="on_break">
-                <S.RadioIcon />
-                휴학 중
-              </S.Label>
-              <S.RadioBtn type="radio" id="unemployed" name="job" />
-              <S.Label htmlFor="unemployed">
-                <S.RadioIcon />
-                직업없음
-              </S.Label>
-            </S.RadioContainer>
-          </div>
-
-          <div>
-            <p>
-              다니고 계신 직장이 있으시다면 근무 시간과 출퇴근 시간, 통근 시간을
-              알려주세요.
-              <S.CommuteTimeContainer>
-                <span>출근</span>
-                <S.CommuteTimeInput type="text" placeholder="7:00" />
-                <span>퇴근</span>
-                <S.CommuteTimeInput type="text" placeholder="18:00" />
-                <span>왕복</span>
-                <S.TurnAroundTimeContainer>
-                  <ProfileSettingDropBox
-                    id="CommuteTime-dropbox"
-                    label="2"
-                    options={[
-                      { value: '1', label: '1' },
-                      { value: '2', label: '2' },
-                      { value: '3', label: '3' },
-                      { value: '4', label: '4' },
-                      { value: '5', label: '5' },
-                      { value: '6+', label: '6시간 이상' },
-                    ]}
-                    onChange={handleCommuteTimeChange}
-                  />
-                </S.TurnAroundTimeContainer>
-                <span>시간</span>
-              </S.CommuteTimeContainer>
-            </p>
-          </div>
-
-          <div>
-            <p>이전에 반려동물을 키워본 경험이 있나요?</p>
-            <S.RadioContainer>
-              <S.RadioBtn
-                type="radio"
-                id="experience_yes"
-                name="experience"
-                checked
-              />
-              <S.Label htmlFor="experience_yes">
-                <S.RadioIcon />네
-              </S.Label>
-
-              <S.RadioBtn type="radio" id="experience_no" name="experience" />
-              <S.Label htmlFor="experience_no" style={{ marginRight: '50%' }}>
-                <S.RadioIcon />
-                아니요
-              </S.Label>
-            </S.RadioContainer>
-          </div>
-
-          <div>
-            <p>
-              있다면 현재 다른 반려동물을 키우고 있나요? 종 이름까지 적어주세요.
-              <S.BreedInput type="text" placeholder="포메라니안" />
-            </p>
-          </div>
-
-          <div>
-            <p>향후 이사나 여행 계획 등이 있으신가요?</p>
-            <S.RadioContainer>
-              <S.RadioBtn
-                type="radio"
-                id="moving_yes"
-                name="movingplan"
-                checked
-              />
-              <S.Label htmlFor="moving_yes">
-                <S.RadioIcon />
-                이사 예정
-              </S.Label>
-
-              <S.RadioBtn
-                type="radio"
-                id="moving_short_trip"
-                name="movingplan"
-              />
-              <S.Label htmlFor="moving_short_trip">
-                <S.RadioIcon />
-                단기 여행 예정
-              </S.Label>
-
-              <S.RadioBtn
-                type="radio"
-                id="moving_long_trip"
-                name="movingplan"
-              />
-              <S.Label htmlFor="moving_long_trip">
-                <S.RadioIcon />
-                장기 여행 예정
-              </S.Label>
-
-              <S.RadioBtn type="radio" id="moving_none" name="movingplan" />
-              <S.Label htmlFor="moving_none">
-                <S.RadioIcon />
-                계획 없음
-              </S.Label>
-
-              <S.RadioBtn type="radio" id="moving_other" name="movingplan" />
-              <S.Label htmlFor="moving_other">
-                <S.RadioIcon />
-                기타
-              </S.Label>
-            </S.RadioContainer>
-          </div>
-        </S.AdopterInfoContainer>
-      </S.AdopterContainer>
 
       <S.SubmitContainer>
         <Button orange onClick={handleSubmitClick}>
@@ -544,4 +252,4 @@ function ProfileSettingBreeder() {
   );
 }
 
-export default ProfileSettingBreeder;
+export default ProfileSettingGeneral;

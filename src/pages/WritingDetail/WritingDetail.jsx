@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from './WritingDetail.style';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
 import TimeStampParser from '../../components/TimeStampParser/TimeStampParser';
+import api from '../../api/api';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -10,6 +11,8 @@ const menuItems = [
 
 function WritingDetail() {
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
@@ -23,39 +26,105 @@ function WritingDetail() {
       });
   };
 
-  const Bookmarking = async () => {
-    setIsBookmarked(!isBookmarked);
+  const addBookmark = async (postId, memberId) => {
+    try {
+      const response = await api.post(
+        `/post/${postId}/bookmark?memberId=${memberId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+          },
+        },
+      );
+      const data = await response.json();
+      return data.isSuccess;
+    } catch (error) {
+      console.error('Error adding bookmark:', error);
+      return false;
+    }
   };
 
-  // 데이터 예시
-  const content = [
-    {
-      id: 1,
-      type: 'text',
-      value:
-        '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이들더라구요. 이럴 땐 굉장히 당황스럽 어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽',
-    },
-    {
-      id: 2,
-      type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
-    },
-    {
-      id: 3,
-      type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
-    },
-    {
-      id: 4,
-      type: 'text',
-      value: '어떻게 해야 할까요?',
-    },
-    {
-      id: 5,
-      type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
-    },
-  ];
+  const removeBookmark = async (postId, memberId) => {
+    try {
+      const response = await api.delete(
+        `/post/${postId}/bookmark?memberId=${memberId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+          },
+        },
+      );
+      const data = await response.json();
+      return data.isSuccess;
+    } catch (error) {
+      console.error('Error removing bookmark:', error);
+      return false;
+    }
+  };
+
+  // 북마크
+  const handleBookmarkToggle = async () => {
+    let success;
+    if (isBookmarked) {
+      success = await removeBookmark(1, 2);
+    } else {
+      success = await addBookmark(1, 2);
+    }
+
+    if (success) {
+      setIsBookmarked(!isBookmarked);
+    }
+  };
+
+  // 글 데이터 받아오기
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const response = await api.get('/post/2', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        setPost(response.data.result);
+        setLoading(false);
+        // 요청이 성공하면 결과를 콘솔에 출력합니다.
+        console.log('우왕 성공 User info:', post);
+      } catch (error) {
+        // 요청이 실패하면 에러 메시지를 콘솔에 출력합니다.
+        console.error('응 실패:', error);
+        setLoading(false);
+      }
+    };
+
+    // 컴포넌트가 마운트될 때 데이터를 가져옴
+    getUserInfo();
+  }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading message or spinner
+  }
+
+  // blocks데이터 파싱
+  const content = post
+    ? post.blocks
+        .map((blockItem) => {
+          try {
+            const parsedBlock = JSON.parse(blockItem.block);
+            return {
+              id: parsedBlock.id,
+              type: parsedBlock.type,
+              text: parsedBlock.data.text,
+              imageUrl: parsedBlock.data.imageUrl,
+            };
+          } catch (error) {
+            console.error('Block parsing error:', error);
+            return null;
+          }
+        })
+        .filter((item) => item !== null)
+    : []; // Filter out null items
 
   return (
     <S.Layout>
@@ -70,9 +139,9 @@ function WritingDetail() {
         <S.Container>
           <S.TitleContainer>
             <S.Title>
-              고양이들이 이런 행동을 할 땐? 어떻게 해야할까요
+              {post.title}
               <S.TitleIconContainer>
-                <S.TitleIconFrame onClick={Bookmarking}>
+                <S.TitleIconFrame onClick={handleBookmarkToggle}>
                   {isBookmarked ? (
                     <svg
                       width="32"
@@ -129,9 +198,9 @@ function WritingDetail() {
             </S.Title>
             <S.ProfileContainer>
               <S.ProfileImg />
-              <S.ProfileName>김*숙</S.ProfileName>
+              <S.ProfileName>{post.author}</S.ProfileName>
               <S.Time>
-                <TimeStampParser>2024-08-14 15:52:36</TimeStampParser>
+                <TimeStampParser>{post.createdAt}</TimeStampParser>
               </S.Time>
             </S.ProfileContainer>
           </S.TitleContainer>
@@ -139,16 +208,18 @@ function WritingDetail() {
           <S.ContentContainer>
             {content.map((item, index) => (
               <React.Fragment key={item.id}>
-                {item.type === 'text' ? (
-                  <S.ContentText>{item.value}</S.ContentText>
+                {item.type === 'paragraph' ? (
+                  <S.ContentText>{item.text}</S.ContentText>
                 ) : (
                   <S.ContextImgContainer>
-                    <img src={item.value} alt={`ContentImage ${index + 1}`} />
+                    <img
+                      src={item.imageUrl}
+                      alt={`ContentImage ${index + 1}`}
+                    />
                   </S.ContextImgContainer>
                 )}
               </React.Fragment>
             ))}
-
             <S.ContentIconContainer>
               <S.ContentIconFrame>
                 <svg
@@ -165,7 +236,7 @@ function WritingDetail() {
                     fill="#C5C5C5"
                   />
                 </svg>
-                <S.ContentIconContent>145</S.ContentIconContent>
+                <S.ContentIconContent>{post.viewCount}</S.ContentIconContent>
               </S.ContentIconFrame>
               <S.ContentIconFrame>
                 <svg
@@ -180,7 +251,9 @@ function WritingDetail() {
                     fill="#C5C5C5"
                   />
                 </svg>
-                <S.ContentIconContent>145</S.ContentIconContent>
+                <S.ContentIconContent>
+                  {post.bookmarkCount}
+                </S.ContentIconContent>
               </S.ContentIconFrame>
             </S.ContentIconContainer>
           </S.ContentContainer>
