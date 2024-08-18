@@ -95,6 +95,7 @@ function BreederInfoEdit() {
 
   const handleSaveClick = () => {
     if (isReviewEventChecked && !reviewEventContent.trim()) {
+      // eslint-disable-next-line no-alert
       alert('리뷰이벤트 내용을 입력해주세요.');
       return;
     }

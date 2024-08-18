@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import * as A from '../../pages/WaitingAnimalDetail/WaitingAnimalDetail.style';
 
-const WaitingDogInfo = React.forwardRef((props, ref) => {
+const WaitingDogInfo = React.forwardRef(({ animalData }, ref) => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleIconClick = (item) => {
@@ -16,17 +18,14 @@ const WaitingDogInfo = React.forwardRef((props, ref) => {
   return (
     <div ref={ref} style={{ marginBottom: '96px' }}>
       <A.InfoItem>
-        <A.InfoTitle>행복이의 성격은요</A.InfoTitle>
+        <A.InfoTitle>{animalData.name}의 성격은요</A.InfoTitle>
         <A.InfoContent>
-          장난꾸러기인 행복이는 장난감을 가지고 놀 때 가장 좋아해요
+          <A.InfoContent>{animalData.character}</A.InfoContent>
         </A.InfoContent>
       </A.InfoItem>
       <A.InfoItem>
-        <A.InfoTitle>행복이는 이런 분양자에게 잘 맞아요</A.InfoTitle>
-        <A.InfoContent>
-          행복이는 사람을 매우 좋아하고, 사람과의 교감을 통해 큰 행복을 느끼는
-          강아지입니다.
-        </A.InfoContent>
+        <A.InfoTitle>{animalData.name}는 이런 분양자에게 잘 맞아요</A.InfoTitle>
+        <A.InfoContent>{animalData.feature}</A.InfoContent>
       </A.InfoItem>
       <A.InfoItem>
         <A.InfoTitle>
@@ -50,10 +49,7 @@ const WaitingDogInfo = React.forwardRef((props, ref) => {
             />
           </A.InfoIcon>
         </A.InfoTitle>
-        <A.InfoContent>
-          사료 : 로얄캐닌 (Royal Canin) | 행복이는 소형견용 퍼피 사료를 먹고
-          있습니다.
-        </A.InfoContent>
+        <A.InfoContent>{animalData.feeding}</A.InfoContent>
       </A.InfoItem>
       <A.InfoItem>
         <A.InfoTitle>
@@ -77,7 +73,7 @@ const WaitingDogInfo = React.forwardRef((props, ref) => {
             />
           </A.InfoIcon>
         </A.InfoTitle>
-        <A.InfoContent>1차 종합 백신, 코로나 장염</A.InfoContent>
+        <A.InfoContent>{animalData.vaccination}</A.InfoContent>
       </A.InfoItem>
       <A.InfoItem>
         <A.InfoTitle>
@@ -101,7 +97,7 @@ const WaitingDogInfo = React.forwardRef((props, ref) => {
             />
           </A.InfoIcon>
         </A.InfoTitle>
-        <A.InfoContent>파보장염, 코로나장염, 홍역 음성</A.InfoContent>
+        <A.InfoContent>{animalData.virusCheck}</A.InfoContent>
       </A.InfoItem>
       <A.InfoItem>
         <A.InfoTitle>
@@ -125,7 +121,7 @@ const WaitingDogInfo = React.forwardRef((props, ref) => {
             />
           </A.InfoIcon>
         </A.InfoTitle>
-        <A.InfoContent>프론트라인(외부기생충 예방약)</A.InfoContent>
+        <A.InfoContent>{animalData.parasitic}</A.InfoContent>
       </A.InfoItem>
       <A.InfoItem>
         <A.InfoTitle>
@@ -149,7 +145,7 @@ const WaitingDogInfo = React.forwardRef((props, ref) => {
             />
           </A.InfoIcon>
         </A.InfoTitle>
-        <A.InfoContent>건강상태 이상 없음</A.InfoContent>
+        <A.InfoContent>{animalData.healthCheck}</A.InfoContent>
       </A.InfoItem>
       {selectedItem && (
         <A.ModalOverlay onClick={closeModal}>
@@ -193,5 +189,23 @@ const WaitingDogInfo = React.forwardRef((props, ref) => {
 });
 
 WaitingDogInfo.displayName = 'WaitingDogInfo';
+
+WaitingDogInfo.propTypes = {
+  animalData: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    character: PropTypes.string.isRequired,
+    feature: PropTypes.string.isRequired,
+    feeding: PropTypes.string.isRequired,
+    vaccination: PropTypes.string.isRequired,
+    virusCheck: PropTypes.string.isRequired,
+    parasitic: PropTypes.string.isRequired,
+    healthCheck: PropTypes.string.isRequired,
+    feedingImage: PropTypes.string,
+    vaccinationImage: PropTypes.string,
+    virusCheckImage: PropTypes.string,
+    parasiticImage: PropTypes.string,
+    healthCheckImage: PropTypes.string,
+  }).isRequired,
+};
 
 export default WaitingDogInfo;
