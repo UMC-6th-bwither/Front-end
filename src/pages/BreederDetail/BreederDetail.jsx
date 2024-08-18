@@ -39,10 +39,15 @@ function BreederDetail() {
   useEffect(() => {
     const fetchBreederDetail = async () => {
       try {
-        // 브리더 목록에서 id 가져와야함 api 추가예정
         const breederResponse = await api.get('/breeder/1');
         const breederData = breederResponse.data.result;
-        setBreederInfo(breederData);
+
+        const backgroundUrl =
+          breederData.backgroundUrl || '/img/breederdetailbackimg.jpg';
+        const profileUrl = breederData.profileUrl || '/img/defaultprofile.png';
+
+        setTopImage(backgroundUrl);
+        setBreederInfo({ ...breederData, profileUrl, backgroundUrl });
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('브리더 정보를 불러오는 중 에러 발생:', error);
@@ -92,21 +97,22 @@ function BreederDetail() {
     try {
       const endpoint = `/breeder/${breederInfo.breederId}/bookmark`;
       const token = localStorage.getItem('token');
+      const memberId = localStorage.getItem('memberId');
+
+      if (!memberId) {
+        // console.error('No memberId found');
+        return;
+      }
+      // memberId 어딘가에서 가져와서 넣어야함
 
       if (isFavorite) {
         // 북마크 해제
-        await api.delete(endpoint, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        // eslint-disable-next-line no-console
-        console.log('북마크 해제');
-      } else {
-        // 북마크 추가
         await api.post(
           endpoint,
-          {},
+          {
+            breederId: breederInfo.breederId,
+            // memberId: memberId,
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -133,16 +139,11 @@ function BreederDetail() {
 
       <A.TopImage image={topImage} />
       <A.TopBox>
-        <A.OverlappingImage
-          alt="프로필사진"
-          image={breederInfo.profileUrl || '/img/defaultprofile.png'}
-        />
+        <A.OverlappingImage alt="프로필사진" image={breederInfo.profileUrl} />
 
         <A.TopLeftBox>
           <A.BreederInfoTitleBox>
-            <A.BreederInfoTitle>
-              🐶 행복한 분양의 시작 - {breederInfo.tradeName}
-            </A.BreederInfoTitle>
+            <A.BreederInfoTitle>🐶 {breederInfo.tradeName}</A.BreederInfoTitle>
             <A.BreederInfoTitleBoxRight>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +201,7 @@ function BreederDetail() {
           </A.BreederInfoTitleBox>
           <A.BreederInfoSubTitleBox>
             <A.BreederInfoSubTitle>
-              {breederInfo.species.join(', ')} 전문{' '}
+              {breederInfo.species.join(', ')} 전문
             </A.BreederInfoSubTitle>
             <A.BreederInfoLocation>
               <A.BreederInfoLocationIcon1

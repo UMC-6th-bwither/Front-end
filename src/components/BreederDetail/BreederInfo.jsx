@@ -4,7 +4,7 @@ import * as A from '../../pages/BreederDetail/BreederDetail.style';
 
 const BreederInfo = React.forwardRef((props, ref) => {
   const {
-    tradePhone,
+    contactableTime,
     snsAddress,
     detailDescription,
     species,
@@ -14,17 +14,20 @@ const BreederInfo = React.forwardRef((props, ref) => {
     graduationDate,
     breedingCareers,
     schoolName,
+    files,
   } = props;
 
   const [showMore, setShowMore] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
 
-  const images = [
-    { id: 1, src: '/img/kennelex.png', alt: '자격증 사진 1' },
-    { id: 2, src: '/img/certificate2.jpg', alt: '자격증 사진 2' },
-    { id: 3, src: '/img/certificate3.jpg', alt: '자격증 사진 3' },
-  ];
+  // const images = [
+  //   { id: 1, src: '/img/kennelex.png', alt: '자격증 사진 1' },
+  //   { id: 2, src: '/img/certificate2.jpg', alt: '자격증 사진 2' },
+  //   { id: 3, src: '/img/certificate3.jpg', alt: '자격증 사진 3' },
+  // ];
+
+  const certificateFiles = files.filter((file) => file.type === 'CERTIFICATE');
 
   const handleShowMore = () => {
     setShowMore(!showMore);
@@ -40,11 +43,13 @@ const BreederInfo = React.forwardRef((props, ref) => {
   };
 
   const nextImage = () => {
-    setCurrentImage((currentImage + 1) % images.length);
+    setCurrentImage((currentImage + 1) % certificateFiles.length);
   };
 
   const prevImage = () => {
-    setCurrentImage((currentImage - 1 + images.length) % images.length);
+    setCurrentImage(
+      (currentImage - 1 + certificateFiles.length) % certificateFiles.length,
+    );
   };
 
   const formattedEnrollmentDate = enrollmentDate
@@ -64,21 +69,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
     <div ref={ref} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
         <A.InfoTitle>브리더 정보</A.InfoTitle>
-        <A.InfoContentBox>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="12"
-            height="20"
-            viewBox="0 0 12 20"
-            fill="none"
-          >
-            <path
-              d="M0.50928 0.5C0.248357 0.5 0.0585938 0.689763 0.0585938 0.950687V19.0493C0.0585938 19.3102 0.248357 19.5 0.50928 19.5H11.4918C11.7527 19.5 11.9425 19.3102 11.9425 19.0493V0.950687C11.9425 0.689763 11.7527 0.5 11.4918 0.5L0.50928 0.5ZM2.43063 2.87203H9.54673V14.7322H2.43063V2.87203ZM5.98868 15.9182C6.65285 15.9182 7.1747 16.4401 7.1747 17.1042C7.1747 17.7684 6.65285 18.2903 5.98868 18.2903C5.32451 18.2903 4.80266 17.7684 4.80266 17.1042C4.80266 16.4401 5.32451 15.9182 5.98868 15.9182Z"
-              fill="#737373"
-            />
-          </svg>
-          <A.InfoContent>{tradePhone || 'N/A'}</A.InfoContent>
-        </A.InfoContentBox>
+
         <A.InfoContentBox>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +102,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
               </clipPath>
             </defs>
           </svg>
-          <A.InfoContent>연락 가능 시간 : 오전 7시 - 오후 11시</A.InfoContent>
+          <A.InfoContent>연락 가능 시간: {contactableTime}</A.InfoContent>
         </A.InfoContentBox>
         <A.InfoContentBox>
           <svg
@@ -129,7 +120,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContent>SNS</A.InfoContent>
-          <A.InfoContentDetail>{snsAddress || 'N/A'} </A.InfoContentDetail>
+          <A.InfoContentDetail>{snsAddress || '내용없음'} </A.InfoContentDetail>
         </A.InfoContentBox>
       </A.InfoItem>
       <A.InfoItem>
@@ -137,7 +128,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
         <A.InfoContent>
           {showMore
             ? detailDescription
-            : (detailDescription || '').substring(0, 17 * 26) || 'N/A'}
+            : (detailDescription || '').substring(0, 17 * 26) || '내용없음'}
         </A.InfoContent>
         {detailDescription && detailDescription.length > 17 * 26 && (
           <A.ContentMoreButton showMore={showMore} onClick={handleShowMore}>
@@ -203,24 +194,30 @@ const BreederInfo = React.forwardRef((props, ref) => {
                     month: 'long',
                   })}
             </A.MiniContent>
-            <A.MiniContent2>{career.description || 'N/A'}</A.MiniContent2>
+            <A.MiniContent2>{career.description || '내용없음'}</A.MiniContent2>
           </React.Fragment>
         ))}
       </A.InfoItemSecond>
       <A.InfoItemSecond>
         <A.InfoTitle>학력</A.InfoTitle>
-        <A.MiniTitle>{schoolName || 'N/A'}</A.MiniTitle>
+        <A.MiniTitle>{schoolName || '내용없음'}</A.MiniTitle>
         <A.MiniContent>
           {formattedEnrollmentDate} - {formattedGraduationDate}
         </A.MiniContent>
-        <A.MiniContent2>{departmentName || 'N/A'}</A.MiniContent2>
+        <A.MiniContent2>{departmentName || '내용없음'}</A.MiniContent2>
       </A.InfoItemSecond>
       <A.InfoItem>
         <A.InfoTitle>자격증 및 기타 서류</A.InfoTitle>
         <A.CertificateImgBox>
-          {images.map((image, index) => (
-            <A.CertificateImg key={image.id} onClick={() => openModal(index)}>
-              <img src={image.src} alt={image.alt} />
+          {certificateFiles.map((file, index) => (
+            <A.CertificateImg
+              key={file.breederFileId}
+              onClick={() => openModal(index)}
+            >
+              <img
+                src={file.breederFilePath}
+                alt={`자격증 사진 ${index + 1}`}
+              />
             </A.CertificateImg>
           ))}
         </A.CertificateImgBox>
@@ -252,8 +249,11 @@ const BreederInfo = React.forwardRef((props, ref) => {
                 </svg>
               </A.PrevButton>
               <A.ModalImage
-                src={images[currentImage].src}
-                alt={images[currentImage].alt}
+                src={certificateFiles[currentImage].breederFilePath}
+                alt={
+                  certificateFiles[currentImage].alt ||
+                  `자격증 사진 ${currentImage + 1}`
+                }
               />
               <A.NextButton onClick={nextImage}>
                 <svg
@@ -283,7 +283,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
 BreederInfo.displayName = 'BreederInfo';
 
 BreederInfo.propTypes = {
-  tradePhone: PropTypes.string,
+  contactableTime: PropTypes.string,
   snsAddress: PropTypes.string,
   detailDescription: PropTypes.string,
   species: PropTypes.arrayOf(PropTypes.string),
@@ -301,19 +301,27 @@ BreederInfo.propTypes = {
     }),
   ),
   schoolName: PropTypes.string,
+  files: PropTypes.arrayOf(
+    PropTypes.shape({
+      breederFileId: PropTypes.number.isRequired,
+      type: PropTypes.string.isRequired,
+      breederFilePath: PropTypes.string.isRequired,
+    }),
+  ),
 };
 
 // defaultProps 정의
 BreederInfo.defaultProps = {
-  tradePhone: 'N/A',
-  snsAddress: 'N/A',
-  detailDescription: 'N/A',
+  contactableTime: '내용없음',
+  snsAddress: '내용없음',
+  detailDescription: '내용없음',
   species: [],
   careerYear: 0,
-  departmentName: 'N/A',
+  departmentName: '내용없음',
   enrollmentDate: null,
   graduationDate: null,
   breedingCareers: [],
-  schoolName: 'N/A',
+  schoolName: '내용없음',
+  files: [],
 };
 export default BreederInfo;
