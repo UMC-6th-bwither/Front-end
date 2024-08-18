@@ -1,27 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import * as A from '../../pages/WaitingAnimalDetail/WaitingAnimalDetail.style';
 
 const WaitingDogInfo = React.forwardRef(({ animalData }, ref) => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [images, setImages] = useState({
+    feedingImage: '',
+    vaccinationImage: '',
+    virusCheckImage: '',
+    parasiticImage: '',
+    healthCheckImage: '',
+  });
 
   const handleIconClick = (item) => {
     setSelectedItem(item);
   };
 
-  // 모달 닫기
   const closeModal = () => {
     setSelectedItem(null);
   };
+
+  useEffect(() => {
+    if (animalData.files) {
+      const imagePaths = {
+        feedingImage: '',
+        vaccinationImage: '',
+        virusCheckImage: '',
+        parasiticImage: '',
+        healthCheckImage: '',
+      };
+
+      animalData.files.forEach((file) => {
+        switch (file.type) {
+          case 'FEEDING':
+            imagePaths.feedingImage = file.animalFilePath;
+            break;
+          case 'VACCINATION':
+            imagePaths.vaccinationImage = file.animalFilePath;
+            break;
+          case 'VIRUS_CHECK':
+            imagePaths.virusCheckImage = file.animalFilePath;
+            break;
+          case 'PARASITIC':
+            imagePaths.parasiticImage = file.animalFilePath;
+            break;
+          case 'HEALTH_CHECK':
+            imagePaths.healthCheckImage = file.animalFilePath;
+            break;
+          default:
+            break;
+        }
+      });
+
+      setImages(imagePaths);
+    }
+  }, [animalData.files]);
 
   return (
     <div ref={ref} style={{ marginBottom: '96px' }}>
       <A.InfoItem>
         <A.InfoTitle>{animalData.name}의 성격은요</A.InfoTitle>
-        <A.InfoContent>
-          <A.InfoContent>{animalData.character}</A.InfoContent>
-        </A.InfoContent>
+        <A.InfoContent>{animalData.character}</A.InfoContent>
       </A.InfoItem>
       <A.InfoItem>
         <A.InfoTitle>{animalData.name}는 이런 분양자에게 잘 맞아요</A.InfoTitle>
@@ -167,19 +206,116 @@ const WaitingDogInfo = React.forwardRef(({ animalData }, ref) => {
               </svg>
             </A.CloseButton>
             {selectedItem === 'food' && (
-              <img src="food_image_url" alt="사료 및 간식 사진" />
+              <img
+                src={images.feedingImage}
+                alt="사료 및 간식 사진"
+                style={{ width: '100%', height: 'auto', maxHeight: '100%' }}
+              />
             )}
             {selectedItem === 'vaccination' && (
-              <img src="vaccination_image_url" alt="예방 접종 내역 사진" />
+              <img
+                src={images.vaccinationImage}
+                alt="예방 접종 내역 사진"
+                style={{ width: '100%', height: 'auto', maxHeight: '100%' }}
+              />
             )}
             {selectedItem === 'virus' && (
-              <img src="virus_image_url" alt="바이러스 질환 검사 내역 사진" />
+              <img
+                src={images.virusCheckImage}
+                alt="바이러스 질환 검사 내역 사진"
+                style={{ width: '100%', height: 'auto', maxHeight: '100%' }}
+              />
             )}
             {selectedItem === 'parasite' && (
-              <img src="parasite_image_url" alt="기생충 예방약 투약 사진" />
+              <img
+                src={images.parasiticImage}
+                alt="기생충 예방약 투약 사진"
+                style={{ width: '100%', height: 'auto', maxHeight: '100%' }}
+              />
             )}
             {selectedItem === 'checkup' && (
-              <img src="checkup_image_url" alt="수의사 검진 결과 사진" />
+              <img
+                src={images.healthCheckImage}
+                alt="수의사 검진 결과 사진"
+                style={{ width: '100%', height: 'auto', maxHeight: '100%' }}
+              />
+            )}
+          </A.ModalContent>
+        </A.ModalOverlay>
+      )}
+      {selectedItem && (
+        <A.ModalOverlay onClick={closeModal}>
+          <A.ModalContent onClick={(e) => e.stopPropagation()}>
+            <A.CloseButton onClick={closeModal}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M14.8964 0.396447C15.0917 0.201184 15.4083 0.201184 15.6036 0.396447C15.7988 0.591709 15.7988 0.908291 15.6036 1.10355L8.70711 8L15.6036 14.8964C15.7988 15.0917 15.7988 15.4083 15.6036 15.6036C15.4083 15.7988 15.0917 15.7988 14.8964 15.6036L8 8.70711L1.10355 15.6036C0.908291 15.7988 0.591709 15.7988 0.396446 15.6036C0.201185 15.4083 0.201185 15.0917 0.396446 14.8964L7.29289 8L0.396447 1.10355C0.201185 0.908291 0.201185 0.591709 0.396447 0.396447C0.591709 0.201184 0.908291 0.201184 1.10355 0.396447L8 7.29289L14.8964 0.396447Z"
+                  fill="#C5C5C5"
+                />
+              </svg>
+            </A.CloseButton>
+            {selectedItem === 'food' && (
+              <img
+                src={images.feedingImage}
+                alt="사료 및 간식 사진"
+                style={{
+                  maxWidth: '80%',
+                  maxHeight: '70%',
+                  objectFit: 'contain',
+                }}
+              />
+            )}
+            {selectedItem === 'vaccination' && (
+              <img
+                src={images.vaccinationImage}
+                alt="예방 접종 내역 사진"
+                style={{
+                  maxWidth: '80%',
+                  maxHeight: '70%',
+                  objectFit: 'contain',
+                }}
+              />
+            )}
+            {selectedItem === 'virus' && (
+              <img
+                src={images.virusCheckImage}
+                alt="바이러스 질환 검사 내역 사진"
+                style={{
+                  maxWidth: '80%',
+                  maxHeight: '70%',
+                  objectFit: 'contain',
+                }}
+              />
+            )}
+            {selectedItem === 'parasite' && (
+              <img
+                src={images.parasiticImage}
+                alt="기생충 예방약 투약 사진"
+                style={{
+                  maxWidth: '80%',
+                  maxHeight: '70%',
+                  objectFit: 'contain',
+                }}
+              />
+            )}
+            {selectedItem === 'checkup' && (
+              <img
+                src={images.healthCheckImage}
+                alt="수의사 검진 결과 사진"
+                style={{
+                  maxWidth: '80%',
+                  maxHeight: '70%',
+                  objectFit: 'contain',
+                }}
+              />
             )}
           </A.ModalContent>
         </A.ModalOverlay>
@@ -200,11 +336,12 @@ WaitingDogInfo.propTypes = {
     virusCheck: PropTypes.string.isRequired,
     parasitic: PropTypes.string.isRequired,
     healthCheck: PropTypes.string.isRequired,
-    feedingImage: PropTypes.string,
-    vaccinationImage: PropTypes.string,
-    virusCheckImage: PropTypes.string,
-    parasiticImage: PropTypes.string,
-    healthCheckImage: PropTypes.string,
+    files: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        animalFilePath: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
   }).isRequired,
 };
 

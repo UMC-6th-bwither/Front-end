@@ -10,7 +10,6 @@ const WaitingBreederInfo = React.forwardRef(({ breeder }, ref) => {
 
   const handleNavigate = () => {
     navigate(`/breeder/${breeder.breederId}`);
-    // 브리더 id별로 이동되게 수정할 예정
   };
 
   return (
@@ -76,8 +75,9 @@ const WaitingBreederInfo = React.forwardRef(({ breeder }, ref) => {
             </A.BreederInfoLocationIcon2>
           </A.BreederInfoLocation>
         </A.BreederInfoTitleBox>
-        <A.InfoContent>{breeder.description}</A.InfoContent>
-
+        <A.InfoContent>
+          {breeder.description || '정보가 없습니다.'}
+        </A.InfoContent>
         <A.BreederInfoLabelBox>
           <Badge
             color="#2257DF"
@@ -207,16 +207,18 @@ const WaitingBreederInfo = React.forwardRef(({ breeder }, ref) => {
                 </defs>
               </A.BreederInfoBottomReviewIcon>
               <A.BreederInfoBottomReviewText1>
-                5.0
+                {breeder.breederRating.toFixed(1)}
               </A.BreederInfoBottomReviewText1>
               <A.BreederInfoBottomReviewText2>
-                (22)
+                ({breeder.reviewCount})
               </A.BreederInfoBottomReviewText2>
             </A.BreederInfoBottomReviewBox>
           </A.BreederInfoBottom2>
           <A.BreederInfoBottom3>
             <A.BreederInfoBottomTitle>총 경력</A.BreederInfoBottomTitle>
-            <A.BreederInfoBottomContent>3년</A.BreederInfoBottomContent>
+            <A.BreederInfoBottomContent>
+              {breeder.experienceYears}년
+            </A.BreederInfoBottomContent>
           </A.BreederInfoBottom3>
         </A.BreederInfoBottomBox>
       </A.InfoItem>
@@ -231,8 +233,11 @@ WaitingBreederInfo.propTypes = {
     breederId: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     totalAnimals: PropTypes.number.isRequired,
+    breederRating: PropTypes.number.isRequired,
+    reviewCount: PropTypes.number.isRequired,
+    experienceYears: PropTypes.number.isRequired,
     trustLevel: PropTypes.number,
   }).isRequired,
 };

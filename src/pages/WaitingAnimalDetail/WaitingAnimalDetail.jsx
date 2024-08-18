@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
@@ -11,18 +12,20 @@ import WaitingDogInfo from '../../components/WaitingAnimalDetail/WaitingDogInfo'
 import WaitingParentDogInfo from '../../components/WaitingAnimalDetail/WaitingParentDogInfo';
 import WaitingBreederInfo from '../../components/WaitingAnimalDetail/WaitingBreederInfo';
 
-function LeftArrow({ onClick }) {
+function LeftArrow({ onClick = () => {} }) {
   return <A.Arrow className="left" onClick={onClick} />;
 }
+
 LeftArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
 };
 
-function RightArrow({ onClick }) {
+function RightArrow({ onClick = () => {} }) {
   return <A.Arrow className="right" onClick={onClick} />;
 }
+
 RightArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
 };
 
 function WaitingAnimalDetail() {
@@ -30,6 +33,8 @@ function WaitingAnimalDetail() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [animalData, setAnimalData] = useState(null);
+  const [animalImagePath, setAnimalImagePath] = useState('');
+  const [pedigreeImagePath, setPedigreeImagePath] = useState('');
 
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
@@ -50,19 +55,40 @@ function WaitingAnimalDetail() {
       items: 5,
     },
   };
-
   useEffect(() => {
     const fetchAnimalDetail = async () => {
       try {
-        const response = await api.get('/animals/{animal_id}');
+        const animalId = 1; // 임시 테스트
+        const token = localStorage.getItem('token');
+
+        const response = await api.get(`/animals/${animalId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (response.data.isSuccess) {
           setAnimalData(response.data.result);
+
+          const animalImageFile = response.data.result.files.find(
+            (file) => file.type === 'ANIMAL_IMAGE',
+          );
+
+          const pedigreeFile = response.data.result.files.find(
+            (file) => file.type === 'PEDIGREE',
+          );
+
+          if (animalImageFile) {
+            setAnimalImagePath(animalImageFile.animalFilePath);
+          }
+
+          if (pedigreeFile) {
+            setPedigreeImagePath(pedigreeFile.animalFilePath);
+          }
         } else {
-          // eslint-disable-next-line no-console
           console.error('동물 정보 가져오기 에러:', response.data.message);
         }
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error('동물 정보 가져오기 에러:', error);
       }
     };
@@ -85,7 +111,7 @@ function WaitingAnimalDetail() {
   const toggleFavorite = async () => {
     try {
       // animalId 바꿔야함
-      const endpoint = `/animals/{animal_id}/bookmark`;
+      const endpoint = `/animals/1/bookmark`;
       const token = localStorage.getItem('token');
 
       if (isFavorite) {
@@ -178,7 +204,10 @@ function WaitingAnimalDetail() {
     <A.Container>
       <A.Title>{animalData.name}의 가족이 되어주세요</A.Title>
       <A.Card>
-        <A.Image src="https://via.placeholder.com/360" alt="dog" />
+        <A.Image
+          src={animalImagePath || 'https://via.placeholder.com/360'}
+          alt="dog"
+        />
         <A.InfoContainer>
           <A.Reservation>
             <A.TextContainer>
@@ -256,10 +285,10 @@ function WaitingAnimalDetail() {
               <strong>생일</strong> {animalData.birthDate}
             </p>
             <p>
-              <strong>예방접종</strong> 1~3차 접종
+              <strong>예방접종</strong> {animalData.vaccinationStatus}
             </p>
             <p>
-              <strong>바이러스 질환 검사</strong> 음성
+              <strong>바이러스 질환 검사</strong> {animalData.virusStatus}
             </p>
           </A.DogInfo>
           <A.StatusContainer>
@@ -350,6 +379,7 @@ function WaitingAnimalDetail() {
           ref={parentDogInfoRef}
           animalParents={animalData.animalParents}
           animalName={animalData.name}
+          animalType={animalData.type}
         />
         <WaitingBreederInfo ref={breederInfoRef} breeder={animalData.breeder} />
       </A.InfoWrapper>
@@ -372,7 +402,13 @@ function WaitingAnimalDetail() {
                 />
               </svg>
             </A.CloseButton>
-            <img src="https://via.placeholder.com/400" alt="Pedigree" />
+            {pedigreeImagePath && (
+              <img
+                src={pedigreeImagePath}
+                alt="Pedigree"
+                style={{ width: '80%', height: 'auto' }}
+              />
+            )}
           </A.ModalContent>
         </A.ModalOverlay>
       )}
