@@ -377,9 +377,14 @@ export const SearchBar = styled.input`
   &::placeholder {
     color: #dadada;
   }
+  &:focus {
+    border: 2px solid #fe834d;
+    outline: none;
+  }
 `;
 
-export const DropDown = styled.div`
+export const DropDown = styled.select`
+  width: 618px;
   display: flex;
   margin-top: 12px;
   flex-direction: column;
@@ -390,7 +395,7 @@ export const DropDown = styled.div`
   cursor: pointer;
 `;
 
-export const DropItem = styled.div`
+export const DropItem = styled.option`
   display: flex;
   height: 62px;
   padding: 8px 20px;

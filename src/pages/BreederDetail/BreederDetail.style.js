@@ -343,7 +343,6 @@ export const TopRightBox = styled.div`
   padding: 26px 20px;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
   border-radius: 12px;
   border: 2px solid var(--Grey_line, #f1f1f1);
 `;

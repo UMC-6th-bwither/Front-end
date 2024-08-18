@@ -147,6 +147,7 @@ function AnimalList() {
             {filteredDogCards.map((dog, index) => (
               <DogCard
                 key={index}
+                to="/waitinganimal-detail"
                 photo={dog.photo}
                 location={dog.location}
                 name={dog.name}

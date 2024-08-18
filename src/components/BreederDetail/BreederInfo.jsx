@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import * as A from '../../pages/BreederDetail/BreederDetail.style';
 
 const BreederInfo = React.forwardRef((props, ref) => {
+  const {
+    tradePhone,
+    snsAddress,
+    detailDescription,
+    species,
+    careerYear,
+    departmentName,
+    enrollmentDate,
+    graduationDate,
+    breedingCareers,
+  } = props;
+
   const [showMore, setShowMore] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
@@ -33,24 +46,18 @@ const BreederInfo = React.forwardRef((props, ref) => {
     setCurrentImage((currentImage - 1 + images.length) % images.length);
   };
 
-  // 상세설명 임시 데이터
-  const description = `
-  안녕하세요 투명하고 깨끗한 해피 브리더입니다~! 여기서부터 설명이 길어질 때 더보기 버튼을 표시하도록 설정합니다.
-  이는 브리더에 대한 신뢰성을 높이고 투명한 정보를 제공하기 위해 노력하고 있습니다.
-  저희 브리더는 강아지와 고양이를 전문적으로 다루며, 전문적인 지식과 경험을 바탕으로 건강하고 행복한 반려동물을 분양하고 있습니다.
-  브리더 전문가 양성과정을 수료한 경력이 있으며, 서연대학교 반려동물학과를 졸업하였습니다.
-  저희 해피 브리더는 반려동물의 건강과 행복을 최우선으로 생각하며, 항상 투명하고 신뢰할 수 있는 정보를 제공합니다.
-  자세한 상담을 원하시면 언제든지 문의해주시기 바랍니다. 감사합니다.안녕하세요 투명하고 깨끗한 해피 브리더입니다~! 여기서부터 설명이 길어질 때 더보기 버튼을 표시하도록 설정합니다.
-  이는 브리더에 대한 신뢰성을 높이고 투명한 정보를 제공하기 위해 노력하고 있습니다.
-  저희 브리더는 강아지와 고양이를 전문적으로 다루며, 전문적인 지식과 경험을 바탕으로 건강하고 행복한 반려동물을 분양하고 있습니다.
-  브리더 전문가 양성과정을 수료한 경력이 있으며, 서연대학교 반려동물학과를 졸업하였습니다.
-  저희 해피 브리더는 반려동물의 건강과 행복을 최우선으로 생각하며, 항상 투명하고 신뢰할 수 있는 정보를 제공합니다.
-  자세한 상담을 원하시면 언제든지 문의해주시기 바랍니다. 감사합니다.안녕하세요 투명하고 깨끗한 해피 브리더입니다~! 여기서부터 설명이 길어질 때 더보기 버튼을 표시하도록 설정합니다.
-  이는 브리더에 대한 신뢰성을 높이고 투명한 정보를 제공하기 위해 노력하고 있습니다.
-  저희 브리더는 강아지와 고양이를 전문적으로 다루며, 전문적인 지식과 경험을 바탕으로 건강하고 행복한 반려동물을 분양하고 있습니다.
-  브리더 전문가 양성과정을 수료한 경력이 있으며, 서연대학교 반려동물학과를 졸업하였습니다.
-  저희 해피 브리더는 반려동물의 건강과 행복을 최우선으로 생각하며, 항상 투명하고 신뢰할 수 있는 정보를 제공합니다.
-  자세한 상담을 원하시면 언제든지 문의해주시기 바랍니다. 감사합니다.`;
+  const formattedEnrollmentDate = enrollmentDate
+    ? new Date(enrollmentDate).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+      })
+    : 'N/A';
+  const formattedGraduationDate = graduationDate
+    ? new Date(graduationDate).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+      })
+    : 'N/A';
 
   return (
     <div ref={ref} style={{ marginBottom: '64px' }}>
@@ -69,7 +76,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
               fill="#737373"
             />
           </svg>
-          <A.InfoContent>010-1234-5678</A.InfoContent>
+          <A.InfoContent>{tradePhone || 'N/A'}</A.InfoContent>
         </A.InfoContentBox>
         <A.InfoContentBox>
           <svg
@@ -121,9 +128,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContent>블로그</A.InfoContent>
-          <A.InfoContentDetail>
-            https://section.blog.naver.com/BlogHome.naver?directoryNo=0&currentPage=1&groupId=0
-          </A.InfoContentDetail>
+          <A.InfoContentDetail>{snsAddress || 'N/A'} </A.InfoContentDetail>
         </A.InfoContentBox>
         <A.InfoContentBox>
           <svg
@@ -141,17 +146,17 @@ const BreederInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContent>인스타그램</A.InfoContent>
-          <A.InfoContentDetail>
-            https://www.instagram.com/@happybreeder
-          </A.InfoContentDetail>
+          <A.InfoContentDetail>{snsAddress || 'N/A'} </A.InfoContentDetail>
         </A.InfoContentBox>
       </A.InfoItem>
       <A.InfoItem>
         <A.InfoTitle>브리더 상세설명</A.InfoTitle>
         <A.InfoContent>
-          {showMore ? description : description.substring(0, 17 * 26)}
+          {showMore
+            ? detailDescription
+            : (detailDescription || '').substring(0, 17 * 26) || 'N/A'}
         </A.InfoContent>
-        {description.length > 17 * 26 && (
+        {detailDescription && detailDescription.length > 17 * 26 && (
           <A.ContentMoreButton showMore={showMore} onClick={handleShowMore}>
             상세설명 더보기
             <svg
@@ -174,10 +179,12 @@ const BreederInfo = React.forwardRef((props, ref) => {
       <A.InfoItemSecond>
         <A.InfoTitle>전문 견종</A.InfoTitle>
         <A.AnimalSelectBox>
-          <A.AnimalSelect>강아지</A.AnimalSelect>
-          <A.AnimalSelect>고양이</A.AnimalSelect>
+          {species.map((specie) => (
+            <A.AnimalSelect key={specie}>{specie}</A.AnimalSelect>
+          ))}
         </A.AnimalSelectBox>
       </A.InfoItemSecond>
+
       <A.InfoItemSecond>
         <A.InfoTitle>경력</A.InfoTitle>
         <A.InfoContentBox>
@@ -195,17 +202,35 @@ const BreederInfo = React.forwardRef((props, ref) => {
               fill="#FE834D"
             />
           </svg>
-          <A.InfoContentCarrer>총 경력 3년</A.InfoContentCarrer>
+          <A.InfoContentCarrer>총 경력 {careerYear}년</A.InfoContentCarrer>
         </A.InfoContentBox>
-        <A.MiniTitle>해피 브리더</A.MiniTitle>
-        <A.MiniContent>2023년 3월 - 현재 · 1년 4개월</A.MiniContent>
-        <A.MiniContent2>브리더 전문가 양성과정 수료</A.MiniContent2>
+        {breedingCareers.map((career) => (
+          <React.Fragment key={career.tradeName}>
+            <A.MiniTitle>{career.tradeName}</A.MiniTitle>
+            <A.MiniContent>
+              {new Date(career.joinDate).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+              })}{' '}
+              -{' '}
+              {career.currentlyEmployed
+                ? '현재'
+                : new Date(career.leaveDate).toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                  })}
+            </A.MiniContent>
+            <A.MiniContent2>{career.description || 'N/A'}</A.MiniContent2>
+          </React.Fragment>
+        ))}
       </A.InfoItemSecond>
       <A.InfoItemSecond>
         <A.InfoTitle>학력</A.InfoTitle>
-        <A.MiniTitle>서연대학교</A.MiniTitle>
-        <A.MiniContent>2014년 2월 - 2016년 8월</A.MiniContent>
-        <A.MiniContent2>반려동물학과</A.MiniContent2>
+        <A.MiniTitle>{departmentName || 'N/A'}</A.MiniTitle>
+        <A.MiniContent>
+          {formattedEnrollmentDate} - {formattedGraduationDate}
+        </A.MiniContent>
+        <A.MiniContent2>{departmentName || 'N/A'}</A.MiniContent2>
       </A.InfoItemSecond>
       <A.InfoItem>
         <A.InfoTitle>자격증 및 기타 서류</A.InfoTitle>
@@ -274,4 +299,36 @@ const BreederInfo = React.forwardRef((props, ref) => {
 
 BreederInfo.displayName = 'BreederInfo';
 
+BreederInfo.propTypes = {
+  tradePhone: PropTypes.string,
+  snsAddress: PropTypes.string,
+  detailDescription: PropTypes.string,
+  species: PropTypes.arrayOf(PropTypes.string),
+  careerYear: PropTypes.number,
+  departmentName: PropTypes.string,
+  enrollmentDate: PropTypes.string,
+  graduationDate: PropTypes.string,
+  breedingCareers: PropTypes.arrayOf(
+    PropTypes.shape({
+      tradeName: PropTypes.string,
+      joinDate: PropTypes.string,
+      leaveDate: PropTypes.string,
+      currentlyEmployed: PropTypes.bool,
+      description: PropTypes.string,
+    }),
+  ),
+};
+
+// defaultProps 정의
+BreederInfo.defaultProps = {
+  tradePhone: 'N/A',
+  snsAddress: 'N/A',
+  detailDescription: 'N/A',
+  species: [],
+  careerYear: 0,
+  departmentName: 'N/A',
+  enrollmentDate: null,
+  graduationDate: null,
+  breedingCareers: [],
+};
 export default BreederInfo;

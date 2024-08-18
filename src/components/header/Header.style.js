@@ -64,7 +64,7 @@ export const AuthText = styled(Link)`
   text-decoration: none;
 `;
 
-export const Button = styled.button`
+export const Button = styled(Link)`
   display: flex;
   height: 36px;
   padding: 7px 12px;
@@ -80,4 +80,5 @@ export const Button = styled.button`
   font-weight: 500;
   margin-left: 12px;
   cursor: pointer;
+  text-decoration: none;
 `;

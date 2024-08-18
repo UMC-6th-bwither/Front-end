@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
-
+import api from '../../api/api';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederDetail.style';
 import 'react-multi-carousel/lib/styles.css';
@@ -18,7 +17,7 @@ function BreederDetail() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [breederImage, setBreederImage] = useState('');
+  const [breederInfo, setBreederInfo] = useState(null);
   const [topImage, setTopImage] = useState('/img/breederdetailbackimg.jpg');
 
   const breederInfoRef = useRef(null);
@@ -38,25 +37,23 @@ function BreederDetail() {
   ];
 
   useEffect(() => {
-    const fetchImages = async () => {
+    const fetchBreederDetail = async () => {
       try {
-        // 브리더 프로필 이미지, 썸네일 불러오는 api 추가 예정
-        const breederResponse = await axios.get('/api/breeder/image');
-        setBreederImage(
-          breederResponse.data.image || '/img/defaultprofile.png',
-        );
+        const breederResponse = await api.get('/breeder/1');
+        const breederData = breederResponse.data.result;
+        setBreederInfo(breederData);
 
-        const topImageResponse = await axios.get('/api/top/image');
+        // Top image를 가져오는 API 호출 추가 예정
+        const topImageResponse = await api.get('/breeder/1');
         setTopImage(topImageResponse.data.image || '/img/breederinfoedit.png');
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('이미지를 불러오기 에러 발생:', error);
-        setBreederImage('/img/defaultprofile.png');
+        console.error('브리더 정보를 불러오는 중 에러 발생:', error);
+        setBreederInfo(null);
         setTopImage('/img/breederinfoedit.png');
       }
     };
 
-    fetchImages();
+    fetchBreederDetail();
   }, []);
 
   const handleMenuClick = (menu) => {
@@ -97,7 +94,8 @@ function BreederDetail() {
   const toggleFavorite = async () => {
     setIsFavorite((prev) => !prev);
     try {
-      await axios.post('/api/favorite/breeder', {
+      // api 수정해야됨
+      await api.post('/api/~~', {
         breederId: 'BREEDER_ID',
         favorite: !isFavorite,
       });
@@ -109,18 +107,24 @@ function BreederDetail() {
     }
   };
 
+  if (!breederInfo) return <div>브리더 정보를 불러오는 중입니다...</div>;
+  // 로딩 화면으로 바꾸기
+
   return (
     <A.Container>
       {isModalOpen && <BusinessInfoModal onClose={closeModal} />}
 
       <A.TopImage image={topImage} />
       <A.TopBox>
-        <A.OverlappingImage alt="프로필사진" image={breederImage} />
+        <A.OverlappingImage
+          alt="프로필사진"
+          image={breederInfo.profileUrl || '/img/defaultprofile.png'}
+        />
 
         <A.TopLeftBox>
           <A.BreederInfoTitleBox>
             <A.BreederInfoTitle>
-              🐶 행복한 분양의 시작 - 해피 브리더
+              🐶 행복한 분양의 시작 - {breederInfo.tradeName}
             </A.BreederInfoTitle>
             <A.BreederInfoTitleBoxRight>
               <svg
@@ -179,7 +183,7 @@ function BreederDetail() {
           </A.BreederInfoTitleBox>
           <A.BreederInfoSubTitleBox>
             <A.BreederInfoSubTitle>
-              비글, 골든 리트리버 전문
+              {breederInfo.species.join(', ')} 전문{' '}
             </A.BreederInfoSubTitle>
             <A.BreederInfoLocation>
               <A.BreederInfoLocationIcon1
@@ -215,14 +219,11 @@ function BreederDetail() {
                   </clipPath>
                 </defs>
               </A.BreederInfoLocationIcon1>
-              서울시 강서구
+              {breederInfo.address}
             </A.BreederInfoLocation>
           </A.BreederInfoSubTitleBox>
 
-          <A.InfoContent>
-            비글, 골든 리트리버 전문 브리더로, 대표가 직접 방문하는 ✨해피
-            브리더✨ 입니다.
-          </A.InfoContent>
+          <A.InfoContent>{breederInfo.description}</A.InfoContent>
           <A.BreederInfoLabelBox>
             <Badge
               color="#2257DF"
@@ -295,7 +296,9 @@ function BreederDetail() {
           <A.BreederInfoBottomBox>
             <A.BreederInfoBottom1>
               <A.BreederInfoBottomTitle>개체수</A.BreederInfoBottomTitle>
-              <A.BreederInfoBottomContent>5마리</A.BreederInfoBottomContent>
+              <A.BreederInfoBottomContent>
+                {breederInfo.totalAnimals}마리
+              </A.BreederInfoBottomContent>
             </A.BreederInfoBottom1>
             <A.BreederInfoBottom2>
               <A.BreederInfoBottomTitle>리뷰</A.BreederInfoBottomTitle>
@@ -327,20 +330,24 @@ function BreederDetail() {
                   </defs>
                 </A.BreederInfoBottomReviewIcon>
                 <A.BreederInfoBottomReviewText1>
-                  5.0
+                  {breederInfo.breederRating || '0.0'}
                 </A.BreederInfoBottomReviewText1>
                 <A.BreederInfoBottomReviewText2>
-                  (22)
+                  ({breederInfo.reviewCount || 0})
                 </A.BreederInfoBottomReviewText2>
               </A.BreederInfoBottomReviewBox>
             </A.BreederInfoBottom2>
             <A.BreederInfoBottom3>
               <A.BreederInfoBottomTitle>총 경력</A.BreederInfoBottomTitle>
-              <A.BreederInfoBottomContent>3년</A.BreederInfoBottomContent>
+              <A.BreederInfoBottomContent>
+                {breederInfo.careerYear}년
+              </A.BreederInfoBottomContent>
             </A.BreederInfoBottom3>
             <A.BreederInfoBottom4>
               <A.BreederInfoBottomTitle>신뢰 등급</A.BreederInfoBottomTitle>
-              <A.BreederInfoBottomContent>2등급</A.BreederInfoBottomContent>
+              <A.BreederInfoBottomContent>
+                {breederInfo.trustLevel}등급
+              </A.BreederInfoBottomContent>
             </A.BreederInfoBottom4>
           </A.BreederInfoBottomBox>
 
@@ -362,11 +369,9 @@ function BreederDetail() {
               해피 브리더에게 자세한 문의를 요청해보세요. 자세한 분양 절차에
               대한 정보를 받아보실 수 있어요.
             </A.TopRightBoxInquiry>
-            <Button orange>문의하기</Button>
+            <Button orange>문의 요청</Button>
           </A.TopRightBox>
-          <A.TopRightBoxResponse>
-            평균 <span>1시간 내</span> 응답하는 브리더입니다
-          </A.TopRightBoxResponse>
+
           <Button whiteBorder onClick={openModal}>
             사업자 정보 확인하기
           </Button>
