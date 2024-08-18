@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as A from '../../pages/AnimalUpload/AnimalUpload.style';
 
-const UploadDogInfo = React.forwardRef(({ name }, ref) => {
+const UploadDogInfo = React.forwardRef(({ name, onChange }, ref) => {
   const [uploadedFileName, setUploadedFileName] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -18,13 +18,11 @@ const UploadDogInfo = React.forwardRef(({ name }, ref) => {
     setUploadedFileName('');
   };
 
-  const handleDescriptionChange = (event) => {
-    if (event.target.value.length <= 10000) {
-      event.target.setCustomValidity('');
-    } else {
-      event.target.setCustomValidity('글자 수는 10,000자 이내로 제한됩니다.');
-    }
-  };
+  const handleDescriptionChange =
+    (field) =>
+    ({ target: { value } }) => {
+      onChange(field, value);
+    };
 
   const handleIconClick = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -39,7 +37,7 @@ const UploadDogInfo = React.forwardRef(({ name }, ref) => {
       <A.InfoItem>
         <A.DogInfoTitle>{name}의 성격은요</A.DogInfoTitle>
         <A.InfoInput
-          onChange={handleDescriptionChange}
+          onChange={handleDescriptionChange('character')}
           placeholder="강아지의 자세한 성격에 대해 알려주세요"
         />
       </A.InfoItem>
@@ -47,7 +45,10 @@ const UploadDogInfo = React.forwardRef(({ name }, ref) => {
         <A.DogInfoTitle onChange={handleDescriptionChange}>
           {name}는 이런 분양자에게 잘 맞아요
         </A.DogInfoTitle>
-        <A.InfoInput placeholder="강아지와 잘 맞을 분양자의 특징에 대해 알려주세요" />
+        <A.InfoInput
+          onChange={handleDescriptionChange('feature')}
+          placeholder="강아지와 잘 맞을 분양자의 특징에 대해 알려주세요"
+        />
       </A.InfoItem>
       <A.InfoItem>
         <A.DogInfoTitle>
@@ -71,7 +72,10 @@ const UploadDogInfo = React.forwardRef(({ name }, ref) => {
             />
           </A.InfoIcon>
         </A.DogInfoTitle>
-        <A.InfoInput placeholder="급여 중인 사료와 간식 제품명에 대해 알려주세요" />
+        <A.InfoInput
+          onChange={handleDescriptionChange('feeding')}
+          placeholder="급여 중인 사료와 간식 제품명에 대해 알려주세요"
+        />
         <A.InfoFileBox>
           <label>
             첨부파일
@@ -126,7 +130,10 @@ const UploadDogInfo = React.forwardRef(({ name }, ref) => {
             />
           </A.InfoIcon>
         </A.DogInfoTitle>
-        <A.InfoInput placeholder="지금까지 접종한 예방 주사에 대해 알려주세요" />
+        <A.InfoInput
+          onChange={handleDescriptionChange('vaccination')}
+          placeholder="지금까지 접종한 예방 주사에 대해 알려주세요"
+        />
         <A.InfoFileBox>
           <label>
             첨부파일
@@ -178,7 +185,10 @@ const UploadDogInfo = React.forwardRef(({ name }, ref) => {
             />
           </A.InfoIcon>
         </A.DogInfoTitle>
-        <A.InfoInput placeholder="지금까지 진행한 바이러스 질환 검사 양/음성 여부를 알려주세요" />
+        <A.InfoInput
+          onChange={handleDescriptionChange('virusCheck')}
+          placeholder="지금까지 진행한 바이러스 질환 검사 양/음성 여부를 알려주세요"
+        />
         <A.InfoFileBox>
           <label>
             첨부파일
@@ -230,7 +240,10 @@ const UploadDogInfo = React.forwardRef(({ name }, ref) => {
             />
           </A.InfoIcon>
         </A.DogInfoTitle>
-        <A.InfoInput placeholder="투약한 기생충 예방약에 대해 알려주세요" />
+        <A.InfoInput
+          onChange={handleDescriptionChange('parasitic')}
+          placeholder="투약한 기생충 예방약에 대해 알려주세요"
+        />
         <A.InfoFileBox>
           <label>
             첨부파일
@@ -282,7 +295,10 @@ const UploadDogInfo = React.forwardRef(({ name }, ref) => {
             />
           </A.InfoIcon>
         </A.DogInfoTitle>
-        <A.InfoInput placeholder="수의사 검진 결과에 대해 알려주세요" />
+        <A.InfoInput
+          onChange={handleDescriptionChange('healthCheck')}
+          placeholder="수의사 검진 결과에 대해 알려주세요"
+        />
         <A.InfoFileBox>
           <label>
             첨부파일
@@ -329,6 +345,7 @@ UploadDogInfo.displayName = 'UploadDogInfo';
 
 UploadDogInfo.propTypes = {
   name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default UploadDogInfo;

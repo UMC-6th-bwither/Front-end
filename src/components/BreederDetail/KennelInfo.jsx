@@ -1,14 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as A from '../../pages/BreederDetail/BreederDetail.style';
+import api from '../../api/api';
 
 const KennelInfo = React.forwardRef((props, ref) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
-  const images = [
-    { id: 1, src: '/img/kennelex.png', alt: '강아지 켄넬 사진 1' },
-    { id: 2, src: '/path/to/image2.jpg', alt: '강아지 켄넬 사진 2' },
-    { id: 3, src: '/path/to/image3.jpg', alt: '강아지 켄넬 사진 3' },
-  ];
+  const [kennelData, setKennelData] = useState({
+    kennelAddress: '',
+    businessTime: '',
+    animalCount: [],
+    kennelImages: [],
+  });
+
+  useEffect(() => {
+    const fetchKennelData = async () => {
+      try {
+        const response = await api.get('/breeder/1');
+        const { kennelAddress, businessTime, animalCount, files } =
+          response.data.result;
+
+        const kennelImages = files.filter((file) => file.type === 'KENNEL');
+
+        setKennelData({
+          kennelAddress,
+          businessTime,
+          animalCount,
+          kennelImages,
+        });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('켄넬 정보를 불러오는 중 에러 발생:', error);
+      }
+    };
+
+    fetchKennelData();
+  }, []);
 
   const openModal = (index) => {
     setCurrentImage(index);
@@ -20,11 +46,14 @@ const KennelInfo = React.forwardRef((props, ref) => {
   };
 
   const nextImage = () => {
-    setCurrentImage((currentImage + 1) % images.length);
+    setCurrentImage((currentImage + 1) % kennelData.kennelImages.length);
   };
 
   const prevImage = () => {
-    setCurrentImage((currentImage - 1 + images.length) % images.length);
+    setCurrentImage(
+      (currentImage - 1 + kennelData.kennelImages.length) %
+        kennelData.kennelImages.length,
+    );
   };
 
   return (
@@ -50,7 +79,7 @@ const KennelInfo = React.forwardRef((props, ref) => {
           </svg>
           <A.InfoContentTitle>켄넬 주소</A.InfoContentTitle>
           <A.InfoContent>
-            서울특별시 강서구 어쩌고동 어쩌고로 123-1
+            {kennelData.kennelAddress || '정보 없음'}
           </A.InfoContent>
         </A.InfoContentBox>
         <A.InfoContentBox>
@@ -86,7 +115,9 @@ const KennelInfo = React.forwardRef((props, ref) => {
             </defs>
           </svg>
           <A.InfoContentTitle>영업 시간</A.InfoContentTitle>
-          <A.InfoContent>오전 10시 ~ 오후 9시(일요일 휴무)</A.InfoContent>
+          <A.InfoContent>
+            {kennelData.businessTime || '정보 없음'}
+          </A.InfoContent>
         </A.InfoContentBox>
         <A.InfoContentBox>
           <svg
@@ -104,14 +135,21 @@ const KennelInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContentTitle>개체수</A.InfoContentTitle>
-          <A.InfoContent>비글 2마리, 골든리트리버 3마리</A.InfoContent>
+          <A.InfoContent>
+            {kennelData.animalCount.join(', ') || '정보 없음'}
+          </A.InfoContent>
         </A.InfoContentBox>
 
         <A.KennelImgBox>
-          {images.map((image, index) => (
-            <A.KennelImg key={image.id} onClick={() => openModal(index)}>
-              <img src={image.src} alt={image.alt} />
-              <A.KennelImgText>{image.alt}</A.KennelImgText>
+          {kennelData.kennelImages.map((image, index) => (
+            <A.KennelImg
+              key={image.breederFileId}
+              onClick={() => openModal(index)}
+            >
+              <img
+                src={image.breederFilePath}
+                alt={`강아지 켄넬 사진 ${index + 1}`}
+              />
             </A.KennelImg>
           ))}
         </A.KennelImgBox>
@@ -143,8 +181,8 @@ const KennelInfo = React.forwardRef((props, ref) => {
                 </svg>
               </A.PrevButton>
               <A.ModalImage
-                src={images[currentImage].src}
-                alt={images[currentImage].alt}
+                src={kennelData.kennelImages[currentImage].breederFilePath}
+                alt={`강아지 켄넬 사진 ${currentImage + 1}`}
               />
               <A.NextButton onClick={nextImage}>
                 <svg
@@ -172,5 +210,7 @@ const KennelInfo = React.forwardRef((props, ref) => {
 });
 
 KennelInfo.displayName = 'KennelInfo';
+
+KennelInfo.propTypes = {};
 
 export default KennelInfo;

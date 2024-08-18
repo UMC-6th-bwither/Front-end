@@ -35,7 +35,11 @@ CareDog.propTypes = {
       gender: PropTypes.string.isRequired,
       name: PropTypes.string,
     }),
-  ).isRequired,
+  ),
+};
+
+CareDog.defaultProps = {
+  breedingAnimals: [],
 };
 
 export default CareDog;
