@@ -66,16 +66,11 @@ function ProfileSettingGeneral() {
   useEffect(() => {
     const getUserInfo = async () => {
       // 토큰을 로컬 스토리지에서 가져옵니다.
-      const token = localStorage.getItem('authToken');
-
-      if (!token) {
-        console.error('토큰이 없습니다.');
-        return;
-      }
+      const token = localStorage.getItem('accessToken');
 
       try {
         // 사용자 정보를 요청합니다.
-        const response = await api.get('/post/1', {
+        const response = await api.get('/user', {
           headers: {
             'Content-Type': 'application/json', // GET 요청에는 보통 application/json을 사용합니다.
             Authorization: `Bearer ${token}`, // Bearer 타입으로 토큰을 전달합니다.

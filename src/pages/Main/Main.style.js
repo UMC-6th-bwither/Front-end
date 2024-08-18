@@ -53,7 +53,7 @@ export const HeadLiner = styled.h1`
 `;
 
 export const BannerContainer = styled.div`
-  width: 980px;
+  width: 990px;
   height: 316px;
   gap: 16px;
   align-items: center;

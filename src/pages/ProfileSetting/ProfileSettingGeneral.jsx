@@ -37,14 +37,14 @@ function ProfileSettingBreeder() {
   };
 
   // 아직 api속성에 추가 안 된 것들
-  const [phoneNum, setPhoneNum] = useState('');
+  const [phone, setPhone] = useState('');
   const [roommateNum, setRoommateNum] = useState('5');
 
   // 에러 메시지 상태
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState('');
-  const [phoneNumError, setPhoneNumError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [addressError, setAddressError] = useState('');
   const [cohabitantError, setCohabitantError] = useState('');
 
@@ -94,13 +94,13 @@ function ProfileSettingBreeder() {
     }
   };
 
-  const handlePhoneNumChange = (e) => {
-    setPhoneNum(e.target.value);
-    const phoneNumPattern = /^\d{3}-\d{4}-\d{4}$/;
-    if (!phoneNumPattern.test(e.target.value)) {
-      setPhoneNumError('전화번호를 형식에 맞게 입력해주세요.');
+  const handlePhoneChange = (e) => {
+    setPhone(e.target.value);
+    const phonePattern = /^\d{3}-\d{4}-\d{4}$/;
+    if (!phonePattern.test(e.target.value)) {
+      setPhoneError('전화번호를 형식에 맞게 입력해주세요.');
     } else {
-      setPhoneNumError('');
+      setPhoneError('');
     }
   };
 
@@ -142,36 +142,55 @@ function ProfileSettingBreeder() {
     document.body.appendChild(script);
   };
 
-  const [userData, setUserData] = useState(null);
   // 기존 유저 정보 불러오기
-  const getUserInfo = async () => {
-    try {
-      // 토큰을 로컬 스토리지에서 가져옵니다.
-      const token = localStorage.getItem('token');
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(tur);
 
-      // 요청 헤더를 설정합니다.
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Bearer 인증 토큰을 포함합니다.
-        },
-      };
-
-      // 사용자 정보를 요청합니다.
-      const response = await api.get('/user', config);
-
-      // 요청이 성공하면 결과를 콘솔에 출력합니다.
-      console.log('User info:', response.data);
-    } catch (error) {
-      // 요청이 실패하면 에러 메시지를 콘솔에 출력합니다.
-      console.error('Error fetching user info:', error);
-    }
-  };
-
-  // 컴포넌트가 마운트될 때 데이터를 가져옴
   useEffect(() => {
+    const getUserInfo = async () => {
+      const token = localStorage.getItem('accessToken');
+
+      try {
+        const response = await api.get('/user', {
+          headers: {
+            'Content-Type': 'application/json', // GET 요청에는 보통 application/json을 사용합니다.
+            Authorization: `Bearer ${token}`, // Bearer 타입으로 토큰을 전달합니다.
+          },
+        });
+        setUserData(response.data.result);
+
+        // API 응답 데이터를 상태 변수에 저장합니다.
+        setProfileImage(userData.userDTO.profileImage);
+        setPhone(userData.userDTO.phone);
+        // setPassword();
+        setZipcode(userData.userDTO.zipcode);
+        setAddress(userData.userDTO.address);
+        setAddressDetail(userData.userDTO.addressDetail);
+        setPetAllowed(userData.memberDTO.petAllowed);
+        setCohabitant(userData.memberDTO.cohabitant);
+        // setFamilNum()
+        setFamilyAgreement(userData.memberDTO.familyAgreement);
+        setEmploymentStatus(userData.memberDTO.employmentStatus);
+        setCommuteTime(userData.memberDTO.commuteTime);
+        setPetExperience(userData.memberDTO.petExperience);
+        setCurrentPet(userData.memberDTO.currentPet);
+        setFuturePlan(userData.memberDTO.futurePlan);
+
+        setLoading(false);
+        console.log('데이터 불러오기 성공 User info:', userData);
+      } catch (err) {
+        // setError('데이터를 가져오는 중 오류가 발생했습니다.');
+        setLoading(false);
+        console.error('Error message:', err.message);
+      }
+    };
     getUserInfo();
   }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨
+
+  // 로딩 상태 또는 에러 상태를 표시합니다.
+  if (loading) return <div>Loading...</div>;
+  // if (error) return <div>{error}</div>;
 
   // 폼 제출 함수
   const handleSubmitClick = async () => {
@@ -185,8 +204,8 @@ function ProfileSettingBreeder() {
       setPasswordCheckError('비밀번호가 일치하지 않아요.');
       alert('비밀번호가 일치하지 않습니다');
       hasError = true;
-    } else if (phoneNumError || phoneNum.length === 0) {
-      setPhoneNumError('전화번호를 형식에 맞게 입력해주세요.');
+    } else if (phoneError || phone.length === 0) {
+      setPhoneError('전화번호를 형식에 맞게 입력해주세요.');
       alert('전화번호를 입력해주세요');
       hasError = true;
     } else if (addressError || address.length === 0) {
@@ -219,34 +238,18 @@ function ProfileSettingBreeder() {
       // 서버에 요청 보내는 부분 대신 콘솔에 출력
       console.log('Request Body:', requestBody);
 
+      const token = localStorage.getItem('accessToken');
       try {
         const response = await api.patch('/user/member', requestBody, {
           headers: {
             'Content-Type': 'application/json',
-            Accept: '*/*',
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        if (response.status === 200) {
-          console.log('Success:', response.data);
-          alert('User updated successfully!');
-        } else {
-          console.error('Error:', response.data.message);
-          alert(`Error: ${response.data.message}`);
-        }
+        console.log('데이터 전송 성공 User info:', userData);
       } catch (error) {
-        if (error.response) {
-          // 요청이 서버에 도달했지만 서버에서 상태 코드로 응답한 경우
-          console.error('Response error:', error.response.data);
-          console.error('Response status:', error.response.status);
-          console.error('Response headers:', error.response.headers);
-        } else if (error.request) {
-          // 요청이 서버에 도달했지만 응답이 없는 경우
-          console.error('Request error:', error.request);
-        } else {
-          // 오류를 발생시킨 요청 설정 문제
-          console.error('Error message:', error.message);
-        }
+        console.error('Error message:', error.message);
       }
       alert('변경된 내용이 저장되었습니다');
       // myback(back) 이동 로직 구현
@@ -289,7 +292,7 @@ function ProfileSettingBreeder() {
 
           <S.ProfileInfoContainer>
             <S.Name>해피 브리더</S.Name>
-            <S.Email>example@email.com</S.Email>
+            <S.Email>{userData.userDTO.email}</S.Email>
           </S.ProfileInfoContainer>
         </S.ProfileCard>
       </S.ProfileContainer>
@@ -298,7 +301,7 @@ function ProfileSettingBreeder() {
         <S.Title>계정 정보</S.Title>
         <div>
           <p>아이디</p>
-          <p>exampleID</p>
+          <p>{userData.userDTO.username}</p>
         </div>
 
         <div>
@@ -413,10 +416,10 @@ function ProfileSettingBreeder() {
             <S.PhoneNumInput
               type="text"
               placeholder="010-1234-5678"
-              value={phoneNum}
-              onChange={handlePhoneNumChange}
+              value={phone}
+              onChange={handlePhoneChange}
             />
-            {phoneNumError && <S.ErrorMessage>{phoneNumError}</S.ErrorMessage>}
+            {phoneError && <S.ErrorMessage>{phoneError}</S.ErrorMessage>}
           </div>
 
           <div>
