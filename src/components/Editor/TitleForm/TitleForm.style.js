@@ -82,10 +82,11 @@ export const OptionButton = styled.button`
 
   cursor: pointer;
   border-radius: 28px;
-  border: 1px solid #e1e1e1;
-  background: var(--White, #fff);
 
-  color: #737373;
+  border: ${(p) => (p.$active ? '1px solid #F87B45' : '1px solid #E1E1E1')};
+  background: ${(p) => (p.$active ? '#F87B45' : '#fff')};
+
+  color: ${(p) => (p.$active ? '#fff' : '#737373')};
 
   font-family: 'Noto Sans KR';
   font-size: 18px;
@@ -94,6 +95,6 @@ export const OptionButton = styled.button`
   line-height: 21px; /* 116.667% */
 
   &:hover {
-    background-color: #eaeaea;
+    background-color: ${(p) => (p.$active ? '#F87B45' : '#eaeaea')};
   }
 `;

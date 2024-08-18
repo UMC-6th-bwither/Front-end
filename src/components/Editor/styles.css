@@ -11,3 +11,8 @@
   font-family: 'Noto Sans KR';
   font-size: 18px;
 }
+
+.codex-editor [data-placeholder-active]:empty:before,
+.codex-editor [data-placeholder-active][data-empty='true']:before {
+  color: #c5c5c5;
+}
