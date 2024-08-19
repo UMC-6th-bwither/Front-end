@@ -43,7 +43,7 @@ export default function Header() {
     <H.Container>
       <H.SubContainer>
         <H.Left>
-          <Link to="">
+          <Link to="/">
             <H.Logo src={logo} alt="logo" />
           </Link>
           <H.TextWrapper>
