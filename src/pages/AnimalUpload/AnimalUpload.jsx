@@ -245,9 +245,7 @@ function AnimalUpload() {
     // console.log('animalCreateDTO:', JSON.stringify(animalCreateDTO));
     // console.log('FormData:', [...formData.entries()]);
 
-    // breederId 넣어줬는데 없다는 오류남
-
-    formData.append('animalCreateDTO', JSON.stringify(animalCreateDTO));
+    formData.append('animalCreateDTO', animalCreateDTO);
 
     const token = localStorage.getItem('authToken');
 

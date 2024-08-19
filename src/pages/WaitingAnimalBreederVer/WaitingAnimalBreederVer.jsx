@@ -29,10 +29,11 @@ RightArrow.propTypes = {
 function WaitingAnimalBreederVer() {
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [animalData, setAnimalData] = useState(null);
   const [animalImagePath, setAnimalImagePath] = useState('');
   const [pedigreeImagePath, setPedigreeImagePath] = useState('');
-
+  const [editedData, setEditedData] = useState({});
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
 
@@ -82,6 +83,14 @@ function WaitingAnimalBreederVer() {
           if (pedigreeFile) {
             setPedigreeImagePath(pedigreeFile.animalFilePath);
           }
+
+          setEditedData({
+            name: response.data.result.name,
+            breed: response.data.result.breed,
+            birthDate: response.data.result.birthDate,
+            vaccinationStatus: response.data.result.vaccinationStatus,
+            virusStatus: response.data.result.virusStatus,
+          });
         } else {
           console.error('동물 정보 가져오기 에러:', response.data.message);
         }
@@ -110,7 +119,45 @@ function WaitingAnimalBreederVer() {
     setIsModalOpen(false);
   };
 
+  const handleEditClick = () => {
+    setIsEditMode(true); // 편집 
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleEditSubmit = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const animalId = 1;
+      const breederId = 2;
+
+      const dataToSend = {
+        ...editedData,
+        animalId,
+        breederId,
+      };
+      const response = await api.put(`/animals/${animalId}`, dataToSend, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data', 
+        },
+      });
+      if (response.data.isSuccess) {
+        setAnimalData(response.data.result);
+        setIsEditMode(false);
+      } else {
+        console.error('동물 정보 업데이트 에러:', response.data.message);
+      }
+    } catch (error) {
+      console.error('동물 정보 업데이트 에러:', error);
+    }
+  };
+
   if (!animalData) return <div>로딩 중...</div>;
+
   const genderIcon =
     animalData.gender === 'MALE' ? (
       <svg
@@ -159,27 +206,87 @@ function WaitingAnimalBreederVer() {
               대기 예약자가 있어요.
             </A.TextContainer>
             <A.IconContainer>
-              <A.EditBtn>편집</A.EditBtn>
+              {!isEditMode && (
+                <A.EditBtn onClick={handleEditClick}>편집</A.EditBtn>
+              )}
+              {isEditMode && (
+                <A.EditBtn onClick={handleEditSubmit}>저장</A.EditBtn>
+              )}
             </A.IconContainer>
           </A.Reservation>
           <A.DogContainer>
-            <A.DogName>{animalData.name}</A.DogName>
-            {genderIcon}
+            {!isEditMode ? (
+              <>
+                <A.DogName>{animalData.name}</A.DogName>
+                {genderIcon}
+              </>
+            ) : (
+              <input
+                type="text"
+                name="name"
+                value={editedData.name}
+                onChange={handleInputChange}
+              />
+            )}
           </A.DogContainer>
           <A.DogInfo>
-            <p>
-              <strong>종</strong> {animalData.breed}
-            </p>
-            <p>{animalData.gender === 'MALE' ? '남아' : '여아'}</p>
-            <p>
-              <strong>생일</strong> {animalData.birthDate}
-            </p>
-            <p>
-              <strong>예방접종</strong> {animalData.vaccinationStatus}
-            </p>
-            <p>
-              <strong>바이러스 질환 검사</strong> {animalData.virusStatus}
-            </p>
+            {!isEditMode ? (
+              <>
+                <p>
+                  <strong>종</strong> {animalData.breed}
+                </p>
+                <p>{animalData.gender === 'MALE' ? '남아' : '여아'}</p>
+                <p>
+                  <strong>생일</strong> {animalData.birthDate}
+                </p>
+                <p>
+                  <strong>예방접종</strong> {animalData.vaccinationStatus}
+                </p>
+                <p>
+                  <strong>바이러스 질환 검사</strong> {animalData.virusStatus}
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  <strong>종</strong>
+                  <input
+                    type="text"
+                    name="breed"
+                    value={editedData.breed}
+                    onChange={handleInputChange}
+                  />
+                </p>
+                <p>{animalData.gender === 'MALE' ? '남아' : '여아'}</p>
+                <p>
+                  <strong>생일</strong>
+                  <input
+                    type="text"
+                    name="birthDate"
+                    value={editedData.birthDate}
+                    onChange={handleInputChange}
+                  />
+                </p>
+                <p>
+                  <strong>예방접종</strong>
+                  <input
+                    type="text"
+                    name="vaccinationStatus"
+                    value={editedData.vaccinationStatus}
+                    onChange={handleInputChange}
+                  />
+                </p>
+                <p>
+                  <strong>바이러스 질환 검사</strong>
+                  <input
+                    type="text"
+                    name="virusStatus"
+                    value={editedData.virusStatus}
+                    onChange={handleInputChange}
+                  />
+                </p>
+              </>
+            )}
           </A.DogInfo>
           <A.StatusContainer>
             <Badge
@@ -248,11 +355,6 @@ function WaitingAnimalBreederVer() {
           <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
           <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
           <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
-          {/* <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" />
-          <A.Thumbnail src="https://via.placeholder.com/60" alt="thumbnail" /> */}
         </Carousel>
       </A.SliderContainer>
       <A.InfoWrapper>
