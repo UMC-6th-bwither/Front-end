@@ -22,7 +22,7 @@ export const WelcomeMsg = styled.div`
   padding: 80px 0;
 `;
 
-export const Container = styled.form`
+export const Container = styled.div`
   width: 574px;
   padding: 72px 0px 52px 0px;
   display: flex;
@@ -153,4 +153,37 @@ export const Label = styled.label`
   flex-direction: row;
   align-items: center;
   gap: 12px;
+`;
+
+export const ErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const Error = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #e76467;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px;
+`;
+
+export const FailX = styled.img`
+  display: flex;
+  width: 18px;
+  height: 18px;
+  padding: 4px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 1000px;
+  background: #e76467;
 `;

@@ -41,12 +41,15 @@ function BreederDetail() {
       try {
         const breederResponse = await api.get('/breeder/1');
         const breederData = breederResponse.data.result;
-        setBreederInfo(breederData);
 
-        // Top image를 가져오는 API 호출 추가 예정
-        const topImageResponse = await api.get('/breeder/1');
-        setTopImage(topImageResponse.data.image || '/img/breederinfoedit.png');
+        const backgroundUrl =
+          breederData.backgroundUrl || '/img/breederdetailbackimg.jpg';
+        const profileUrl = breederData.profileUrl || '/img/defaultprofile.png';
+
+        setTopImage(backgroundUrl);
+        setBreederInfo({ ...breederData, profileUrl, backgroundUrl });
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('브리더 정보를 불러오는 중 에러 발생:', error);
         setBreederInfo(null);
         setTopImage('/img/breederinfoedit.png');
@@ -90,20 +93,40 @@ function BreederDetail() {
     });
   };
 
-  // 하트 클릭시
   const toggleFavorite = async () => {
-    setIsFavorite((prev) => !prev);
     try {
-      // api 수정해야됨
-      await api.post('/api/~~', {
-        breederId: 'BREEDER_ID',
-        favorite: !isFavorite,
-      });
-      // eslint-disable-next-line no-console
-      console.log('저장 완료');
+      const endpoint = `/breeder/${breederInfo.breederId}/bookmark`;
+      const token = localStorage.getItem('token');
+      const memberId = localStorage.getItem('memberId');
+
+      if (!memberId) {
+        // console.error('No memberId found');
+        return;
+      }
+      // memberId 어딘가에서 가져와서 넣어야함
+
+      if (isFavorite) {
+        // 북마크 해제
+        await api.post(
+          endpoint,
+          {
+            breederId: breederInfo.breederId,
+            // memberId: memberId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        // eslint-disable-next-line no-console
+        console.log('북마크 성공');
+      }
+
+      setIsFavorite((prev) => !prev); // 북마크 상태 토글
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('저장 실패:', error);
+      console.error('북마크 에러 발생:', error);
     }
   };
 
@@ -116,16 +139,11 @@ function BreederDetail() {
 
       <A.TopImage image={topImage} />
       <A.TopBox>
-        <A.OverlappingImage
-          alt="프로필사진"
-          image={breederInfo.profileUrl || '/img/defaultprofile.png'}
-        />
+        <A.OverlappingImage alt="프로필사진" image={breederInfo.profileUrl} />
 
         <A.TopLeftBox>
           <A.BreederInfoTitleBox>
-            <A.BreederInfoTitle>
-              🐶 행복한 분양의 시작 - {breederInfo.tradeName}
-            </A.BreederInfoTitle>
+            <A.BreederInfoTitle>🐶 {breederInfo.tradeName}</A.BreederInfoTitle>
             <A.BreederInfoTitleBoxRight>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -183,7 +201,7 @@ function BreederDetail() {
           </A.BreederInfoTitleBox>
           <A.BreederInfoSubTitleBox>
             <A.BreederInfoSubTitle>
-              {breederInfo.species.join(', ')} 전문{' '}
+              {breederInfo.species.join(', ')} 전문
             </A.BreederInfoSubTitle>
             <A.BreederInfoLocation>
               <A.BreederInfoLocationIcon1
@@ -384,11 +402,30 @@ function BreederDetail() {
           activeMenu={activeMenu}
           setActiveMenu={handleMenuClick}
         />
-        <BreederInfo ref={breederInfoRef} />
+        <BreederInfo
+          ref={breederInfoRef}
+          tradePhone={breederInfo.tradePhone}
+          snsAddress={breederInfo.snsAddress}
+          detailDescription={breederInfo.detailDescription}
+          species={breederInfo.species}
+          careerYear={breederInfo.careerYear}
+          departmentName={breederInfo.departmentName}
+          enrollmentDate={breederInfo.enrollmentDate}
+          graduationDate={breederInfo.graduationDate}
+          breedingCareers={breederInfo.breedingCareers}
+          schoolName={breederInfo.schoolName}
+        />
         <KennelInfo ref={kennelInfoRef} />
         <CareDog ref={careDogRef} />
         <BreederReview ref={reviewRef} />
-        <BreederQna ref={qnaRef} />
+        <BreederQna
+          ref={qnaRef}
+          questionGuarantee={breederInfo.questionGuarantee}
+          questionPedigree={breederInfo.questionPedigree}
+          questionBaby={breederInfo.questionBaby}
+          questionPeriod={breederInfo.questionPeriod}
+          questionSupport={breederInfo.questionSupport}
+        />
         <BreederCommunity ref={communityRef} />
       </A.InfoWrapper>
     </A.Container>

@@ -18,6 +18,7 @@ export const TopImage = styled.div`
   height: 208px;
   background: url(${(props) => props.image}) no-repeat center calc(50% - 20px);
   background-size: cover;
+  margin-top: 72px;
 `;
 
 export const TopBox = styled.div`
@@ -345,6 +346,7 @@ export const TopRightBox = styled.div`
   align-items: center;
   border-radius: 12px;
   border: 2px solid var(--Grey_line, #f1f1f1);
+  margin-bottom: 16px;
 `;
 
 export const TopRightBoxInquiry = styled.div`
@@ -709,7 +711,9 @@ export const ReviewTextContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-export const ReviewText = styled.div`
+export const ReviewText = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isExpanded',
+})`
   display: flex;
   width: 100%;
   max-height: ${(props) => (props.isExpanded ? 'none' : '44px')};
@@ -813,10 +817,33 @@ export const ReviewInfoItem = styled.div`
   position: relative;
   margin-bottom: 64px;
 `;
+export const DropdownMenu = styled.div`
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 120px;
+  z-index: 100;
+
+  div {
+    padding: 8px 0; // LatestOrderButton과 동일한 높이 조절
+    text-align: center; // 텍스트를 가운데 정렬
+    cursor: pointer;
+    white-space: nowrap; // 텍스트를 한 줄에 나오도록 설정
+    overflow: hidden; // 텍스트가 넘칠 경우 숨김
+    text-overflow: ellipsis; // 넘친 텍스트에 "..." 추가
+    &:hover {
+      background: var(--Grey_block, #f4f4f4);
+    }
+  }
+`;
 
 export const LatestOrderButton = styled.div`
   display: flex;
-  width: 98px;
+  width: 120px;
   height: 36px;
   padding: 8px 0;
   justify-content: center;
@@ -828,6 +855,7 @@ export const LatestOrderButton = styled.div`
   position: absolute;
   right: 0px;
   top: 13px;
+  cursor: pointer;
 `;
 
 export const ReviewLabelBox = styled.div`
@@ -909,8 +937,15 @@ export const CommuBtn = styled.button`
   line-height: 21px;
   cursor: pointer;
 
-  &:hover,
-  &.active {
+  ${({ isActive }) =>
+    isActive &&
+    `
+    border: 1px solid #f87b45;
+    background: #f87b45;
+    color: #fff;
+  `}
+
+  &:hover {
     border: 1px solid #f87b45;
     background: #f87b45;
     color: #fff;

@@ -1,96 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import * as A from '../../pages/BreederDetail/BreederDetail.style';
-
-const reviewData = [
-  {
-    id: uuidv4(),
-    reviewerName: '김**',
-    dogType: '비글',
-    reviewText:
-      '아이들이 너무 귀엽네요.. 믿음이 가는 브리더님께 분양 받아 더욱 사랑으로 키울 예정입니다!',
-    reviewDate: '2024.06.05',
-    reviewScore: 5.0,
-    images: ['/img/kennelex.png', 'image2.jpg', 'image3.jpg', 'image4.jpg'],
-    isVerified: true, // 거래인증 여부
-    breederComment: {
-      author: '해피 브리더',
-      text: '고객님 감동적인 리뷰 감사드려요~ㅠㅠ 예쁜 우리 아이들 입양해 주셔서 너무 감사합니다^^',
-      date: '어제',
-    },
-  },
-  {
-    id: uuidv4(),
-    reviewerName: '문**',
-    dogType: '골든 리트리버',
-    reviewText: '첫 입양이었는데 친절하게 설명해주셔서 너무 좋았어요.',
-    reviewDate: '2024.06.05',
-    reviewScore: 5.0,
-    images: [], // 사진이 없는 경우
-    isVerified: true, // 거래인증 여부
-    breederComment: {
-      author: '해피 브리더',
-      text: '고객님~감사해요^^ 늘 친절한 해피브리더가 되겠습니다~^^',
-      date: '어제',
-    },
-  },
-  {
-    id: uuidv4(),
-    reviewerName: '이**',
-    dogType: '시츄',
-    reviewText: '첫 입양이었는데 친절하게 설명해주셔서 너무 좋았어요.',
-    reviewDate: '2024.06.05',
-    reviewScore: 5.0,
-    images: ['/img/kennelex.png'], // 사진이 없는 경우
-    isVerified: true, // 거래인증 여부
-    breederComment: {
-      author: '해피 브리더',
-      text: '고객님~감사해요^^ 늘 친절한 해피브리더가 되겠습니다~^^',
-      date: '어제',
-    },
-  },
-  {
-    id: uuidv4(),
-    reviewerName: '박**',
-    dogType: '포메라니안',
-    reviewText:
-      '브리더님이 친절하게 잘 설명해주셔서 마음 편하게 입양할 수 있었어요.',
-    reviewDate: '2024.06.06',
-    reviewScore: 4.8,
-    images: ['/img/kennelex.png', 'image2.jpg'],
-    isVerified: true,
-    breederComment: {
-      author: '해피 브리더',
-      text: '입양해주셔서 정말 감사합니다. 포메라니안 잘 키우시길 바랍니다!',
-      date: '어제',
-    },
-  },
-  {
-    id: uuidv4(),
-    reviewerName: '최**',
-    dogType: '불독',
-    reviewText:
-      '아이들을 보고 바로 입양 결정을 내릴 수 있었습니다. 너무 예뻐요!',
-    reviewDate: '2024.06.07',
-    reviewScore: 5.0,
-    images: ['/img/kennelex.png', 'image2.jpg', 'image3.jpg'],
-    isVerified: true,
-    breederComment: {
-      author: '해피 브리더',
-      text: '아이들이 좋은 주인님을 만나 정말 다행입니다. 감사합니다!',
-      date: '어제',
-    },
-  },
-];
+import api from '../../api/api';
 
 const BreederReview = React.forwardRef((props, ref) => {
+  const [reviews, setReviews] = useState([]);
+  const [speciesList, setSpeciesList] = useState(['전체']);
   const [activeButton, setActiveButton] = useState('전체');
   const [selectedReviewType, setSelectedReviewType] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [displayCount, setDisplayCount] = useState(3);
+  const [sortType, setSortType] = useState('최신순');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const reviewScore = 5.0;
-  const reviewCount = 22;
+  const handleSortChange = (newSortType) => {
+    setSortType(newSortType);
+    setIsDropdownOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prevState) => !prevState);
+  };
+
+  const speciesMapping = {
+    ALL: '전체',
+    DOG: '강아지',
+    CAT: '고양이',
+  };
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await api.get('/breeder/1');
+        const reviewsData = response.data.result.reviews;
+
+        setReviews(reviewsData);
+
+        const allSpecies = new Set();
+        reviewsData.forEach((review) => {
+          if (typeof review.species === 'string') {
+            allSpecies.add(review.species);
+          }
+        });
+
+        const speciesArray = Array.from(allSpecies);
+        speciesArray.sort((a, b) => {
+          if (a === 'ALL') return -1;
+          if (b === 'ALL') return 1;
+          return 0;
+        });
+
+        setSpeciesList(
+          speciesArray.map((species) => speciesMapping[species] || species),
+        );
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('리뷰 데이터 에러 발생:', error);
+      }
+    };
+
+    fetchReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
@@ -137,15 +108,33 @@ const BreederReview = React.forwardRef((props, ref) => {
     ));
   };
 
-  const filteredReviews = reviewData.filter((review) => {
+  const filteredReviews = reviews.filter((review) => {
     const matchesCategory =
-      activeButton === '전체' || activeButton === review.dogType;
+      activeButton === '전체' || activeButton === review.species;
     const matchesReviewType =
       !selectedReviewType ||
-      (selectedReviewType === '사진 리뷰' && review.images.length > 0) ||
+      (selectedReviewType === '사진 리뷰' &&
+        review.content.some((c) => c.type === 'IMAGE')) ||
       (selectedReviewType === '거래인증 리뷰' && review.isVerified);
 
     return matchesCategory && matchesReviewType;
+  });
+
+  // 리뷰 정렬
+  const sortedReviews = [...filteredReviews].sort((a, b) => {
+    if (sortType === '최신순') {
+      return 0; // 날짜 데이터 추가되면 수정할 예정
+    }
+
+    if (sortType === '별점 높은순') {
+      return b.rating - a.rating;
+    }
+
+    if (sortType === '별점 낮은순') {
+      return a.rating - b.rating;
+    }
+
+    return 0;
   });
 
   const handleMoreClick = () => {
@@ -155,8 +144,18 @@ const BreederReview = React.forwardRef((props, ref) => {
   return (
     <div ref={ref} style={{ marginBottom: '64px' }}>
       <A.ReviewInfoItem>
-        <A.LatestOrderButton>
-          최신순
+        <A.LatestOrderButton
+          role="button"
+          tabIndex={0}
+          onClick={toggleDropdown}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleDropdown();
+            }
+          }}
+        >
+          {sortType}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="11"
@@ -170,40 +169,91 @@ const BreederReview = React.forwardRef((props, ref) => {
               strokeLinecap="square"
             />
           </svg>
+          <A.DropdownMenu
+            className="dropdown"
+            style={{ display: isDropdownOpen ? 'block' : 'none' }}
+          >
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => handleSortChange('최신순')}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  handleSortChange('최신순');
+                }
+              }}
+            >
+              최신순
+            </div>
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => handleSortChange('별점 높은순')}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  handleSortChange('별점 높은순');
+                }
+              }}
+            >
+              별점 높은순
+            </div>
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => handleSortChange('별점 낮은순')}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  handleSortChange('별점 낮은순');
+                }
+              }}
+            >
+              별점 낮은순
+            </div>
+          </A.DropdownMenu>
         </A.LatestOrderButton>
+
         <A.InfoTitle>브리더 후기</A.InfoTitle>
 
         <A.ReviewScoreBox>
-          <A.ReviewScore>{reviewScore.toFixed(1)}</A.ReviewScore>
+          <A.ReviewScore>
+            {reviews.length > 0
+              ? (
+                  reviews.reduce((sum, review) => sum + review.rating, 0) /
+                  reviews.length
+                ).toFixed(1)
+              : 0}
+          </A.ReviewScore>
+
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
             }}
           >
-            <div>{renderStars(reviewScore)}</div>
-            <A.ReviewScoreText>{reviewCount}개 리뷰</A.ReviewScoreText>
+            <div>
+              {renderStars(
+                reviews.length > 0
+                  ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+                      reviews.length
+                  : 0,
+              )}
+            </div>
+            <A.ReviewScoreText>{reviews.length}개 리뷰</A.ReviewScoreText>
           </div>
         </A.ReviewScoreBox>
         <A.CommuBtnBox>
-          <A.CommuBtn
-            className={activeButton === '전체' ? 'active' : ''}
-            onClick={() => handleButtonClick('전체')}
-          >
-            전체
-          </A.CommuBtn>
-          <A.CommuBtn
-            className={activeButton === '비글' ? 'active' : ''}
-            onClick={() => handleButtonClick('비글')}
-          >
-            비글
-          </A.CommuBtn>
-          <A.CommuBtn
-            className={activeButton === '골든 리트리버' ? 'active' : ''}
-            onClick={() => handleButtonClick('골든 리트리버')}
-          >
-            골든 리트리버
-          </A.CommuBtn>
+          {speciesList.map((species) => (
+            <A.CommuBtn
+              key={species}
+              isActive={activeButton === species}
+              onClick={() => handleButtonClick(species)}
+            >
+              {species}
+            </A.CommuBtn>
+          ))}
         </A.CommuBtnBox>
         <A.ReviewTypeContainer>
           <A.ReviewType onClick={() => handleReviewTypeClick('사진 리뷰')}>
@@ -256,30 +306,36 @@ const BreederReview = React.forwardRef((props, ref) => {
           </A.ReviewType>
         </A.ReviewTypeContainer>
 
-        {filteredReviews.slice(0, displayCount).map((review) => (
-          <A.ReviewContainer key={review.id}>
+        {sortedReviews.slice(0, displayCount).map((review) => (
+          <A.ReviewContainer key={review.postId}>
             <A.ReviewItem>
-              <A.ReviewerName>{review.reviewerName}</A.ReviewerName>
-              {review.images.length > 0 && (
-                <A.ReviewImages>
-                  {review.images.map((image, index) => (
+              <A.ReviewerName>{review.userName}</A.ReviewerName>
+              {review.content &&
+                review.content
+                  .filter(
+                    (content) =>
+                      content && content.type === 'IMAGE' && content.data,
+                  )
+                  .map((image) => (
                     <A.ReviewImage
                       key={uuidv4()}
-                      src={image}
-                      alt={`리뷰 이미지 ${index + 1}`}
+                      src={image.data}
+                      alt="리뷰 이미지"
                     />
                   ))}
-                </A.ReviewImages>
-              )}
+
               <A.ReviewInfo>
-                <span>{review.dogType}</span>
-                <div>{renderStars(review.reviewScore)}</div>
-                <p>{review.reviewScore.toFixed(1)}</p>
+                <span>{speciesMapping[review.species] || review.species}</span>
+                <div>{renderStars(review.rating)}</div>
+                <p>{review.rating.toFixed(1)}</p>
               </A.ReviewInfo>
               <A.ReviewTextContainer>
                 <A.ReviewText isExpanded={isExpanded}>
-                  {review.reviewText}
+                  {review.content &&
+                    review.content[0] &&
+                    review.content[0].data}
                 </A.ReviewText>
+
                 <A.MoreButton onClick={toggleExpand}>
                   {isExpanded ? '접기' : '더보기'}
                 </A.MoreButton>
@@ -288,56 +344,39 @@ const BreederReview = React.forwardRef((props, ref) => {
                 <A.ReviewDate>{review.reviewDate}</A.ReviewDate>
               </A.ReviewFooter>
             </A.ReviewItem>
-
-            {review.breederComment && (
-              <A.BreederCommentBox>
-                <A.BreederProfileImage
-                  src="breeder_profile.jpg"
-                  alt="브리더 프로필"
-                />
-                <A.BreederCommentContent>
-                  <A.BreederCommentAuthor>
-                    {review.breederComment.author}
-                  </A.BreederCommentAuthor>
-                  <A.BreederCommentText>
-                    {review.breederComment.text}
-                  </A.BreederCommentText>
-                  <A.BreederCommentDate>
-                    {review.breederComment.date}
-                  </A.BreederCommentDate>
-                </A.BreederCommentContent>
-              </A.BreederCommentBox>
-            )}
           </A.ReviewContainer>
         ))}
 
-        {displayCount < filteredReviews.length &&
-          filteredReviews.length > 4 && (
-            <A.MoreReviewBox>
-              <A.MoreReviewTextBox onClick={handleMoreClick}>
-                <A.MoreReviewText>리뷰 더보기</A.MoreReviewText>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="17"
-                  viewBox="0 0 16 17"
-                  fill="none"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M8.04727 12.699C8.19067 12.6984 8.32694 12.6362 8.42141 12.5283L14.3704 5.72966C14.5523 5.52184 14.5312 5.20596 14.3234 5.02412C14.1156 4.84227 13.7997 4.86332 13.6179 5.07114L8.04194 11.4434L2.36764 5.06798C2.18405 4.8617 1.868 4.84332 1.66173 5.0269C1.45545 5.2105 1.43706 5.52654 1.62065 5.73282L7.67167 12.5314C7.76701 12.6386 7.90381 12.6996 8.04727 12.699Z"
-                    fill="#FE834D"
-                  />
-                </svg>
-              </A.MoreReviewTextBox>
-            </A.MoreReviewBox>
-          )}
+        {displayCount < sortedReviews.length && sortedReviews.length > 4 && (
+          <A.MoreReviewBox>
+            <A.MoreReviewTextBox onClick={handleMoreClick}>
+              <A.MoreReviewText>리뷰 더보기</A.MoreReviewText>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="17"
+                viewBox="0 0 16 17"
+                fill="none"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M8.04727 12.699C8.19067 12.6984 8.32694 12.6362 8.42141 12.5283L14.3704 5.72966C14.5523 5.52184 14.5312 5.20596 14.3234 5.02412C14.1156 4.84227 13.7997 4.86332 13.6179 5.07114L8.04194 11.4434L2.36764 5.06798C2.18405 4.8617 1.868 4.84332 1.66173 5.0269C1.45545 5.2105 1.43706 5.52654 1.62065 5.73282L7.67167 12.5314C7.76701 12.6386 7.90381 12.6996 8.04727 12.699Z"
+                  fill="#FE834D"
+                />
+              </svg>
+            </A.MoreReviewTextBox>
+          </A.MoreReviewBox>
+        )}
       </A.ReviewInfoItem>
     </div>
   );
 });
 
 BreederReview.displayName = 'BreederReview';
+
+BreederReview.propTypes = {
+  // ref: PropTypes.any,
+};
 
 export default BreederReview;

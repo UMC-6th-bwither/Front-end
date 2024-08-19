@@ -124,33 +124,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
               fill="#737373"
             />
           </svg>
-          <A.InfoContent>블로그</A.InfoContent>
-          <A.InfoInputBox
-            type="text"
-            placeholder="블로그 주소를 입력해주세요"
-          />
-        </A.InfoContentBox>
-        <A.InfoContentBox>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            style={{ marginLeft: '-1px' }}
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M6.85714 14.8571C6.85714 15.4883 7.36882 16 8 16C8.63118 16 9.14286 15.4883 9.14286 14.8571V9.14286H14.8571C15.4883 9.14286 16 8.63118 16 8C16 7.36882 15.4883 6.85714 14.8571 6.85714H9.14286V1.14286C9.14286 0.511675 8.63118 0 8 0C7.36882 0 6.85714 0.511674 6.85714 1.14286V6.85714H1.14286C0.511675 6.85714 0 7.36882 0 8C0 8.63118 0.511674 9.14286 1.14286 9.14286H6.85714V14.8571Z"
-              fill="#737373"
-            />
-          </svg>
-          <A.InfoContent>인스타그램</A.InfoContent>
-          <A.InfoInputBox
-            type="text"
-            placeholder="인스타그램 주소를 입력해주세요"
-          />
+          <A.InfoContent>SNS</A.InfoContent>
+          <A.InfoInputBox type="text" placeholder="SNS 주소를 입력해주세요" />
         </A.InfoContentBox>
       </A.InfoItem>
       <A.InfoItem>
