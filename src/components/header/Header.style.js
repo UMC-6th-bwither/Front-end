@@ -82,3 +82,9 @@ export const Button = styled(Link)`
   cursor: pointer;
   text-decoration: none;
 `;
+
+export const Profile = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`;
