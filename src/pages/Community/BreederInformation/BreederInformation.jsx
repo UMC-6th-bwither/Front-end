@@ -47,8 +47,7 @@ export default function CommunityBreederInformation() {
   };
 
   const fetchUserInfo = async () => {
-    if (!isLoggedIn) return;
-
+    // console.log('유저 정보 조회');
     const apiUrl = import.meta.env.VITE_API_URL;
     const endPoint = `${apiUrl}/user`;
     const res = await fetch(endPoint, {
@@ -64,8 +63,10 @@ export default function CommunityBreederInformation() {
 
   useEffect(() => {
     fetchPosts();
-    fetchUserInfo();
-  }, []);
+    if (isLoggedIn && token) {
+      fetchUserInfo();
+    }
+  }, [isLoggedIn]);
 
   const [page, setPage] = useState(1);
   const [sortOption, setSortOption] = useState(null);
@@ -86,6 +87,7 @@ export default function CommunityBreederInformation() {
 
   return (
     <P.Layout>
+      {/* {isLoggedIn && <div>loggedin</div>} */}
       <VerticalMenuSelector
         title="커뮤니티"
         items={menuItems}

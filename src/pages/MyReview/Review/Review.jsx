@@ -7,6 +7,7 @@ import BadgeVariant from '../../../components/badge/BadgeVariant';
 import BreederReviewAnimalCard from '../../../components/BreederReviewAnimalCard/BreederReviewAnimalCard';
 import extractTextFromBlocks from '../../../utils/extractContextFromBlocks';
 import extractFirstImageUrl from '../../../utils/extractImgSrcFromBlocks';
+import useAuth from '../../../hooks/useAuth';
 
 function Icon() {
   return (
@@ -17,27 +18,26 @@ function Icon() {
 }
 
 export default function MyReview() {
+  const { isLoggedIn, token } = useAuth();
   const [myReviews, setMyReviews] = useState([]);
 
   const fetchMyReview = async () => {
-    const res = await fetch(
-      'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/post/reviews',
-      {
-        headers: {
-          Accept: '*/*',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMTIzIiwiaXNzIjoiYndpdGhlciB3ZWIiLCJpYXQiOjE3MjM5NzE2MzksImV4cCI6MTcyNDA1ODAzOX0.ffl6kqYoB73_OzdbE6hMZBrXjTgYc6EnLcmOeuoVqWd4LrSbL3s9BqUBEAXyArfWq5afib9O-dbLtisBpXvR_A',
-        },
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const endPoint = `${apiUrl}/post/reviews`;
+    const res = await fetch(endPoint, {
+      headers: {
+        Accept: '*/*',
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     const data = await res.json();
     // console.log(data.result);
     setMyReviews(data.result);
   };
 
   useEffect(() => {
-    fetchMyReview();
-  }, []);
+    if (isLoggedIn) fetchMyReview();
+  }, [isLoggedIn]);
 
   return (
     <P.Layout>
@@ -82,15 +82,16 @@ export default function MyReview() {
             breederLocation="서울 강서구"
             breederName="해피 켄넬"
           />
-          <BreederContactCard
+          {/* <BreederContactCard
             breederLocation="서울 강서구"
             breederName="해피 켄넬"
           />
           <BreederContactCard
             breederLocation="서울 강서구"
             breederName="해피 켄넬"
-          />
+          /> */}
           <BreederContactCard
+            breederId={1}
             breederLocation="서울 강서구"
             breederName="😊 행복한 분양의 시작 - 해피 브리더"
             badgeComponents={[

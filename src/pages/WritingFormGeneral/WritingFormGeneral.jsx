@@ -5,6 +5,7 @@ import VerticalMenuSelector from '../../components/VerticalMenuSelector/Vertical
 import { menuItems } from './menuItems';
 import Editor from '../../components/Editor/Editor';
 import TitleForm from '../../components/Editor/TitleForm/TitleForm';
+import useAuth from '../../hooks/useAuth';
 
 function Icon() {
   return (
@@ -15,6 +16,7 @@ function Icon() {
 }
 
 export default function WritingFormGeneral() {
+  const { isLoggedIn, token, userId } = useAuth();
   const editorRef = useRef(null);
   const [title, setTitle] = useState('');
   const [petType, setPetType] = useState(null);
@@ -31,7 +33,7 @@ export default function WritingFormGeneral() {
       console.log(savedData);
 
       const postData = {
-        userId: 1,
+        userId: userId,
         petType: petType,
         title: title,
         category: 'TIPS',
@@ -39,17 +41,16 @@ export default function WritingFormGeneral() {
       };
 
       try {
-        const response = await fetch(
-          'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/post/create/tip',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              accept: '*/*',
-            },
-            body: JSON.stringify(postData),
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const endPoint = `${apiUrl}/post/create/tip`;
+        const response = await fetch(endPoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            accept: '*/*',
           },
-        );
+          body: JSON.stringify(postData),
+        });
 
         const result = await response.json();
 
