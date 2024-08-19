@@ -1,8 +1,7 @@
 export default function extractTextFromBlocks(blocks) {
   return blocks
     .map((block) => {
-      const parsedBlock = JSON.parse(block.block); // JSON 문자열을 객체로 변환
-      const textWithTags = parsedBlock.data.text; // text 값 추출
+      const textWithTags = block.data.text; // block 객체에서 text 값 추출
       if (textWithTags) {
         return textWithTags.replace(/<\/?[^>]+(>|$)/g, ''); // HTML 태그 제거
       }

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { handleLoginWithResponse } from '../../utils/handleLogin';
 import * as L from './Login.style';
 import Button from '../../components/SignUpButton/Button';
 import beforeCheck from '../../../public/icons/signUp/check_before.svg';
@@ -8,6 +10,8 @@ import failX from '../../../public/icons/signUp/fail_x.svg';
 import { postLogin } from '../../apis/postUser';
 
 export default function Login() {
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,6 +31,7 @@ export default function Login() {
       console.log('Server response:', response);
 
       const { token } = response.result;
+      handleLoginWithResponse(dispatch, response.result);
 
       if (token) {
         localStorage.setItem('accessToken', token);

@@ -10,6 +10,7 @@ import VerticalMenuSelector from '../../../components/VerticalMenuSelector/Verti
 import extractFirstImageUrl from '../../../utils/extractImgSrcFromBlocks';
 import extractTextFromBlocks from '../../../utils/extractContextFromBlocks';
 import convertToKST from '../../../utils/convertToKST';
+import useAuth from '../../../hooks/useAuth';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -25,19 +26,20 @@ function Icon() {
 }
 
 export default function CommunityBreederInformation() {
+  const { isLoggedIn, role, token } = useAuth();
+
   const [posts, setPosts] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const [filteredPosts, setFilteredPosts] = useState([]); // 필터링된 포스트를 관리할 상태 추가
 
   const fetchPosts = async () => {
-    const res = await fetch(
-      'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/post/tips',
-      {
-        headers: {
-          Accept: '*/*',
-        },
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const endPoint = `${apiUrl}/post/tips`;
+    const res = await fetch(endPoint, {
+      headers: {
+        Accept: '*/*',
       },
-    );
+    });
 
     const data = await res.json();
     setPosts(data.result);
@@ -45,16 +47,16 @@ export default function CommunityBreederInformation() {
   };
 
   const fetchUserInfo = async () => {
-    const res = await fetch(
-      'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/user',
-      {
-        headers: {
-          Accept: '*/*',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMTIzIiwiaXNzIjoiYndpdGhlciB3ZWIiLCJpYXQiOjE3MjM5ODMzNjIsImV4cCI6MTcyNDA2OTc2Mn0.HKE8cIUY4KajuL_EZPcwseWjKLaC0Z37vAnHkHbAAJ9gDzfjNC2e8PCpoQKs7JLgbJphHVoikZycUEM6eKeHyA',
-        },
+    if (!isLoggedIn) return;
+
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const endPoint = `${apiUrl}/user`;
+    const res = await fetch(endPoint, {
+      headers: {
+        Accept: '*/*',
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
 
     const data = await res.json();
     setUserInfo(data.result);
