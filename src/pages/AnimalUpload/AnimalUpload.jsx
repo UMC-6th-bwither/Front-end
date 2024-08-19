@@ -74,15 +74,18 @@ const catBreeds = [
   '페르시안',
 ];
 
-const DogInfoInput = forwardRef(({ value, onClick, placeholder }, ref) => (
-  <A.DogInfoInput
-    onClick={onClick}
-    ref={ref}
-    value={value}
-    placeholder={placeholder}
-    readOnly
-  />
-));
+const DogInfoInput = forwardRef((props, ref) => {
+  const { value, onClick, placeholder } = props;
+  return (
+    <A.DogInfoInput
+      onClick={onClick}
+      ref={ref}
+      value={value}
+      placeholder={placeholder}
+      readOnly
+    />
+  );
+});
 
 DogInfoInput.propTypes = {
   value: PropTypes.string,
@@ -121,6 +124,13 @@ function AnimalUpload() {
   const [selectedBreed, setSelectedBreed] = useState('');
   const [customBreed, setCustomBreed] = useState('');
   const menuItems = ['강아지 정보', '부모 강아지 정보'];
+  const [uploadedFiles, setUploadedFiles] = useState({
+    feedingImages: [],
+    vaccinationImages: [],
+    virusCheckImages: [],
+    parasiticImages: [],
+    healthCheckImages: [],
+  });
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -154,6 +164,21 @@ function AnimalUpload() {
   const handlePedigreeUpload = (event) => {
     const file = event.target.files[0];
     setPedigreeFile(file);
+  };
+
+  const pedigreeInputRef = useRef(null);
+
+  const handlePedigreeButtonClick = () => {
+    if (pedigreeInputRef.current) {
+      pedigreeInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (field, fileList) => {
+    setUploadedFiles((prevFiles) => ({
+      ...prevFiles,
+      [field]: [...prevFiles[field], ...fileList],
+    }));
   };
 
   const handleNameChange = (event) => {
@@ -192,9 +217,21 @@ function AnimalUpload() {
   const handleSubmit = async () => {
     const formData = new FormData();
 
+    Object.keys(uploadedFiles).forEach((key) => {
+      uploadedFiles[key].forEach((file) => {
+        formData.append(`files.${key}`, file);
+      });
+    });
+
+    images.forEach((file) => {
+      formData.append('files.animalImages', file);
+    });
+
     if (pedigreeFile) {
       formData.append('files.pedigreeImage', pedigreeFile);
     }
+
+    const breederId = 1; // 임시
 
     const animalCreateDTO = {
       name,
@@ -202,10 +239,13 @@ function AnimalUpload() {
       breed: selectedBreed === '직접입력' ? customBreed : selectedBreed,
       gender: selectedGender === '수컷' ? 'MALE' : 'FEMALE',
       birthDate: birthDate ? birthDate.toISOString().split('T')[0] : null,
+      breederId,
       ...dogInfoData,
     };
+    // console.log('animalCreateDTO:', JSON.stringify(animalCreateDTO));
+    // console.log('FormData:', [...formData.entries()]);
 
-    formData.append('animalCreateDTO', JSON.stringify(animalCreateDTO));
+    formData.append('animalCreateDTO', animalCreateDTO);
 
     const token = localStorage.getItem('authToken');
 
@@ -218,19 +258,16 @@ function AnimalUpload() {
       });
 
       if (response.data.isSuccess) {
-        // eslint-disable-next-line no-console
         console.log('등록 성공');
-
-        const animalId = response.data.data.animal_id;
-        localStorage.setItem('animalId', animalId);
       } else {
-        // 실패 시 처리 (isSuccess가 false일 때)
-        // eslint-disable-next-line no-console
-        console.error('등록 실패');
+        console.error('등록 실패', response.data);
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('등록 요청 실패:', error);
+      if (error.response) {
+        console.error('서버에서 반환된 오류 메시지:', error.response.data);
+      } else {
+        console.error('요청 오류:', error);
+      }
     }
   };
 
@@ -359,16 +396,17 @@ function AnimalUpload() {
             </div>
           </A.DogInfo>
           <A.ButtonContainer>
-            <Button whiteBorder>
+            <Button whiteBorder onClick={handlePedigreeButtonClick}>
               혈통서 업로드
-              <input
-                id="pedigree-upload"
-                type="file"
-                accept="image/*"
-                onChange={handlePedigreeUpload}
-                style={{ display: 'none' }}
-              />
             </Button>
+            <input
+              ref={pedigreeInputRef}
+              id="pedigree-upload"
+              type="file"
+              accept="image/*"
+              onChange={handlePedigreeUpload}
+              style={{ display: 'none' }}
+            />
             <A.ButtonFileName>
               {pedigreeFile ? pedigreeFile.name : '파일을 선택하세요'}
             </A.ButtonFileName>
@@ -395,10 +433,14 @@ function AnimalUpload() {
             ref={dogInfoRef}
             name={name}
             onChange={handleDogInfoChange}
+            onFileChange={handleFileChange}
+            selectedAnimal={selectedAnimal}
           />
           <UploadParentDogInfo
-            ref={parentDogInfoRef}
-            selectedAnimal={selectedAnimal}
+            ref={dogInfoRef}
+            name={name}
+            onChange={handleDogInfoChange}
+            onFileChange={handleFileChange}
           />
         </A.MenuContentWrapper>
       </A.InfoWrapper>
