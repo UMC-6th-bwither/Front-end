@@ -10,6 +10,7 @@ import Dropbox from '../../../components/DropBoxes/Dropbox2';
 import extractTextFromBlocks from '../../../utils/extractContextFromBlocks';
 import extractFirstImageUrl from '../../../utils/extractImgSrcFromBlocks';
 import convertToKST from '../../../utils/convertToKST';
+import useAuth from '../../../hooks/useAuth';
 
 function Icon() {
   return (
@@ -20,28 +21,32 @@ function Icon() {
 }
 
 export default function MyReviewSave() {
+  const { isLoggedIn, token } = useAuth();
+
   const [bookmarks, setBookmarks] = useState([]);
   const [filteredBookmarks, setFilteredBookmarks] = useState([]); // 필터링된 북마크를 관리할 상태 추가
   const [categoryFilter, setCategoryFilter] = useState('전체'); // 카테고리 필터 상태 추가
   const [petTypeFilter, setPetTypeFilter] = useState('전체'); // 동물 필터 상태 추가
 
   const fetchBookmarks = async () => {
-    const res = await fetch(
-      'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/post/1/bookmarks',
-      {
-        headers: {
-          Accept: '*/*',
-        },
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const endPoint = `${apiUrl}/post/bookmarks`;
+    const res = await fetch(endPoint, {
+      headers: {
+        Accept: '*/*',
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     const data = await res.json();
     setBookmarks(data.result);
     setFilteredBookmarks(data.result); // 처음 로드 시 전체 북마크를 보여주도록 설정
   };
 
   useEffect(() => {
-    fetchBookmarks();
-  }, []);
+    if (isLoggedIn && token) {
+      fetchBookmarks();
+    }
+  }, [isLoggedIn]);
 
   // 필터링 로직
   useEffect(() => {

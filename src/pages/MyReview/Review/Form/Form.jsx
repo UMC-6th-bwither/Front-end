@@ -7,6 +7,7 @@ import VerticalMenuSelector from '../../../../components/VerticalMenuSelector/Ve
 import Editor from '../../../../components/Editor/Editor';
 import BreederContactCard from '../../../../components/BreederContactCard/BreederContactCard';
 import BadgeVariant from '../../../../components/badge/BadgeVariant';
+import useAuth from '../../../../hooks/useAuth';
 
 const menuItems1 = [
   {
@@ -58,6 +59,7 @@ function StarButton({ active, onClick }) {
 
 export default function ReviewForm() {
   const navigate = useNavigate();
+  const { isLoggedIn, token, userId } = useAuth();
 
   const [rating, setRating] = useState(0); // 별점 상태
   const [petType, setPetType] = useState('ALL'); // 동물 타입 상태
@@ -83,24 +85,24 @@ export default function ReviewForm() {
       alert('별점이 입력되어야 합니다.');
       return;
     }
-    const response = await fetch(
-      'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/post/create/review',
-      {
-        method: 'POST',
-        headers: {
-          Accept: '*/*',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          breederId: 1,
-          userId: 2,
-          petType: petType,
-          rating: rating,
-          category: 'BREEDER_REVIEWS',
-          blocks: savedData.blocks, // 저장된 블록 데이터
-        }),
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const endPoint = `${apiUrl}/post/create/review`;
+    const response = await fetch(endPoint, {
+      method: 'POST',
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-    );
+      body: JSON.stringify({
+        breederId: 1,
+        userId: userId,
+        petType: petType,
+        rating: rating,
+        category: 'BREEDER_REVIEWS',
+        blocks: savedData.blocks, // 저장된 블록 데이터
+      }),
+    });
 
     const result = await response.json();
 
