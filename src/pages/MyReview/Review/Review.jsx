@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
-
+import { useState, useEffect } from 'react';
 import * as P from '../MyReview.style';
 import BreederContactCard from '../../../components/BreederContactCard/BreederContactCard';
 import BadgeVariant from '../../../components/badge/BadgeVariant';
 import BreederReviewAnimalCard from '../../../components/BreederReviewAnimalCard/BreederReviewAnimalCard';
+import extractTextFromBlocks from '../../../utils/extractContextFromBlocks';
+import extractFirstImageUrl from '../../../utils/extractImgSrcFromBlocks';
 
 function Icon() {
   return (
@@ -15,6 +17,28 @@ function Icon() {
 }
 
 export default function MyReview() {
+  const [myReviews, setMyReviews] = useState([]);
+
+  const fetchMyReview = async () => {
+    const res = await fetch(
+      'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/post/reviews',
+      {
+        headers: {
+          Accept: '*/*',
+          Authorization:
+            'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMTIzIiwiaXNzIjoiYndpdGhlciB3ZWIiLCJpYXQiOjE3MjM5NzE2MzksImV4cCI6MTcyNDA1ODAzOX0.ffl6kqYoB73_OzdbE6hMZBrXjTgYc6EnLcmOeuoVqWd4LrSbL3s9BqUBEAXyArfWq5afib9O-dbLtisBpXvR_A',
+        },
+      },
+    );
+    const data = await res.json();
+    // console.log(data.result);
+    setMyReviews(data.result);
+  };
+
+  useEffect(() => {
+    fetchMyReview();
+  }, []);
+
   return (
     <P.Layout>
       <P.VerticalFlexGap20Nav>
@@ -79,36 +103,15 @@ export default function MyReview() {
         </P.BreederCardContainer>
         <P.BreederCardListTag>내가 작성한 후기</P.BreederCardListTag>
         <P.ReviewCardContainer>
-          <BreederReviewAnimalCard
-            kennelName="켄넬 이름"
-            star={5.0}
-            context="강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것"
-          />
-          <BreederReviewAnimalCard
-            kennelName="켄넬 이름"
-            star={5.0}
-            context="강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것"
-          />
-          <BreederReviewAnimalCard
-            kennelName="켄넬 이름"
-            star={5.0}
-            context="강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것"
-          />
-          <BreederReviewAnimalCard
-            kennelName="켄넬 이름"
-            star={5.0}
-            context="강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것"
-          />
-          <BreederReviewAnimalCard
-            kennelName="켄넬 이름"
-            star={5.0}
-            context="강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것"
-          />
-          <BreederReviewAnimalCard
-            kennelName="켄넬 이름"
-            star={5.0}
-            context="강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것"
-          />
+          {myReviews.map((review) => (
+            <BreederReviewAnimalCard
+              key={review.id}
+              kennelName={review.kennelName}
+              star={review.rating}
+              imgSrc={extractFirstImageUrl(review.blocks)}
+              context={extractTextFromBlocks(review.blocks)}
+            />
+          ))}
         </P.ReviewCardContainer>
       </P.MainContainer>
     </P.Layout>

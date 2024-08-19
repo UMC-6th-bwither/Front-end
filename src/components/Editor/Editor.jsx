@@ -52,7 +52,11 @@ Editor.displayName = 'Editor';
 Editor.propTypes = {
   readMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  savedData: PropTypes.object.isRequired,
+  savedData: PropTypes.object,
+};
+
+Editor.defaultProps = {
+  savedData: {},
 };
 
 export default Editor;

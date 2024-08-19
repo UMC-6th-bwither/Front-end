@@ -12,11 +12,12 @@ export const Container = styled.div`
 export const Square = styled.div`
   width: 100%;
   padding-bottom: 100%;
-  background-color: blue;
+  background-color: #f1f1f1;
   position: relative;
 `;
 
 export const SquareImage = styled.img`
+  border: none;
   position: absolute;
   top: 0;
   left: 0;
