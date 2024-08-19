@@ -11,6 +11,8 @@ function PostIcon({ src }) {
 }
 
 export default function MyPostCard({
+  category,
+  petType,
   postTitle,
   postContent,
   postThumbnailSrc,
@@ -20,15 +22,17 @@ export default function MyPostCard({
 }) {
   return (
     <P.MyPost>
-      <P.PostCategoryTag>정보공유</P.PostCategoryTag>
+      <P.PostCategoryTag>{category}</P.PostCategoryTag>
       <P.PostWrapper>
         <div>
           <P.MyPostTitle>{postTitle}</P.MyPostTitle>
           <P.PostContent>{postContent}</P.PostContent>
         </div>
-        <P.ThumbnailWrapper>
-          <P.ThumbnailImg src={postThumbnailSrc} alt="Image Thumbnail" />
-        </P.ThumbnailWrapper>
+        {postThumbnailSrc && (
+          <P.ThumbnailWrapper>
+            <P.ThumbnailImg src={postThumbnailSrc} alt="Image Thumbnail" />
+          </P.ThumbnailWrapper>
+        )}
       </P.PostWrapper>
 
       <P.PostIconLayout>
@@ -37,11 +41,15 @@ export default function MyPostCard({
         </P.PostTimestamp>
         <P.PostIconFrame>
           <PostIcon src="/icons/community_view.svg" />
-          <P.PostIconContent>{viewCount}</P.PostIconContent>
+          <P.PostIconContent>
+            {viewCount !== null ? viewCount : 0}
+          </P.PostIconContent>
         </P.PostIconFrame>
         <P.PostIconFrame>
           <PostIcon src="/icons/community_bookmark.svg" />
-          <P.PostIconContent>{bookmarkCount}</P.PostIconContent>
+          <P.PostIconContent>
+            {bookmarkCount !== null ? bookmarkCount : 0}
+          </P.PostIconContent>
         </P.PostIconFrame>
       </P.PostIconLayout>
     </P.MyPost>

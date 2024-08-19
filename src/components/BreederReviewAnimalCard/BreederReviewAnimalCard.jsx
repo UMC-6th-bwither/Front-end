@@ -1,11 +1,16 @@
 /* eslint-disable react/prop-types */
 import * as S from './BreederReviewAnimalCard.style';
 
-export default function BreederReviewAnimalCard({ kennelName, star, context }) {
+export default function BreederReviewAnimalCard({
+  kennelName,
+  imgSrc,
+  star,
+  context,
+}) {
   return (
     <S.Container>
       <S.Square>
-        <S.SquareImage src="/img/breederdetailbackimg.jpg" />
+        {imgSrc && <S.SquareImage src={imgSrc} alt="이미지" />}
       </S.Square>
       <S.ContentContainer>
         <S.Flex>

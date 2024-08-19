@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as P from '../Community.style';
-import ButtonSelector from '../../../components/buttonselector/ButtonSelector';
 import Button from '../../../components/button/Button';
-import postDummy from '../dummyData';
 import Pagination from '../../../components/Pagination/Pagination';
 import PostCard from '../../../components/PostCard/PostCard';
 import Dropbox from '../../../components/DropBoxes/Dropbox2';
 import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
+import extractFirstImageUrl from '../../../utils/extractImgSrcFromBlocks';
+import extractTextFromBlocks from '../../../utils/extractContextFromBlocks';
+import convertToKST from '../../../utils/convertToKST';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -24,6 +25,46 @@ function Icon() {
 }
 
 export default function CommunityBreederInformation() {
+  const [posts, setPosts] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+  const [filteredPosts, setFilteredPosts] = useState([]); // 필터링된 포스트를 관리할 상태 추가
+
+  const fetchPosts = async () => {
+    const res = await fetch(
+      'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/post/tips',
+      {
+        headers: {
+          Accept: '*/*',
+        },
+      },
+    );
+
+    const data = await res.json();
+    setPosts(data.result);
+    setFilteredPosts(data.result); // 처음 로드 시 전체 포스트를 보여주도록 설정
+  };
+
+  const fetchUserInfo = async () => {
+    const res = await fetch(
+      'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/user',
+      {
+        headers: {
+          Accept: '*/*',
+          Authorization:
+            'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMTIzIiwiaXNzIjoiYndpdGhlciB3ZWIiLCJpYXQiOjE3MjM5ODMzNjIsImV4cCI6MTcyNDA2OTc2Mn0.HKE8cIUY4KajuL_EZPcwseWjKLaC0Z37vAnHkHbAAJ9gDzfjNC2e8PCpoQKs7JLgbJphHVoikZycUEM6eKeHyA',
+        },
+      },
+    );
+
+    const data = await res.json();
+    setUserInfo(data.result);
+  };
+
+  useEffect(() => {
+    fetchPosts();
+    fetchUserInfo();
+  }, []);
+
   const [page, setPage] = useState(1);
   const [sortOption, setSortOption] = useState(null);
   const [activeFilter, setActiveFilter] = useState('전체'); // 활성화된 필터를 관리할 상태 추가
@@ -31,6 +72,14 @@ export default function CommunityBreederInformation() {
 
   const handleFilterClick = (filterName) => {
     setActiveFilter(filterName); // 필터 클릭 시 활성화된 필터 상태 업데이트
+
+    if (filterName === '전체') {
+      setFilteredPosts(posts); // '전체'를 선택하면 모든 포스트를 보여줌
+    } else if (filterName === '강아지') {
+      setFilteredPosts(posts.filter((post) => post.petType === 'DOG')); // '강아지'를 선택하면 DOG 포스트만 보여줌
+    } else if (filterName === '고양이') {
+      setFilteredPosts(posts.filter((post) => post.petType === 'CAT')); // '고양이'를 선택하면 CAT 포스트만 보여줌
+    }
   };
 
   return (
@@ -50,13 +99,15 @@ export default function CommunityBreederInformation() {
             </P.MainSubTitle>
           </div>
           <P.TitleButtonContainer>
-            <Button
-              icon="/icons/pencil_orange.svg"
-              whiteBorder
-              onClick={() => navigate('form')}
-            >
-              글 작성하기
-            </Button>
+            {userInfo && userInfo.breederDTO && (
+              <Button
+                icon="/icons/pencil_orange.svg"
+                whiteBorder
+                onClick={() => navigate('form')}
+              >
+                글 작성하기
+              </Button>
+            )}
           </P.TitleButtonContainer>
         </P.TitleLayout>
 
@@ -83,30 +134,20 @@ export default function CommunityBreederInformation() {
         </P.FilterContainer>
 
         <P.PostContainer>
-          {postDummy.map((post) => {
-            return (
-              <PostCard
-                key={post.id}
-                profileImgSrc={post.profile.img}
-                profileName={post.profile.name}
-                postTitle={post.content.title}
-                postContent={post.content.text}
-                postThumbnailSrc="/img/post_thumbnail_example_1.jpeg"
-                timeStampKR="2024-07-25T14:40:00+09:00"
-                viewCount={159}
-                bookmarkCount={159}
-              />
-            );
-          })}
-
-          <P.PaginationContainer>
-            <Pagination
-              currentPage={page}
-              setCurrentPage={setPage}
-              totalItems={20}
-              itemsPerPage={10}
+          {filteredPosts.map((post) => (
+            <PostCard
+              key={post.id}
+              petType={post.petType} // petType prop 전달
+              profileImgSrc=""
+              profileName={post.author}
+              postTitle={post.title}
+              postContent={extractTextFromBlocks(post.blocks)}
+              postThumbnailSrc={extractFirstImageUrl(post.blocks)}
+              timeStampKR={convertToKST(post.createdAt)}
+              viewCount={post.viewCount}
+              bookmarkCount={post.bookmarkCount}
             />
-          </P.PaginationContainer>
+          ))}
         </P.PostContainer>
       </P.MainContainer>
     </P.Layout>

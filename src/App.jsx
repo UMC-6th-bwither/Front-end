@@ -1,5 +1,10 @@
 /* eslint-disable import/no-unresolved */
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 import Header from './components/Header/Header';
@@ -83,6 +88,7 @@ function App() {
             path="/Community/BreederInformation/Form"
             element={<WritingFormGeneral />}
           />
+          <Route path="/MyReview" element={<Navigate to="/myreview/save" />} />
           <Route path="/MyReview/Post" element={<MyReviewPost />} />
           <Route path="/MyReview/Comment" element={<MyReviewComment />} />
           <Route path="/MyReview/Review" element={<MyReview />} />

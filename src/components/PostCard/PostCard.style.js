@@ -1,7 +1,19 @@
 import styled from 'styled-components';
 
 export const Post = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 48px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #f4f4f4;
+    display: block;
+  }
 `;
 
 export const MyPost = styled.div`
@@ -53,6 +65,7 @@ export const UserProfileName = styled.div`
 export const PostWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 32px;
 `;
 

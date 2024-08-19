@@ -27,6 +27,11 @@ export const Container = styled.div`
     font-size: 14px;
     font-weight: 350;
   }
+  .dropdownLabel > div {
+    white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 텍스트를 숨김 */
+    text-overflow: ellipsis; /* 말줄임표(...) 적용 */
+  }
   .dropdownLabel:hover {
     cursor: pointer;
   }
@@ -43,7 +48,7 @@ export const Container = styled.div`
   }
   .dropdown-checkbox:checked + label + div.content {
     display: block;
-    border-top: 1px solid #00000026;
+    /* border-top: 1px solid #00000026; */
   }
   .arrowIcon {
     transition: transform 250ms ease-out;
@@ -58,8 +63,9 @@ export const Container = styled.div`
     z-index: 999;
   }
   .content li {
-    height: 36px;
-    padding: 8px 0px;
+    /* height: 36px; */
+    padding: 12px 0px;
+    margin: 0 5px;
     justify-content: center;
     align-items: center;
     gap: 8px;
@@ -69,5 +75,6 @@ export const Container = styled.div`
     font-family: 'Noto Sans KR';
     font-size: 14px;
     font-weight: 350;
+    word-break: keep-all;
   }
 `;

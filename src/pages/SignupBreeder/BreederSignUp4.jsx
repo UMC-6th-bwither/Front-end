@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import * as B from './BreederSignUp.style';
@@ -66,13 +65,17 @@ export default function BreederSignUp4() {
       endDate: null,
       showStartPicker: false,
       showEndPicker: false,
+      isCurrentlyWorking: false,
     },
   ]);
 
-  const [checked, setChecked] = useState(false);
-
-  const handleCheck = () => {
-    setChecked(!checked);
+  const handleCheck = (index) => {
+    const updatedCareers = careers.map((career, i) =>
+      i === index
+        ? { ...career, isCurrentlyWorking: !career.isCurrentlyWorking }
+        : career,
+    );
+    setCareers(updatedCareers);
   };
 
   const handleFileChange = (event) => {
@@ -89,6 +92,7 @@ export default function BreederSignUp4() {
         endDate: null,
         showStartPicker: false,
         showEndPicker: false,
+        isCurrentlyWorking: false,
       },
     ]);
   };
@@ -197,8 +201,8 @@ export default function BreederSignUp4() {
                         onChange={(date) =>
                           handleDateChange(index, 'startDate', date)
                         }
-                        dateFormat="yyyy-MM"
-                        displayFormat="yyyy-MM"
+                        dateFormat="yyyy-MM-dd"
+                        displayFormat="yyyy-MM-dd"
                         customInput={
                           <B.BreedingInfoInputPeriod
                             type="text"
@@ -243,8 +247,8 @@ export default function BreederSignUp4() {
                         onChange={(date) =>
                           handleDateChange(index, 'endDate', date)
                         }
-                        dateFormat="yyyy-MM"
-                        displayFormat="yyyy-MM"
+                        dateFormat="yyyy-MM-dd"
+                        displayFormat="yyyy-MM-dd"
                         customInput={
                           <B.BreedingInfoInputPeriod
                             type="text"
@@ -285,10 +289,12 @@ export default function BreederSignUp4() {
                 <B.BreedingInfoWorkingLayout>
                   <B.CheckBox
                     type="checkbox"
-                    checked={checked}
-                    onClick={handleCheck}
+                    checked={career.isCurrentlyWorking}
+                    onClick={() => handleCheck(index)}
                   />
-                  <B.Check src={checked ? afterCheck : beforeCheck} />
+                  <B.Check
+                    src={career.isCurrentlyWorking ? afterCheck : beforeCheck}
+                  />
                   <B.BreedingInfoWorkingLabel>
                     재직중
                   </B.BreedingInfoWorkingLabel>
