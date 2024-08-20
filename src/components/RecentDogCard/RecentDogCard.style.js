@@ -6,8 +6,14 @@ export const Border = styled.div`
   align-items: flex-start;
   width: 254px;
   height: 180px;
+
+  cursor: pointer;
+  transition:
+    transform 0.2s ease-in-out,
+    background-color 0.2s ease-in-out;
+
   &:hover {
-    transform: scale(1.1);
+    transform: translateY(-10px);
   }
 `;
 
