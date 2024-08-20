@@ -1,14 +1,22 @@
-import { useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
+import {
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import EditorJS from '@editorjs/editorjs';
 import ImageTool from '@editorjs/image';
 import './styles.css';
 
-const Editor = forwardRef(({ readMode = false, savedData }, ref) => {
+const Editor = forwardRef(({ readMode = false, savedData, onReady }, ref) => {
   const editorInstance = useRef(null);
+  const [isEditorReady, setIsEditorReady] = useState(false);
 
   useImperativeHandle(ref, () => ({
     editorInstance: editorInstance.current,
+    isEditorReady,
   }));
 
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -17,7 +25,7 @@ const Editor = forwardRef(({ readMode = false, savedData }, ref) => {
 
   useEffect(() => {
     if (!editorInstance.current) {
-      editorInstance.current = new EditorJS({
+      const editor = new EditorJS({
         holder: 'editorjs',
         autofocus: true,
         tools: {
@@ -102,7 +110,15 @@ const Editor = forwardRef(({ readMode = false, savedData }, ref) => {
         placeholder: '내용을 입력하세요',
         data: savedData || {},
         readOnly: readMode,
+        onReady: () => {
+          setIsEditorReady(true);
+          if (onReady) {
+            onReady();
+          }
+        },
       });
+
+      editorInstance.current = editor;
     }
 
     return () => {
@@ -114,7 +130,7 @@ const Editor = forwardRef(({ readMode = false, savedData }, ref) => {
         editorInstance.current = null;
       }
     };
-  });
+  }, [savedData, readMode]);
 
   return <div spellCheck={false} id="editorjs" />;
 });
@@ -123,12 +139,13 @@ Editor.displayName = 'Editor';
 
 Editor.propTypes = {
   readMode: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   savedData: PropTypes.object,
+  onReady: PropTypes.func,
 };
 
 Editor.defaultProps = {
   savedData: {},
+  onReady: null,
 };
 
 export default Editor;

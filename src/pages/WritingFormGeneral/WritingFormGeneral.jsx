@@ -47,7 +47,7 @@ export default function WritingFormGeneral() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authentication: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             accept: '*/*',
           },
           body: JSON.stringify(postData),
