@@ -1,11 +1,11 @@
-/* eslint-disable react/prop-types */
-import { useRef } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as P from './WritingFormGeneral.style';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
 import { menuItems } from './menuItems';
 import Editor from '../../components/Editor/Editor';
 import TitleForm from '../../components/Editor/TitleForm/TitleForm';
-import dummyData from '../../components/Editor/dummyData';
+import useAuth from '../../hooks/useAuth';
 
 function Icon() {
   return (
@@ -16,17 +16,84 @@ function Icon() {
 }
 
 export default function WritingFormGeneral() {
+  const { isLoggedIn, token, userId } = useAuth();
   const editorRef = useRef(null);
+  const [title, setTitle] = useState('');
+  const [petType, setPetType] = useState(null);
+  const [editorData, setEditorData] = useState(null);
 
-  const editorSubmitClickHandler = async () => {
+  const navigate = useNavigate();
+
+  const editorSubmitClickHandler = useCallback(async () => {
     if (editorRef.current) {
       const { editorInstance } = editorRef.current;
       const savedData = await editorInstance.save();
 
       // eslint-disable-next-line no-console
       console.log(savedData);
+
+      const postData = {
+        userId: userId,
+        petType: petType,
+        title: title,
+        category: 'TIPS',
+        blocks: savedData.blocks,
+      };
+
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const endPoint = `${apiUrl}/post/create/tip`;
+        const response = await fetch(endPoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            accept: '*/*',
+          },
+          body: JSON.stringify(postData),
+        });
+
+        const result = await response.json();
+
+        if (result.isSuccess && result.code === 'COMMON200') {
+          // eslint-disable-next-line no-alert
+          alert('글이 등록되었습니다');
+          navigate('/community/breederinformation');
+        } else {
+          // eslint-disable-next-line no-alert
+          alert('글을 등록하는 데 오류가 발생했습니다.');
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-alert
+        alert('글을 등록하는 데 오류가 발생했습니다.');
+      }
     }
-  };
+  }, [petType, title]);
+
+  const handleTitleChange = useCallback((newTitle) => {
+    setTitle(newTitle);
+  }, []);
+
+  const handleOptionSelect = useCallback((selectedOption) => {
+    if (selectedOption === '강아지') setPetType('DOG');
+    else if (selectedOption === '고양이') setPetType('CAT');
+    else if (selectedOption === '전체') setPetType('ALL');
+  }, []);
+
+  const handleEditorChange = useCallback((data) => {
+    setEditorData(data);
+  }, []);
+
+  const memoizedEditor = useMemo(
+    () => (
+      <Editor
+        ref={editorRef}
+        readMode={false}
+        savedData={editorData}
+        onChange={handleEditorChange}
+      />
+    ),
+    [editorData, handleEditorChange],
+  );
 
   return (
     <P.Layout>
@@ -50,9 +117,11 @@ export default function WritingFormGeneral() {
             </P.Category>
           </P.TitleButtonContainer>
         </P.TitleLayout>
-        <TitleForm />
-        {/* <Editor ref={editorRef} savedData={dummyData} readMode /> */}
-        <Editor ref={editorRef} />
+        <TitleForm
+          onTitleChange={handleTitleChange}
+          onOptionSelect={handleOptionSelect}
+        />
+        {memoizedEditor}
       </P.MainContainer>
     </P.Layout>
   );

@@ -1,10 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import * as S from './TitleForm.style';
 
 function TitleForm({ onTitleChange, onOptionSelect }) {
   const [title, setTitle] = useState('');
+  const [activeOption, setActiveOption] = useState(null);
   const maxTitleLength = 65;
+
+  const titleInputRef = useRef(null); // TitleInput에 대한 참조 생성
+
+  useEffect(() => {
+    // setTimeout을 사용하여 에디터가 포커스를 잡고 난 후 TitleInput에 다시 포커스
+    const focusTimeout = setTimeout(() => {
+      if (titleInputRef.current) {
+        titleInputRef.current.focus();
+      }
+    }, 100); // 약간의 지연 시간 추가 (에디터가 포커스를 가져갈 시간)
+
+    // 컴포넌트가 언마운트될 때 타이머를 정리
+    return () => clearTimeout(focusTimeout);
+  }, []);
 
   const handleInputChange = (e) => {
     const newTitle = e.target.value;
@@ -15,6 +30,7 @@ function TitleForm({ onTitleChange, onOptionSelect }) {
   };
 
   const handleOptionClick = (option) => {
+    setActiveOption(option);
     if (typeof onOptionSelect === 'function') {
       onOptionSelect(option);
     }
@@ -29,6 +45,7 @@ function TitleForm({ onTitleChange, onOptionSelect }) {
           value={title}
           onChange={handleInputChange}
           maxLength={maxTitleLength}
+          ref={titleInputRef} // ref를 TitleInput에 연결
         />
         <S.TitleCounter>
           {title.length} / {maxTitleLength}
@@ -53,13 +70,22 @@ function TitleForm({ onTitleChange, onOptionSelect }) {
       <S.OptionsSection>
         <S.Instruction>내용과 관련된 동물을 선택해주세요</S.Instruction>
         <S.Options>
-          <S.OptionButton onClick={() => handleOptionClick('전체')}>
+          <S.OptionButton
+            onClick={() => handleOptionClick('전체')}
+            $active={activeOption === '전체'}
+          >
             전체
           </S.OptionButton>
-          <S.OptionButton onClick={() => handleOptionClick('강아지')}>
+          <S.OptionButton
+            onClick={() => handleOptionClick('강아지')}
+            $active={activeOption === '강아지'}
+          >
             강아지
           </S.OptionButton>
-          <S.OptionButton onClick={() => handleOptionClick('고양이')}>
+          <S.OptionButton
+            onClick={() => handleOptionClick('고양이')}
+            $active={activeOption === '고양이'}
+          >
             고양이
           </S.OptionButton>
         </S.Options>

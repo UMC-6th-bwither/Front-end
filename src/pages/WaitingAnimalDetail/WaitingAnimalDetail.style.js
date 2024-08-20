@@ -9,7 +9,6 @@ export const Container = styled.div`
   margin: 0 auto;
   padding: 64px 0 291px 0;
 `;
-
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -28,12 +27,20 @@ export const ModalContent = styled.div`
   padding: 50px;
   border-radius: 10px;
   max-width: 600px;
-  height: 500px;
+  max-height: 500px;
   width: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  overflow: hidden;
+`;
+
+export const ModalImage = styled.img`
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: contain;
 `;
 
 export const CloseButton = styled.button`

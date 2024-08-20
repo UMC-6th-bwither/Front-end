@@ -11,6 +11,7 @@ function PostIcon({ src }) {
 }
 
 export default function PostCard({
+  petType,
   profileImgSrc,
   profileName,
   postTitle,
@@ -33,9 +34,11 @@ export default function PostCard({
           <P.PostTitle>{postTitle}</P.PostTitle>
           <P.PostContent>{postContent}</P.PostContent>
         </div>
-        <P.ThumbnailWrapper>
-          <P.ThumbnailImg src={postThumbnailSrc} alt="Image Thumbnail" />
-        </P.ThumbnailWrapper>
+        {postThumbnailSrc && (
+          <P.ThumbnailWrapper>
+            <P.ThumbnailImg src={postThumbnailSrc} alt="Image Thumbnail" />
+          </P.ThumbnailWrapper>
+        )}
       </P.PostWrapper>
 
       <P.PostIconLayout>
@@ -44,11 +47,15 @@ export default function PostCard({
         </P.PostTimestamp>
         <P.PostIconFrame>
           <PostIcon src="/icons/community_view.svg" />
-          <P.PostIconContent>{viewCount}</P.PostIconContent>
+          <P.PostIconContent>
+            {viewCount !== null ? viewCount : 0}
+          </P.PostIconContent>
         </P.PostIconFrame>
         <P.PostIconFrame>
           <PostIcon src="/icons/community_bookmark.svg" />
-          <P.PostIconContent>{bookmarkCount}</P.PostIconContent>
+          <P.PostIconContent>
+            {bookmarkCount !== null ? bookmarkCount : 0}
+          </P.PostIconContent>
         </P.PostIconFrame>
       </P.PostIconLayout>
     </P.Post>

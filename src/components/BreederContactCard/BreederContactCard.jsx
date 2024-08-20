@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-
+import { useNavigate } from 'react-router-dom';
 import * as S from './BreederContactCard.style';
 import Button from '../button/Button';
-import { useNavigate } from 'react-router-dom';
 
 export default function BreederContactCard({
+  breederId,
   breederLocation,
   breederName,
   badgeComponents,
@@ -67,7 +67,9 @@ export default function BreederContactCard({
             orange
             width="auto"
             paddingHorizontal={14}
-            onClick={() => navigate('form')}
+            onClick={() => {
+              if (breederId) navigate(`form/${breederId}`);
+            }}
           >
             후기 등록
           </Button>
