@@ -18,7 +18,7 @@ function Icon() {
 }
 
 export default function MyReview() {
-  const { isLoggedIn, token } = useAuth();
+  const { isLoggedIn, role, token } = useAuth();
   const [myReviews, setMyReviews] = useState([]);
 
   const fetchMyReview = async () => {
@@ -91,6 +91,7 @@ export default function MyReview() {
             breederName="해피 켄넬"
           /> */}
           <BreederContactCard
+            noButton={role === 'BREEDER'}
             breederId={1}
             breederLocation="서울 강서구"
             breederName="😊 행복한 분양의 시작 - 해피 브리더"
