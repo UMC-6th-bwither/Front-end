@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import * as B from './BreederSignUp.style';
-import progressBar90 from '../../../public/icons/signUp/progress-bar-90.svg';
+import progressBar90 from '/icons/signUp/progress-bar-90.svg';
 import Button from '../../components/SignUpButton/Button';
 import 'react-datepicker/dist/react-datepicker.css';
-import beforeCheck from '../../../public/icons/signUp/check_before.svg';
-import afterCheck from '../../../public/icons/signUp/check_after.svg';
+import beforeCheck from '/icons/signUp/check_before.svg';
+import afterCheck from '/icons/signUp/check_after.svg';
 
 function MoreIcon() {
   return (

@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { handleLoginWithResponse } from '../../utils/handleLogin';
 import * as L from './Login.style';
 import Button from '../../components/SignUpButton/Button';
-import beforeCheck from '../../../public/icons/signUp/check_before.svg';
-import afterCheck from '../../../public/icons/signUp/check_after.svg';
-import pwShow from '../../../public/icons/signUp/password-show.svg';
-import failX from '../../../public/icons/signUp/fail_x.svg';
+import beforeCheck from '/icons/signUp/check_before.svg';
+import afterCheck from '/icons/signUp/check_after.svg';
+import pwShow from '/icons/signUp/password-show.svg';
+import failX from '/icons/signUp/fail_x.svg';
 import { postLogin } from '../../apis/postUser';
 
 export default function Login() {

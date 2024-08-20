@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as S from './SignUpTerms.style';
-import beforeCheck from '../../../public/icons/signUp/check_before.svg';
-import afterCheck from '../../../public/icons/signUp/check_after.svg';
+import beforeCheck from '/icons/signUp/check_before.svg';
+import afterCheck from '/icons/signUp/check_after.svg';
 
 export default function SignUpTerms() {
   const [isAllChecked, setIsAllChecked] = useState(false);

@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 import { useState } from 'react';
-import close from '../../../public/img/close.svg';
+import close from '/img/close.svg';
 import * as R from './ReportModal.style';
 
 const CustomModal = {

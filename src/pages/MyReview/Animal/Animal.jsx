@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 import * as A from './Animal.style';
 import * as P from '../MyReview.style';
-import bookmark from '../../../../public/img/bookmark.svg';
-import footprint from '../../../../public/img/footprint.svg';
+import bookmark from '/img/bookmark.svg';
+import footprint from '/img/footprint.svg';
 import { animalBreeds, 전체DogCard } from '../../selectData';
 import DogCard from '../../../components/DogCard/DogCard';
 import DropBox from '../../../components/DropBoxes/DropBox';

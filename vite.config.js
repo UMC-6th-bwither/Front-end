@@ -1,13 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import { resolve } from 'path';
 
 export default defineConfig({
+  plugins: [react()],
   build: {
     rollupOptions: {
-      input: path.resolve(__dirname, 'index.html'), // 절대 경로로 설정
+      input: resolve(__dirname, 'index.html'),
     },
   },
-  plugins: [react()],
 });

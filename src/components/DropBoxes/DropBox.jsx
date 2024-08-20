@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import downArrow from '../../../public/img/downArrow.svg';
+import downArrow from '/img/downArrow.svg';
 import { Container } from './DropBox.style';
 
 function DropBox({ id, label, options, onChange }) {

@@ -11,6 +11,10 @@ const Editor = forwardRef(({ readMode = false, savedData }, ref) => {
     editorInstance: editorInstance.current,
   }));
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const uploadEndPoint = `${apiUrl}/post/uploads`;
+  const fetchEndPoint = `${apiUrl}/post`;
+
   useEffect(() => {
     if (!editorInstance.current) {
       editorInstance.current = new EditorJS({
@@ -20,9 +24,77 @@ const Editor = forwardRef(({ readMode = false, savedData }, ref) => {
           image: {
             class: ImageTool,
             config: {
-              endpoints: {
-                byFile: 'http://localhost:8008/uploadFile',
-                byUrl: 'http://localhost:8008/fetchUrl',
+              uploader: {
+                uploadByFile(file) {
+                  const formData = new FormData();
+                  formData.append('uploadFile', file, file.name);
+
+                  return fetch(uploadEndPoint, {
+                    method: 'POST',
+                    headers: {
+                      Accept: '*/*',
+                      // 'Content-Type': 'multipart/form-data', // 주의: 이 부분은 생략해야 브라우저가 자동으로 설정합니다.
+                    },
+                    body: formData,
+                  })
+                    .then((response) => response.json())
+                    .then((result) => {
+                      if (result.success) {
+                        return {
+                          success: 1,
+                          file: {
+                            url: result.file.url,
+                          },
+                        };
+                      } else {
+                        throw new Error('Image upload failed');
+                      }
+                    })
+                    .catch((error) => {
+                      console.error('Error during image upload:', error);
+                      return {
+                        success: 0,
+                        file: {
+                          url: '',
+                        },
+                      };
+                    });
+                },
+
+                uploadByUrl(url) {
+                  return fetch(fetchEndPoint, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Accept: '*/*',
+                    },
+                    body: JSON.stringify({
+                      url: url,
+                    }),
+                  })
+                    .then((response) => response.json())
+                    .then((result) => {
+                      if (result.success) {
+                        return {
+                          success: 1,
+                          file: {
+                            url: result.file.url,
+                          },
+                        };
+                      } else {
+                        throw new Error('Image fetch failed');
+                      }
+                    })
+                    .catch((error) => {
+                      console.error('Error during image fetch:', error);
+                      return {
+                        success: 0,
+                        file: {
+                          url: '',
+                        },
+                      };
+                    });
+                },
               },
             },
           },

@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 import { useState, useRef, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as P from './Form.style';
 import * as S from './Title.style';
 import VerticalMenuSelector from '../../../../components/VerticalMenuSelector/VerticalMenuSelector';
@@ -58,6 +58,7 @@ function StarButton({ active, onClick }) {
 }
 
 export default function ReviewForm() {
+  const { breederId } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, token, userId } = useAuth();
 
@@ -95,7 +96,7 @@ export default function ReviewForm() {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        breederId: 1,
+        breederId: breederId,
         userId: userId,
         petType: petType,
         rating: rating,
@@ -163,6 +164,7 @@ export default function ReviewForm() {
           </P.TitleButtonContainer>
         </P.TitleLayout>
         <BreederContactCard
+          breederId={breederId}
           breederLocation="서울 강서구"
           breederName="😊 행복한 분양의 시작 - 해피 브리더"
           badgeComponents={[

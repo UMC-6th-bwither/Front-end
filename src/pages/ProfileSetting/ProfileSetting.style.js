@@ -47,7 +47,7 @@ export const ImgContainer = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 1000px;
-  background-image: url('../../../public/img/profilebackground.png');
+  background-image: url('/img/profilebackground.png');
   background-repeat: no-repeat;
   background-size: cover;
 `;
@@ -284,7 +284,7 @@ export const RadioBtn = styled.input.attrs({ type: 'radio' })`
   display: none;
 
   &:checked + label > img {
-    content: url(${'../../../public/img/checked.png'});
+    content: url(${'/img/checked.png'});
   }
 `;
 
@@ -292,7 +292,7 @@ export const RadioIcon = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 8px;
-  content: url(${'../../../public/img/unchecked.png'});
+  content: url(${'/img/unchecked.png'});
 `;
 
 export const Label = styled.label`
