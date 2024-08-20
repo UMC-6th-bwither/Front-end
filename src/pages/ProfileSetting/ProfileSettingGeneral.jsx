@@ -4,41 +4,26 @@ import * as S from './ProfileSetting.style';
 import ProfileSettingDropBox from '../../components/ProfileSettingDropBox/ProfileSettingDropBox';
 import api from '../../api/api';
 
-function ProfileSettingBreeder() {
+function ProfileSettingGeneral() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordCheckVisible, setIsPasswordCheckVisible] = useState(false);
 
   // 입력값들
   const [profileImage, setProfileImage] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [address, setAddress] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
   const [petAllowed, setPetAllowed] = useState('YES');
   const [cohabitant, setCohabitant] = useState('');
+  const [cohabitantCount, setCohabitantCount] = useState('5');
   const [familyAgreement, setFamilyAgreement] = useState('AGREED');
   const [employmentStatus, setEmploymentStatus] = useState('EMPLOYED');
   const [commuteTime, setCommuteTime] = useState('');
   const [petExperience, setPetExperience] = useState(true);
   const [currentPet, setCurrentPet] = useState('');
   const [futurePlan, setFuturePlan] = useState('MOVE');
-
-  // 출근, 퇴근, 왕복 시간 상태
-  const [commuteStart, setCommuteStart] = useState('');
-  const [commuteEnd, setCommuteEnd] = useState('');
-  const [turnAroundTime, setTurnAroundTime] = useState('2');
-
-  const updateCommuteTime = (start, end, turnAround) => {
-    setCommuteTime(`${start}, ${end}, ${turnAround}`);
-  };
-  const handleCommuteTimeChange = (selectedValue) => {
-    setTurnAroundTime(selectedValue);
-    updateCommuteTime(commuteStart, commuteEnd, selectedValue);
-  };
-
-  // 아직 api속성에 추가 안 된 것들
-  const [phone, setPhone] = useState('');
-  const [roommateNum, setRoommateNum] = useState('5');
 
   // 에러 메시지 상태
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -48,8 +33,22 @@ function ProfileSettingBreeder() {
   const [addressError, setAddressError] = useState('');
   const [cohabitantError, setCohabitantError] = useState('');
 
-  const handleRoommateNumChange = (value) => {
-    setRoommateNum(value);
+  // 출근, 퇴근, 왕복 시간 상태
+  const [commuteStart, setCommuteStart] = useState('');
+  const [commuteEnd, setCommuteEnd] = useState('');
+  const [turnAroundTime, setTurnAroundTime] = useState('2');
+
+  const updateCommuteTime = (start, end, turnAround) => {
+    setCommuteTime(`${start}, ${end}, ${turnAround}`);
+  };
+
+  // 왕복 시간 선택용
+  const handleCommuteTimeChange = (selectedValue) => {
+    setTurnAroundTime(selectedValue);
+    updateCommuteTime(commuteStart, commuteEnd, selectedValue);
+  };
+  const handleCohabitantCountChange = (value) => {
+    setCohabitantCount(value);
   };
 
   // 이미지 변경 핸들러
@@ -66,10 +65,11 @@ function ProfileSettingBreeder() {
     fileInputRef.current.click(); // 숨겨진 파일 입력 필드를 클릭
   };
 
+  // 비밀번호 숨김/보기
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
-
+  // 비밀번호확인 숨김/보기
   const togglePasswordCheckVisibility = () => {
     setIsPasswordCheckVisible(!isPasswordCheckVisible);
   };
@@ -145,7 +145,6 @@ function ProfileSettingBreeder() {
   // 기존 유저 정보 불러오기
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(tur);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -154,31 +153,40 @@ function ProfileSettingBreeder() {
       try {
         const response = await api.get('/user', {
           headers: {
-            'Content-Type': 'application/json', // GET 요청에는 보통 application/json을 사용합니다.
-            Authorization: `Bearer ${token}`, // Bearer 타입으로 토큰을 전달합니다.
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
         });
+        const Data = response.data.result;
         setUserData(response.data.result);
 
-        // API 응답 데이터를 상태 변수에 저장합니다.
-        setProfileImage(userData.userDTO.profileImage);
-        setPhone(userData.userDTO.phone);
-        // setPassword();
-        setZipcode(userData.userDTO.zipcode);
-        setAddress(userData.userDTO.address);
-        setAddressDetail(userData.userDTO.addressDetail);
-        setPetAllowed(userData.memberDTO.petAllowed);
-        setCohabitant(userData.memberDTO.cohabitant);
-        // setFamilNum()
-        setFamilyAgreement(userData.memberDTO.familyAgreement);
-        setEmploymentStatus(userData.memberDTO.employmentStatus);
-        setCommuteTime(userData.memberDTO.commuteTime);
-        setPetExperience(userData.memberDTO.petExperience);
-        setCurrentPet(userData.memberDTO.currentPet);
-        setFuturePlan(userData.memberDTO.futurePlan);
+        // API 응답 데이터를 상태 변수에 저장
+        setProfileImage(Data.userDTO.profileImage);
+        setPhone(Data.userDTO.phone);
+        setZipcode(Data.userDTO.zipcode);
+        setAddress(Data.userDTO.address);
+        setAddressDetail(Data.userDTO.addressDetail);
+        setPetAllowed(Data.memberDTO.petAllowed);
+        setCohabitant(Data.memberDTO.cohabitant);
+        setCohabitantCount(Data.memberDTO.cohabitantCount);
+        setFamilyAgreement(Data.memberDTO.familyAgreement);
+        setEmploymentStatus(Data.memberDTO.employmentStatus);
+        setCommuteTime(Data.memberDTO.commuteTime);
+        setPetExperience(Data.memberDTO.petExperience);
+        setCurrentPet(Data.memberDTO.currentPet);
+        setFuturePlan(Data.memberDTO.futurePlan);
+
+        // commuteTime데이터 파싱
+        const commute = Data.memberDTO.commuteTime;
+        if (commute) {
+          const [start, end, turnAround] = commute.split(', ');
+          setCommuteStart(start);
+          setCommuteEnd(end);
+          setTurnAroundTime(turnAround);
+        }
 
         setLoading(false);
-        console.log('데이터 불러오기 성공 User info:', userData);
+        console.log('데이터 불러오기 성공 User info:', Data);
       } catch (err) {
         // setError('데이터를 가져오는 중 오류가 발생했습니다.');
         setLoading(false);
@@ -186,9 +194,9 @@ function ProfileSettingBreeder() {
       }
     };
     getUserInfo();
-  }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨
+  }, []);
 
-  // 로딩 상태 또는 에러 상태를 표시합니다.
+  // 로딩 상태 표시
   if (loading) return <div>Loading...</div>;
   // if (error) return <div>{error}</div>;
 
@@ -222,11 +230,13 @@ function ProfileSettingBreeder() {
       const requestBody = {
         profileImage,
         password,
+        phone,
         zipcode,
         address,
         addressDetail,
         petAllowed,
         cohabitant,
+        cohabitantCount,
         familyAgreement,
         employmentStatus,
         commuteTime,
@@ -234,9 +244,6 @@ function ProfileSettingBreeder() {
         currentPet,
         futurePlan,
       };
-
-      // 서버에 요청 보내는 부분 대신 콘솔에 출력
-      console.log('Request Body:', requestBody);
 
       const token = localStorage.getItem('accessToken');
       try {
@@ -247,7 +254,7 @@ function ProfileSettingBreeder() {
           },
         });
 
-        console.log('데이터 전송 성공 User info:', userData);
+        console.log('데이터 전송 성공 User info:', response);
       } catch (error) {
         console.error('Error message:', error.message);
       }
@@ -263,10 +270,7 @@ function ProfileSettingBreeder() {
 
         <S.ProfileCard>
           <S.ImgContainer>
-            <S.ProfileImage
-              src={profileImage || 'default-image-url'}
-              alt="Profile"
-            />
+            <S.ProfileImage src={profileImage} alt="Profile" />
             <S.CameraIcon onClick={handleImageClick}>
               <svg
                 width="17"
@@ -291,7 +295,7 @@ function ProfileSettingBreeder() {
           </S.ImgContainer>
 
           <S.ProfileInfoContainer>
-            <S.Name>해피 브리더</S.Name>
+            <S.Name>{userData.userDTO.name}</S.Name>
             <S.Email>{userData.userDTO.email}</S.Email>
           </S.ProfileInfoContainer>
         </S.ProfileCard>
@@ -303,12 +307,6 @@ function ProfileSettingBreeder() {
           <p>아이디</p>
           <p>{userData.userDTO.username}</p>
         </div>
-
-        <div>
-          <p>비밀번호</p>
-          <p>examplePW</p>
-        </div>
-
         <div className="passwordcontainer">
           <div>
             <p>비밀번호 재설정</p>
@@ -504,8 +502,8 @@ function ProfileSettingBreeder() {
               />
               <S.RoommateNumContainer>
                 <ProfileSettingDropBox
-                  id="RoommateNum-dropbox"
-                  label="5"
+                  id="CohabitantCount-dropbox"
+                  label={cohabitantCount}
                   options={[
                     { value: '1', label: '1' },
                     { value: '2', label: '2' },
@@ -514,7 +512,7 @@ function ProfileSettingBreeder() {
                     { value: '5', label: '5' },
                     { value: '6+', label: '6명 이상' },
                   ]}
-                  onChange={handleRoommateNumChange}
+                  onChange={handleCohabitantCountChange}
                 />
                 <span>명</span>
               </S.RoommateNumContainer>
@@ -794,4 +792,4 @@ function ProfileSettingBreeder() {
   );
 }
 
-export default ProfileSettingBreeder;
+export default ProfileSettingGeneral;

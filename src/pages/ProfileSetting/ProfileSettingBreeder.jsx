@@ -55,40 +55,78 @@ function ProfileSettingGeneral() {
     }
   };
 
-  const handleSubmitClick = () => {
-    if (!passwordError && !passwordCheckError) {
-      alert('변경된 내용이 저장되었습니다');
-      // myback(back)이동 로직 구현
-    }
-  };
+  // 기존 유저 정보 불러오기
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 기본 정보 불러오기
   useEffect(() => {
     const getUserInfo = async () => {
-      // 토큰을 로컬 스토리지에서 가져옵니다.
       const token = localStorage.getItem('accessToken');
 
       try {
-        // 사용자 정보를 요청합니다.
         const response = await api.get('/user', {
           headers: {
-            'Content-Type': 'application/json', // GET 요청에는 보통 application/json을 사용합니다.
-            Authorization: `Bearer ${token}`, // Bearer 타입으로 토큰을 전달합니다.
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
         });
         const Data = response.data.result;
+        setUserData(response.data.result);
 
-        // 요청이 성공하면 결과를 콘솔에 출력합니다.
-        console.log('우왕 성공 User info:', Data);
-      } catch (error) {
-        // 요청이 실패하면 에러 메시지를 콘솔에 출력합니다.
-        console.error('응 실패:', error);
+        // API 응답 데이터를 상태 변수에 저장합니다.
+        setProfileImage(Data.userDTO.profileImage);
+
+        setLoading(false);
+        console.log('데이터 불러오기 성공 User info:', Data);
+      } catch (err) {
+        // setError('데이터를 가져오는 중 오류가 발생했습니다.');
+        setLoading(false);
+        console.error('Error message:', err.message);
       }
     };
-
-    // 컴포넌트가 마운트될 때 데이터를 가져옴
     getUserInfo();
-  }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨
+  }, []);
+
+  // 로딩 상태 표시
+  if (loading) return <div>Loading...</div>;
+
+  // 폼 제출 함수
+  const handleSubmitClick = async () => {
+    let hasError = false;
+
+    if (passwordError || password.length === 0) {
+      setPasswordError('조건에 맞지 않아요.');
+      alert('비밀번호를 입력해주세요');
+      hasError = true;
+    } else if (passwordCheckError || password !== passwordCheck) {
+      setPasswordCheckError('비밀번호가 일치하지 않아요.');
+      alert('비밀번호가 일치하지 않습니다');
+      hasError = true;
+    }
+
+    if (!hasError) {
+      const requestBody = {
+        profileImage,
+        password,
+      };
+
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await api.patch('/breeder/profile', requestBody, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log('데이터 전송 성공 User info:', response);
+      } catch (error) {
+        console.error('Error message:', error.message);
+      }
+      alert('변경된 내용이 저장되었습니다');
+      // myback(back) 이동 로직 구현
+    }
+  };
 
   return (
     <S.MainContainer>
@@ -97,10 +135,7 @@ function ProfileSettingGeneral() {
 
         <S.ProfileCard>
           <S.ImgContainer>
-            <S.ProfileImage
-              src={profileImage || 'default-image-url'}
-              alt="Profile"
-            />
+            <S.ProfileImage src={profileImage} alt="Profile" />
             <S.CameraIcon onClick={handleImageClick}>
               <svg
                 width="17"
@@ -125,8 +160,8 @@ function ProfileSettingGeneral() {
           </S.ImgContainer>
 
           <S.ProfileInfoContainer>
-            <S.Name>해피 브리더</S.Name>
-            <S.Email>example@email.com</S.Email>
+            <S.Name>{userData.userDTO.name}</S.Name>
+            <S.Email>{userData.userDTO.email}</S.Email>
           </S.ProfileInfoContainer>
         </S.ProfileCard>
       </S.ProfileContainer>
@@ -135,14 +170,8 @@ function ProfileSettingGeneral() {
         <S.Title>계정 정보</S.Title>
         <div>
           <p>아이디</p>
-          <p>exampleID</p>
+          <p>{userData.userDTO.username}</p>
         </div>
-
-        <div>
-          <p>비밀번호</p>
-          <p>examplePW</p>
-        </div>
-
         <div>
           <p>비밀번호 재설정</p>
           <S.InputContainer>

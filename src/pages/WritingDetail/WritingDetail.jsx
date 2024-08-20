@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import * as S from './WritingDetail.style';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
 import TimeStampParser from '../../components/TimeStampParser/TimeStampParser';
 import api from '../../api/api';
+import Editor from '../../components/Editor/Editor';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -13,6 +14,81 @@ function WritingDetail() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // 글 데이터 받아오기
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await api.get('/post/1', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setPost(response.data.result);
+        setLoading(false);
+        console.log('우왕 성공 User info:', response.data.result);
+      } catch (error) {
+        console.error('응 실패:', error);
+        setLoading(false);
+      }
+    };
+
+    getUserInfo();
+  }, []);
+
+  // 기존 북마크된 글인지 확인
+  useEffect(() => {
+    if (!post) return; // post가 없으면 더 이상 진행하지 않음
+
+    const checkIfBookmarked = async () => {
+      const token = localStorage.getItem('accessToken');
+
+      try {
+        const response = await api.get('/post/bookmarks', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // 응답 데이터 콘솔 출력
+        console.log('기존 북마크 데이터:', response.data);
+
+        if (response.data.isSuccess) {
+          const bookmarkedPosts = response.data.result;
+
+          // 북마크된 게시물 중에서 현재 postId와 일치하는 것이 있는지 확인
+          const isPostBookmarked = bookmarkedPosts.some(
+            (bookmark) => bookmark.id === post.id,
+          );
+
+          setIsBookmarked(isPostBookmarked);
+        } else {
+          console.error('Failed to fetch bookmarks:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching bookmarks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkIfBookmarked();
+  }, [post]);
+
+  if (loading) {
+    return <div>Loading...</div>; // 로딩 상태 표시
+  }
+
+  if (!post) {
+    return <div>게시물을 불러올 수 없습니다.</div>;
+  }
+
+  if (!post.blocks || post.blocks.length === 0) {
+    return <div>데이터가 없습니다.</div>;
+  }
 
   const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
@@ -26,38 +102,43 @@ function WritingDetail() {
       });
   };
 
+  // 북마크 추가
   const addBookmark = async (postId, memberId) => {
+    const token = localStorage.getItem('accessToken');
     try {
       const response = await api.post(
         `/post/${postId}/bookmark?memberId=${memberId}`,
+        {},
         {
           headers: {
             'Content-Type': 'application/json',
-            Accept: '*/*',
+            Authorization: `Bearer ${token}`,
           },
         },
       );
-      const data = await response.json();
-      return data.isSuccess;
+      console.log('Bookmark added:', response.data);
+      return true;
     } catch (error) {
       console.error('Error adding bookmark:', error);
       return false;
     }
   };
 
+  // 북마크 제거
   const removeBookmark = async (postId, memberId) => {
+    const token = localStorage.getItem('accessToken');
     try {
       const response = await api.delete(
         `/post/${postId}/bookmark?memberId=${memberId}`,
         {
           headers: {
             'Content-Type': 'application/json',
-            Accept: '*/*',
+            Authorization: `Bearer ${token}`,
           },
         },
       );
-      const data = await response.json();
-      return data.isSuccess;
+      console.log('Bookmark removed:', response.data);
+      return true;
     } catch (error) {
       console.error('Error removing bookmark:', error);
       return false;
@@ -66,65 +147,22 @@ function WritingDetail() {
 
   // 북마크
   const handleBookmarkToggle = async () => {
+    if (!post) return;
+
+    const memberId = 1; // 수정 필요
+    const postId = post.id;
+
     let success;
     if (isBookmarked) {
-      success = await removeBookmark(1, 2);
+      success = await removeBookmark(postId, memberId);
     } else {
-      success = await addBookmark(1, 2);
+      success = await addBookmark(postId, memberId);
     }
 
     if (success) {
       setIsBookmarked(!isBookmarked);
     }
   };
-
-  // 글 데이터 받아오기
-  useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const response = await api.get('/post/2', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        setPost(response.data.result);
-        setLoading(false);
-        // 요청이 성공하면 결과를 콘솔에 출력합니다.
-        console.log('우왕 성공 User info:', post);
-      } catch (error) {
-        // 요청이 실패하면 에러 메시지를 콘솔에 출력합니다.
-        console.error('응 실패:', error);
-        setLoading(false);
-      }
-    };
-
-    // 컴포넌트가 마운트될 때 데이터를 가져옴
-    getUserInfo();
-  }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨
-
-  if (loading) {
-    return <div>Loading...</div>; // Show loading message or spinner
-  }
-
-  // blocks데이터 파싱
-  const content = post
-    ? post.blocks
-        .map((blockItem) => {
-          try {
-            const parsedBlock = JSON.parse(blockItem.block);
-            return {
-              id: parsedBlock.id,
-              type: parsedBlock.type,
-              text: parsedBlock.data.text,
-              imageUrl: parsedBlock.data.imageUrl,
-            };
-          } catch (error) {
-            console.error('Block parsing error:', error);
-            return null;
-          }
-        })
-        .filter((item) => item !== null)
-    : []; // Filter out null items
 
   return (
     <S.Layout>
@@ -206,20 +244,7 @@ function WritingDetail() {
           </S.TitleContainer>
 
           <S.ContentContainer>
-            {content.map((item, index) => (
-              <React.Fragment key={item.id}>
-                {item.type === 'paragraph' ? (
-                  <S.ContentText>{item.text}</S.ContentText>
-                ) : (
-                  <S.ContextImgContainer>
-                    <img
-                      src={item.imageUrl}
-                      alt={`ContentImage ${index + 1}`}
-                    />
-                  </S.ContextImgContainer>
-                )}
-              </React.Fragment>
-            ))}
+            <Editor readMode savedData={post} />
             <S.ContentIconContainer>
               <S.ContentIconFrame>
                 <svg
