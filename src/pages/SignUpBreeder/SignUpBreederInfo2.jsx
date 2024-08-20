@@ -1,12 +1,12 @@
 import { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import * as B from './SignUpBreeder.style';
-import progressBar90 from '../../../public/icons/signUp/progress-bar-90.svg';
-import upload from '../../../public/icons/signUp/upload_plus.svg';
-import plus from '../../../public/icons/signUp/plusBtn_plus.svg';
-import calendar from '../../../public/icons/signUp/calendar.svg';
+import progressBar90 from '/icons/signUp/progress-bar-90.svg';
+import upload from '/icons/signUp/upload_plus.svg';
+import plus from '/icons/signUp/plusBtn_plus.svg';
+import calendar from '/icons/signUp/calendar.svg';
 import Button from '../../components/SignUpButton/Button';
-import unchecked from '../../../public/img/uncheckedCheck.svg';
+import unchecked from '/img/uncheckedCheck.svg';
 
 const CustomInput = forwardRef(({ value, onClick, placeholder }, ref) => (
   <B.CustomInput

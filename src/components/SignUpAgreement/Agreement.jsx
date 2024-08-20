@@ -1,6 +1,6 @@
 import * as A from './Agreement.style';
-import beforeCheck from '../../../public/icons/signUp/check_before.svg';
-import afterCheck from '../../../public/icons/signUp/check_after.svg';
+import beforeCheck from '/icons/signUp/check_before.svg';
+import afterCheck from '/icons/signUp/check_after.svg';
 
 export default function Agreement({ content, checked, onChange }) {
   return (

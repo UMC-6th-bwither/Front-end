@@ -2,9 +2,9 @@
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import * as B from './SignUpBreeder.style';
-import progressBar75 from '../../../public/icons/signUp/progress-bar-75.svg';
+import progressBar75 from '/icons/signUp/progress-bar-75.svg';
 import Button from '../../components/SignUpButton/Button';
-import failX from '../../../public/icons/signUp/fail_x.svg';
+import failX from '/icons/signUp/fail_x.svg';
 
 export default function SignUpBreederInfo() {
   const {

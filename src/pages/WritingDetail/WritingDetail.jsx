@@ -38,12 +38,12 @@ function WritingDetail() {
     {
       id: 2,
       type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
+      value: '/img/WritingDetailSample.png',
     },
     {
       id: 3,
       type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
+      value: '/img/WritingDetailSample.png',
     },
     {
       id: 4,
@@ -53,7 +53,7 @@ function WritingDetail() {
     {
       id: 5,
       type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
+      value: '/img/WritingDetailSample.png',
     },
   ];
 

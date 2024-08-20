@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import img from '../../../public/img/breederprofile.png';
+import img from '/img/breederprofile.png';
 import * as C from './ChatBreederInfo.style';
 
 export default function ChatBreederInfo() {

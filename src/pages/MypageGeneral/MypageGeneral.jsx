@@ -1,18 +1,20 @@
+import { useCallback } from 'react';
 import Carousel from 'react-multi-carousel';
 import PropTypes from 'prop-types';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as MP from './MypageGeneral.style';
-import profile from '../../../public/img/profile.png';
-import rightArrow from '../../../public/img/rightArrow.svg';
-import footprint from '../../../public/img/mypage_footprint.svg';
-import footprintLine from '../../../public/img/footprintLine.svg';
+import profile from '/img/profile.png';
+import rightArrow from '/img/rightArrow.svg';
+import footprint from '/img/mypage_footprint.svg';
+import footprintLine from '/img/footprintLine.svg';
 import ReservationDogCard from '../../components/ReservationDogCard/ReservationDogCard';
 import RecentDogCard from '../../components/RecentDogCard/RecentDogCard';
 import RecentBreederCard from '../../components/RecentBreederCard/RecentBreederCard';
 import SmallButton from '../../components/smallbutton/SmallButton';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
 import { openDeleteAccountModal, selectModal } from '../../redux/modalSlice';
+import { logout } from '../../redux/authSlice';
 // 예시 데이터
 import { recentDogData, recentBreederData } from './recentData';
 import { waitingDogData } from './waitingData';
@@ -32,9 +34,14 @@ RightArrow.propTypes = {
 };
 
 function MypageGeneral() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isDeleteAccountModalOpen } = useSelector(selectModal);
+
+  const handleLogout = useCallback(async () => {
+    await dispatch(logout());
+    navigate('/');
+  }, [dispatch, navigate]);
 
   const responsive = {
     desktop: {
@@ -189,7 +196,9 @@ function MypageGeneral() {
         <MP.SectionContainer>
           <div className="title">계정</div>
           <MP.SectionLinks>
-            <MP.NavLink>로그아웃</MP.NavLink>
+            <MP.NavLink type="button" onClick={handleLogout}>
+              로그아웃
+            </MP.NavLink>
             <MP.NavLink
               type="button"
               onClick={() => dispatch(openDeleteAccountModal())}

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import * as B from './SignUpBreeder.style';
-import progressBar50 from '../../../public/icons/signUp/progress-bar-50.svg';
-import choiceDog from '../../../public/icons/signUp/choice_dog.png';
-import choiceCat from '../../../public/icons/signUp/choice_cat.png';
-import search from '../../../public/icons/signUp/search.svg';
+import progressBar50 from '/icons/signUp/progress-bar-50.svg';
+import choiceDog from '/icons/signUp/choice_dog.png';
+import choiceCat from '/icons/signUp/choice_cat.png';
+import search from '/icons/signUp/search.svg';
 import Button from '../../components/SignUpButton/Button';
-import tagX from '../../../public/icons/signUp/breedTag_x.svg';
+import tagX from '/icons/signUp/breedTag_x.svg';
 
 const dogBreeds = [
   '골든 리트리버',

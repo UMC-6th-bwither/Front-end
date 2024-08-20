@@ -12,8 +12,8 @@ import {
   OrangeRightArrow,
   SmallRightArrow,
 } from '../../../public/img/ArrowIcon';
-import teleimg from '../../../public/img/telescope.png';
-import bannerimg from '../../../public/img/bannerimg.png';
+import teleimg from '/img/telescope.png';
+import bannerimg from '/img/bannerimg.png';
 import ButtonSelector from '../../components/buttonselector/ButtonSelector';
 
 const fetchUserData = () => {
@@ -477,7 +477,7 @@ const breederData = [
   {
     id: 1,
     name: '김기도',
-    profileImg: '../../../public/img/breederthumbnail1.png',
+    profileImg: '/img/breederthumbnail1.png',
     experience: 8,
     responseTime: 2,
     rating: 5.0,
@@ -485,7 +485,7 @@ const breederData = [
   {
     id: 2,
     name: '김성조',
-    profileImg: '../../../public/img/breederthumbnail2.png',
+    profileImg: '/img/breederthumbnail2.png',
     experience: 25,
     responseTime: 2,
     rating: 5.0,
@@ -493,7 +493,7 @@ const breederData = [
   {
     id: 3,
     name: '부산몬스터트랜스-권사',
-    profileImg: '../../../public/img/breederthumbnail3.png',
+    profileImg: '/img/breederthumbnail3.png',
     experience: 8,
     responseTime: 6,
     rating: 5.0,
@@ -501,7 +501,7 @@ const breederData = [
   {
     id: 4,
     name: '해피켄넬',
-    profileImg: '../../../public/img/breederthumbnail4.png',
+    profileImg: '/img/breederthumbnail4.png',
     experience: 8,
     responseTime: 6,
     rating: 5.0,
@@ -509,7 +509,7 @@ const breederData = [
   {
     id: 5,
     name: '5',
-    profileImg: '../../../public/img/breederthumbnail1.png',
+    profileImg: '/img/breederthumbnail1.png',
     experience: 8,
     responseTime: 6,
     rating: 5.0,
@@ -517,7 +517,7 @@ const breederData = [
   {
     id: 6,
     name: '6',
-    profileImg: '../../../public/img/breederthumbnail2.png',
+    profileImg: '/img/breederthumbnail2.png',
     experience: 3,
     responseTime: 6,
     rating: 5.0,
@@ -525,7 +525,7 @@ const breederData = [
   {
     id: 7,
     name: '7',
-    profileImg: '../../../public/img/breederthumbnail3.png',
+    profileImg: '/img/breederthumbnail3.png',
     experience: 8,
     responseTime: 2,
     rating: 5.0,
@@ -533,7 +533,7 @@ const breederData = [
   {
     id: 8,
     name: '8',
-    profileImg: '../../../public/img/breederthumbnail4.png',
+    profileImg: '/img/breederthumbnail4.png',
     experience: 25,
     responseTime: 2,
     rating: 5.0,
@@ -541,7 +541,7 @@ const breederData = [
   {
     id: 9,
     name: '9',
-    profileImg: '../../../public/img/breederthumbnail1.png',
+    profileImg: '/img/breederthumbnail1.png',
     experience: 8,
     responseTime: 6,
     rating: 5.0,
@@ -549,7 +549,7 @@ const breederData = [
   {
     id: 10,
     name: '10',
-    profileImg: '../../../public/img/breederthumbnail2.png',
+    profileImg: '/img/breederthumbnail2.png',
     experience: 3,
     responseTime: 6,
     rating: 5.0,
@@ -559,61 +559,61 @@ const breederData = [
 const infoData = [
   {
     id: 1,
-    imgSrc: '../../../public/img/mainpagethumbnail1.png',
+    imgSrc: '/img/mainpagethumbnail1.png',
     title: '강아지를 훈육하려면?',
     profileName: '남서연',
   },
   {
     id: 2,
-    imgSrc: '../../../public/img/mainpagethumbnail2.png',
+    imgSrc: '/img/mainpagethumbnail2.png',
     title: '견주만 휴가를 가나요, 반려견도 어쩌구 저쩌구',
     profileName: '써니',
   },
   {
     id: 3,
-    imgSrc: '../../../public/img/mainpagethumbnail3.png',
+    imgSrc: '/img/mainpagethumbnail3.png',
     title: '고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구',
     profileName: '이원비(Racdfkfekk)',
   },
   {
     id: 4,
-    imgSrc: '../../../public/img/mainpagethumbnail4.png',
+    imgSrc: '/img/mainpagethumbnail4.png',
     title: '견주가 처음인 당신에게',
     profileName: '해피켄넬',
   },
   {
     id: 5,
-    imgSrc: '../../../public/img/mainpagethumbnail1.png',
+    imgSrc: '/img/mainpagethumbnail1.png',
     title: '고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구',
     profileName: '남서연',
   },
   {
     id: 6,
-    imgSrc: '../../../public/img/mainpagethumbnail2.png',
+    imgSrc: '/img/mainpagethumbnail2.png',
     title: '6',
     profileName: '써니',
   },
   {
     id: 7,
-    imgSrc: '../../../public/img/mainpagethumbnail3.png',
+    imgSrc: '/img/mainpagethumbnail3.png',
     title: '7',
     profileName: '이원비(Racdfkfekk)',
   },
   {
     id: 8,
-    imgSrc: '../../../public/img/mainpagethumbnail4.png',
+    imgSrc: '/img/mainpagethumbnail4.png',
     title: '8',
     profileName: '해피켄넬',
   },
   {
     id: 9,
-    imgSrc: '../../../public/img/mainpagethumbnail1.png',
+    imgSrc: '/img/mainpagethumbnail1.png',
     title: '9',
     profileName: '이원비(Racdfkfekk)',
   },
   {
     id: 10,
-    imgSrc: '../../../public/img/mainpagethumbnail2.png',
+    imgSrc: '/img/mainpagethumbnail2.png',
     title: '10',
     profileName: '해피켄넬',
   },
@@ -622,28 +622,28 @@ const infoData = [
 const reviewData = [
   {
     id: 1,
-    imgSrc: '../../../public/img/mainpagethumbnail5.png',
+    imgSrc: '/img/mainpagethumbnail5.png',
     detail: '아주 귀엽쥬? 금방 적응해서 이젠 잘 웃네요',
   },
   {
     id: 2,
-    imgSrc: '../../../public/img/mainpagethumbnail6.png',
+    imgSrc: '/img/mainpagethumbnail6.png',
     detail: '최궁민 브리더님께 분양 받았습니다!',
   },
   {
     id: 3,
-    imgSrc: '../../../public/img/mainpagethumbnail7.png',
+    imgSrc: '/img/mainpagethumbnail7.png',
     detail: '이제 3주 된 애기예요~~~ 너무 예쁘죠',
   },
-  { id: 4, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '4' },
-  { id: 5, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '5' },
-  { id: 6, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '6' },
-  { id: 7, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '7' },
-  { id: 8, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '8' },
-  { id: 9, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '9' },
+  { id: 4, imgSrc: '/img/mainpagethumbnail5.png', detail: '4' },
+  { id: 5, imgSrc: '/img/mainpagethumbnail5.png', detail: '5' },
+  { id: 6, imgSrc: '/img/mainpagethumbnail5.png', detail: '6' },
+  { id: 7, imgSrc: '/img/mainpagethumbnail5.png', detail: '7' },
+  { id: 8, imgSrc: '/img/mainpagethumbnail5.png', detail: '8' },
+  { id: 9, imgSrc: '/img/mainpagethumbnail5.png', detail: '9' },
   {
     id: 10,
-    imgSrc: '../../../public/img/mainpagethumbnail5.png',
+    imgSrc: '/img/mainpagethumbnail5.png',
     detail: '10',
   },
 ];

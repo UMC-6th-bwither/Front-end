@@ -11,6 +11,7 @@ import extractFirstImageUrl from '../../../utils/extractImgSrcFromBlocks';
 import extractTextFromBlocks from '../../../utils/extractContextFromBlocks';
 import convertToKST from '../../../utils/convertToKST';
 import useAuth from '../../../hooks/useAuth';
+import convertBlobUrlToHttpUrl from '../../../utils/convertBlobUrlToHttpUrl';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -142,7 +143,7 @@ export default function CommunityBreederInformation() {
             <PostCard
               key={post.id}
               petType={post.petType} // petType prop 전달
-              profileImgSrc=""
+              profileImgSrc={convertBlobUrlToHttpUrl(post.authorImage)}
               profileName={post.author}
               postTitle={post.title}
               postContent={extractTextFromBlocks(post.blocks)}
