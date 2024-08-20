@@ -19,7 +19,7 @@ export const Border = styled.div`
   width: 100%;
   max-width: 970px;
   margin: 0 auto;
-  gap: 80px;
+  gap: 86px;
   padding-top: 136px;
   padding-bottom: 300px;
 `;
@@ -74,6 +74,25 @@ export const Left = styled.div`
 export const Info = styled.div`
   ${commonFlexColumn}
   gap: 6px;
+
+  .name {
+    color: var(--black, #272727);
+    font-family: 'Noto Sans KR';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 21px; /* 105% */
+    letter-spacing: 0.8px;
+  }
+  .email {
+    color: var(--Grey_text, #737373);
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 21px; /* 150% */
+    letter-spacing: 0.56px;
+  }
 `;
 
 export const Button = styled.div`
@@ -111,7 +130,7 @@ export const Reservation = styled.div`
 export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 `;
 
 export const ResContent = styled.div`
@@ -126,24 +145,6 @@ export const ResContent = styled.div`
     font-family: 'Noto Sans KR';
     font-size: 18px;
     font-weight: 500;
-  }
-  .waitingnum {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  .emphasis {
-    color: #fe834d;
-    font-weight: 700;
-  }
-  .rightArrowButton {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-  .rightArrow {
-    display: block;
   }
 `;
 
@@ -166,7 +167,7 @@ export const SliderContainer = styled.div`
   .carousel {
     width: 972px;
     height: 200px;
-    padding: 10px 15px;
+    padding: 10px 0;
   }
   .react-multi-carousel-item {
     display: flex;
