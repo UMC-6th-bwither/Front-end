@@ -31,7 +31,28 @@ export default function CommunityBreederInformation() {
 
   const [posts, setPosts] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-  const [filteredPosts, setFilteredPosts] = useState([]); // 필터링된 포스트를 관리할 상태 추가
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [sortOption, setSortOption] = useState('최신순'); // 기본 정렬 옵션을 '최신순'으로 설정
+  const [page, setPage] = useState(1);
+  const [activeFilter, setActiveFilter] = useState('전체');
+  const navigate = useNavigate();
+
+  const sortPosts = (option, posts) => {
+    switch (option) {
+      case '최신순':
+        return [...posts].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        );
+      case '조회순':
+        return [...posts].sort((a, b) => b.viewCount - a.viewCount);
+      case '스크랩순':
+        return [...posts].sort(
+          (a, b) => (b.bookmarkCount || 0) - (a.bookmarkCount || 0),
+        );
+      default:
+        return posts;
+    }
+  };
 
   const fetchPosts = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -44,11 +65,10 @@ export default function CommunityBreederInformation() {
 
     const data = await res.json();
     setPosts(data.result);
-    setFilteredPosts(data.result); // 처음 로드 시 전체 포스트를 보여주도록 설정
+    setFilteredPosts(sortPosts(sortOption, data.result)); // 로드된 데이터를 바로 정렬
   };
 
   const fetchUserInfo = async () => {
-    // console.log('유저 정보 조회');
     const apiUrl = import.meta.env.VITE_API_URL;
     const endPoint = `${apiUrl}/user`;
     const res = await fetch(endPoint, {
@@ -69,26 +89,34 @@ export default function CommunityBreederInformation() {
     }
   }, [isLoggedIn]);
 
-  const [page, setPage] = useState(1);
-  const [sortOption, setSortOption] = useState(null);
-  const [activeFilter, setActiveFilter] = useState('전체'); // 활성화된 필터를 관리할 상태 추가
-  const navigate = useNavigate();
-
   const handleFilterClick = (filterName) => {
-    setActiveFilter(filterName); // 필터 클릭 시 활성화된 필터 상태 업데이트
+    setActiveFilter(filterName);
 
     if (filterName === '전체') {
-      setFilteredPosts(posts); // '전체'를 선택하면 모든 포스트를 보여줌
+      setFilteredPosts(sortPosts(sortOption, posts)); // 필터링 후 정렬 적용
     } else if (filterName === '강아지') {
-      setFilteredPosts(posts.filter((post) => post.petType === 'DOG')); // '강아지'를 선택하면 DOG 포스트만 보여줌
+      setFilteredPosts(
+        sortPosts(
+          sortOption,
+          posts.filter((post) => post.petType === 'DOG'),
+        ),
+      );
     } else if (filterName === '고양이') {
-      setFilteredPosts(posts.filter((post) => post.petType === 'CAT')); // '고양이'를 선택하면 CAT 포스트만 보여줌
+      setFilteredPosts(
+        sortPosts(
+          sortOption,
+          posts.filter((post) => post.petType === 'CAT'),
+        ),
+      );
     }
   };
 
+  useEffect(() => {
+    setFilteredPosts(sortPosts(sortOption, filteredPosts)); // 정렬 옵션이 바뀔 때마다 필터된 포스트를 정렬
+  }, [sortOption]);
+
   return (
     <P.Layout>
-      {/* {isLoggedIn && <div>loggedin</div>} */}
       <VerticalMenuSelector
         title="커뮤니티"
         items={menuItems}
@@ -121,8 +149,8 @@ export default function CommunityBreederInformation() {
             {['전체', '강아지', '고양이'].map((filter) => (
               <P.Filter
                 key={filter}
-                $active={activeFilter === filter} // 활성화된 필터에만 $active prop 전달
-                onClick={() => handleFilterClick(filter)} // 클릭 시 필터 업데이트
+                $active={activeFilter === filter}
+                onClick={() => handleFilterClick(filter)}
               >
                 {filter}
               </P.Filter>
@@ -131,7 +159,7 @@ export default function CommunityBreederInformation() {
           <P.SortContainer>
             <Dropbox
               defaultPlaceholder="정렬 기준"
-              menuList={['최신순', '조회순', '댓글순', '스크랩순']}
+              menuList={['최신순', '조회순', '스크랩순']}
               currentMenu={sortOption}
               setCurrentMenu={setSortOption}
             />
@@ -142,7 +170,7 @@ export default function CommunityBreederInformation() {
           {filteredPosts.map((post) => (
             <PostCard
               key={post.id}
-              petType={post.petType} // petType prop 전달
+              petType={post.petType}
               profileImgSrc={convertBlobUrlToHttpUrl(post.authorImage)}
               profileName={post.author}
               postTitle={post.title}
