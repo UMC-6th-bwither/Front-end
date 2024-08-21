@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import * as S from './WritingDetail.style';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
 import TimeStampParser from '../../components/TimeStampParser/TimeStampParser';
 import api from '../../api/api';
 import Editor from '../../components/Editor/Editor';
+import useAuth from '../../hooks/useAuth';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -14,13 +16,15 @@ function WritingDetail() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { userId } = useAuth();
+  const { postId } = useParams();
 
   // 글 데이터 받아오기
   useEffect(() => {
     const getUserInfo = async () => {
       const token = localStorage.getItem('accessToken');
       try {
-        const response = await api.get('/post/1', {
+        const response = await api.get(`/post/${postId}`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -28,15 +32,15 @@ function WritingDetail() {
         });
         setPost(response.data.result);
         setLoading(false);
-        console.log('우왕 성공 User info:', response.data.result);
+        console.log('본문 데이터 요청 성공 User info:', response.data.result);
       } catch (error) {
-        console.error('응 실패:', error);
+        console.error('본문 데이터 요청 실패:', error);
         setLoading(false);
       }
     };
 
     getUserInfo();
-  }, []);
+  }, [postId]);
 
   // 기존 북마크된 글인지 확인
   useEffect(() => {
@@ -90,6 +94,7 @@ function WritingDetail() {
     return <div>데이터가 없습니다.</div>;
   }
 
+  // url 복사 로직
   const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
     navigator.clipboard
@@ -102,12 +107,12 @@ function WritingDetail() {
       });
   };
 
-  // 북마크 추가
-  const addBookmark = async (postId, memberId) => {
+  // 북마크 추가 로직
+  const addBookmark = async (postid, memberId) => {
     const token = localStorage.getItem('accessToken');
     try {
       const response = await api.post(
-        `/post/${postId}/bookmark?memberId=${memberId}`,
+        `/post/${postid}/bookmark?memberId=${memberId}`,
         {},
         {
           headers: {
@@ -124,12 +129,12 @@ function WritingDetail() {
     }
   };
 
-  // 북마크 제거
-  const removeBookmark = async (postId, memberId) => {
+  // 북마크 제거 로직
+  const removeBookmark = async (postid, memberId) => {
     const token = localStorage.getItem('accessToken');
     try {
       const response = await api.delete(
-        `/post/${postId}/bookmark?memberId=${memberId}`,
+        `/post/${postid}/bookmark?memberId=${memberId}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -145,12 +150,11 @@ function WritingDetail() {
     }
   };
 
-  // 북마크
+  // 북마크 handle
   const handleBookmarkToggle = async () => {
     if (!post) return;
 
-    const memberId = 1; // 수정 필요
-    const postId = post.id;
+    const memberId = userId;
 
     let success;
     if (isBookmarked) {
@@ -235,7 +239,7 @@ function WritingDetail() {
               </S.TitleIconContainer>
             </S.Title>
             <S.ProfileContainer>
-              <S.ProfileImg />
+              <S.ProfileImg src={post.authorImage} />
               <S.ProfileName>{post.author}</S.ProfileName>
               <S.Time>
                 <TimeStampParser>{post.createdAt}</TimeStampParser>

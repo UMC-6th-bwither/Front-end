@@ -13,34 +13,55 @@ import {
   SmallRightArrow,
 } from '../../../public/img/ArrowIcon';
 import teleimg from '../../../public/img/telescope.png';
-import bannerimg from '../../../public/img/bannerimg.png';
 import ButtonSelector from '../../components/buttonselector/ButtonSelector';
-
-const fetchUserData = () => {
-  return {
-    name: 'John',
-    role: 'bwither',
-  };
-};
+import ReviewModal from '../../components/BreederReview/ReviewModal';
+import useAuth from '../../hooks/useAuth';
+import api from '../../api/api';
 
 function Main() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const userData = fetchUserData();
-    setUser(userData);
-  }, []);
+  const { isLoggedIn, role } = useAuth();
 
   return (
     <S.MainContainer>
       <S.Layout>
-        {user && user.role === 'breeder' ? <BreederPage /> : <CommonPage />}
+        {!isLoggedIn || role === 'MEMBER' ? <CommonPage /> : <BreederPage />}
       </S.Layout>
     </S.MainContainer>
   );
 }
 
 function CommonPage() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [totalBreeders, setTotalBreeders] = useState();
+
+  useEffect(() => {
+    const fetchPopularBreeders = async () => {
+      try {
+        const response = await api.get('/main/popular', {
+          params: { animalType: 'DOG' },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+          },
+        });
+        if (response.data.isSuccess) {
+          setTotalBreeders(response.data.result[0].totalBreeders);
+        } else {
+          setError(response.data.message);
+        }
+      } catch (err) {
+        setError('Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPopularBreeders();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -75,7 +96,7 @@ function CommonPage() {
           </S.HeadLiner>
 
           <S.HeadLiner>
-            현재 <span>000명</span>의 브리더와 함께하고 있어요!
+            현재 <span>{totalBreeders}명</span>의 브리더와 함께하고 있어요!
           </S.HeadLiner>
         </Carousel>
       </S.HeadLineContainer>
@@ -100,6 +121,36 @@ function CommonPage() {
 }
 
 function BreederPage() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [totalAnimals, setTotalAnimals] = useState();
+
+  useEffect(() => {
+    const fetchTotalAnimals = async () => {
+      try {
+        const response = await api.get('/main/title', {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+          },
+        });
+        if (response.data.isSuccess) {
+          setTotalAnimals(response.data.result);
+        } else {
+          setError(response.data.message);
+        }
+      } catch (err) {
+        setError('Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTotalAnimals();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -134,7 +185,7 @@ function BreederPage() {
           </S.HeadLiner>
 
           <S.HeadLiner>
-            지금 <span>000마리</span>의 아이들이 가족을 기다려요!
+            지금 <span>{totalAnimals}마리</span>의 아이들이 가족을 기다려요!
           </S.HeadLiner>
         </Carousel>
       </S.HeadLineContainer>
@@ -255,12 +306,49 @@ function ExploreAll({ href }) {
 
 function BreederRankingCommonVer() {
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedAnimal, setSelectedAnimal] = useState('dog');
+  const [selectedAnimal, setSelectedAnimal] = useState('DOG');
+  const [breeders, setBreeders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [totalBreeders, setTotalBreeders] = useState();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchPopularBreeders = async () => {
+      try {
+        const response = await api.get('/main/popular', {
+          params: { animalType: selectedAnimal },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+          },
+        });
+        if (response.data.isSuccess) {
+          setBreeders(response.data.result[0].breederProfiles);
+          setTotalBreeders(response.data.result[0].totalBreeders);
+          // console.log('브리더 랭킹 데이터 요청 성공');
+        } else {
+          setError(response.data.message);
+        }
+      } catch (err) {
+        setError('Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPopularBreeders();
+  }, [selectedAnimal]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  // 강아지, 고양이 필터
   const handleSelect = (animal) => {
     setSelectedAnimal(animal);
   };
 
+  // 버튼 이동 슬라이드
   const handleBeforeChange = (current, next) => {
     if (current < next) {
       setCurrentPage(currentPage + 3);
@@ -291,14 +379,16 @@ function BreederRankingCommonVer() {
     <S.PBContainer>
       <S.AnimalChoiceContainer>
         <ButtonSelector
-          active={selectedAnimal === 'dog'}
-          onClick={() => handleSelect('dog')}
+          key={`DOG-${selectedAnimal === 'DOG'}`}
+          active={selectedAnimal === 'DOG'}
+          onClick={() => handleSelect('DOG')}
         >
           강아지
         </ButtonSelector>
         <ButtonSelector
-          active={selectedAnimal === 'cat'}
-          onClick={() => handleSelect('cat')}
+          key={`CAT-${selectedAnimal === 'CAT'}`}
+          active={selectedAnimal === 'CAT'}
+          onClick={() => handleSelect('CAT')}
         >
           고양이
         </ButtonSelector>
@@ -315,25 +405,24 @@ function BreederRankingCommonVer() {
           prevArrow={settings.prevArrow}
           nextArrow={settings.nextArrow}
         >
-          <S.MeetingBreederCard>
+          <S.MeetingBreederCard onClick={() => navigate('/breeder-list')}>
             <S.Img src={teleimg} alt="telescope" />
             <S.MeetingBreederText>
               <p>
-                <span>127명</span>의
+                <span>{totalBreeders}명</span>의
               </p>
               브리더 만나보기 <SmallRightArrow />
             </S.MeetingBreederText>
           </S.MeetingBreederCard>
 
-          {breederData.map((breeder) => (
-            <S.BreederCard key={breeder.id}>
-              <S.BreederProfile src={breeder.profileImg} alt="profileImg" />
-              <S.BreederName>{breeder.name}</S.BreederName>
-              <S.ReviewStars>⭐ {breeder.rating}</S.ReviewStars>
-              <S.BreederInfo>
-                경력 {breeder.experience}년 · 평균 {breeder.responseTime}시간 내
-                응답
-              </S.BreederInfo>
+          {breeders.slice(0, 10).map((breeder) => (
+            <S.BreederCard key={breeder.breederId}>
+              <S.BreederProfile src={breeder.profileUrl} alt="profileImg" />
+              <S.BreederName>{breeder.tradeName}</S.BreederName>
+              <S.ReviewStars>
+                ⭐ {(breeder.breederRating ?? 0).toFixed(1)}
+              </S.ReviewStars>
+              <S.BreederInfo>경력 {breeder.careerYear}년</S.BreederInfo>
             </S.BreederCard>
           ))}
         </Slider>
@@ -343,27 +432,77 @@ function BreederRankingCommonVer() {
 }
 
 function BreederRankingBreederVer() {
+  const [selectedAnimal, setSelectedAnimal] = useState('DOG');
+  const [breeders, setBreeders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPopularBreeders = async () => {
+      try {
+        const response = await api.get('/main/popular', {
+          params: { animalType: selectedAnimal },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+          },
+        });
+        if (response.data.isSuccess) {
+          setBreeders(response.data.result[0].breederProfiles);
+
+          console.log('브리더 랭킹 데이터 요청 성공');
+        } else {
+          setError(response.data.message);
+        }
+      } catch (err) {
+        setError('Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPopularBreeders();
+  }, [selectedAnimal]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const handleSelect = (animal) => {
+    setSelectedAnimal(animal);
+  };
+
   return (
     <S.PBContainerVer2>
       <S.AnimalChoiceContainer>
-        <ButtonSelector>강아지</ButtonSelector>
-        <ButtonSelector>고양이</ButtonSelector>
+        <ButtonSelector
+          key={`DOG-${selectedAnimal === 'DOG'}`}
+          active={selectedAnimal === 'DOG'}
+          onClick={() => handleSelect('DOG')}
+        >
+          강아지
+        </ButtonSelector>
+        <ButtonSelector
+          key={`CAT-${selectedAnimal === 'CAT'}`}
+          active={selectedAnimal === 'CAT'}
+          onClick={() => handleSelect('CAT')}
+        >
+          고양이
+        </ButtonSelector>
       </S.AnimalChoiceContainer>
 
       <S.BreederListVer2>
-        {breederData.slice(0, 5).map((breeder, index) => (
-          <S.BreederCardVer2 key={breeder.id}>
+        {breeders.slice(0, 5).map((breeder, index) => (
+          <S.BreederCardVer2 key={breeder.breederId}>
             <S.RankingNum>{index + 1}</S.RankingNum>
-            <S.BreederProfileVer2 src={breeder.profileImg} alt="profileImg" />
+            <S.BreederProfileVer2 src={breeder.profileUrl} alt="profileImg" />
             <S.BreederDetails>
               <S.BreederNameStars>
-                <S.BreederNameVer2>{breeder.name}</S.BreederNameVer2>
-                <S.ReviewStarsVer2>⭐ {breeder.rating}</S.ReviewStarsVer2>
+                <S.BreederNameVer2>{breeder.tradeName}</S.BreederNameVer2>
+                <S.ReviewStarsVer2>
+                  ⭐ {(breeder.breederRating ?? 0).toFixed(1)}
+                </S.ReviewStarsVer2>
               </S.BreederNameStars>
-              <S.BreederInfoVer2>
-                경력 {breeder.experience}년 · 평균 {breeder.responseTime}시간 내
-                응답
-              </S.BreederInfoVer2>
+              <S.BreederInfoVer2>경력 {breeder.careerYear}년</S.BreederInfoVer2>
             </S.BreederDetails>
           </S.BreederCardVer2>
         ))}
@@ -374,6 +513,37 @@ function BreederRankingBreederVer() {
 
 function InfoArticle() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [articleData, setArticleData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  // 데이터 받아오기
+  useEffect(() => {
+    const getInfo = async () => {
+      try {
+        const response = await api.get('/main/tips', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.data.isSuccess) {
+          setArticleData(response.data.result);
+        } else {
+          setError(response.data.message);
+        }
+        console.log('브리더 랭킹 데이터 요청 성공', articleData);
+      } catch (err) {
+        setError('Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    getInfo();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   const handleBeforeChange = (current, next) => {
     if (current < next) {
@@ -414,15 +584,18 @@ function InfoArticle() {
         prevArrow={settings.prevArrow}
         nextArrow={settings.nextArrow}
       >
-        {infoData.map((info) => (
-          <S.InfoCard key={info.id}>
+        {articleData.slice(0, 10).map((data) => (
+          <S.InfoCard
+            key={data.postId}
+            onClick={() => navigate(`/WritingDetail/${data.postId}`)}
+          >
             <S.CardContainer>
-              <S.InfoCardImg src={info.imgSrc} alt="InfoCard" />
-              <S.InfoTitle>{info.title}</S.InfoTitle>
+              <S.InfoCardImg src={data.postImageUrl} alt="InfoCard" />
+              <S.InfoTitle>{data.title}</S.InfoTitle>
             </S.CardContainer>
             <S.ProFileContainer>
-              <S.ProfileImg />
-              <S.ProFileName>{info.profileName}</S.ProFileName>
+              <S.ProfileImg src={data.breederImageUrl} alt="InfoCard" />
+              <S.ProFileName>{data.profileName}</S.ProFileName>
             </S.ProFileContainer>
           </S.InfoCard>
         ))}
@@ -433,6 +606,39 @@ function InfoArticle() {
 
 function AdoptionReview() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [reviewData, setReviewData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 데이터 받아오기
+  useEffect(() => {
+    const getInfo = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await api.get('/post/25', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.isSuccess) {
+          setReviewData(response.data.result);
+        } else {
+          setError(response.data.message);
+        }
+        console.log('분양 후기 데이터 요청 성공', reviewData);
+      } catch (err) {
+        setError('Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    getInfo();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   const handleBeforeChange = (current, next) => {
     if (current < next) {
       setCurrentPage(currentPage + 3);
@@ -462,7 +668,7 @@ function AdoptionReview() {
 
   return (
     <S.ARContainer>
-      <Slider
+      {/* <Slider
         dots={settings.dots}
         infinite={settings.infinite}
         speed={settings.speed}
@@ -472,190 +678,15 @@ function AdoptionReview() {
         prevArrow={settings.prevArrow}
         nextArrow={settings.nextArrow}
       >
-        {reviewData.map((review) => (
-          <S.ReviewCard key={review.id}>
-            <S.ReviewCardImg src={review.imgSrc} alt="InfoCard" />
-            <S.ReviewDetail>{review.detail}</S.ReviewDetail>
+        {reviewData.slice(0, 10).map((review) => (
+          <S.ReviewCard key={review.postId}>
+            <S.ReviewCardImg src={review.postImageUrl} alt="InfoCard" />
+            <S.ReviewDetail>{review.title}</S.ReviewDetail>
           </S.ReviewCard>
         ))}
-      </Slider>
+      </Slider> */}
     </S.ARContainer>
   );
 }
-
-const breederData = [
-  {
-    id: 1,
-    name: '김기도',
-    profileImg: '../../../public/img/breederthumbnail1.png',
-    experience: 8,
-    responseTime: 2,
-    rating: 5.0,
-  },
-  {
-    id: 2,
-    name: '김성조',
-    profileImg: '../../../public/img/breederthumbnail2.png',
-    experience: 25,
-    responseTime: 2,
-    rating: 5.0,
-  },
-  {
-    id: 3,
-    name: '부산몬스터트랜스-권사',
-    profileImg: '../../../public/img/breederthumbnail3.png',
-    experience: 8,
-    responseTime: 6,
-    rating: 5.0,
-  },
-  {
-    id: 4,
-    name: '해피켄넬',
-    profileImg: '../../../public/img/breederthumbnail4.png',
-    experience: 8,
-    responseTime: 6,
-    rating: 5.0,
-  },
-  {
-    id: 5,
-    name: '5',
-    profileImg: '../../../public/img/breederthumbnail1.png',
-    experience: 8,
-    responseTime: 6,
-    rating: 5.0,
-  },
-  {
-    id: 6,
-    name: '6',
-    profileImg: '../../../public/img/breederthumbnail2.png',
-    experience: 3,
-    responseTime: 6,
-    rating: 5.0,
-  },
-  {
-    id: 7,
-    name: '7',
-    profileImg: '../../../public/img/breederthumbnail3.png',
-    experience: 8,
-    responseTime: 2,
-    rating: 5.0,
-  },
-  {
-    id: 8,
-    name: '8',
-    profileImg: '../../../public/img/breederthumbnail4.png',
-    experience: 25,
-    responseTime: 2,
-    rating: 5.0,
-  },
-  {
-    id: 9,
-    name: '9',
-    profileImg: '../../../public/img/breederthumbnail1.png',
-    experience: 8,
-    responseTime: 6,
-    rating: 5.0,
-  },
-  {
-    id: 10,
-    name: '10',
-    profileImg: '../../../public/img/breederthumbnail2.png',
-    experience: 3,
-    responseTime: 6,
-    rating: 5.0,
-  },
-];
-
-const infoData = [
-  {
-    id: 1,
-    imgSrc: '../../../public/img/mainpagethumbnail1.png',
-    title: '강아지를 훈육하려면?',
-    profileName: '남서연',
-  },
-  {
-    id: 2,
-    imgSrc: '../../../public/img/mainpagethumbnail2.png',
-    title: '견주만 휴가를 가나요, 반려견도 어쩌구 저쩌구',
-    profileName: '써니',
-  },
-  {
-    id: 3,
-    imgSrc: '../../../public/img/mainpagethumbnail3.png',
-    title: '고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구',
-    profileName: '이원비(Racdfkfekk)',
-  },
-  {
-    id: 4,
-    imgSrc: '../../../public/img/mainpagethumbnail4.png',
-    title: '견주가 처음인 당신에게',
-    profileName: '해피켄넬',
-  },
-  {
-    id: 5,
-    imgSrc: '../../../public/img/mainpagethumbnail1.png',
-    title: '고양이는 혼자 있는 것을 좋아할까요 어쩌구 저쩌구',
-    profileName: '남서연',
-  },
-  {
-    id: 6,
-    imgSrc: '../../../public/img/mainpagethumbnail2.png',
-    title: '6',
-    profileName: '써니',
-  },
-  {
-    id: 7,
-    imgSrc: '../../../public/img/mainpagethumbnail3.png',
-    title: '7',
-    profileName: '이원비(Racdfkfekk)',
-  },
-  {
-    id: 8,
-    imgSrc: '../../../public/img/mainpagethumbnail4.png',
-    title: '8',
-    profileName: '해피켄넬',
-  },
-  {
-    id: 9,
-    imgSrc: '../../../public/img/mainpagethumbnail1.png',
-    title: '9',
-    profileName: '이원비(Racdfkfekk)',
-  },
-  {
-    id: 10,
-    imgSrc: '../../../public/img/mainpagethumbnail2.png',
-    title: '10',
-    profileName: '해피켄넬',
-  },
-];
-
-const reviewData = [
-  {
-    id: 1,
-    imgSrc: '../../../public/img/mainpagethumbnail5.png',
-    detail: '아주 귀엽쥬? 금방 적응해서 이젠 잘 웃네요',
-  },
-  {
-    id: 2,
-    imgSrc: '../../../public/img/mainpagethumbnail6.png',
-    detail: '최궁민 브리더님께 분양 받았습니다!',
-  },
-  {
-    id: 3,
-    imgSrc: '../../../public/img/mainpagethumbnail7.png',
-    detail: '이제 3주 된 애기예요~~~ 너무 예쁘죠',
-  },
-  { id: 4, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '4' },
-  { id: 5, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '5' },
-  { id: 6, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '6' },
-  { id: 7, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '7' },
-  { id: 8, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '8' },
-  { id: 9, imgSrc: '../../../public/img/mainpagethumbnail5.png', detail: '9' },
-  {
-    id: 10,
-    imgSrc: '../../../public/img/mainpagethumbnail5.png',
-    detail: '10',
-  },
-];
 
 export default Main;

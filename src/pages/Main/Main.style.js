@@ -326,6 +326,7 @@ export const BreederInfoVer2 = styled.div`
   font-weight: 350;
   line-height: 18px;
   color: #737373;
+  text-align: left;
 `;
 
 export const Theme = styled.div`
@@ -462,7 +463,7 @@ export const ProFileContainer = styled.div`
   border-radius: 8px;
 `;
 
-export const ProfileImg = styled.div`
+export const ProfileImg = styled.img`
   width: 20px;
   height: 20px;
   gap: 0px;
