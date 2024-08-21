@@ -1,10 +1,12 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
 import * as BL from './BreederList.style';
-import { cities, animalBreeds, 전체BreederCard } from '../selectData';
+import { cities, animalBreeds } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
 import BreederCard from '../../components/BreederCard/BreederCard';
 import DropBox from '../../components/DropBoxes/DropBox';
+import nothingBowl from '../../../public/img/nothing_bowl.svg';
+import api from '../../api/api';
 
 function BreederList() {
   const [activeCities, setActiveCities] = useState([]);
@@ -12,22 +14,116 @@ function BreederList() {
   const [breeds, setBreeds] = useState([]);
   const [selectedBreed, setSelectedBreed] = useState('');
   const [selectedCities, setSelectedCities] = useState([]);
+  const [selectedSort, setSelectedSort] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState([]);
+  const [breederCards, setBreederCards] = useState([]); // api 호출 데이터 저장
 
+  // api 호출
   useEffect(() => {
-    setBreeds(animalBreeds[selectedAnimal] || []);
-  }, [selectedAnimal, setSelectedAnimal]);
+    const fetchBreeder = async () => {
+      try {
+        const response = await api.get('/breeder', {
+          params: {
+            page: currentPage - 1,
+            regions: selectedCities.join(','),
+            animalType: selectedAnimal,
+            species: selectedBreed,
+            sort: selectedSort,
+          },
+        });
+        const data = response.data.result;
+        setBreederCards(data.breederList);
+      } catch (error) {
+        console.error('Error fetching breeders', error);
+      }
+    };
 
+    fetchBreeder();
+  }, [
+    currentPage,
+    selectedCities,
+    selectedAnimal,
+    selectedBreed,
+    selectedSort,
+  ]);
+
+  // 북마크 저장, 취소
+  const handleBookmarkChange = async (breederId, newStatus) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      // const breederId = 1;
+
+      if (newStatus === 'BOOKING') {
+        // 북마크 추가
+        const response = await api.post(
+          `/breeder/${breederId}/bookmark`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            params: {
+              breederId,
+            },
+          },
+        );
+
+        if (response.data && response.data.code === 'SUCCESS_BOOKMARK_ANIMAL') {
+          setIsBookmarked((prev) => ({
+            ...prev,
+            [breederId]: newStatus,
+          }));
+        } else {
+          console.error('Bookmarking failed', response.data.message);
+        }
+      } else if (newStatus === 'BEFORE') {
+        // 북마크 제거
+        const response = await api.delete(`/breeder/${breederId}/bookmark`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          params: {
+            breederId,
+          },
+        });
+
+        if (
+          response.data &&
+          response.data.code === 'SUCCESS_REMOVE_BOOKMARK_ANIMAL'
+        ) {
+          setIsBookmarked((prev) => ({
+            ...prev,
+            [breederId]: newStatus,
+          }));
+        } else {
+          console.error('Unbookmarking failed', response.data.message);
+        }
+      }
+    } catch (error) {
+      console.error('Error handling bookmark:', error);
+    }
+  };
+  // 강아지, 고양이 선택
   const handleAnimalChange = (event) => {
     setSelectedAnimal(event);
     setBreeds(animalBreeds[event] || []);
   };
-
+  // 강아지, 고양이에 따른 종 변화
+  useEffect(() => {
+    setBreeds(animalBreeds[selectedAnimal] || []);
+  }, [selectedAnimal, setSelectedAnimal]);
+  // 종 선택
   const handleBreedChange = (value) => {
     setSelectedBreed(value);
   };
-
+  // 정렬 선택
+  const handleSortChange = (value) => {
+    setSelectedSort(value);
+  };
+  // 지역 선택
   const handleCityChange = (city) => {
     setActiveCities(
       (prevCities) =>
@@ -45,20 +141,13 @@ function BreederList() {
     setCurrentPage(1);
   };
 
-  const handleBookmarkToggle = (name) => {
-    setIsBookmarked((preBookmarkedCards) => ({
-      ...preBookmarkedCards,
-      [name]: !preBookmarkedCards[name], // 해당 DogCard 상태 변경
-    }));
-  };
-
   // 선택된 조건에 따른 BreederCard데이터 필터링
-  const filteredBreederCards = 전체BreederCard.filter((breeder) => {
-    return (
-      (selectedBreed === '' || breeder.breed === selectedBreed) &&
-      (selectedCities.length === 0 || selectedCities.includes(breeder.location))
-    );
-  });
+  // const filteredBreederCards = breederCards.filter((breeder) => {
+  //   return (
+  //     selectedCities.length === 0 ||
+  //     selectedCities.some((city) => breeder.address.includes(city))
+  //   );
+  // });
 
   return (
     <BL.Border>
@@ -95,9 +184,9 @@ function BreederList() {
               id="animal-dropbox"
               label="전체"
               options={[
-                { value: 'entire', label: '전체' },
-                { value: 'dog', label: '강아지' },
-                { value: 'cat', label: '고양이' },
+                { value: '', label: '전체' },
+                { value: 'DOG', label: '강아지' },
+                { value: 'CAT', label: '고양이' },
               ]}
               onChange={handleAnimalChange}
             />
@@ -115,42 +204,55 @@ function BreederList() {
             id="sort-dropbox"
             label="최신순"
             options={[
-              { value: 'latest', label: '최신순' },
-              { value: 'popular', label: '인기순' },
+              { value: 'createdAt', label: '최신순' },
+              { value: 'breederMemberCount', label: '인기순' },
               { value: 'distance', label: '거리순' },
-              { value: 'individual', label: '개체순' },
+              { value: 'animalCount', label: '개체순' },
             ]}
+            onChange={handleSortChange}
           />
         </BL.SelectContainer>
 
-        <BL.CardsContainer>
-          <div className="breederCard">
-            {filteredBreederCards.map((breeder, index) => (
-              <BreederCard
-                key={index}
-                to="/breeder-detail"
-                photo={breeder.photo}
-                location={breeder.location}
-                name={breeder.name}
-                breederExperience={breeder.breederExperience}
-                numberOfCertifications={breeder.numberOfCertifications}
-                waitingDogs={breeder.waitingDogs}
-                waitlistCount={breeder.waitlistCount}
-                rating={breeder.rating}
-                reviewCount={breeder.reviewCount}
-                isBookmarked={!!isBookmarked[breeder.name]}
-                setIsBookmarked={() => handleBookmarkToggle(breeder.name)}
+        <BL.CardsContainer className={breederCards.length === 0 ? 'empty' : ''}>
+          {breederCards.length > 0 ? (
+            <>
+              <div className="breederCard">
+                {breederCards.map((breeder) => (
+                  <BreederCard
+                    key={breeder.breederId}
+                    id={breeder.breederId}
+                    to="/breeder-detail"
+                    photo={breeder.profileUrl}
+                    location={breeder.address}
+                    name={breeder.breederName}
+                    breederExperience={breeder.careerYear}
+                    numberOfCertifications={breeder.certificateCount}
+                    waitingDogs={breeder.waitAnimal}
+                    waitlistCount={breeder.waitlist}
+                    rating={breeder.breederRating}
+                    reviewCount={breeder.reviewCount}
+                    initialIsBookmarked={
+                      isBookmarked[breeder.breederId] || 'BEFORE'
+                    }
+                    onBookmarkChange={(newStatus) =>
+                      handleBookmarkChange(breeder.breederId, newStatus)
+                    }
+                  />
+                ))}
+              </div>
+              <Pagination
+                totalItems={breederCards.length}
+                itemsPerPage={20}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
               />
-            ))}
-          </div>
-          <div>
-            <Pagination
-              totalItems={filteredBreederCards.length}
-              itemsPerPage={20}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </div>
+            </>
+          ) : (
+            <BL.NothingContainer>
+              <img src={nothingBowl} alt="no animals" />
+              <div className="nothing_text">아직 브리더가 없어요..</div>
+            </BL.NothingContainer>
+          )}
         </BL.CardsContainer>
       </BL.AnimalContainer>
     </BL.Border>
