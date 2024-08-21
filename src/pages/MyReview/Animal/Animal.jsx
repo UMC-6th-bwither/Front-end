@@ -27,7 +27,7 @@ function Animal() {
   const [breeds, setBreeds] = useState([]);
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedBreed, setSelectedBreed] = useState('');
-  const [isReserved, setIsReserved] = useState(false);
+  const [isReserved, setIsReserved] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [boodmarkedAnimal, setBookmaredAnimal] = useState([]);
 
