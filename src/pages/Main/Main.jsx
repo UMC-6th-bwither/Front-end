@@ -12,9 +12,8 @@ import {
   OrangeRightArrow,
   SmallRightArrow,
 } from '../../../public/img/ArrowIcon';
-import teleimg from '../../../public/img/telescope.png';
+import teleimg from '/img/telescope.png';
 import ButtonSelector from '../../components/buttonselector/ButtonSelector';
-import ReviewModal from '../../components/BreederReview/ReviewModal';
 import useAuth from '../../hooks/useAuth';
 import api from '../../api/api';
 
@@ -251,7 +250,7 @@ function NewsBanner() {
         nextArrow={settings.nextArrow}
       >
         <S.NewsContent
-          src="../../../public/img/bannerimg.png"
+          src="/img/bannerimg.png"
           alt="배너 뉴스"
           className="bannernews"
           onClick={() => {
@@ -259,7 +258,7 @@ function NewsBanner() {
           }}
         />
         <S.NewsContent
-          src="../../../public/img/bannerimg2.png"
+          src="/img/bannerimg2.png"
           alt="배너 뉴스"
           className="bannernews"
           onClick={() => {
@@ -267,7 +266,7 @@ function NewsBanner() {
           }}
         />
         <S.NewsContent
-          src="../../../public/img/bannerimg3.png"
+          src="/img/bannerimg3.png"
           alt="배너 뉴스"
           className="bannernews"
           onClick={() => {
@@ -275,7 +274,7 @@ function NewsBanner() {
           }}
         />
         <S.NewsContent
-          src="../../../public/img/bannerimg4.png"
+          src="/img/bannerimg4.png"
           alt="배너 뉴스"
           className="bannernews"
           onClick={() => {
@@ -417,7 +416,10 @@ function BreederRankingCommonVer() {
 
           {breeders.slice(0, 10).map((breeder) => (
             <S.BreederCard key={breeder.breederId}>
-              <S.BreederProfile src={breeder.profileUrl} alt="profileImg" />
+              <S.BreederProfile
+                src={breeder.profileUrl || '/img/defaultprofile.png'}
+                alt="profileImg"
+              />
               <S.BreederName>{breeder.tradeName}</S.BreederName>
               <S.ReviewStars>
                 ⭐ {(breeder.breederRating ?? 0).toFixed(1)}

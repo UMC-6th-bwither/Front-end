@@ -235,7 +235,9 @@ function WritingDetail() {
               </S.TitleIconContainer>
             </S.Title>
             <S.ProfileContainer>
-              <S.ProfileImg src={post.authorImage} />
+              <S.ProfileImg
+                src={post.authorImage || '/img/defaultprofile.png'}
+              />
               <S.ProfileName>{post.author}</S.ProfileName>
               <S.Time>
                 <TimeStampParser>{post.createdAt}</TimeStampParser>
