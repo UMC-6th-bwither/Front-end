@@ -6,8 +6,15 @@ export const Border = styled.div`
   align-items: flex-start;
   width: 254px;
   height: 180px;
+  margin: 15px 0;
+
+  cursor: pointer;
+  transition:
+    transform 0.2s ease-in-out,
+    background-color 0.2s ease-in-out;
+
   &:hover {
-    transform: scale(1.1);
+    transform: translateY(-10px);
   }
 `;
 
@@ -35,6 +42,12 @@ export const ImgContainer = styled.div`
   border-right: 2px solid rgba(241, 241, 241, 0.5);
   border-left: 2px solid rgba(241, 241, 241, 0.5);
   background: #737373;
+
+  .photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const Explain = styled.div`

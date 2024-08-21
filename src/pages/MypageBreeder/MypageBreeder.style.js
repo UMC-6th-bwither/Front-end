@@ -55,10 +55,18 @@ export const FlexRow = styled.div`
 `;
 
 export const Left = styled(FlexRow)`
-  .profile_img {
+  .profile_img_wrapper {
     width: 120px;
     height: 120px;
-    border-radius: 120px;
+    border-radius: 50%; /* 동그란 이미지 */
+    overflow: hidden; /* 이미지가 컨테이너를 넘지 않도록 */
+  }
+
+  .profile_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; /* 이미지를 동그랗게 만듭니다 */
   }
 `;
 
@@ -83,6 +91,10 @@ export const Right = styled(FlexRow)`
     line-height: 21px;
 
     cursor: pointer;
+
+    &:hover {
+      background: #f57137;
+    }
   }
 `;
 
@@ -129,42 +141,6 @@ export const AlertContainer = styled.div`
   align-items: flex-start;
   gap: 12px;
   align-self: stretch;
-`;
-
-export const RankContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 32px;
-`;
-
-export const RankTop = styled(FlexRow)`
-  align-self: stretch;
-  gap: 10px;
-`;
-
-export const RankTitle = styled(Title)`
-  font-size: 24px;
-`;
-
-export const RankBottom = styled(FlexRow)`
-  color: #272727;
-  gap: 4px;
-  font-family: 'Noto Sans KR';
-
-  .number {
-    text-align: center;
-    font-size: 48px;
-    font-weight: 500;
-    line-height: 24px; /* 50% */
-  }
-
-  .text {
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 30px; /* 150% */
-    letter-spacing: -0.5px;
-  }
 `;
 
 export const FootpintLine = styled.img`

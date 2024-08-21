@@ -17,7 +17,7 @@ function RecentDogCard({
       <R.Border key={id}>
         {waitlistCount > 0 && <R.ReservationBadge>예약중</R.ReservationBadge>}
         <R.ImgContainer>
-          <img src={photo} alt={name} />
+          <img src={photo} alt={name} className="photo" />
         </R.ImgContainer>
         <R.Explain>
           <R.Main>

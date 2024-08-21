@@ -1,12 +1,13 @@
-import { useCallback } from 'react';
-import Carousel from 'react-multi-carousel';
-import PropTypes from 'prop-types';
+/* eslint-disable react/jsx-props-no-spreading */
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
 import * as MP from './MypageGeneral.style';
+import { LeftArrow, RightArrow } from '../../../public/img/ArrowIcon';
 import profile from '/img/profile.png';
-import rightArrow from '/img/rightArrow.svg';
-import footprint from '/img/mypage_footprint.svg';
 import footprintLine from '/img/footprintLine.svg';
 import ReservationDogCard from '../../components/ReservationDogCard/ReservationDogCard';
 import RecentDogCard from '../../components/RecentDogCard/RecentDogCard';
@@ -15,50 +16,144 @@ import SmallButton from '../../components/smallbutton/SmallButton';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
 import { openDeleteAccountModal, selectModal } from '../../redux/modalSlice';
 import { logout } from '../../redux/authSlice';
-// 예시 데이터
-import { recentDogData, recentBreederData } from './recentData';
-import { waitingDogData } from './waitingData';
-
-function LeftArrow({ onClick }) {
-  return <MP.Arrow className="left" onClick={onClick} />;
-}
-LeftArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-function RightArrow({ onClick }) {
-  return <MP.Arrow className="right" onClick={onClick} />;
-}
-RightArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
+import api from '../../api/api';
 
 function MypageGeneral() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isDeleteAccountModalOpen } = useSelector(selectModal);
+  const [userData, setUserData] = useState(null);
+  const [recentAnimals, setRecentAnimals] = useState([]);
+  const [recentBreeders, setRecentBreeders] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
 
   const handleLogout = useCallback(async () => {
     await dispatch(logout());
     navigate('/');
   }, [dispatch, navigate]);
 
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3.5,
-      slidesToSlide: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 3,
-      slidesToSlide: 3,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 2,
-      slidesToSlide: 2,
-    },
+  // api 호출
+  useEffect(() => {
+    const fetchRecentData = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+
+        const [
+          userResponse,
+          inquiriesResponse,
+          animalsResponse,
+          breedersResponse,
+        ] = await Promise.all([
+          api.get('/user', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }),
+          api.get('/inquiries/breeders', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }),
+          api.get('/user/recent-animals', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }),
+          api.get(`/user/1/view-breeders`, {
+            'Content-Type': 'application/json',
+          }),
+        ]);
+
+        const UserDtoData = userResponse.data.result.userDTO;
+
+        setUserData(UserDtoData);
+        setInquiries(inquiriesResponse.data.result);
+        setRecentAnimals(animalsResponse.data.result);
+        setRecentBreeders(breedersResponse.data.result);
+      } catch (error) {
+        console.error('Error fetching recentData', error);
+      }
+    };
+
+    fetchRecentData();
+  }, []);
+
+  // Slider
+  const [currentPageDog, setCurrentPageDog] = useState(0);
+  const [currentPageBreeder, setCurrentPageBreeder] = useState(0);
+  // eslint-disable-next-line no-unused-vars
+  const [hasDogItems, setHasDogItems] = useState(recentAnimals.length > 0);
+  // eslint-disable-next-line no-unused-vars
+  const [hasBreederItems, setHasBreederItems] = useState(
+    recentBreeders.length > 0,
+  );
+
+  useEffect(() => {
+    setHasDogItems(recentAnimals.length > 0);
+  }, [recentAnimals]);
+
+  useEffect(() => {
+    setHasBreederItems(recentBreeders.length > 0);
+  }, [recentBreeders]);
+
+  const handleBeforeChangeDog = (current, next) => {
+    if (current < next) {
+      setCurrentPageDog(currentPageDog + 1);
+    } else {
+      setCurrentPageDog(currentPageDog - 1);
+    }
+  };
+  const handleBeforeChangeBreeder = (current, next) => {
+    if (current < next) {
+      setCurrentPageBreeder(currentPageBreeder + 1);
+    } else {
+      setCurrentPageBreeder(currentPageBreeder - 1);
+    }
+  };
+
+  const settingsDog = {
+    dots: false,
+    infinite: false,
+    speed: 400,
+    slidesToShow: 3.5,
+    slidesToScroll: 3,
+    beforeChange: handleBeforeChangeDog,
+    prevArrow:
+      hasDogItems > 0 ? (
+        <MP.SliderBtn disabled={currentPageDog === 0}>
+          <LeftArrow />
+        </MP.SliderBtn>
+      ) : null,
+    nextArrow:
+      hasDogItems > 0 ? (
+        <MP.SliderBtn disabled={currentPageBreeder === 2}>
+          <RightArrow />
+        </MP.SliderBtn>
+      ) : null,
+  };
+
+  const settingsBreeder = {
+    dots: false,
+    infinite: false,
+    speed: 400,
+    slidesToShow: 3.5,
+    slidesToScroll: 3,
+    beforeChange: handleBeforeChangeBreeder,
+    prevArrow:
+      hasBreederItems > 0 ? (
+        <MP.SliderBtn disabled={currentPageBreeder === 0}>
+          <LeftArrow />
+        </MP.SliderBtn>
+      ) : null,
+    nextArrow:
+      hasBreederItems > 0 ? (
+        <MP.SliderBtn disabled={currentPageBreeder === 2}>
+          <RightArrow />
+        </MP.SliderBtn>
+      ) : null,
   };
 
   return (
@@ -68,15 +163,28 @@ function MypageGeneral() {
           <MP.Title>마이페이지</MP.Title>
           <MP.Profile>
             <MP.Left>
-              <img src={profile} alt="profile" className="profile_img" />
+              {userData && (
+                <div className="profile_img_wrapper">
+                  <img
+                    src={
+                      userData.profileImage ? userData.profileImage : profile
+                    }
+                    alt="profile"
+                    className="profile_img"
+                  />
+                </div>
+              )}
               <MP.Info>
-                <div>김경숙</div>
-                <div>example@eamil.com</div>
+                {userData && (
+                  <>
+                    <div className="name">{userData.name}</div>
+                    <div className="email">{userData.email}</div>
+                  </>
+                )}
               </MP.Info>
             </MP.Left>
             <div>
-              <SmallButton>
-                {/* onClick={() => navigate(`/수정페이지`)} -> 수정 페이지 추가되면 */}
+              <SmallButton onClick={() => navigate(`/ProfileSettingGeneral`)}>
                 프로필 설정
               </SmallButton>
             </div>
@@ -84,42 +192,23 @@ function MypageGeneral() {
         </MP.ProfileContainer>
 
         <MP.ReservationContainer>
-          <div className="resTitle">나의 예약</div>
+          <div className="resTitle">문의 요청한 브리더</div>
           <MP.Reservation>
             <MP.CardsContainer>
-              {waitingDogData.map((petdata) => (
-                <MP.ResContent key={petdata.id}>
+              {inquiries.map((breeder) => (
+                <MP.ResContent key={breeder.id}>
                   <div className="content">
-                    <div className="waitingnum">
-                      <img src={footprint} alt="footprint" />
-                      <pre>
-                        대기 예약 순번
-                        <span className="emphasis">
-                          &nbsp;{petdata.waitlistCount}번째
-                        </span>
-                        예요!
-                      </pre>
-                    </div>
                     <ReservationDogCard
-                      key={petdata.id}
-                      photo={petdata.photo}
-                      location={petdata.location}
-                      name={petdata.name}
-                      breed={petdata.breed}
-                      birthDate={petdata.birthDate}
-                      gender={petdata.gender}
-                      breederName={petdata.breederName}
-                      waitlistCount={petdata.waitlistCount}
+                      to="/breeder-detail"
+                      key={breeder.id}
+                      id={breeder.id}
+                      photo={breeder.photo}
+                      location={breeder.location}
+                      name={breeder.name}
+                      breederName={breeder.breederName}
+                      phone={breeder.phone}
                     />
                   </div>
-                  <button type="button" className="rightArrowButton">
-                    {/* onClick={() => navigate(`/`)} */}
-                    <img
-                      src={rightArrow}
-                      alt="rightArrow"
-                      className="rightArrow"
-                    />
-                  </button>
                 </MP.ResContent>
               ))}
             </MP.CardsContainer>
@@ -131,45 +220,53 @@ function MypageGeneral() {
         <MP.Recent>
           <div>최근 본 동물</div>
           <MP.SliderContainer>
-            <Carousel
-              responsive={responsive}
-              className="carousel"
-              customLeftArrow={<LeftArrow />}
-              customRightArrow={<RightArrow />}
+            <Slider
+              dots={settingsDog.dots}
+              infinite={settingsDog.infinite}
+              speed={settingsDog.speed}
+              slidesToShow={settingsDog.slidesToShow}
+              slidesToScroll={settingsDog.slidesToScroll}
+              beforeChange={settingsDog.beforeChange}
+              prevArrow={settingsDog.prevArrow}
+              nextArrow={settingsDog.nextArrow}
             >
-              {recentDogData.slice(0, 30).map((dogdata) => (
+              {recentAnimals.slice(0, 30).map((animal) => (
                 <RecentDogCard
-                  key={dogdata.id}
-                  photo={dogdata.photo}
-                  name={dogdata.name}
-                  gender={dogdata.gender}
-                  breed={dogdata.breed}
-                  breederName={dogdata.breederName}
-                  waitlistCount={dogdata.waitlistCount}
+                  key={animal.animalId}
+                  photo={animal.imageUrl}
+                  name={animal.name}
+                  gender={animal.gender}
+                  breed={animal.breed}
+                  breederName={animal.breederName}
+                  waitlistCount={animal.waitList}
                 />
               ))}
-            </Carousel>
+            </Slider>
           </MP.SliderContainer>
         </MP.Recent>
         <MP.Recent>
           <div>최근 본 브리더</div>
           <MP.SliderContainer>
-            <Carousel
-              responsive={responsive}
-              className="carousel"
-              customLeftArrow={<LeftArrow />}
-              customRightArrow={<RightArrow />}
+            <Slider
+              dots={settingsBreeder.dots}
+              infinite={settingsBreeder.infinite}
+              speed={settingsBreeder.speed}
+              slidesToShow={settingsBreeder.slidesToShow}
+              slidesToScroll={settingsBreeder.slidesToScroll}
+              beforeChange={settingsBreeder.beforeChange}
+              prevArrow={settingsBreeder.prevArrow}
+              nextArrow={settingsBreeder.nextArrow}
             >
-              {recentBreederData.slice(0, 30).map((breederdata) => (
+              {recentBreeders.slice(0, 30).map((breeder) => (
                 <RecentBreederCard
-                  key={breederdata.id}
-                  photo={breederdata.photo}
-                  name={breederdata.name}
-                  location={breederdata.location}
-                  breederExperience={breederdata.breederExperience}
+                  key={breeder.breederId}
+                  photo={breeder.profileUrl}
+                  name={breeder.breederName}
+                  location={breeder.address}
+                  breederExperience={breeder.careerYear}
                 />
               ))}
-            </Carousel>
+            </Slider>
           </MP.SliderContainer>
         </MP.Recent>
       </MP.RecentContainer>

@@ -6,7 +6,7 @@ function RecentBreederCard({ id, photo, location, name, breederExperience }) {
     <div>
       <R.Border key={id}>
         <R.ImgContainer>
-          <img src={photo} alt={name} />
+          <img src={photo} alt={name} className="photo" />
         </R.ImgContainer>
         <R.Explain>
           <R.Main>

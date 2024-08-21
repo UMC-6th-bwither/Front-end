@@ -1,112 +1,71 @@
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const CardBox = styled.div`
+const CardBox = styled(Link)`
   display: flex;
-  height: 120px;
+  height: 125px;
   gap: 48px;
-`;
-
-const ReservationBadge = styled.div`
-  display: flex;
-  padding: 4px 8px;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  border-radius: 10px 0px;
-  background: #008080;
-  color: #fffdf2;
-  text-align: center;
-  font-family: 'Noto Sans KR';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 21px; /* 150% */
+  text-decoration: none; /* 밑줄 제거 */
 `;
 
 const PhotoContainer = styled.div`
   width: 120px;
-  height: 120px;
+  height: 125px;
   border-radius: 12px;
   background: #d9d9d9;
+
+  .photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 const InfoContainer = styled.div`
-  heigth: 120px;
+  heigth: 125px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
-  color: #272727;
-  line-height: 16px;
+  gap: 10px;
 
   .location {
-    padding-bottom: 12px;
-    font-family: 'Noto Sans KR';
-    font-size: 16px;
-    font-weight: 350;
-    text-align: left;
-    color: #737373;
-  }
-
-  .name {
-    font-family: 'Pretendard Variable';
-    font-size: 22px;
-    font-weight: 600;
-    text-align: center;
-  }
-
-  .breed {
-    font-family: 'Pretendard Variable';
-    font-size: 16px;
-    font-weight: 500;
-    text-align: center;
-    line-height: 24px;
-  }
-`;
-
-const SubInfo = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-
-  .info {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    align-items: center;
+    gap: 8px;
+
+    color: #737373;
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 21px; /* 150% */
+    letter-spacing: -0.3px;
   }
 
-  span {
-    color: #272727;
+  .breederName {
+    color: #323232;
+    font-family: 'Noto Sans KR';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.7px;
+  }
+
+  .phone {
+    color: var(--Grey_text, #737373);
     font-family: 'Noto Sans KR';
     font-size: 16px;
-    font-weight: 350;
-    line-height: 16px; /* 100% */
-    letter-spacing: -0.28px;
-    padding-left: 4px;
-    paddin-right: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.7px;
   }
 
-  strong {
-    color: #272727;
-    font-family: 'Pretendard Variable';
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 16px; /* 100% */
-    letter-spacing: -0.28px;
+  .badges {
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 `;
-const BookmarkBtn = styled.button`
-  border: none;
-  background-color: transparent;
-  position: absolute;
-  right: 5%;
-  top: 5%;
-`;
 
-export {
-  CardBox,
-  ReservationBadge,
-  PhotoContainer,
-  InfoContainer,
-  SubInfo,
-  BookmarkBtn,
-};
+export { CardBox, PhotoContainer, InfoContainer };
