@@ -64,10 +64,18 @@ export const Left = styled.div`
   display: flex;
   align-items: center;
   gap: 32px;
-  .profile_img {
+  .profile_img_wrapper {
     width: 120px;
     height: 120px;
-    border-radius: 120px;
+    border-radius: 50%; /* 동그란 이미지 */
+    overflow: hidden; /* 이미지가 컨테이너를 넘지 않도록 */
+  }
+
+  .profile_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; /* 이미지를 동그랗게 만듭니다 */
   }
 `;
 
@@ -161,60 +169,63 @@ export const Recent = styled.div`
 
 export const SliderContainer = styled.div`
   position: relative;
-  overflow: visible;
   width: 972px;
+  height: 180px;
+  position: relative;
+  align-items: flex-end;
+  margin: 0 auto;
 
-  .carousel {
-    width: 972px;
-    height: 200px;
-    padding: 10px 0;
+  .slick-prev:before,
+  .slick-next:before {
+    display: none;
   }
-  .react-multi-carousel-item {
-    display: flex;
-    width: 355px;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30%; /* 그라데이션 너비 조정 */
+    height: 100%;
+    background: linear-gradient(
+      to left,
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0)
+    );
+    pointer-events: none; /* 그라데이션이 클릭을 방해하지 않도록 설정 */
+    z-index: 1; /* 그라데이션이 슬라이드 위에 표시되도록 설정 */
   }
-  align-self: flex-start;
 `;
 
-export const Arrow = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
+export const SliderBtn = styled.button`
+z-index: 2;
+ display: flex;
+  width: 40px;
+  height: 40px; 
+  z-index: 3;
+  background-color: #ffffff; 
+  border: 1px solid #dcdcdc; 
+  border-radius: 50%; 
+  cursor: pointer; 
   align-items: center;
-  overflow: visible;
-  width: 48px;
-  height: 48px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  z-index: 10;
-  user-select: none;
+  justify-content: center; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  opacity: 1;
 
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-top: 2px solid #888888;
-    border-right: 2px solid #888888;
-    transform: rotate(45deg);
+  transition:
+    box-shadow 0.3s ease,
+    background-color 0.3s ease; 
+    border-color 0.3s ease; 
+
+  &:not(:disabled):hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f0f0f0; 
+    border-color: #f0f0f0;
   }
 
-  &.left {
-    left: -24px;
-    &::before {
-      transform: rotate(-135deg);
-    }
-  }
-
-  &.right {
-    left: 948px;
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
   }
 `;
 

@@ -1,9 +1,12 @@
-import Carousel from 'react-multi-carousel';
-import PropTypes from 'prop-types';
+/* eslint-disable react/jsx-props-no-spreading */
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import * as MP from './MypageGeneral.style';
+import { LeftArrow, RightArrow } from '../../../public/img/ArrowIcon';
 import profile from '../../../public/img/profile.png';
 import footprintLine from '../../../public/img/footprintLine.svg';
 import ReservationDogCard from '../../components/ReservationDogCard/ReservationDogCard';
@@ -13,22 +16,6 @@ import SmallButton from '../../components/smallbutton/SmallButton';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
 import { openDeleteAccountModal, selectModal } from '../../redux/modalSlice';
 import api from '../../api/api';
-// 예시 데이터
-// import { waitingDogData } from './waitingData';
-
-function LeftArrow({ onClick }) {
-  return <MP.Arrow className="left" onClick={onClick} />;
-}
-LeftArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-function RightArrow({ onClick }) {
-  return <MP.Arrow className="right" onClick={onClick} />;
-}
-RightArrow.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
 
 function MypageGeneral() {
   const navigate = useNavigate();
@@ -88,22 +75,79 @@ function MypageGeneral() {
     fetchRecentData();
   }, []);
 
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3.5,
-      slidesToSlide: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 3,
-      slidesToSlide: 3,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 2,
-      slidesToSlide: 2,
-    },
+  // Slider
+  const [currentPageDog, setCurrentPageDog] = useState(0);
+  const [currentPageBreeder, setCurrentPageBreeder] = useState(0);
+  // eslint-disable-next-line no-unused-vars
+  const [hasDogItems, setHasDogItems] = useState(recentAnimals.length > 0);
+  // eslint-disable-next-line no-unused-vars
+  const [hasBreederItems, setHasBreederItems] = useState(
+    recentBreeders.length > 0,
+  );
+
+  useEffect(() => {
+    setHasDogItems(recentAnimals.length > 0);
+  }, [recentAnimals]);
+
+  useEffect(() => {
+    setHasBreederItems(recentBreeders.length > 0);
+  }, [recentBreeders]);
+
+  const handleBeforeChangeDog = (current, next) => {
+    if (current < next) {
+      setCurrentPageDog(currentPageDog + 1);
+    } else {
+      setCurrentPageDog(currentPageDog - 1);
+    }
+  };
+  const handleBeforeChangeBreeder = (current, next) => {
+    if (current < next) {
+      setCurrentPageBreeder(currentPageBreeder + 1);
+    } else {
+      setCurrentPageBreeder(currentPageBreeder - 1);
+    }
+  };
+
+  const settingsDog = {
+    dots: false,
+    infinite: false,
+    speed: 400,
+    slidesToShow: 3.5,
+    slidesToScroll: 3,
+    beforeChange: handleBeforeChangeDog,
+    prevArrow:
+      hasDogItems > 0 ? (
+        <MP.SliderBtn disabled={currentPageDog === 0}>
+          <LeftArrow />
+        </MP.SliderBtn>
+      ) : null,
+    nextArrow:
+      hasDogItems > 0 ? (
+        <MP.SliderBtn disabled={currentPageBreeder === 2}>
+          <RightArrow />
+        </MP.SliderBtn>
+      ) : null,
+  };
+
+  const settingsBreeder = {
+    dots: false,
+    infinite: false,
+    speed: 400,
+    slidesToShow: 3.5,
+    slidesToScroll: 3,
+    beforeChange: handleBeforeChangeBreeder,
+    prevArrow:
+      hasBreederItems > 0 ? (
+        <MP.SliderBtn disabled={currentPageBreeder === 0}>
+          <LeftArrow />
+        </MP.SliderBtn>
+      ) : null,
+    nextArrow:
+      hasBreederItems > 0 ? (
+        <MP.SliderBtn disabled={currentPageBreeder === 2}>
+          <RightArrow />
+        </MP.SliderBtn>
+      ) : null,
   };
 
   return (
@@ -114,11 +158,15 @@ function MypageGeneral() {
           <MP.Profile>
             <MP.Left>
               {userData && (
-                <img
-                  src={userData.profileImage ? userData.profileImage : profile}
-                  alt="profile"
-                  className="profile_img"
-                />
+                <div className="profile_img_wrapper">
+                  <img
+                    src={
+                      userData.profileImage ? userData.profileImage : profile
+                    }
+                    alt="profile"
+                    className="profile_img"
+                  />
+                </div>
               )}
               <MP.Info>
                 {userData && (
@@ -166,11 +214,15 @@ function MypageGeneral() {
         <MP.Recent>
           <div>최근 본 동물</div>
           <MP.SliderContainer>
-            <Carousel
-              responsive={responsive}
-              className="carousel"
-              customLeftArrow={<LeftArrow />}
-              customRightArrow={<RightArrow />}
+            <Slider
+              dots={settingsDog.dots}
+              infinite={settingsDog.infinite}
+              speed={settingsDog.speed}
+              slidesToShow={settingsDog.slidesToShow}
+              slidesToScroll={settingsDog.slidesToScroll}
+              beforeChange={settingsDog.beforeChange}
+              prevArrow={settingsDog.prevArrow}
+              nextArrow={settingsDog.nextArrow}
             >
               {recentAnimals.slice(0, 30).map((animal) => (
                 <RecentDogCard
@@ -183,17 +235,21 @@ function MypageGeneral() {
                   waitlistCount={animal.waitList}
                 />
               ))}
-            </Carousel>
+            </Slider>
           </MP.SliderContainer>
         </MP.Recent>
         <MP.Recent>
           <div>최근 본 브리더</div>
           <MP.SliderContainer>
-            <Carousel
-              responsive={responsive}
-              className="carousel"
-              customLeftArrow={<LeftArrow />}
-              customRightArrow={<RightArrow />}
+            <Slider
+              dots={settingsBreeder.dots}
+              infinite={settingsBreeder.infinite}
+              speed={settingsBreeder.speed}
+              slidesToShow={settingsBreeder.slidesToShow}
+              slidesToScroll={settingsBreeder.slidesToScroll}
+              beforeChange={settingsBreeder.beforeChange}
+              prevArrow={settingsBreeder.prevArrow}
+              nextArrow={settingsBreeder.nextArrow}
             >
               {recentBreeders.slice(0, 30).map((breeder) => (
                 <RecentBreederCard
@@ -204,7 +260,7 @@ function MypageGeneral() {
                   breederExperience={breeder.careerYear}
                 />
               ))}
-            </Carousel>
+            </Slider>
           </MP.SliderContainer>
         </MP.Recent>
       </MP.RecentContainer>
