@@ -3,26 +3,48 @@ import PropTypes from 'prop-types';
 import * as A from '../../pages/WaitingAnimalDetail/WaitingAnimalDetail.style';
 
 const WaitingParentDogInfo = React.forwardRef(
-  ({ animalParents, animalName }, ref) => {
+  ({ animalParents, animalName, animalType }, ref) => {
     const [selectedParent, setSelectedParent] = useState(null);
+    const [selectedHealthCheckImages, setSelectedHealthCheckImages] = useState(
+      [],
+    );
 
     const handleIconClick = (parent) => {
       setSelectedParent(parent);
+      const selectedParentData = animalParents.find((p) => p.type === parent);
+      if (selectedParentData) {
+        setSelectedHealthCheckImages(selectedParentData.healthCheckImages);
+      }
     };
 
     const closeModal = () => {
       setSelectedParent(null);
+      setSelectedHealthCheckImages([]);
     };
+
+    const parentTitle =
+      animalType === 'DOG' ? '부모 강아지 정보' : '부모 고양이 정보';
 
     return (
       <div ref={ref} style={{ marginBottom: '96px' }}>
-        <A.InfoTitle>부모 강아지 정보</A.InfoTitle>
+        <A.InfoTitle>{parentTitle}</A.InfoTitle>
 
         {animalParents.map((parent) => (
           <A.ParentDogCard key={parent.animalParentsId}>
-            <A.ParentDogImage>
-              <img src={parent.imageUrl} alt={`${parent.name} 사진`} />
+            <A.ParentDogImage
+              style={{ overflow: 'hidden', borderRadius: '12px' }}
+            >
+              <img
+                src={parent.imageUrl}
+                alt={`${parent.name} 사진`}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
             </A.ParentDogImage>
+
             <A.ParentDogInfo>
               <A.ParentDogNameContainer>
                 <A.ParentDogName>{animalName}</A.ParentDogName>
@@ -126,23 +148,25 @@ const WaitingParentDogInfo = React.forwardRef(
                   />
                 </svg>
               </A.CloseButton>
-              {selectedParent === 'MOTHER' && (
-                <img
-                  src={
-                    animalParents.find((p) => p.type === 'MOTHER')
-                      .healthCheckImages[0]
-                  }
-                  alt={`${animalName} 모 수의사 검진 결과`}
-                />
-              )}
-              {selectedParent === 'FATHER' && (
-                <img
-                  src={
-                    animalParents.find((p) => p.type === 'FATHER')
-                      .healthCheckImages[0]
-                  }
-                  alt={`${animalName} 부 수의사 검진 결과`}
-                />
+              {selectedHealthCheckImages.length > 0 ? (
+                selectedHealthCheckImages.map((imageUrl, index) => (
+                  <img
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={index}
+                    src={imageUrl}
+                    alt={`${animalName} ${
+                      selectedParent === 'MOTHER' ? '모' : '부'
+                    } 수의사 검진 결과 ${index + 1}`}
+                    style={{
+                      width: '100%',
+                      marginBottom: '8px',
+                      borderRadius: '12px',
+                      objectFit: 'cover',
+                    }}
+                  />
+                ))
+              ) : (
+                <p>수의사 검진 결과 이미지가 없습니다.</p>
               )}
             </A.ModalContent>
           </A.ModalOverlay>
@@ -168,6 +192,7 @@ WaitingParentDogInfo.propTypes = {
     }),
   ).isRequired,
   animalName: PropTypes.string.isRequired,
+  animalType: PropTypes.oneOf(['DOG', 'CAT']).isRequired,
 };
 
 WaitingParentDogInfo.displayName = 'WaitingParentDogInfo';

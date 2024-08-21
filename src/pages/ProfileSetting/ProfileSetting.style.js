@@ -47,7 +47,7 @@ export const ImgContainer = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 1000px;
-  background-image: url('../../../public/img/profilebackground.png');
+  background-image: url('/img/profilebackground.png');
   background-repeat: no-repeat;
   background-size: cover;
 `;
@@ -62,6 +62,14 @@ export const CameraIcon = styled.div`
   border-radius: 1000px;
   box-shadow: 0px 4px 4px 0px #0000000d;
   padding-top: 10px;
+  cursor: pointer;
+`;
+
+export const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1000px;
 `;
 
 export const ProfileInfoContainer = styled.div`
@@ -252,16 +260,16 @@ export const AdopterInfoContainer = styled.div`
 
 export const PhoneNumInput = styled.input`
   width: 420px;
-  margin-top: 10px;
+  margin: 10px 0;
 `;
 
-export const AdressContainer = styled.div`
+export const AddressContainer = styled.div`
   display: flex;
   flex-direction: column;
 
   p:last-child {
     width: 249px;
-    height: 21px;
+    height: 0px;
     font-family: 'Noto Sans KR';
     font-size: 14px;
     font-weight: 350;
@@ -284,7 +292,7 @@ export const RadioBtn = styled.input.attrs({ type: 'radio' })`
   display: none;
 
   &:checked + label > img {
-    content: url(${'../../../public/img/checked.png'});
+    content: url(${'/img/checked.png'});
   }
 `;
 
@@ -292,7 +300,7 @@ export const RadioIcon = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 8px;
-  content: url(${'../../../public/img/unchecked.png'});
+  content: url(${'/img/unchecked.png'});
 `;
 
 export const Label = styled.label`
@@ -366,7 +374,7 @@ export const RoommateNumContainer = styled.div`
   justify-content: space-between;
   padding-top: 10px;
   width: 162px;
-  height: 52px;
+  height: 0px;
 
   span {
     width: 17px;
@@ -412,7 +420,22 @@ export const CommuteTimeInput = styled.input`
   }
 `;
 
+export const TurnAroundTimeContainer = styled.section`
+  align-items: center;
+  justify-content: space-between;
+  height: 45px;
+`;
+
 export const BreedInput = styled.input`
   width: 970px;
   margin-top: 10px;
+`;
+
+export const ErrorMessage = styled.div`
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--Red, #e76467);
+  padding-left: 5px;
 `;

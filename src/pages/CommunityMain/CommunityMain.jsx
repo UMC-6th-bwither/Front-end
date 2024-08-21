@@ -3,8 +3,8 @@ import * as S from './CommunityMain.style';
 import PostPreviewCard from '../../components/PostPreviewCard/PostPreviewCard';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
 import { OrangeRightArrow } from '../../../public/img/ArrowIcon';
-import thumbup from '../../../public/img/thumb_up.png';
-import foot from '../../../public/img/foot.png';
+import thumbup from '/img/thumb_up.png';
+import foot from '/img/foot.png';
 
 function CommunityMain() {
   return (
@@ -129,7 +129,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg1.png',
+      postThumbnailSrc: '/img/communitysempleimg1.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -138,7 +138,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
+      postThumbnailSrc: '/img/communitysempleimg2.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -147,7 +147,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg1.png',
+      postThumbnailSrc: '/img/communitysempleimg1.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -156,7 +156,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg1.png',
+      postThumbnailSrc: '/img/communitysempleimg1.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -165,7 +165,7 @@ const postPreviewData = {
       communityName: '질문/고민',
       postTitle: '이거 왜이러는 건가요?',
       postContent: '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 건가요?',
-      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
+      postThumbnailSrc: '/img/communitysempleimg2.png',
       viewCount: 159,
       commentCount: 13459,
       bookmarkCount: 1259,
@@ -178,7 +178,7 @@ const postPreviewData = {
       postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
+      postThumbnailSrc: '/img/communitysempleimg2.png',
       viewCount: 20,
       commentCount: 5,
       bookmarkCount: 8,
@@ -188,7 +188,7 @@ const postPreviewData = {
       postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
+      postThumbnailSrc: '/img/communitysempleimg2.png',
       viewCount: 20,
       commentCount: 5,
       bookmarkCount: 8,
@@ -200,7 +200,7 @@ const postPreviewData = {
       postTitle: '어제 간식 먹는 거 뺏었더니 아직까지 삐져있네요',
       postContent:
         '어제 간식 먹는 거 뺏었더니 아직까지 삐져있네요 하여튼 아주 ',
-      postThumbnailSrc: '../../../public/img/communitysempleimg1.png',
+      postThumbnailSrc: '/img/communitysempleimg1.png',
       viewCount: 50,
       commentCount: 20,
       bookmarkCount: 15,
@@ -210,7 +210,7 @@ const postPreviewData = {
       postTitle: '어제 간식 먹는 거 뺏었더니 아직까지 삐져있네요',
       postContent:
         '어제 간식 먹는 거 뺏었더니 아직까지 삐져있네요 하여튼 아주 ',
-      postThumbnailSrc: '../../../public/img/communitysempleimg2.png',
+      postThumbnailSrc: '/img/communitysempleimg2.png',
       viewCount: 50,
       commentCount: 20,
       bookmarkCount: 15,
@@ -222,7 +222,7 @@ const postPreviewData = {
       postTitle: '고양이들이 이런 행동을 할 땐? 어떻게 해야할까요',
       postContent:
         '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽',
-      postThumbnailSrc: '../../../public/img/communitysempleimg3.png',
+      postThumbnailSrc: '/img/communitysempleimg3.png',
       viewCount: 100,
       commentCount: 50,
       bookmarkCount: 30,
@@ -232,7 +232,7 @@ const postPreviewData = {
       postTitle: '고양이들이 이런 행동을 할 땐? 어떻게 해야할까요',
       postContent:
         '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽',
-      postThumbnailSrc: '../../../public/img/communitysempleimg3.png',
+      postThumbnailSrc: '/img/communitysempleimg3.png',
       viewCount: 100,
       commentCount: 50,
       bookmarkCount: 30,
@@ -242,7 +242,7 @@ const postPreviewData = {
       postTitle: '고양이들이 이런 행동을 할 땐? 어떻게 해야할까요',
       postContent:
         '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽',
-      postThumbnailSrc: '../../../public/img/communitysempleimg3.png',
+      postThumbnailSrc: '/img/communitysempleimg3.png',
       viewCount: 100,
       commentCount: 50,
       bookmarkCount: 30,
@@ -252,7 +252,7 @@ const postPreviewData = {
       postTitle: '고양이들이 이런 행동을 할 땐? 어떻게 해야할까요',
       postContent:
         '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽',
-      postThumbnailSrc: '../../../public/img/communitysempleimg3.png',
+      postThumbnailSrc: '/img/communitysempleimg3.png',
       viewCount: 100,
       commentCount: 50,
       bookmarkCount: 30,
@@ -262,7 +262,7 @@ const postPreviewData = {
       postTitle: '고양이들이 이런 행동을 할 땐? 어떻게 해야할까요',
       postContent:
         '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽',
-      postThumbnailSrc: '../../../public/img/communitysempleimg3.png',
+      postThumbnailSrc: '/img/communitysempleimg3.png',
       viewCount: 100,
       commentCount: 50,
       bookmarkCount: 30,
@@ -274,7 +274,7 @@ const postPreviewData = {
       postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg4.png',
+      postThumbnailSrc: '/img/communitysempleimg4.png',
       viewCount: 80,
       commentCount: 40,
       bookmarkCount: 25,
@@ -284,7 +284,7 @@ const postPreviewData = {
       postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg4.png',
+      postThumbnailSrc: '/img/communitysempleimg4.png',
       viewCount: 80,
       commentCount: 40,
       bookmarkCount: 25,
@@ -294,7 +294,7 @@ const postPreviewData = {
       postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg4.png',
+      postThumbnailSrc: '/img/communitysempleimg4.png',
       viewCount: 80,
       commentCount: 40,
       bookmarkCount: 25,
@@ -304,7 +304,7 @@ const postPreviewData = {
       postTitle: '강아지 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg4.png',
+      postThumbnailSrc: '/img/communitysempleimg4.png',
       viewCount: 80,
       commentCount: 40,
       bookmarkCount: 25,
@@ -316,7 +316,7 @@ const postPreviewData = {
       postTitle: '고양이 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg5.png',
+      postThumbnailSrc: '/img/communitysempleimg5.png',
       viewCount: 90,
       commentCount: 45,
       bookmarkCount: 27,
@@ -326,7 +326,7 @@ const postPreviewData = {
       postTitle: '고양이 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg5.png',
+      postThumbnailSrc: '/img/communitysempleimg5.png',
       viewCount: 90,
       commentCount: 45,
       bookmarkCount: 27,
@@ -336,7 +336,7 @@ const postPreviewData = {
       postTitle: '고양이 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg5.png',
+      postThumbnailSrc: '/img/communitysempleimg5.png',
       viewCount: 90,
       commentCount: 45,
       bookmarkCount: 27,
@@ -346,7 +346,7 @@ const postPreviewData = {
       postTitle: '고양이 사료 추천입니당',
       postContent:
         '저번 주부터 밥을 잘 안 먹었었는데 사료 바꾸고 나서 잘 먹기 시작했…',
-      postThumbnailSrc: '../../../public/img/communitysempleimg5.png',
+      postThumbnailSrc: '/img/communitysempleimg5.png',
       viewCount: 90,
       commentCount: 45,
       bookmarkCount: 27,

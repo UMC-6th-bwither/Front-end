@@ -2,14 +2,16 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_API_URL;
 
-const request = async ({ url, method, body, params }) => {
+const request = async ({ url, method, body, params, isMultipart }) => {
   try {
     const config = {
       baseURL,
       params,
       withCredentials: true,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': isMultipart
+          ? 'multipart/form-data'
+          : 'application/json',
       },
     };
 
@@ -40,8 +42,8 @@ const request = async ({ url, method, body, params }) => {
 };
 
 export const GET = (url, token) => request({ url, method: 'get', token });
-export const POST = (url, body, token) =>
-  request({ url, method: 'post', body, token });
+export const POST = (url, body, isMultipart = false) =>
+  request({ url, method: 'post', body, isMultipart });
 export const PATCH = (url, body, token) =>
   request({ url, method: 'patch', body, token });
 export const PUT = (url, body, token) =>

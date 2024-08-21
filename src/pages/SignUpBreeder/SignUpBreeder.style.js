@@ -26,7 +26,7 @@ export const WelcomeMsg = styled.div`
   padding: 80px 0;
 `;
 
-export const Container = styled.form`
+export const Container = styled.div`
   width: 1000px;
   padding: 52px 200px 100px 200px;
   display: flex;
@@ -621,4 +621,11 @@ export const FailX = styled.div`
   gap: 8px;
   border-radius: 1000px;
   background: #e76467;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
 `;

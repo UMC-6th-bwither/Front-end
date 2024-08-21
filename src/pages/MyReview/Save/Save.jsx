@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import * as P from '../MyReview.style';
 import ButtonSelector from '../../../components/buttonselector/ButtonSelector';
@@ -7,6 +7,10 @@ import postDummy from '../dummyData';
 import Pagination from '../../../components/Pagination/Pagination';
 import MyPostCard from '../../../components/PostCard/MyPostCard';
 import Dropbox from '../../../components/DropBoxes/Dropbox2';
+import extractTextFromBlocks from '../../../utils/extractContextFromBlocks';
+import extractFirstImageUrl from '../../../utils/extractImgSrcFromBlocks';
+import convertToKST from '../../../utils/convertToKST';
+import useAuth from '../../../hooks/useAuth';
 
 function Icon() {
   return (
@@ -17,6 +21,56 @@ function Icon() {
 }
 
 export default function MyReviewSave() {
+  const { isLoggedIn, token } = useAuth();
+
+  const [bookmarks, setBookmarks] = useState([]);
+  const [filteredBookmarks, setFilteredBookmarks] = useState([]); // 필터링된 북마크를 관리할 상태 추가
+  const [categoryFilter, setCategoryFilter] = useState('전체'); // 카테고리 필터 상태 추가
+  const [petTypeFilter, setPetTypeFilter] = useState('전체'); // 동물 필터 상태 추가
+
+  const fetchBookmarks = async () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const endPoint = `${apiUrl}/post/bookmarks`;
+    const res = await fetch(endPoint, {
+      headers: {
+        Accept: '*/*',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    setBookmarks(data.result);
+    setFilteredBookmarks(data.result); // 처음 로드 시 전체 북마크를 보여주도록 설정
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && token) {
+      fetchBookmarks();
+    }
+  }, [isLoggedIn]);
+
+  // 필터링 로직
+  useEffect(() => {
+    let filtered = bookmarks;
+
+    if (categoryFilter !== '전체') {
+      filtered = filtered.filter(
+        (post) =>
+          (categoryFilter === '꿀정보' && post.category === 'TIPS') ||
+          (categoryFilter === '후기' && post.category === 'REVIEW'),
+      );
+    }
+
+    if (petTypeFilter !== '전체') {
+      filtered = filtered.filter(
+        (post) =>
+          (petTypeFilter === '강아지' && post.petType === 'DOG') ||
+          (petTypeFilter === '고양이' && post.petType === 'CAT'),
+      );
+    }
+
+    setFilteredBookmarks(filtered);
+  }, [categoryFilter, petTypeFilter, bookmarks]);
+
   const [page, setPage] = useState(1);
 
   return (
@@ -58,15 +112,15 @@ export default function MyReviewSave() {
           <P.FiltersContainer>
             <Dropbox
               defaultPlaceholder="카테고리"
-              menuList={['질문/고민', '정보', '일상', '꿀정보']}
-              setCurrentMenu={() => {}}
+              menuList={['전체', '꿀정보', '후기']}
+              setCurrentMenu={setCategoryFilter} // 카테고리 필터 업데이트
               width={110}
             />
             <Dropbox
               defaultPlaceholder="전체"
-              menuList={['강아지', '고양이']}
-              setCurrentMenu={() => {}}
-              width={110}
+              menuList={['전체', '강아지', '고양이']}
+              setCurrentMenu={setPetTypeFilter} // 동물 필터 업데이트
+              width={90}
             />
           </P.FiltersContainer>
           <P.SortContainer>
@@ -75,29 +129,19 @@ export default function MyReviewSave() {
         </P.FilterContainer>
 
         <P.PostContainer>
-          {postDummy.map((post) => {
-            return (
-              <MyPostCard
-                key={post.id}
-                postTitle={post.content.title}
-                postContent={post.content.text}
-                postThumbnailSrc="/img/post_thumbnail_example_1.jpeg"
-                timeStampKR="2024-07-25T14:40:00+09:00"
-                viewCount={159}
-                commentCount={159}
-                bookmarkCount={159}
-              />
-            );
-          })}
-
-          <P.PaginationContainer>
-            <Pagination
-              currentPage={page}
-              setCurrentPage={setPage}
-              totalItems={20}
-              itemsPerPage={10}
+          {filteredBookmarks.map((post) => (
+            <MyPostCard
+              category={post.category === 'TIPS' ? '꿀정보' : '후기'}
+              petType={post.petType}
+              key={post.id}
+              postTitle={post.title}
+              postContent={extractTextFromBlocks(post.blocks)}
+              postThumbnailSrc={extractFirstImageUrl(post.blocks)}
+              timeStampKR={convertToKST(post.createdAt)}
+              viewCount={post.viewCount}
+              bookmarkCount={post.bookmarkCount}
             />
-          </P.PaginationContainer>
+          ))}
         </P.PostContainer>
       </P.MainContainer>
     </P.Layout>

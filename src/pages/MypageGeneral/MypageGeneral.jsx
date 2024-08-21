@@ -4,17 +4,18 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as MP from './MypageGeneral.style';
 import { LeftArrow, RightArrow } from '../../../public/img/ArrowIcon';
-import profile from '../../../public/img/profile.png';
-import footprintLine from '../../../public/img/footprintLine.svg';
+import profile from '/img/profile.png';
+import footprintLine from '/img/footprintLine.svg';
 import ReservationDogCard from '../../components/ReservationDogCard/ReservationDogCard';
 import RecentDogCard from '../../components/RecentDogCard/RecentDogCard';
 import RecentBreederCard from '../../components/RecentBreederCard/RecentBreederCard';
 import SmallButton from '../../components/smallbutton/SmallButton';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
 import { openDeleteAccountModal, selectModal } from '../../redux/modalSlice';
+import { logout } from '../../redux/authSlice';
 import api from '../../api/api';
 
 function MypageGeneral() {
@@ -25,6 +26,11 @@ function MypageGeneral() {
   const [recentAnimals, setRecentAnimals] = useState([]);
   const [recentBreeders, setRecentBreeders] = useState([]);
   const [inquiries, setInquiries] = useState([]);
+
+  const handleLogout = useCallback(async () => {
+    await dispatch(logout());
+    navigate('/');
+  }, [dispatch, navigate]);
 
   // api 호출
   useEffect(() => {
@@ -287,7 +293,9 @@ function MypageGeneral() {
         <MP.SectionContainer>
           <div className="title">계정</div>
           <MP.SectionLinks>
-            <MP.NavLink>로그아웃</MP.NavLink>
+            <MP.NavLink type="button" onClick={handleLogout}>
+              로그아웃
+            </MP.NavLink>
             <MP.NavLink
               type="button"
               onClick={() => dispatch(openDeleteAccountModal())}

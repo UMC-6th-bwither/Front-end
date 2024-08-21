@@ -1,5 +1,5 @@
 import * as B from '../SignUpBwither/BwitherSignUp.style';
-import progressBar100 from '../../../public/icons/signUp/progress-bar-100.svg';
+import progressBar100 from '/icons/signUp/progress-bar-100.svg';
 import Button from '../../components/SignUpButton/Button';
 
 export default function BreederSignUp4() {

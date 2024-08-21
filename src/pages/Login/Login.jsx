@@ -1,13 +1,20 @@
+/* eslint-disable no-console */
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { handleLoginWithResponse } from '../../utils/handleLogin';
 import * as L from './Login.style';
 import Button from '../../components/SignUpButton/Button';
-import beforeCheck from '../../../public/icons/signUp/check_before.svg';
-import afterCheck from '../../../public/icons/signUp/check_after.svg';
-import pwShow from '../../../public/icons/signUp/password-show.svg';
-import failX from '../../../public/icons/signUp/fail_x.svg';
+import beforeCheck from '/icons/signUp/check_before.svg';
+import afterCheck from '/icons/signUp/check_after.svg';
+import pwShow from '/icons/signUp/password-show.svg';
+import failX from '/icons/signUp/fail_x.svg';
 import { postLogin } from '../../apis/postUser';
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,13 +27,26 @@ export default function Login() {
   const onSubmit = async (event) => {
     event.preventDefault();
     console.log('Form submitted');
+    if (!username && !password) {
+      setUsernameError('아이디를 입력해주세요');
+      setPasswordError('비밀번호를 입력해주세요');
+    } else {
+      setUsernameError('');
+      setPasswordError('');
+    }
+
+    if (!username && !password) {
+      return;
+    }
 
     try {
       const data = { username, password };
       const response = await postLogin(data);
-      console.log('Server response:', response);
+      console.log('로그인 성공, Server response:', response);
+      navigate('/');
 
       const { token } = response.result;
+      handleLoginWithResponse(dispatch, response.result);
 
       if (token) {
         localStorage.setItem('accessToken', token);
@@ -40,13 +60,6 @@ export default function Login() {
       setPasswordError('');
     } catch (error) {
       console.log('로그인 api 요청 중 에러', error);
-      if (!username && !password) {
-        setUsernameError('아이디를 입력해주세요');
-        setPasswordError('비밀번호를 입력해주세요');
-      } else {
-        setUsernameError('존재하지 않는 계정이에요');
-        setPasswordError('비밀번호가 맞지 않아요');
-      }
     }
   };
 
@@ -54,7 +67,7 @@ export default function Login() {
     <L.Background>
       <L.WelcomeMsg>로그인</L.WelcomeMsg>
       <L.Container>
-        <form onSubmit={onSubmit}>
+        <L.Form onSubmit={onSubmit}>
           <L.InputArea>
             <L.InputWrapper>
               <L.InputTitle>아이디</L.InputTitle>
@@ -110,7 +123,7 @@ export default function Login() {
           <L.BtnWrapper1>
             <Button text="로그인" path="" type="submit" />
           </L.BtnWrapper1>
-        </form>
+        </L.Form>
       </L.Container>
     </L.Background>
   );

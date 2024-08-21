@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import * as S from './WritingDetail.style';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
 import TimeStampParser from '../../components/TimeStampParser/TimeStampParser';
+import api from '../../api/api';
+import Editor from '../../components/Editor/Editor';
+import useAuth from '../../hooks/useAuth';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -10,7 +14,85 @@ const menuItems = [
 
 function WritingDetail() {
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [post, setPost] = useState(null);
+  // const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { userId } = useAuth();
+  const { postId } = useParams();
 
+  // 글 데이터 받아오기
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await api.get(`/post/${postId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setPost(response.data.result);
+        setLoading(false);
+        // console.log('본문 데이터 요청 성공 User info:', response.data.result);
+      } catch (err) {
+        // console.error('본문 데이터 요청 실패:', err);
+        setLoading(false);
+      }
+    };
+    getUserInfo();
+  }, [postId]);
+
+  const getActiveItemName = (category) => {
+    if (category === 'BREEDER_REVIEWS') return '브위더 후기';
+    if (category === 'TIPS') return '브리더의 꿀정보';
+    return '';
+  };
+
+  // 기존 북마크된 글인지 확인
+  useEffect(() => {
+    if (!post) return;
+
+    const checkIfBookmarked = async () => {
+      const token = localStorage.getItem('accessToken');
+
+      try {
+        const response = await api.get('/post/bookmarks', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // console.log('기존 북마크 데이터:', response.data);
+        if (response.data.isSuccess) {
+          const bookmarkedPosts = response.data.result;
+          const isPostBookmarked = bookmarkedPosts.some(
+            (bookmark) => bookmark.id === post.id,
+          );
+          setIsBookmarked(isPostBookmarked);
+        } else {
+          console.error('Failed to fetch bookmarks:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching bookmarks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkIfBookmarked();
+  }, [post]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (!post) {
+    return <div>게시물을 불러올 수 없습니다.</div>;
+  }
+  if (!post.blocks || post.blocks.length === 0) {
+    return <div>데이터가 없습니다.</div>;
+  }
+
+  // url 복사 로직
   const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
     navigator.clipboard
@@ -23,39 +105,64 @@ function WritingDetail() {
       });
   };
 
-  const Bookmarking = async () => {
-    setIsBookmarked(!isBookmarked);
+  // 북마크 추가 로직
+  const addBookmark = async (postid, memberId) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await api.post(
+        `/post/${postid}/bookmark?memberId=${memberId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('Bookmark added:', response.data);
+      return true;
+    } catch (error) {
+      console.error('Error adding bookmark:', error);
+      return false;
+    }
   };
 
-  // 데이터 예시
-  const content = [
-    {
-      id: 1,
-      type: 'text',
-      value:
-        '어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이들더라구요. 이럴 땐 굉장히 당황스럽 어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽어제 밤부터 이상하게 침을 많이 흘리던데 왜 이러는 거예요? 라고들 많이 질문을 하십니다. 하지만 어떻게 해야할지는 다들 모르시죠. 저희 같은 경우엔 이렇게 합니다. 어떻게 하냐? 바로바로 이렇게요. 다들 어떤 도움을 줄 수 있냐 물어보는데 하기야 그럴 수도 있겠다는 생각이 들더라구요. 이럴 땐 굉장히 당황스럽',
-    },
-    {
-      id: 2,
-      type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
-    },
-    {
-      id: 3,
-      type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
-    },
-    {
-      id: 4,
-      type: 'text',
-      value: '어떻게 해야 할까요?',
-    },
-    {
-      id: 5,
-      type: 'image',
-      value: '../../../public/img/WritingDetailSample.png',
-    },
-  ];
+  // 북마크 제거 로직
+  const removeBookmark = async (postid, memberId) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await api.delete(
+        `/post/${postid}/bookmark?memberId=${memberId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('Bookmark removed:', response.data);
+      return true;
+    } catch (error) {
+      console.error('Error removing bookmark:', error);
+      return false;
+    }
+  };
+
+  // 북마크 handle
+  const handleBookmarkToggle = async () => {
+    if (!post) return;
+
+    let success;
+    if (isBookmarked) {
+      success = await removeBookmark(postId, userId);
+    } else {
+      success = await addBookmark(postId, userId);
+    }
+
+    if (success) {
+      setIsBookmarked(!isBookmarked);
+    }
+  };
 
   return (
     <S.Layout>
@@ -63,16 +170,16 @@ function WritingDetail() {
         <VerticalMenuSelector
           title="커뮤니티"
           items={menuItems}
-          activeItemName="브리더의 꿀정보"
+          activeItemName={getActiveItemName(post.category)}
         />
       </S.NavbarContainer>
       <S.MainContainer>
         <S.Container>
           <S.TitleContainer>
             <S.Title>
-              고양이들이 이런 행동을 할 땐? 어떻게 해야할까요
+              {post.title}
               <S.TitleIconContainer>
-                <S.TitleIconFrame onClick={Bookmarking}>
+                <S.TitleIconFrame onClick={handleBookmarkToggle}>
                   {isBookmarked ? (
                     <svg
                       width="32"
@@ -128,27 +235,18 @@ function WritingDetail() {
               </S.TitleIconContainer>
             </S.Title>
             <S.ProfileContainer>
-              <S.ProfileImg />
-              <S.ProfileName>김*숙</S.ProfileName>
+              <S.ProfileImg
+                src={post.authorImage || '/img/defaultprofile.png'}
+              />
+              <S.ProfileName>{post.author}</S.ProfileName>
               <S.Time>
-                <TimeStampParser>2024-08-14 15:52:36</TimeStampParser>
+                <TimeStampParser>{post.createdAt}</TimeStampParser>
               </S.Time>
             </S.ProfileContainer>
           </S.TitleContainer>
 
           <S.ContentContainer>
-            {content.map((item, index) => (
-              <React.Fragment key={item.id}>
-                {item.type === 'text' ? (
-                  <S.ContentText>{item.value}</S.ContentText>
-                ) : (
-                  <S.ContextImgContainer>
-                    <img src={item.value} alt={`ContentImage ${index + 1}`} />
-                  </S.ContextImgContainer>
-                )}
-              </React.Fragment>
-            ))}
-
+            <Editor readMode savedData={post} />
             <S.ContentIconContainer>
               <S.ContentIconFrame>
                 <svg
@@ -165,7 +263,9 @@ function WritingDetail() {
                     fill="#C5C5C5"
                   />
                 </svg>
-                <S.ContentIconContent>145</S.ContentIconContent>
+                <S.ContentIconContent>
+                  {post.viewCount || 0}
+                </S.ContentIconContent>
               </S.ContentIconFrame>
               <S.ContentIconFrame>
                 <svg
@@ -180,7 +280,9 @@ function WritingDetail() {
                     fill="#C5C5C5"
                   />
                 </svg>
-                <S.ContentIconContent>145</S.ContentIconContent>
+                <S.ContentIconContent>
+                  {post.bookmarkCount || 0}
+                </S.ContentIconContent>
               </S.ContentIconFrame>
             </S.ContentIconContainer>
           </S.ContentContainer>

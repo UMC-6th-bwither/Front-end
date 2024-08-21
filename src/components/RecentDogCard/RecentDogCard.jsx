@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import female from '../../../public/img/female.svg';
-import male from '../../../public/img/male.svg';
+import female from '/img/female.svg';
+import male from '/img/male.svg';
 import * as R from './RecentDogCard.style';
 
 function RecentDogCard({

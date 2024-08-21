@@ -363,8 +363,9 @@ export const Button = styled.button`
   line-height: normal;
 `;
 
-export const PostCodeBtn = styled.button`
+export const PostCodeBtn = styled.div`
   display: flex;
+  text-align: center;
   width: 136px;
   height: 52px;
   padding: 8px;
@@ -514,4 +515,44 @@ export const Check = styled.img`
   width: 20px;
   height: 20px;
   cursor: pointer;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const CertName = styled.div`
+  color: #444;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 10px 0;
+`;
+
+export const CertFile = styled.div`
+  overflow: hidden;
+  color: #737373;
+  text-overflow: ellipsis;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+`;
+
+export const X = styled.div`
+  width: 16px;
+  height: 16px;
+  padding-left: 5px;
+  cursor: pointer;
+`;
+export const CertFileWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;

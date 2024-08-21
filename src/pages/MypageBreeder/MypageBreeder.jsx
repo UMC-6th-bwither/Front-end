@@ -1,6 +1,6 @@
+import { useCallback,  useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
 import {
   openDeleteAccountModal,
@@ -8,16 +8,23 @@ import {
   selectModal,
 } from '../../redux/modalSlice';
 import * as MP from './MypageBreeder.style';
-import profile from '../../../public/img/profile.png';
-import footprintLine from '../../../public/img/footprintLine.svg';
+import profile from '/img/profile.png';
+import question from '/img/helpQuestionMark.svg';
+import footprintLine from '/img/footprintLine.svg';
 import AlertBox from '../../components/AlertBox/AlertBox';
 import SmallButton from '../../components/smallbutton/SmallButton';
+import { logout } from '../../redux/authSlice';
 import api from '../../api/api';
 
 function MypageBreeder() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isDeleteAccountModalOpen } = useSelector(selectModal);
+
+  const handleLogout = useCallback(async () => {
+    await dispatch(logout());
+    navigate('/');
+  }, [dispatch, navigate]);
   const [userData, setUserData] = useState(null);
 
   // api 호출
@@ -114,7 +121,9 @@ function MypageBreeder() {
         <MP.SectionContainer>
           <div className="title">계정</div>
           <MP.SectionLinks>
-            <MP.NavLink>로그아웃</MP.NavLink>
+            <MP.NavLink type="button" onClick={handleLogout}>
+              로그아웃
+            </MP.NavLink>
             <MP.NavLink
               type="button"
               onClick={() => dispatch(openDeleteAccountModal())}

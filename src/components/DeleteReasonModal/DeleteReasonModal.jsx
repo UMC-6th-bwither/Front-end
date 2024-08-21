@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import * as D from './DeleteReasonModal.style';
 import { closeDeleteReasonModal, selectModal } from '../../redux/modalSlice';
-import uncheckedCheck from '../../../public/img/uncheckedCheck.svg';
-import checkedCheck from '../../../public/img/checkedCheck.svg';
+import uncheckedCheck from '/img/uncheckedCheck.svg';
+import checkedCheck from '/img/checkedCheck.svg';
 
 const CustomModal = {
   overlay: {
