@@ -1,4 +1,6 @@
 export default function extractTextFromBlocks(blocks) {
+  if (!blocks) return '';
+
   return blocks
     .map((block) => {
       const textWithTags = block.data.text; // block 객체에서 text 값 추출
