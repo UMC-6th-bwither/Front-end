@@ -1,19 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as B from './BreederAnimalList.style';
 import DogCard from '../../components/DogCard/DogCard';
 import DropBox from '../../components/DropBoxes/DropBox';
-import { animalBreeds, 전체DogCard } from '../selectData';
+import nothingBowl from '../../../public/img/nothing_bowl.svg';
+import Pagination from '../../components/Pagination/Pagination';
+import { animalBreeds } from '../selectData';
+import api from '../../api/api';
 
 function BreederAnimalList() {
   const navigate = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const [breeds, setBreeds] = useState([
-    ...animalBreeds.dog,
-    ...animalBreeds.cat,
+    ...animalBreeds.DOG,
+    ...animalBreeds.CAT,
   ]);
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedBreed, setSelectedBreed] = useState('');
+  const [breederDogCards, setBreederDogCards] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // api 호출
+  useEffect(() => {
+    const fetchBreederAnimals = async () => {
+      try {
+        const response = await api.get('/animals/breeder', {
+          params: {
+            breederId: 1,
+            page: currentPage,
+            gender: selectedGender,
+            breed: selectedBreed,
+          },
+        });
+        const data = response.data.result.animalList;
+        setBreederDogCards(data);
+      } catch (error) {
+        console.error('Error fetching BreederAnimals', error);
+      }
+    };
+
+    fetchBreederAnimals();
+  }, [currentPage, selectedGender, selectedBreed]);
 
   const handleGenderChange = (value) => {
     setSelectedGender(value);
@@ -23,12 +50,12 @@ function BreederAnimalList() {
     setSelectedBreed(value);
   };
 
-  const filteredDogCards = 전체DogCard.filter((dog) => {
-    return (
-      (selectedGender === '' || dog.gender === selectedGender) &&
-      (selectedBreed === '' || dog.breed === selectedBreed)
-    );
-  });
+  // const filteredDogCards = breederDogCards.filter((dog) => {
+  //   return (
+  //     (selectedGender === '' || dog.gender === selectedGender) &&
+  //     (selectedBreed === '' || dog.breed === selectedBreed)
+  //   );
+  // });
 
   return (
     <B.Border>
@@ -41,8 +68,8 @@ function BreederAnimalList() {
               label="성별 선택"
               options={[
                 { value: '', label: '성별 선택' },
-                { value: '수컷', label: '남아' },
-                { value: '암컷', label: '여아' },
+                { value: 'MALE', label: '남아' },
+                { value: 'FEMALE', label: '여아' },
               ]}
               onChange={handleGenderChange}
             />
@@ -60,23 +87,45 @@ function BreederAnimalList() {
             추가하기
           </B.Button>
         </B.SelectContainer>
-        <B.CardsContainer>
-          {filteredDogCards.map((dog) => (
-            <DogCard
-              key={dog.id}
-              photo={dog.photo}
-              location={dog.location}
-              name={dog.name}
-              breed={dog.breed}
-              birthDate={dog.birthDate}
-              gender={dog.gender}
-              breederName={dog.breederName}
-              waitlistCount={dog.waitlistCount}
-              isBookmarked={dog.isBookmarked}
-              setIsBookmarked={() => {}}
-              //   onClick={() => navigate(`/상세 페이지)}
-            />
-          ))}
+        <B.CardsContainer
+          className={breederDogCards.length === 0 ? 'empty' : ''}
+        >
+          {breederDogCards.length > 0 ? (
+            <>
+              <div className="dogCard">
+                {breederDogCards.map((dog) => (
+                  <DogCard
+                    to="/waitinganimal-detail"
+                    key={dog.animalId}
+                    photo={dog.imageUrl}
+                    location={dog.location}
+                    name={dog.name}
+                    breed={dog.breed}
+                    birthDate={dog.birthDate}
+                    gender={dog.gender}
+                    breederName={dog.breederName}
+                    waitlistCount={dog.waitList}
+                    initialIsBookmarked={dog.status}
+                    onBookmarkChange={() => {}}
+                    showBookmarkBtn={false}
+                  />
+                ))}
+              </div>
+              <Pagination
+                totalItems={breederDogCards.length}
+                itemsPerPage={20}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </>
+          ) : (
+            <B.NothingContainer>
+              <img src={nothingBowl} alt="no animals" />
+              <div className="nothing_text">
+                아직 관리중인 아이들이 없어요..
+              </div>
+            </B.NothingContainer>
+          )}
         </B.CardsContainer>
       </B.ContentContainer>
     </B.Border>
