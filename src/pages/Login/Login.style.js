@@ -187,3 +187,9 @@ export const FailX = styled.img`
   border-radius: 1000px;
   background: #e76467;
 `;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
