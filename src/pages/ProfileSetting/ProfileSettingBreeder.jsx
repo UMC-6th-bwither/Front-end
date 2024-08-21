@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/button/Button';
 import * as S from './ProfileSetting.style';
 import api from '../../api/api';
 
 function ProfileSettingGeneral() {
+  const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordCheckVisible, setIsPasswordCheckVisible] = useState(false);
 
@@ -58,6 +60,7 @@ function ProfileSettingGeneral() {
   // 기존 유저 정보 불러오기
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -70,25 +73,26 @@ function ProfileSettingGeneral() {
             Authorization: `Bearer ${token}`,
           },
         });
-        const Data = response.data.result;
-        setUserData(response.data.result);
-
-        // API 응답 데이터를 상태 변수에 저장합니다.
-        setProfileImage(Data.userDTO.profileImage);
-
-        setLoading(false);
-        console.log('데이터 불러오기 성공 User info:', Data);
+        if (response.data.isSuccess) {
+          const Data = response.data.result;
+          setUserData(response.data.result);
+          setProfileImage(Data.userDTO.profileImage);
+          setLoading(false);
+          console.log('데이터 불러오기 성공 User info:', Data);
+        } else {
+          setError(response.data.message);
+        }
       } catch (err) {
-        // setError('데이터를 가져오는 중 오류가 발생했습니다.');
-        setLoading(false);
         console.error('Error message:', err.message);
+      } finally {
+        setLoading(false);
       }
     };
     getUserInfo();
   }, []);
 
-  // 로딩 상태 표시
   if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   // 폼 제출 함수
   const handleSubmitClick = async () => {
@@ -118,13 +122,13 @@ function ProfileSettingGeneral() {
             Authorization: `Bearer ${token}`,
           },
         });
-
         console.log('데이터 전송 성공 User info:', response);
-      } catch (error) {
-        console.error('Error message:', error.message);
+        alert('변경된 내용이 저장되었습니다');
+        navigate(`/MypageBreeder`);
+        window.scrollTo(0, 0);
+      } catch (err) {
+        console.error('Error message:', err.message);
       }
-      alert('변경된 내용이 저장되었습니다');
-      // myback(back) 이동 로직 구현
     }
   };
 

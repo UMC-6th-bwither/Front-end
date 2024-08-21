@@ -15,6 +15,7 @@ const menuItems = [
 function WritingDetail() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [post, setPost] = useState(null);
+  // const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const { userId } = useAuth();
   const { postId } = useParams();
@@ -32,19 +33,24 @@ function WritingDetail() {
         });
         setPost(response.data.result);
         setLoading(false);
-        console.log('본문 데이터 요청 성공 User info:', response.data.result);
-      } catch (error) {
-        console.error('본문 데이터 요청 실패:', error);
+        // console.log('본문 데이터 요청 성공 User info:', response.data.result);
+      } catch (err) {
+        // console.error('본문 데이터 요청 실패:', err);
         setLoading(false);
       }
     };
-
     getUserInfo();
   }, [postId]);
 
+  const getActiveItemName = (category) => {
+    if (category === 'BREEDER_REVIEWS') return '브위더 후기';
+    if (category === 'TIPS') return '브리더의 꿀정보';
+    return '';
+  };
+
   // 기존 북마크된 글인지 확인
   useEffect(() => {
-    if (!post) return; // post가 없으면 더 이상 진행하지 않음
+    if (!post) return;
 
     const checkIfBookmarked = async () => {
       const token = localStorage.getItem('accessToken');
@@ -56,18 +62,12 @@ function WritingDetail() {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        // 응답 데이터 콘솔 출력
-        console.log('기존 북마크 데이터:', response.data);
-
+        // console.log('기존 북마크 데이터:', response.data);
         if (response.data.isSuccess) {
           const bookmarkedPosts = response.data.result;
-
-          // 북마크된 게시물 중에서 현재 postId와 일치하는 것이 있는지 확인
           const isPostBookmarked = bookmarkedPosts.some(
             (bookmark) => bookmark.id === post.id,
           );
-
           setIsBookmarked(isPostBookmarked);
         } else {
           console.error('Failed to fetch bookmarks:', response.data.message);
@@ -83,13 +83,11 @@ function WritingDetail() {
   }, [post]);
 
   if (loading) {
-    return <div>Loading...</div>; // 로딩 상태 표시
+    return <div>Loading...</div>;
   }
-
   if (!post) {
     return <div>게시물을 불러올 수 없습니다.</div>;
   }
-
   if (!post.blocks || post.blocks.length === 0) {
     return <div>데이터가 없습니다.</div>;
   }
@@ -154,13 +152,11 @@ function WritingDetail() {
   const handleBookmarkToggle = async () => {
     if (!post) return;
 
-    const memberId = userId;
-
     let success;
     if (isBookmarked) {
-      success = await removeBookmark(postId, memberId);
+      success = await removeBookmark(postId, userId);
     } else {
-      success = await addBookmark(postId, memberId);
+      success = await addBookmark(postId, userId);
     }
 
     if (success) {
@@ -174,7 +170,7 @@ function WritingDetail() {
         <VerticalMenuSelector
           title="커뮤니티"
           items={menuItems}
-          activeItemName="브리더의 꿀정보"
+          activeItemName={getActiveItemName(post.category)}
         />
       </S.NavbarContainer>
       <S.MainContainer>
@@ -265,7 +261,9 @@ function WritingDetail() {
                     fill="#C5C5C5"
                   />
                 </svg>
-                <S.ContentIconContent>{post.viewCount}</S.ContentIconContent>
+                <S.ContentIconContent>
+                  {post.viewCount || 0}
+                </S.ContentIconContent>
               </S.ContentIconFrame>
               <S.ContentIconFrame>
                 <svg
@@ -281,7 +279,7 @@ function WritingDetail() {
                   />
                 </svg>
                 <S.ContentIconContent>
-                  {post.bookmarkCount}
+                  {post.bookmarkCount || 0}
                 </S.ContentIconContent>
               </S.ContentIconFrame>
             </S.ContentIconContainer>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import logo from '../../../public/img/logo.svg';
-import profile from '../../../public/img/profile.png';
+import logo from '/img/logo.svg';
+import profile from '/img/profile.png';
 import * as H from './Header.style';
 import useAuth from '../../hooks/useAuth';
 

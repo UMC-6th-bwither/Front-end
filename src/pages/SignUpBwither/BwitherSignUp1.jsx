@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import * as B from './BwitherSignUp.style';
-import progressBar25 from '../../../public/icons/signUp/progress-bar-25.svg';
-import pwShow from '../../../public/icons/signUp/password-show.svg';
+import progressBar25 from '/icons/signUp/progress-bar-25.svg';
+import pwShow from '/icons/signUp/password-show.svg';
 import Terms from '../../components/SignUpTerms/SignUpTerms';
 import Button from '../../components/SignUpButton/Button';
 import TextButton from '../../components/SignUpButton/TextButton';
-import failX from '../../../public/icons/signUp/fail_x.svg';
+import failX from '/icons/signUp/fail_x.svg';
 
 export default function BwitherSignUp1() {
   const validateEmail = (email) => {

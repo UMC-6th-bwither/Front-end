@@ -606,27 +606,26 @@ function InfoArticle() {
 
 function AdoptionReview() {
   const [currentPage, setCurrentPage] = useState(0);
-  const [reviewData, setReviewData] = useState(null);
+  const [previewReviewData, setPreviewReviewData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  // 데이터 받아오기
+  // 리뷰 미리보기 데이터 받아오기
   useEffect(() => {
     const getInfo = async () => {
-      const token = localStorage.getItem('accessToken');
       try {
-        const response = await api.get('/post/25', {
+        const response = await api.get('/main/reviews', {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
           },
         });
         if (response.data.isSuccess) {
-          setReviewData(response.data.result);
+          setPreviewReviewData(response.data.result);
         } else {
           setError(response.data.message);
         }
-        console.log('분양 후기 데이터 요청 성공', reviewData);
+        console.log('분양 후기 미리보기 데이터 요청 성공', previewReviewData);
       } catch (err) {
         setError('Failed to fetch data');
       } finally {
@@ -668,7 +667,7 @@ function AdoptionReview() {
 
   return (
     <S.ARContainer>
-      {/* <Slider
+      <Slider
         dots={settings.dots}
         infinite={settings.infinite}
         speed={settings.speed}
@@ -678,13 +677,16 @@ function AdoptionReview() {
         prevArrow={settings.prevArrow}
         nextArrow={settings.nextArrow}
       >
-        {reviewData.slice(0, 10).map((review) => (
-          <S.ReviewCard key={review.postId}>
+        {previewReviewData.slice(0, 10).map((review) => (
+          <S.ReviewCard
+            key={review.postId}
+            onClick={() => navigate(`/WritingDetail/${review.postId}`)}
+          >
             <S.ReviewCardImg src={review.postImageUrl} alt="InfoCard" />
             <S.ReviewDetail>{review.title}</S.ReviewDetail>
           </S.ReviewCard>
         ))}
-      </Slider> */}
+      </Slider>
     </S.ARContainer>
   );
 }

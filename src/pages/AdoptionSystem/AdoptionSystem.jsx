@@ -1,7 +1,7 @@
 import * as A from './AdoptionSystem.style';
-import titleMark from '../../../public/icons/title_mark.svg';
-import downMark from '../../../public/icons/down_mark.svg';
-import fence from '../../../public/icons/fence.svg';
+import titleMark from '/icons/title_mark.svg';
+import downMark from '/icons/down_mark.svg';
+import fence from '/icons/fence.svg';
 
 export default function AdoptionSystem() {
   return (

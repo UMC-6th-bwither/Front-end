@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
 import * as A from './Breeder.style';
-import bookmark from '../../../../public/img/bookmark.svg';
+import bookmark from '/img/bookmark.svg';
 import { animalBreeds, 전체BreederCard } from '../../selectData';
 import BreederCard from '../../../components/BreederCard/BreederCard';
 import DropBox from '../../../components/DropBoxes/DropBox';

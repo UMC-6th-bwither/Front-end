@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/button/Button';
 import * as S from './ProfileSetting.style';
 import ProfileSettingDropBox from '../../components/ProfileSettingDropBox/ProfileSettingDropBox';
 import api from '../../api/api';
 
 function ProfileSettingGeneral() {
+  const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordCheckVisible, setIsPasswordCheckVisible] = useState(false);
 
@@ -96,7 +98,7 @@ function ProfileSettingGeneral() {
 
   const handlePhoneChange = (e) => {
     setPhone(e.target.value);
-    const phonePattern = /^\d{3}-\d{4}-\d{4}$/;
+    const phonePattern = /^\d{2,3}-\d{3,4}-\d{4}$/;
     if (!phonePattern.test(e.target.value)) {
       setPhoneError('전화번호를 형식에 맞게 입력해주세요.');
     } else {
@@ -145,6 +147,7 @@ function ProfileSettingGeneral() {
   // 기존 유저 정보 불러오기
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -157,48 +160,49 @@ function ProfileSettingGeneral() {
             Authorization: `Bearer ${token}`,
           },
         });
-        const Data = response.data.result;
-        setUserData(response.data.result);
+        if (response.data.isSuccess) {
+          const Data = response.data.result;
+          setUserData(response.data.result);
 
-        // API 응답 데이터를 상태 변수에 저장
-        setProfileImage(Data.userDTO.profileImage);
-        setPhone(Data.userDTO.phone);
-        setZipcode(Data.userDTO.zipcode);
-        setAddress(Data.userDTO.address);
-        setAddressDetail(Data.userDTO.addressDetail);
-        setPetAllowed(Data.memberDTO.petAllowed);
-        setCohabitant(Data.memberDTO.cohabitant);
-        setCohabitantCount(Data.memberDTO.cohabitantCount);
-        setFamilyAgreement(Data.memberDTO.familyAgreement);
-        setEmploymentStatus(Data.memberDTO.employmentStatus);
-        setCommuteTime(Data.memberDTO.commuteTime);
-        setPetExperience(Data.memberDTO.petExperience);
-        setCurrentPet(Data.memberDTO.currentPet);
-        setFuturePlan(Data.memberDTO.futurePlan);
+          // API 응답 데이터를 상태 변수에 저장
+          setProfileImage(Data.userDTO.profileImage);
+          setPhone(Data.userDTO.phone);
+          setZipcode(Data.userDTO.zipcode);
+          setAddress(Data.userDTO.address);
+          setAddressDetail(Data.userDTO.addressDetail);
+          setPetAllowed(Data.memberDTO.petAllowed);
+          setCohabitant(Data.memberDTO.cohabitant);
+          setCohabitantCount(Data.memberDTO.cohabitantCount);
+          setFamilyAgreement(Data.memberDTO.familyAgreement);
+          setEmploymentStatus(Data.memberDTO.employmentStatus);
+          setCommuteTime(Data.memberDTO.commuteTime);
+          setPetExperience(Data.memberDTO.petExperience);
+          setCurrentPet(Data.memberDTO.currentPet);
+          setFuturePlan(Data.memberDTO.futurePlan);
 
-        // commuteTime데이터 파싱
-        const commute = Data.memberDTO.commuteTime;
-        if (commute) {
-          const [start, end, turnAround] = commute.split(', ');
-          setCommuteStart(start);
-          setCommuteEnd(end);
-          setTurnAroundTime(turnAround);
+          // commuteTime데이터 파싱
+          const commute = Data.memberDTO.commuteTime;
+          if (commute) {
+            const [start, end, turnAround] = commute.split(', ');
+            setCommuteStart(start);
+            setCommuteEnd(end);
+            setTurnAroundTime(turnAround);
+          }
+          console.log('데이터 불러오기 성공 User info:', Data);
+        } else {
+          setError(response.data.message);
         }
-
-        setLoading(false);
-        console.log('데이터 불러오기 성공 User info:', Data);
       } catch (err) {
-        // setError('데이터를 가져오는 중 오류가 발생했습니다.');
-        setLoading(false);
         console.error('Error message:', err.message);
+      } finally {
+        setLoading(false);
       }
     };
     getUserInfo();
   }, []);
 
-  // 로딩 상태 표시
   if (loading) return <div>Loading...</div>;
-  // if (error) return <div>{error}</div>;
+  if (error) return <div>Error: {error}</div>;
 
   // 폼 제출 함수
   const handleSubmitClick = async () => {
@@ -253,13 +257,13 @@ function ProfileSettingGeneral() {
             Authorization: `Bearer ${token}`,
           },
         });
-
         console.log('데이터 전송 성공 User info:', response);
-      } catch (error) {
-        console.error('Error message:', error.message);
+        alert('변경된 내용이 저장되었습니다');
+        navigate(`/MypageGeneral`);
+        window.scrollTo(0, 0);
+      } catch (err) {
+        console.error('Error message:', err.message);
       }
-      alert('변경된 내용이 저장되었습니다');
-      // myback(back) 이동 로직 구현
     }
   };
 
