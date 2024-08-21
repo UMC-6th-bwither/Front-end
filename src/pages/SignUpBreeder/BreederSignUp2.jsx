@@ -8,6 +8,7 @@ import choiceCat from '/icons/signUp/choice_cat.png';
 import search from '/icons/signUp/search.svg';
 import Button from '../../components/SignUpButton/Button';
 import tagX from '/icons/signUp/breedTag_x.svg';
+import { updateSignupStep2 } from '../../redux/breederSignupSlice';
 
 const dogBreeds = [
   '골든 리트리버',

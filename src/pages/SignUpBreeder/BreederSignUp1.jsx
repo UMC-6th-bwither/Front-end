@@ -8,6 +8,7 @@ import Terms from '../../components/SignUpTerms/SignUpTerms';
 import Button from '../../components/SignUpButton/Button';
 import TextButton from '../../components/SignUpButton/TextButton';
 import failX from '/icons/signUp/fail_x.svg';
+import { updateSignupStep1 } from '../../redux/breederSignupSlice';
 
 export default function BreederSignUp1() {
   const validateEmail = (email) => {

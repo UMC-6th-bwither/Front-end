@@ -5,6 +5,7 @@ import * as B from '../SignUpBwither/BwitherSignUp.style';
 import progressBar75 from '/icons/signUp/progress-bar-75.svg';
 import Button from '../../components/SignUpButton/Button';
 import failX from '/icons/signUp/fail_x.svg';
+import { updateSignupStep3 } from '../../redux/breederSignupSlice';
 
 export default function BreederSignUp3() {
   const validateEmail = (email) => {
