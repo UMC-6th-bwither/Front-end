@@ -55,11 +55,6 @@ export const Container = styled.div`
     padding: 0;
     margin: 0;
     z-index: 999;
-
-    :hover {
-      background: #f87b45;
-      color: #ffffff;
-    }
   }
   .content li {
     height: 36px;
@@ -73,8 +68,5 @@ export const Container = styled.div`
     font-family: 'Noto Sans KR';
     font-size: 14px;
     font-weight: 350;
-  }
-  .content li:last-child {
-    border-radius: 0 0 10px 10px;
   }
 `;

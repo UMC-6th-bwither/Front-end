@@ -53,7 +53,7 @@ export const HeadLiner = styled.h1`
 `;
 
 export const BannerContainer = styled.div`
-  width: 990px;
+  width: 980px;
   height: 316px;
   gap: 16px;
   align-items: center;
@@ -326,7 +326,6 @@ export const BreederInfoVer2 = styled.div`
   font-weight: 350;
   line-height: 18px;
   color: #737373;
-  text-align: left;
 `;
 
 export const Theme = styled.div`
@@ -463,7 +462,7 @@ export const ProFileContainer = styled.div`
   border-radius: 8px;
 `;
 
-export const ProfileImg = styled.img`
+export const ProfileImg = styled.div`
   width: 20px;
   height: 20px;
   gap: 0px;
