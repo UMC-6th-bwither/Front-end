@@ -34,7 +34,7 @@ function BreederCard({
     }
   };
   return (
-    <S.CardBox to={to}>
+    <S.CardBox>
       <S.Click to={to}>
         <S.PhotoContainer>
           <img src={photo} alt={name} className="photo" />
