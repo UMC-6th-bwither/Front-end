@@ -17,7 +17,7 @@ export const TopImage = styled.div`
   left: 0;
   width: 100%;
   height: 208px;
-  background: url('/public/img/breederinfoedit.png') no-repeat center;
+  background: url('/img/breederinfoedit.png') no-repeat center;
   background-color: lightgray;
   background-size: cover;
 `;
@@ -45,7 +45,7 @@ export const OverlappingImageContainer = styled.div`
   left: 16px;
 `;
 export const OverlappingImage = styled.div`
-  background: url('/public/img/defaultprofile.png');
+  background: url('/img/defaultprofile.png');
 
   width: 120px;
   height: 120px;

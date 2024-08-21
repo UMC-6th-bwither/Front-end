@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useImperativeHandle } from 'react';
 import * as A from '../../pages/BreederInfoEdit/BreederInfoEdit.style';
 
 const BreederInfo = React.forwardRef((props, ref) => {
+  const localRef = useRef();
   const [certificates, setCertificates] = useState([]);
   const [animalTypes, setAnimalTypes] = useState([
     { id: 1, name: '비글' },
     { id: 2, name: '고양이' },
   ]);
   const [newAnimalType, setNewAnimalType] = useState('');
+
+  // 추가된 상태
+  const [contactNumber, setContactNumber] = useState('');
+  const [contactTime, setContactTime] = useState('');
+  const [sns, setSns] = useState('');
+  const [breederDescription, setBreederDescription] = useState('');
+  const [careerInstitute, setCareerInstitute] = useState('');
+  const [careerDescription, setCareerDescription] = useState('');
+  const [careerList, setCareerList] = useState([]); // 경력사항 배열 상태 추가
+  const [schoolName, setSchoolName] = useState('');
+  const [majorName, setMajorName] = useState('');
 
   const [employmentStartDate, setEmploymentStartDate] = useState(null);
   const [employmentEndDate, setEmploymentEndDate] = useState(null);
@@ -21,6 +33,29 @@ const BreederInfo = React.forwardRef((props, ref) => {
   const [isStartCalendarOpen, setIsStartCalendarOpen] = useState(false);
   const [isEndCalendarOpen, setIsEndCalendarOpen] = useState(false);
 
+  useImperativeHandle(ref, () => ({
+    getBreederInfoData() {
+      return {
+        certificates,
+        animalTypes,
+        contactNumber,
+        contactTime,
+        sns,
+        breederDescription,
+        careerList,
+        schoolName,
+        majorName,
+        enrollDate: startDate,
+        graduateDate: endDate,
+      };
+    },
+    scrollIntoView(options) {
+      if (localRef.current) {
+        localRef.current.scrollIntoView(options);
+      }
+    },
+  }));
+
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -29,6 +64,59 @@ const BreederInfo = React.forwardRef((props, ref) => {
         { id: URL.createObjectURL(file), name: file.name },
       ]);
     }
+  };
+
+  const calculateCareerDuration = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = endDate ? new Date(endDate) : new Date();
+
+    const durationInMilliseconds = end - start;
+    const durationInYears =
+      durationInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
+
+    return durationInYears;
+  };
+
+  const calculateTotalCareer = () => {
+    const totalYears = careerList.reduce((total, career) => {
+      const careerDuration = calculateCareerDuration(
+        career.startDate,
+        career.endDate,
+      );
+      return total + careerDuration;
+    }, 0);
+
+    if (totalYears < 1) {
+      return '1년 미만';
+    } else {
+      return `${Math.floor(totalYears)}년`;
+    }
+  };
+
+  const handleAddCareer = () => {
+    if (
+      careerInstitute === '' ||
+      careerDescription === '' ||
+      employmentStartDate === '' ||
+      !employmentStartDate
+    ) {
+      alert('입력 양식을 완성해 주세요.');
+      return;
+    }
+
+    const newCareer = {
+      company: careerInstitute,
+      startDate: employmentStartDate,
+      endDate: employmentEndDate,
+      period: `${employmentStartDate?.toLocaleDateString()} - ${employmentEndDate?.toLocaleDateString() || '현재'}`,
+      description: careerDescription,
+    };
+
+    setCareerList([...careerList, newCareer]);
+    setEmploymentStartDate(null);
+    setEmploymentEndDate(null);
+    setCareerInstitute('');
+    setCareerDescription('');
   };
 
   const handleDeleteCertificate = (id) => {
@@ -49,7 +137,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
   };
 
   return (
-    <div ref={ref} style={{ marginBottom: '64px' }}>
+    <div ref={localRef} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
         <A.InfoTitle>브리더 정보</A.InfoTitle>
         <A.InfoContentBox>
@@ -68,6 +156,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
           <A.InfoInputBox
             type="text"
             placeholder="연락 가능한 번호를 입력해주세요"
+            value={contactNumber}
+            onChange={(e) => setContactNumber(e.target.value)}
           />
         </A.InfoContentBox>
         <A.InfoContentBox>
@@ -106,6 +196,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
           <A.InfoInputBox
             type="text"
             placeholder="연락 가능한 시간을 입력해주세요"
+            value={contactTime}
+            onChange={(e) => setContactTime(e.target.value)}
           />
         </A.InfoContentBox>
         <A.InfoContentBox>
@@ -125,7 +217,12 @@ const BreederInfo = React.forwardRef((props, ref) => {
             />
           </svg>
           <A.InfoContent>SNS</A.InfoContent>
-          <A.InfoInputBox type="text" placeholder="SNS 주소를 입력해주세요" />
+          <A.InfoInputBox
+            type="text"
+            placeholder="SNS 주소를 입력해주세요"
+            value={sns}
+            onChange={(e) => setSns(e.target.value)}
+          />
         </A.InfoContentBox>
       </A.InfoItem>
       <A.InfoItem>
@@ -133,6 +230,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
         <A.InfoInputContentBox
           type="text"
           placeholder="브리더에 대해 알려주세요"
+          value={breederDescription}
+          onChange={(e) => setBreederDescription(e.target.value)}
         />
       </A.InfoItem>
       <A.InfoItemSecond>
@@ -186,16 +285,24 @@ const BreederInfo = React.forwardRef((props, ref) => {
               fill="#FE834D"
             />
           </svg>
-          <A.InfoContentCarrer>총 경력 3년</A.InfoContentCarrer>
+          <A.InfoContentCarrer>
+            총 경력 {calculateTotalCareer()}
+          </A.InfoContentCarrer>
         </A.InfoContentBox>
-        <A.MiniTitle>해피 브리더</A.MiniTitle>
-        <A.MiniContent>2023년 3월 - 현재 · 1년 4개월</A.MiniContent>
-        <A.MiniContent2>브리더 전문가 양성과정 수료</A.MiniContent2>
+        {careerList.map((career, index) => (
+          <div key={`career_value_${index}`}>
+            <A.MiniTitle>{career.company}</A.MiniTitle>
+            <A.MiniContent>{career.period}</A.MiniContent>
+            <A.MiniContent2>{career.description}</A.MiniContent2>
+          </div>
+        ))}
         <A.InfoInputContentLine3Box>
           <A.InfoInputContentLine3
             type="text"
             style={{ marginBottom: '12px' }}
             placeholder="기관명을 입력해주세요"
+            value={careerInstitute}
+            onChange={(e) => setCareerInstitute(e.target.value)}
           />
           <A.InfoInputContentLine2Box>
             <A.DateInputWrapper>
@@ -241,7 +348,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
             <A.DateInputWrapper>
               <A.InfoInputContentLine2
                 type="text"
-                placeholder="퇴사연월"
+                placeholder="퇴사연월(현재는 빈칸)"
                 value={
                   employmentEndDate
                     ? employmentEndDate.toISOString().split('T')[0]
@@ -281,6 +388,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
         <A.InfoInputContentBox
           type="text"
           placeholder="경력에 대한 간단한 설명을 작성해주세요"
+          value={careerDescription}
+          onChange={(e) => setCareerDescription(e.target.value)}
         />
         <div
           style={{
@@ -291,8 +400,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
             gap: '12px',
           }}
         >
-          <A.InfoInputBtn>저장</A.InfoInputBtn>
-          <A.InfoInputBtn>추가</A.InfoInputBtn>
+          {/* <A.InfoInputBtn>저장</A.InfoInputBtn> */}
+          <A.InfoInputBtn onClick={handleAddCareer}>추가</A.InfoInputBtn>
         </div>
       </A.InfoItemSecond>
       <A.InfoItemSecond>
@@ -310,13 +419,16 @@ const BreederInfo = React.forwardRef((props, ref) => {
           <A.InfoInputContentLine4
             type="text"
             placeholder="학교명을 입력해주세요"
+            value={schoolName}
+            onChange={(e) => setSchoolName(e.target.value)}
           />
           <A.InfoInputContentLine4
             type="text"
             placeholder="학과명을 입력해주세요"
+            value={majorName}
+            onChange={(e) => setMajorName(e.target.value)}
           />
         </div>
-        {/* 달력추가 예정 */}
         <A.InfoInputContentLine2Box>
           <A.DateInputWrapper>
             <A.InfoInputContentLine2

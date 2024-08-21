@@ -1,9 +1,37 @@
-import React from 'react';
+import React, { useState, useImperativeHandle, useRef } from 'react';
 import * as A from '../../pages/BreederInfoEdit/BreederInfoEdit.style';
 
 const BreederQna = React.forwardRef((props, ref) => {
+  const localRef = useRef();
+
+  const [qnaAnswers, setQnaAnswers] = useState({
+    question1: '',
+    question2: '',
+    question3: '',
+    question4: '',
+    question5: '',
+  });
+
+  useImperativeHandle(ref, () => ({
+    getQnaData() {
+      return qnaAnswers;
+    },
+    scrollIntoView(options) {
+      if (localRef.current) {
+        localRef.current.scrollIntoView(options);
+      }
+    },
+  }));
+
+  const handleInputChange = (e, key) => {
+    setQnaAnswers((prev) => ({
+      ...prev,
+      [key]: e.target.value,
+    }));
+  };
+
   return (
-    <div ref={ref} style={{ marginBottom: '64px' }}>
+    <div ref={localRef} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
         <A.InfoTitle>자주 물어보는 질문</A.InfoTitle>
         <A.QnaBox>
@@ -13,6 +41,8 @@ const BreederQna = React.forwardRef((props, ref) => {
           <A.InfoInputContentBox
             type="text"
             placeholder="질문에 대한 답변을 작성해주세요"
+            value={qnaAnswers.question1}
+            onChange={(e) => handleInputChange(e, 'question1')}
           />
         </A.QnaBox>
         <A.QnaBox>
@@ -22,6 +52,8 @@ const BreederQna = React.forwardRef((props, ref) => {
           <A.InfoInputContentBox
             type="text"
             placeholder="질문에 대한 답변을 작성해주세요"
+            value={qnaAnswers.question2}
+            onChange={(e) => handleInputChange(e, 'question2')}
           />
         </A.QnaBox>
 
@@ -32,6 +64,8 @@ const BreederQna = React.forwardRef((props, ref) => {
           <A.InfoInputContentBox
             type="text"
             placeholder="질문에 대한 답변을 작성해주세요"
+            value={qnaAnswers.question3}
+            onChange={(e) => handleInputChange(e, 'question3')}
           />
         </A.QnaBox>
         <A.QnaBox>
@@ -42,6 +76,8 @@ const BreederQna = React.forwardRef((props, ref) => {
           <A.InfoInputContentBox
             type="text"
             placeholder="질문에 대한 답변을 작성해주세요"
+            value={qnaAnswers.question4}
+            onChange={(e) => handleInputChange(e, 'question4')}
           />
         </A.QnaBox>
         <A.QnaBox>
@@ -51,6 +87,8 @@ const BreederQna = React.forwardRef((props, ref) => {
           <A.InfoInputContentBox
             type="text"
             placeholder="질문에 대한 답변을 작성해주세요"
+            value={qnaAnswers.question5}
+            onChange={(e) => handleInputChange(e, 'question5')}
           />
         </A.QnaBox>
       </A.InfoItem>
