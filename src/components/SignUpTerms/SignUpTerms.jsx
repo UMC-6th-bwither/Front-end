@@ -2,6 +2,8 @@ import { useState } from 'react';
 import * as S from './SignUpTerms.style';
 import beforeCheck from '/icons/signUp/check_before.svg';
 import afterCheck from '/icons/signUp/check_after.svg';
+import { FailX } from '../../pages/SignUpBwither/BwitherSignUp.style';
+import failX from '/icons/signUp/fail_x.svg';
 
 export default function SignUpTerms({ onTermsChecked, termsError }) {
   const [isAllChecked, setIsAllChecked] = useState(false);
