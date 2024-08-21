@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as B from './SignUpBreeder.style';
 import progressBar50 from '/icons/signUp/progress-bar-50.svg';
 import choiceDog from '/icons/signUp/choice_dog.png';
@@ -160,6 +162,38 @@ export default function BreederSignUp2() {
     setTags([]); // 동물을 변경할 때 태그 초기화
   };
 
+  const dispatch = useDispatch();
+  const signupData = useSelector((state) => state.breederSignup);
+  const navigate = useNavigate();
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log('Form submitted');
+
+    dispatch(
+      updateSignupStep2({
+        breederJoinDTO: {
+          ...signupData.breederJoinDTO,
+          animal: selectedAnimal,
+          species: tags,
+        },
+      }),
+    );
+
+    const secondData = {
+      ...signupData,
+      breederJoinDTO: {
+        ...signupData.breederJoinDTO,
+        animal: selectedAnimal,
+        species: tags,
+      },
+    };
+
+    console.log('리덕스 상태:', secondData);
+
+    navigate('/breeder-signup/3');
+  };
+
   return (
     <B.Background>
       <B.WelcomeMsg>
@@ -168,33 +202,35 @@ export default function BreederSignUp2() {
       <B.Container>
         <B.ProgressBar src={progressBar50} />
         <B.Text>어떤 동물을 브리딩 하시나요?</B.Text>
-        <B.ContentWrapper>
-          <B.ChoiceWrapper>
-            <B.Choice
-              onClick={() => handleAnimalSelect('dog')}
-              className={selectedAnimal === 'dog' ? 'active' : ''}
-            >
-              <img src={choiceDog} alt="choice_dog_icon" className="img" />
-              <div className="text">강아지</div>
-            </B.Choice>
-            <B.Choice
-              onClick={() => handleAnimalSelect('cat')}
-              className={selectedAnimal === 'cat' ? 'active' : ''}
-            >
-              <img src={choiceCat} alt="choice_cat_icon" className="img" />
-              <div className="text">고양이</div>
-            </B.Choice>
-          </B.ChoiceWrapper>
-          <SearchBar
-            breeds={selectedAnimal === 'dog' ? dogBreeds : catBreeds}
-            addTag={addTag}
-          />
-          <TagList tags={tags} removeTag={removeTag} />
-        </B.ContentWrapper>
-        <B.BtnWrapper2>
-          <Button white text="이전" path="breeder-signup/1" />
-          <Button text="다음" path="breeder-signup/3" />
-        </B.BtnWrapper2>
+        <B.Form onSubmit={onSubmit}>
+          <B.ContentWrapper>
+            <B.ChoiceWrapper>
+              <B.Choice
+                onClick={() => handleAnimalSelect('DOG')}
+                className={selectedAnimal === 'DOG' ? 'active' : ''}
+              >
+                <img src={choiceDog} alt="choice_dog_icon" className="img" />
+                <div className="text">강아지</div>
+              </B.Choice>
+              <B.Choice
+                onClick={() => handleAnimalSelect('CAT')}
+                className={selectedAnimal === 'CAT' ? 'active' : ''}
+              >
+                <img src={choiceCat} alt="choice_cat_icon" className="img" />
+                <div className="text">고양이</div>
+              </B.Choice>
+            </B.ChoiceWrapper>
+            <SearchBar
+              breeds={selectedAnimal === 'DOG' ? dogBreeds : catBreeds}
+              addTag={addTag}
+            />
+            <TagList tags={tags} removeTag={removeTag} />
+          </B.ContentWrapper>
+          <B.BtnWrapper2>
+            <Button white text="이전" path="breeder-signup/1" />
+            <Button text="다음" path="breeder-signup/3" type="submit" />
+          </B.BtnWrapper2>
+        </B.Form>
       </B.Container>
     </B.Background>
   );
