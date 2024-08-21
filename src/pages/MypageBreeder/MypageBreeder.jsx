@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
 import {
   openDeleteAccountModal,
@@ -8,15 +9,39 @@ import {
 } from '../../redux/modalSlice';
 import * as MP from './MypageBreeder.style';
 import profile from '../../../public/img/profile.png';
-import question from '../../../public/img/helpQuestionMark.svg';
 import footprintLine from '../../../public/img/footprintLine.svg';
 import AlertBox from '../../components/AlertBox/AlertBox';
 import SmallButton from '../../components/smallbutton/SmallButton';
+import api from '../../api/api';
 
 function MypageBreeder() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isDeleteAccountModalOpen } = useSelector(selectModal);
+  const [userData, setUserData] = useState(null);
+
+  // api 호출
+  useEffect(() => {
+    const fetchRecentData = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+
+        const response = await api.get('/user', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const BreederDTOdata = response.data.result.breederDTO;
+
+        setUserData(BreederDTOdata);
+      } catch (error) {
+        console.error('Error fetching recentData', error);
+      }
+    };
+
+    fetchRecentData();
+  }, []);
 
   return (
     <MP.Border>
@@ -25,21 +50,40 @@ function MypageBreeder() {
           <MP.Title>마이페이지</MP.Title>
           <MP.Profile>
             <MP.Left>
-              <img src={profile} alt="profile" className="profile_img" />
-              <MP.Info>
-                <div className="top_info">
-                  <div>해피브리더</div>
-                  <div className="badge">브리더</div>
+              {userData && (
+                <div className="profile_img_wrapper">
+                  <img
+                    src={
+                      userData.backgroundImage
+                        ? userData.backgroundImage
+                        : profile
+                    }
+                    alt="profile"
+                    className="profile_img"
+                  />
                 </div>
-                <div>example@email.com</div>
+              )}
+              <MP.Info>
+                {userData && (
+                  <>
+                    <div className="top_info">
+                      <div>{userData.tradeName}</div>
+                      <div className="badge">브리더</div>
+                    </div>
+                    <div>{userData.tradeEmail}</div>
+                  </>
+                )}
               </MP.Info>
             </MP.Left>
             <MP.Right>
-              <SmallButton>
-                {/* onClick={() => navigate(`/수정페이지`)} -> 수정 페이지 추가되면 */}
+              <SmallButton onClick={() => navigate(`/ProfileSettingBreeder`)}>
                 프로필 설정
               </SmallButton>
-              <button type="button" className="edit_info_btn">
+              <button
+                type="button"
+                className="edit_info_btn"
+                onClick={() => navigate(`/breederinfo-edit`)}
+              >
                 브리더 정보 수정
               </button>
             </MP.Right>
@@ -48,15 +92,6 @@ function MypageBreeder() {
       </MP.TopContainer>
 
       <MP.StatusContainer>
-        <MP.RankContainer>
-          <MP.RankTop>
-            <MP.RankTitle>신뢰 등급</MP.RankTitle>
-            <img src={question} alt="helpQuestion" />
-          </MP.RankTop>
-          <MP.RankBottom>
-            <div className="number">2</div> <div className="text">등급</div>
-          </MP.RankBottom>
-        </MP.RankContainer>
         <MP.AlertContainer>
           <AlertBox message="행복이 3주차 사진 업로드가 안됐어요" />
           <AlertBox message="기쁨이 3주차 사진 업로드가 안됐어요" />
