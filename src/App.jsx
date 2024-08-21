@@ -35,7 +35,7 @@ import Main from './pages/Main/Main';
 import ChatListGeneral from './pages/ChatListGeneral/ChatListGeneral';
 import ChatDetailGeneral from './pages/ChatDetailGeneral/ChatDetailGeneral';
 import WritingFormGeneral from './pages/WritingFormGeneral/WritingFormGeneral';
-import CommunityMain from './pages/CommunityMain/CommunityMain';
+// import CommunityMain from './pages/CommunityMain/CommunityMain';
 import ProfileSettingGeneral from './pages/ProfileSetting/ProfileSettingGeneral';
 import ProfileSettingBreeder from './pages/ProfileSetting/ProfileSettingBreeder';
 import Animal from './pages/MyReview/Animal/Animal';
@@ -129,7 +129,7 @@ function App() {
           path="/ProfileSettingBreeder"
           element={<ProfileSettingBreeder />}
         />
-        <Route path="/WritingDetail" element={<WritingDetail />} />
+        <Route path="/WritingDetail/:postId" element={<WritingDetail />} />
         <Route path="/TermsOfService" element={<TermsOfService />} />
         <Route path="/signup/1" element={<BwitherSignUp1 />} />
         <Route path="/signup/2" element={<BwitherSignUp2 />} />
