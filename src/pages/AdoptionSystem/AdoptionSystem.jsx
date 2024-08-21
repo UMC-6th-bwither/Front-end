@@ -90,21 +90,6 @@ export default function AdoptionSystem() {
         <div>
           <A.TitleWrap>
             <A.TitleIcon src={titleMark} />
-            <A.Title>대기 예약</A.Title>
-          </A.TitleWrap>
-          <A.Text>
-            분양자는 실제로 반려동물을 분양 받기 전, 해당 브리더와 컨택 후
-            예약을 하게 됩니다. <br /> 예약 순번 1번은 브리더와 2주간 분양 준비
-            절차를 밟게 됩니다. 분양 준비가 문제 없이 완료되어야만 분양을 받을
-            수 있게 되며, 만약 분양 준비 및 분양희망자에게 문제가 생겼다면 해당
-            분양 희망자는 분양을 받을 수 없게 되고 다음 예약 순번에게 분양
-            기회가 돌아갑니다. 다음 예약 순번도 마찬가지로 브리더와 2주간 분양
-            준비 절차를 밟고 문제가 없을 시 분양을 받을 수 있게 됩니다.
-          </A.Text>
-        </div>
-        <div>
-          <A.TitleWrap>
-            <A.TitleIcon src={titleMark} />
             <A.Title>혈통서</A.Title>
           </A.TitleWrap>
           <A.Text>
@@ -177,23 +162,24 @@ export default function AdoptionSystem() {
       <A.HeadLine2 />
       <A.AdoptionSection>
         <A.AdoptionBox>
-          분양 대기 동물 탭에서 분양을 희망하는 동물을 클릭하여 해당 브리더에게
-          분양 희망 의사를 나타냅니다.
+          분양 대기 동물 목록에서 분양을 희망하는 동물을 클릭하여 해당 동물의
+          정보를 꼼꼼히 확인합니다.
         </A.AdoptionBox>
         <A.DownMark src={downMark} />
         <A.AdoptionBox>
-          브리더와 컨택 후 분양 희망자의 분양 환경 및 조건을 따져 분양 예약을
-          확정 짓습니다. <br /> 2주간 브리더와 분양 준비를 마칩니다.
+          브리더의 연락처를 받기 위해 문의 요청 버튼을 눌러 브리더에게 분양 희망
+          의사를 표현합니다.
         </A.AdoptionBox>
         <A.DownMark src={downMark} />
         <A.AdoptionBox>
-          분양 준비 과정에서 문제가 없었다면 분양 절차를 밟습니다. 분양 절차는
-          브리더마다 다를 수 있습니다.
+          브리더가 분양 요청을 보낸 분양자의 정보를 확인하고 요청을 수락하면
+          해당 브리더의 연락처가 공개됩니다.
         </A.AdoptionBox>
         <A.DownMark src={downMark} />
         <A.AdoptionBox>
-          분양 후 브리더에게 1년간 교육 및 지원을 받습니다. 브리더에게 모니터링
-          정보를 넘겨주어야 합니다. <br /> (사진, 병원 검진 내역 등)
+          분양 희망자는 공개된 브리더의 연락처로 분양 희망 의사를 나타내고
+          <br />
+          개인적으로 약속을 잡아 오프라인으로 분양을 받습니다.
         </A.AdoptionBox>
       </A.AdoptionSection>
       <A.EndWrapper>
