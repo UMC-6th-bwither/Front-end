@@ -18,12 +18,12 @@ function Icon() {
 }
 
 export default function MyReview() {
-  const { isLoggedIn, role, token } = useAuth();
+  const { isLoggedIn, userId, role, token } = useAuth();
   const [myReviews, setMyReviews] = useState([]);
 
   const fetchMyReview = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
-    const endPoint = `${apiUrl}/post/reviews`;
+    const endPoint = `${apiUrl}/post?category=BREEDER_REVIEWS&userId=${userId}`;
     const res = await fetch(endPoint, {
       headers: {
         Accept: '*/*',
@@ -105,15 +105,16 @@ export default function MyReview() {
         </P.BreederCardContainer>
         <P.BreederCardListTag>내가 작성한 후기</P.BreederCardListTag>
         <P.ReviewCardContainer>
-          {myReviews.map((review) => (
-            <BreederReviewAnimalCard
-              key={review.id}
-              kennelName={review.kennelName}
-              star={review.rating}
-              imgSrc={extractFirstImageUrl(review.blocks)}
-              context={extractTextFromBlocks(review.blocks)}
-            />
-          ))}
+          {myReviews &&
+            myReviews.map((review) => (
+              <BreederReviewAnimalCard
+                key={review.id}
+                kennelName={review.kennelName}
+                star={review.rating}
+                imgSrc={extractFirstImageUrl(review.blocks)}
+                context={extractTextFromBlocks(review.blocks)}
+              />
+            ))}
         </P.ReviewCardContainer>
       </P.MainContainer>
     </P.Layout>

@@ -56,10 +56,11 @@ export default function CommunityBreederInformation() {
 
   const fetchPosts = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
-    const endPoint = `${apiUrl}/post/tips`;
+    const endPoint = `${apiUrl}/post?category=TIPS`;
     const res = await fetch(endPoint, {
       headers: {
         Accept: '*/*',
+        Authorization: `Bearer ${token}`,
       },
     });
 
