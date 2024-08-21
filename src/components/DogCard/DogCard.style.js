@@ -41,6 +41,12 @@ const PhotoContainer = styled.div`
   border-radius: 12px;
   opacity: 0px;
   background: #d9d9d9;
+
+  .photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 const InfoContainer = styled.div`
   margin: 0px 50px;
