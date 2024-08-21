@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
 import * as A from './Animal.style';
-import * as P from '../MyReview.style';
 import bookmark from '/img/bookmark.svg';
 import footprint from '/img/footprint.svg';
 import { animalBreeds } from '../../selectData';

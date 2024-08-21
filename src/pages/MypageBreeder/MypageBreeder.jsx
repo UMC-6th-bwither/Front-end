@@ -1,4 +1,4 @@
-import { useCallback,  useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
@@ -9,7 +9,6 @@ import {
 } from '../../redux/modalSlice';
 import * as MP from './MypageBreeder.style';
 import profile from '/img/profile.png';
-import question from '/img/helpQuestionMark.svg';
 import footprintLine from '/img/footprintLine.svg';
 import AlertBox from '../../components/AlertBox/AlertBox';
 import SmallButton from '../../components/smallbutton/SmallButton';
