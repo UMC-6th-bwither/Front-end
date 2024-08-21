@@ -13,6 +13,12 @@ const PhotoContainer = styled.div`
   height: 125px;
   border-radius: 12px;
   background: #d9d9d9;
+
+  .photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 const InfoContainer = styled.div`
   heigth: 125px;
