@@ -175,9 +175,11 @@ export default function CommunityBreederInformation() {
           {filteredPosts && filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
               <PostCard
+                onClick={() => navigate(`/WritingDetail/${post.id}`)}
                 key={
                   post.id ? `post_id_${post.id}` : `temp_key_${Math.random()}`
                 }
+                postId={post.id}
                 petType={post.petType}
                 profileImgSrc={convertBlobUrlToHttpUrl(post.authorImage)}
                 profileName={post.author}
