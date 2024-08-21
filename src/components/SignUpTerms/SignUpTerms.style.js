@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 `;
 
 export const AllWrapper = styled(Wrapper)`
-  margin-bottom: 32px;
+  margin-bottom: 8px;
 `;
 
 export const TextBox = styled.div`
@@ -58,6 +58,7 @@ export const Divider = styled.div`
   height: 2px;
   background: #f1f1f1;
   margin-bottom: 32px;
+  margin-top: 20px;
 `;
 
 export const Check = styled.img`
@@ -70,4 +71,12 @@ export const Label = styled.label`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+`;
+
+export const ErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
 `;

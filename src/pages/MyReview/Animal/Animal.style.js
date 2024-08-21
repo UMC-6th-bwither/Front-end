@@ -98,6 +98,7 @@ export const IconContainer = styled.div`
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  position: relative;
 
   .bookmark {
     position: absolute;
@@ -105,10 +106,9 @@ export const IconContainer = styled.div`
     z-index: 1;
   }
   .footprint {
-    width: 14.464px;
-    height: 14px;
     padding: 6.5px 0 20.5px;
     flex-shrink: 0;
+    position: absolute;
     z-index: 2;
   }
 `;
@@ -166,13 +166,39 @@ export const ReservationBtn = styled.button`
 export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: column;
+  justify-content: center;
+  align-items: center;
   gap: 32px;
+  align-self: stretch;
+  min-height: 100vh;
+
+  &.empty {
+    min-height: 100vh; /* 'empty' 클래스가 있을 때만 적용 */
+  }
   .dogCard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 32px;
     align-self: stretch;
+  }
+`;
+
+export const NothingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .nothing_text {
+    align-self: stretch;
+    color: var(--Grey_icon, #c5c5c5);
+    text-align: center;
+    font-family: 'Noto Sans KR';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 `;

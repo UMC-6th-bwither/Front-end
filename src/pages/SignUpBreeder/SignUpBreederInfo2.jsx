@@ -32,6 +32,7 @@ CustomInput.defaultProps = {
 
 export default function SignUpBreederInfo2() {
   const [startDate, setStartDate] = useState(null);
+  const [lastDate, setLastDate] = useState(null);
 
   return (
     <B.Background>
@@ -92,6 +93,7 @@ export default function SignUpBreederInfo2() {
               <B.InputBox3 placeholder="상호명" />
               <B.DateInputWrapper>
                 <B.CustomDatePicker
+                  className="datepicker"
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
                   dateFormat="yyyy/MM"
@@ -104,8 +106,8 @@ export default function SignUpBreederInfo2() {
               <B.Hyphen />
               <B.DateInputWrapper>
                 <B.CustomDatePicker
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  selected={lastDate}
+                  onChange={(date) => setLastDate(date)}
                   dateFormat="yyyy/MM"
                   showMonthYearPicker
                   customInput={<CustomInput placeholder="퇴사연월" />}

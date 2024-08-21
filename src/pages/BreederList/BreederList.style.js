@@ -8,7 +8,7 @@ export const Border = styled.div`
   margin: 0 auto;
   gap: 88px;
   padding-top: 136px;
-  padding-bottom: 414px;
+  padding-bottom: 161px;
 `;
 
 export const RegionContainer = styled.div`
@@ -105,14 +105,38 @@ export const AnimalSelector = styled.div`
 export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 120px;
   align-self: stretch;
+
+  &.empty {
+    min-height: 100vh; /* 'empty' 클래스가 있을 때만 적용 */
+  }
   .breederCard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 32px;
     align-self: stretch;
+  }
+`;
+
+export const NothingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .nothing_text {
+    align-self: stretch;
+    color: var(--Grey_icon, #c5c5c5);
+    text-align: center;
+    font-family: 'Noto Sans KR';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 `;
