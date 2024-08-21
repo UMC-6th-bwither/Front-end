@@ -8,7 +8,9 @@ import Terms from '../../components/SignUpTerms/SignUpTerms';
 import Button from '../../components/SignUpButton/Button';
 import TextButton from '../../components/SignUpButton/TextButton';
 import failX from '/icons/signUp/fail_x.svg';
+import completeCheck from '/icons/signUp/complete_check.svg';
 import { updateSignupStep1 } from '../../redux/breederSignupSlice';
+import { postEmailSend, postEmailVerify } from '../../apis/postUser';
 
 export default function BreederSignUp1() {
   const validateEmail = (email) => {
@@ -47,8 +49,21 @@ export default function BreederSignUp1() {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
+  const [codeComplete, setCodeComplete] = useState('');
+  const [verifyComplete, setVerifyComplete] = useState('');
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [termsChecked, setTermsChecked] = useState(false);
+  const [termsError, setTermsError] = useState('');
+
+  const handleTermsChecked = (isChecked) => {
+    setTermsChecked(isChecked);
+    if (isChecked) {
+      setTermsError('');
+    }
+  };
 
   const dispatch = useDispatch();
   const signupData = useSelector((state) => state.breederSignup);
@@ -57,6 +72,11 @@ export default function BreederSignUp1() {
   const onSubmit = (event) => {
     event.preventDefault();
     console.log('Form submitted');
+
+    if (!termsChecked) {
+      setTermsError('약관에 동의해주세요'); // 체크박스가 모두 체크되지 않은 경우 경고
+      return;
+    }
 
     dispatch(
       updateSignupStep1({
@@ -74,6 +94,29 @@ export default function BreederSignUp1() {
     console.log('리덕스 상태:', signupData);
 
     navigate('/breeder-signup/2');
+  };
+
+  const requestVerificationCode = async () => {
+    try {
+      const response = await postEmailSend(email);
+      console.log('인증번호 보내기 성공, Server response:', response);
+      setCodeComplete('인증번호가 이메일로 전송되었습니다.');
+    } catch (error) {
+      console.log('인증번호 요청 중 에러', error);
+    }
+  };
+
+  const confirmVerificationCode = async () => {
+    try {
+      const response = await postEmailVerify({
+        email,
+        verification_code: code,
+      });
+      console.log('인증하기 성공, Server response:', response);
+      setVerifyComplete('인증되었습니다.');
+    } catch (error) {
+      console.log('인증하기 요청 중 에러', error);
+    }
   };
 
   return (
@@ -156,7 +199,9 @@ export default function BreederSignUp1() {
                   }}
                   style={{ borderColor: emailError ? '#FA5963' : '' }}
                 />
-                <B.Button type="button">인증번호</B.Button>
+                <B.Button type="button" onClick={requestVerificationCode}>
+                  인증번호
+                </B.Button>
               </div>
               {emailError && (
                 <B.ErrorWrapper>
@@ -164,12 +209,18 @@ export default function BreederSignUp1() {
                   <span style={{ color: '#E76467' }}>{emailError}</span>
                 </B.ErrorWrapper>
               )}
+              {codeComplete && (
+                <B.ErrorWrapper>
+                  <B.CompleteCheck src={completeCheck} />
+                  <span style={{ color: '#3056d7' }}>{codeComplete}</span>
+                </B.ErrorWrapper>
+              )}
             </B.InputWrapper>
             <B.InputWrapper>
               <B.InputTitle>인증번호 입력</B.InputTitle>
               <div style={{ height: '50px' }}>
                 <B.InputBox
-                  type="number"
+                  type="text"
                   placeholder="이메일로 전송된 인증번호 6자리"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
@@ -182,12 +233,20 @@ export default function BreederSignUp1() {
                   }}
                   style={{ borderColor: codeError ? '#FA5963' : '' }}
                 />
-                <B.Button type="button">인증하기</B.Button>
+                <B.Button type="button" onClick={confirmVerificationCode}>
+                  인증하기
+                </B.Button>
               </div>
               {codeError && (
                 <B.ErrorWrapper>
                   <B.FailX src={failX} />
                   <span style={{ color: '#E76467' }}>{codeError}</span>
+                </B.ErrorWrapper>
+              )}
+              {verifyComplete && (
+                <B.ErrorWrapper>
+                  <B.CompleteCheck src={completeCheck} />
+                  <span style={{ color: '#3056d7' }}>{verifyComplete}</span>
                 </B.ErrorWrapper>
               )}
             </B.InputWrapper>
@@ -285,7 +344,7 @@ export default function BreederSignUp1() {
               )}
             </B.InputWrapper>
           </B.InputArea>
-          <Terms />
+          <Terms onTermsChecked={handleTermsChecked} termsError={termsError} />
           <B.BtnWrapper1>
             <Button
               text="브리더로 가입"
