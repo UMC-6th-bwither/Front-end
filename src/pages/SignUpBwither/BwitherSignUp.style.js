@@ -146,6 +146,10 @@ export const InputBox2 = styled(InputBox)`
     border: 2px solid #fe834d;
     outline: none;
   }
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const InputUnderText = styled.div`
@@ -284,12 +288,14 @@ export const TimeGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
+  align-items: center;
 `;
 
 export const TimeWrapper = styled.div`
   width: 200px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
   gap: 12px;
 `;
@@ -370,6 +376,10 @@ export const Error = styled.div`
   line-height: 21px;
 `;
 
+export const Complete = styled(Error)`
+  color: #3056d7;
+`;
+
 export const FailX = styled.img`
   display: flex;
   width: 18px;
@@ -381,4 +391,15 @@ export const FailX = styled.img`
   gap: 8px;
   border-radius: 1000px;
   background: #e76467;
+`;
+
+export const CompleteCheck = styled(FailX)`
+  background: #3056d7;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
 `;
