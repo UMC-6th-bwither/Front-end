@@ -1,4 +1,6 @@
 export default function extractFirstImageUrl(blocks) {
+  if (!blocks) return null;
+
   const imageBlock = blocks.find((block) => {
     return block.type === 'IMAGE' || block.type === 'image'; // 이미지 타입의 블록을 찾음
   });

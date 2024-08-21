@@ -64,9 +64,13 @@ export default function CommunityBreederInformation() {
       },
     });
 
-    const data = await res.json();
-    setPosts(data.result);
-    setFilteredPosts(sortPosts(sortOption, data.result)); // 로드된 데이터를 바로 정렬
+    if (res.ok) {
+      const data = await res.json();
+      setPosts(data.result);
+      setFilteredPosts(sortPosts(sortOption, data.result)); // 로드된 데이터를 바로 정렬
+    } else {
+      console.log('게시글을 불러오는 중 오류가 발생했습니다.');
+    }
   };
 
   const fetchUserInfo = async () => {
@@ -168,20 +172,26 @@ export default function CommunityBreederInformation() {
         </P.FilterContainer>
 
         <P.PostContainer>
-          {filteredPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              petType={post.petType}
-              profileImgSrc={convertBlobUrlToHttpUrl(post.authorImage)}
-              profileName={post.author}
-              postTitle={post.title}
-              postContent={extractTextFromBlocks(post.blocks)}
-              postThumbnailSrc={extractFirstImageUrl(post.blocks)}
-              timeStampKR={convertToKST(post.createdAt)}
-              viewCount={post.viewCount}
-              bookmarkCount={post.bookmarkCount}
-            />
-          ))}
+          {filteredPosts && filteredPosts.length > 0 ? (
+            filteredPosts.map((post) => (
+              <PostCard
+                key={
+                  post.id ? `post_id_${post.id}` : `temp_key_${Math.random()}`
+                }
+                petType={post.petType}
+                profileImgSrc={convertBlobUrlToHttpUrl(post.authorImage)}
+                profileName={post.author}
+                postTitle={post.title}
+                postContent={extractTextFromBlocks(post.blocks)}
+                postThumbnailSrc={extractFirstImageUrl(post.blocks)}
+                timeStampKR={convertToKST(post.createdAt)}
+                viewCount={post.viewCount}
+                bookmarkCount={post.bookmarkCount}
+              />
+            ))
+          ) : (
+            <p>게시글 불러오는 중...</p>
+          )}
         </P.PostContainer>
       </P.MainContainer>
     </P.Layout>
