@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 import { useState, useRef, useCallback, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import * as P from './Form.style';
 import * as S from './Title.style';
 import VerticalMenuSelector from '../../../../components/VerticalMenuSelector/VerticalMenuSelector';
@@ -58,7 +58,12 @@ function StarButton({ active, onClick }) {
 }
 
 export default function ReviewForm() {
+  const [searchParams] = useSearchParams();
+  const bp = searchParams.get('bp');
+  const ba = searchParams.get('ba');
+  const bn = searchParams.get('bn');
   const { breederId } = useParams();
+
   const navigate = useNavigate();
   const { isLoggedIn, token, userId } = useAuth();
 
@@ -165,14 +170,15 @@ export default function ReviewForm() {
         </P.TitleLayout>
         <BreederContactCard
           breederId={breederId}
-          breederLocation="서울 강서구"
-          breederName="😊 행복한 분양의 시작 - 해피 브리더"
-          badgeComponents={[
-            <BadgeVariant content="강아지 전문" />,
-            <BadgeVariant content="본인인증" />,
-            <BadgeVariant content="사업자등록증" />,
-            <BadgeVariant content="혜택" />,
-          ]}
+          breederProfileImgSrc={bp}
+          breederLocation={ba}
+          breederName={bn}
+          // badgeComponents={[
+          //   <BadgeVariant content="강아지 전문" />,
+          //   <BadgeVariant content="본인인증" />,
+          //   <BadgeVariant content="사업자등록증" />,
+          //   <BadgeVariant content="혜택" />,
+          // ]}
           noButton
         />
         <S.OptionsSection>

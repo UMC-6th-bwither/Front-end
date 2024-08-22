@@ -1,7 +1,8 @@
-import React, { useState, useImperativeHandle, useRef } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useImperativeHandle, useRef, useEffect } from 'react';
 import * as A from '../../pages/BreederInfoEdit/BreederInfoEdit.style';
 
-const BreederQna = React.forwardRef((props, ref) => {
+const BreederQna = React.forwardRef(({ userData }, ref) => {
   const localRef = useRef();
 
   const [qnaAnswers, setQnaAnswers] = useState({
@@ -29,6 +30,19 @@ const BreederQna = React.forwardRef((props, ref) => {
       [key]: e.target.value,
     }));
   };
+
+  useEffect(() => {
+    if (userData) {
+      const { breederDTO } = userData;
+      setQnaAnswers({
+        question1: breederDTO.questionGuarantee,
+        question2: breederDTO.questionPedigree,
+        question3: breederDTO.questionBaby,
+        question4: breederDTO.questionPeriod,
+        question5: breederDTO.questionSupport,
+      });
+    }
+  }, [userData]);
 
   return (
     <div ref={localRef} style={{ marginBottom: '64px' }}>

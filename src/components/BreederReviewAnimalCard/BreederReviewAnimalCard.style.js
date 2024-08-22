@@ -7,6 +7,7 @@ export const Container = styled.div`
   border: 2px solid var(--Grey_line, #f1f1f1);
   border-radius: 20px;
   overflow: hidden;
+  cursor: pointer;
 `;
 
 export const Square = styled.div`
