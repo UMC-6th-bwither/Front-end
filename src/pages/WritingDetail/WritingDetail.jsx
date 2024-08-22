@@ -248,9 +248,11 @@ function WritingDetail() {
           </S.TitleContainer>
 
           <S.ContentContainer>
-            <S.RatingContainer>
-              <img src={`/img/rating${post.rating}.png`} alt="ratingImg" />
-            </S.RatingContainer>
+            {post.category === 'BREEDER_REVIEWS' && (
+              <S.RatingContainer>
+                <img src={`/img/rating${post.rating}.png`} alt="ratingImg" />
+              </S.RatingContainer>
+            )}
             <Editor readMode savedData={post} />
             <S.ContentIconContainer>
               <S.ContentIconFrame>
