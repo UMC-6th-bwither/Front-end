@@ -1,5 +1,5 @@
 /* eslint-disable object-shorthand */
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederInfoEdit.style';
@@ -11,9 +11,10 @@ import './BreederInfoEdit.style';
 import convertBlobUrlsToFileList from '../../utils/convertBlobUrlsToFileList';
 import './styles.css';
 import useAuth from '../../hooks/useAuth';
+import loadImageFromURL from '../../utils/loadImageFromUrl';
 
 function BreederInfoEdit() {
-  const { token } = useAuth();
+  const { isLoggedIn, token } = useAuth();
 
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
   const [topImage, setTopImage] = useState(null);
@@ -185,7 +186,7 @@ function BreederInfoEdit() {
       species.push(animal.name);
       // formData.append(`species[${index}]`, animal.name);
     });
-    formData.append('species', JSON.stringify(species));
+    formData.append('species', species.join(', '));
 
     // 텍스트 필드 처리
     formData.append('schoolName', data.schoolName);
@@ -250,7 +251,6 @@ function BreederInfoEdit() {
         },
       });
       const resData = await res.json();
-      console.log(resData.result);
     } catch (err) {
       console.log(err);
     }
@@ -269,10 +269,26 @@ function BreederInfoEdit() {
         },
       });
       const res2Data = await res2.json();
-      console.log(res2Data.result);
     } catch (err) {
       console.log(err);
     }
+
+    // fetch 요청 3
+    const endPoint = `${apiUrl}/breeder/profile`;
+    const body = new FormData();
+    console.log(profileImage);
+    body.append('profileImage', profileImage);
+    body.append('password', 'password123');
+
+    fetch(endPoint, {
+      body,
+      headers: {
+        Accept: '*/*',
+        Authorization: `Bearer ${token}`,
+        // 'Content-Type': 'multipart/form-data',
+      },
+      method: 'PATCH',
+    });
 
     // navigate('/breeder-mypage'); // 브리더 마이페이지
   };
@@ -283,6 +299,55 @@ function BreederInfoEdit() {
       setReviewEventContent('');
     }
   };
+
+  // 이미 저장된 폼 데이터 받아오는 로직
+  const [userData, setUserData] = useState();
+  const fetchUserData = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const endPoint = `${apiUrl}/user`;
+      const res = await fetch(endPoint, {
+        method: 'GET',
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { result } = await res.json();
+      const { breederDTO, userDTO } = result;
+      setProfileImageBase64(userDTO.profileImage);
+      setProfileImage(await loadImageFromURL(userDTO.profileImage));
+      setUserData(result);
+      setTopImage(true);
+      if (
+        breederDTO.breederFiles.find((value) => {
+          if (
+            value.type === 'REGISTRATION' &&
+            value.breederFilePath &&
+            value.breederFilePath !== 'null'
+          ) {
+            return true;
+          }
+          return false;
+        })
+      )
+        setBusinessFileName('사업자 등록증이 존재합니다.');
+      setTopImageBase64(breederDTO.backgroundImage);
+      setBreederName(breederDTO.tradeName);
+      setBreederIntro(
+        breederDTO.description !== 'null' ? breederDTO.description : '',
+      );
+    } catch (err) {
+      // eslint-disable-next-line no-alert
+      alert('불러오는 중 오류가 발생했습니다.');
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && token) {
+      fetchUserData();
+    }
+  }, [isLoggedIn]);
 
   return (
     <A.Container>
@@ -438,7 +503,7 @@ function BreederInfoEdit() {
               onChange={handleBreederNameChange}
             />
             <A.BreederInfoTitleBoxRight>
-              <div>{breederName.length}/20</div>
+              <div>{breederName?.length}/20</div>
               <A.CertificateIconBox2>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -468,7 +533,7 @@ function BreederInfoEdit() {
               value={breederIntro}
               onChange={handleBreederIntroChange}
             />
-            <A.CharCount>{breederIntro.length}/180</A.CharCount>
+            <A.CharCount>{breederIntro?.length}/180</A.CharCount>
           </A.BreederInfoSubTitleWrapper>
 
           <A.BreederInfoSubBtnBox>
@@ -582,9 +647,9 @@ function BreederInfoEdit() {
           activeMenu={activeMenu}
           setActiveMenu={handleMenuClick}
         />
-        <BreederInfo ref={breederInfoRef} />
-        <KennelInfo ref={kennelInfoRef} />
-        <BreederQna ref={qnaRef} />
+        <BreederInfo ref={breederInfoRef} userData={userData} />
+        <KennelInfo ref={kennelInfoRef} userData={userData} />
+        <BreederQna ref={qnaRef} userData={userData} />
       </A.InfoWrapper>
       <A.FinishBtn onClick={handleSaveClick}>저장</A.FinishBtn>
     </A.Container>

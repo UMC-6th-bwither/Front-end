@@ -272,3 +272,15 @@ export const ReviewCardContainer = styled.div`
   gap: 10px;
   padding-top: 30px;
 `;
+
+export const NothingContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  color: #d9d9d9;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  font-family: 'Noto Sans KR';
+`;

@@ -1,7 +1,8 @@
-import React, { useState, useImperativeHandle, useRef } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useImperativeHandle, useRef, useEffect } from 'react';
 import * as A from '../../pages/BreederInfoEdit/BreederInfoEdit.style';
 
-const KennelInfo = React.forwardRef((props, ref) => {
+const KennelInfo = React.forwardRef(({ userData }, ref) => {
   const localRef = useRef();
   const [kennelPictures, setKennelPictures] = useState([]);
   const [kennelAddress, setKennelAddress] = useState('');
@@ -33,13 +34,20 @@ const KennelInfo = React.forwardRef((props, ref) => {
   const handleKennelFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // 새로운 파일을 기존 리스트의 앞에 추가
       setKennelPictures([
-        { id: URL.createObjectURL(file), name: file.name },
         ...kennelPictures,
+        { id: URL.createObjectURL(file), name: file.name },
       ]);
     }
   };
+
+  // 유저 데이터 받아오는 로직
+  useEffect(() => {
+    if (userData) {
+      const { breederDTO } = userData;
+      setKennelAddress(breederDTO.kennelAddress);
+    }
+  }, [userData]);
 
   return (
     <div ref={localRef} style={{ marginBottom: '64px' }}>
