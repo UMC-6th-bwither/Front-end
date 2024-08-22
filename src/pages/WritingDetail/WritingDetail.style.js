@@ -78,6 +78,7 @@ export const TitleIconContainer = styled.div`
 export const TitleIconFrame = styled.div`
   width: 15px;
   height: 32px;
+  cursor: pointer;
 `;
 
 export const ProfileContainer = styled.div`
