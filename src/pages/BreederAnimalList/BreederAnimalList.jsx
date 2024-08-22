@@ -104,7 +104,6 @@ function BreederAnimalList() {
                     birthDate={dog.birthDate}
                     gender={dog.gender}
                     breederName={dog.breederName}
-                    waitlistCount={dog.waitList}
                     initialIsBookmarked={dog.status}
                     onBookmarkChange={() => {}}
                     showBookmarkBtn={false}
