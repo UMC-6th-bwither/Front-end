@@ -17,10 +17,12 @@ import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccoun
 import { openDeleteAccountModal, selectModal } from '../../redux/modalSlice';
 import { logout } from '../../redux/authSlice';
 import api from '../../api/api';
+// import useAuth from '../../hooks/useAuth';
 
 function MypageGeneral() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // const { isLoggedIn, token } = useAuth();
   const { isDeleteAccountModalOpen } = useSelector(selectModal);
   const [userData, setUserData] = useState(null);
   const [recentAnimals, setRecentAnimals] = useState([]);
@@ -63,17 +65,22 @@ function MypageGeneral() {
             },
           }),
           api.get(`/user/1/view-breeders`, {
-            'Content-Type': 'application/json',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           }),
         ]);
 
         const UserDtoData = userResponse.data.result.userDTO;
-
+        // eslint-disable-next-line no-console
+        console.log(UserDtoData);
         setUserData(UserDtoData);
         setInquiries(inquiriesResponse.data.result);
         setRecentAnimals(animalsResponse.data.result);
         setRecentBreeders(breedersResponse.data.result);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error fetching recentData', error);
       }
     };
@@ -277,8 +284,7 @@ function MypageGeneral() {
         <MP.SectionContainer>
           <div className="title">커뮤니티</div>
           <MP.SectionLinks>
-            <MP.NavLink to="/myreview/post">내가 쓴 글</MP.NavLink>
-            <MP.NavLink to="/myreview/comment">댓글 단 글</MP.NavLink>
+            <MP.NavLink to="/myreview/save">저장한 글</MP.NavLink>
             <MP.NavLink to="/myreview/review">나의 후기</MP.NavLink>
           </MP.SectionLinks>
         </MP.SectionContainer>
@@ -287,7 +293,6 @@ function MypageGeneral() {
           <MP.SectionLinks>
             <MP.NavLink to="/myreview/animal">저장한 동물</MP.NavLink>
             <MP.NavLink to="/myreview/breeder">저장한 브리더</MP.NavLink>
-            <MP.NavLink to="/myreview/save">저장한 글</MP.NavLink>
           </MP.SectionLinks>
         </MP.SectionContainer>
         <MP.SectionContainer>
