@@ -167,10 +167,10 @@ export const Button = styled.button`
   padding: 7px 12px;
   border: none;
   border-radius: 6px;
-  background: #c5c5c5;
+  background: ${(props) => (props.clicked ? '#c5c5c5' : '#FE834D')};
   cursor: pointer;
   &:hover {
-    background: #f87b45;
+    background: #f57137;
   }
 
   position: relative;

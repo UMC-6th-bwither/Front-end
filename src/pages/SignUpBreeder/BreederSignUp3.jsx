@@ -41,6 +41,15 @@ export default function BreederSignUp3() {
     event.preventDefault();
     console.log('Form submitted');
 
+    if (!name) {
+      setNameError('상호명을 입력해주세요');
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      return;
+    }
+
     dispatch(
       updateSignupStep3({
         breederJoinDTO: {
