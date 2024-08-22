@@ -12,6 +12,7 @@ import openEye from '/icons/signUp/open_eye.svg';
 import completeCheck from '/icons/signUp/complete_check.svg';
 import { updateSignupStep1 } from '../../redux/breederSignupSlice';
 import { postEmailSend, postEmailVerify } from '../../apis/postUser';
+import api from '../../api/api';
 
 export default function BreederSignUp1() {
   const validateEmail = (email) => {
@@ -52,6 +53,7 @@ export default function BreederSignUp1() {
 
   const [codeComplete, setCodeComplete] = useState('');
   const [verifyComplete, setVerifyComplete] = useState('');
+  const [usernameComplete, setUsernameComplete] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -73,6 +75,33 @@ export default function BreederSignUp1() {
   const dispatch = useDispatch();
   const signupData = useSelector((state) => state.breederSignup);
   const navigate = useNavigate();
+
+  const checkUsername = async () => {
+    setIsClicked3(true);
+    if (!username) {
+      setUsernameError('아이디를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const response = await api.get('/check-username', {
+        params: { username: username },
+      });
+
+      if (response.data.isSuccess) {
+        console.log('성공');
+        setUsernameComplete('사용 가능한 아이디입니다.');
+        setUsernameError('');
+      } else {
+        setUsernameError('아이디가 이미 사용 중입니다.');
+        setUsernameComplete('');
+      }
+    } catch (err) {
+      console.log('Failed to fetch data', err);
+      setUsernameError('아이디가 이미 사용 중입니다.');
+      setUsernameComplete('');
+    }
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -291,7 +320,7 @@ export default function BreederSignUp1() {
                 />
                 <B.Button
                   type="button"
-                  onClick={() => setIsClicked3(true)}
+                  onClick={checkUsername}
                   clicked={isClicked3}
                 >
                   중복확인
@@ -301,6 +330,12 @@ export default function BreederSignUp1() {
                 <B.ErrorWrapper>
                   <B.FailX src={failX} />
                   <span style={{ color: '#E76467' }}>{usernameError}</span>
+                </B.ErrorWrapper>
+              )}
+              {usernameComplete && (
+                <B.ErrorWrapper>
+                  <B.CompleteCheck src={completeCheck} />
+                  <span style={{ color: '#3056d7' }}>{usernameComplete}</span>
                 </B.ErrorWrapper>
               )}
             </B.InputWrapper>
