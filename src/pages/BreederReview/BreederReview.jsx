@@ -1,60 +1,59 @@
 import { useState, useEffect, useCallback } from 'react';
 import * as R from './BreederReview.style';
 import ReviewModal from '../../components/BreederReview/ReviewModal';
+import { getBreederReview } from '../../apis/getBreederReview';
 
-const allReviews = [
-  {
-    id: 1,
-    images: [
-      'https://via.placeholder.com/235/0000FF/808080',
-      'https://via.placeholder.com/235/FF0000/FFFFFF',
-    ],
-    author: '작성자',
-    rating: 5,
-    isNew: true,
-    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    category: '강아지',
-  },
-  {
-    id: 2,
-    images: ['https://via.placeholder.com/235'],
-    author: '작성자',
-    rating: 5,
-    isNew: true,
-    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    category: '강아지',
-  },
-  {
-    id: 3,
-    images: [
-      'https://via.placeholder.com/235/0000FF/808080',
-      'https://via.placeholder.com/235/FF0000/FFFFFF',
-    ],
-    author: '작성자',
-    rating: 5,
-    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    category: '고양이',
-  },
-  {
-    id: 4,
-    images: [],
-    author: '작성자',
-    rating: 4,
-    text: '고양이 품종이 정말 이쁩니다!',
-    category: '고양이',
-  },
-  // ...
-  {
-    id: 14,
-    images: ['https://via.placeholder.com/235'],
-    author: '작성자',
-    rating: 5,
-    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    category: '고양이',
-  },
-];
-
-const PAGE_SIZE = 5;
+// const allReviews = [
+//   {
+//     id: 1,
+//     images: [
+//       'https://via.placeholder.com/235/0000FF/808080',
+//       'https://via.placeholder.com/235/FF0000/FFFFFF',
+//     ],
+//     author: '작성자',
+//     rating: 5,
+//     isNew: true,
+//     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+//     category: '강아지',
+//   },
+//   {
+//     id: 2,
+//     images: ['https://via.placeholder.com/235'],
+//     author: '작성자',
+//     rating: 5,
+//     isNew: true,
+//     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+//     category: '강아지',
+//   },
+//   {
+//     id: 3,
+//     images: [
+//       'https://via.placeholder.com/235/0000FF/808080',
+//       'https://via.placeholder.com/235/FF0000/FFFFFF',
+//     ],
+//     author: '작성자',
+//     rating: 5,
+//     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+//     category: '고양이',
+//   },
+//   {
+//     id: 4,
+//     images: [],
+//     author: '작성자',
+//     rating: 4,
+//     text: '고양이 품종이 정말 이쁩니다!',
+//     category: '고양이',
+//   },
+//   // ...
+//   {
+//     id: 14,
+//     images: ['https://via.placeholder.com/235'],
+//     author: '작성자',
+//     rating: 5,
+//     text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
+//     category: '고양이',
+//   },
+// ];
 
 function BreederReview() {
   const [activeButtons, setActiveButtons] = useState(['전체']);
@@ -63,11 +62,36 @@ function BreederReview() {
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [readReviews, setReadReviews] = useState([]);
   const [modalReview, setModalReview] = useState(null);
 
+  const [allReviews, setAllReviews] = useState([]);
+
+  // const breederId = localStorage.getItem('breederId');
+  const breederId = 1;
+  console.log(breederId);
+
+  const PAGE_SIZE = 100;
+
+  useEffect(() => {
+    setLoading(true);
+    getBreederReview(breederId)
+      .then((data) => {
+        console.log('Breeder reviews:', data);
+        setAllReviews(data); // 서버에서 받은 리뷰 데이터를 allReviews에 설정
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setLoading(false);
+      });
+  }, [breederId]);
+
+  console.log(allReviews);
+
   const fetchReviews = useCallback(() => {
+    if (!allReviews.length) return;
     setLoading(true);
     const start = (page - 1) * PAGE_SIZE;
     const end = start + PAGE_SIZE;
@@ -224,7 +248,7 @@ function BreederReview() {
               <R.NewBadge>NEW</R.NewBadge>
             )}
             <R.ReviewImage
-              style={{ backgroundImage: `url(${review.images[0]})` }}
+              style={{ backgroundImage: `url(${review.coverImage})` }}
               // className={expandedReviewId === review.id ? 'hidden' : ''}
             />
             <R.ReviewContent
@@ -251,7 +275,9 @@ function BreederReview() {
               <R.ReviewText
               // className={expandedReviewId === review.id ? 'expanded' : ''}
               >
-                {review.text}
+                {review.blocks.length > 0 && review.blocks[0].data.text
+                  ? review.blocks[0].data.text
+                  : ''}
               </R.ReviewText>
             </R.ReviewContent>
           </R.ReviewItem>
