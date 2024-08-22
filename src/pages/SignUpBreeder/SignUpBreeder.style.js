@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
-import Nextarrow from '../../../public/icons/signUp/datepicker_arrow_next.svg';
-import Previusarrow from '../../../public/icons/signUp/datepicker_arrow_previous.svg';
+import Nextarrow from '/icons/signUp/datepicker_arrow_next.svg';
+import Previusarrow from '/icons/signUp/datepicker_arrow_previous.svg';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export const Background = styled.div`

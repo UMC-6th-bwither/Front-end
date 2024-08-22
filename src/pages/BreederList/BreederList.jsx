@@ -5,7 +5,7 @@ import { cities, animalBreeds } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
 import BreederCard from '../../components/BreederCard/BreederCard';
 import DropBox from '../../components/DropBoxes/DropBox';
-import nothingBowl from '../../../public/img/nothing_bowl.svg';
+import nothingBowl from '/img/nothing_bowl.svg';
 import api from '../../api/api';
 
 function BreederList() {

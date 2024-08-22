@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as P from '../MyReview.style';
 import BreederContactCard from '../../../components/BreederContactCard/BreederContactCard';
 import BadgeVariant from '../../../components/badge/BadgeVariant';
@@ -19,7 +20,9 @@ function Icon() {
 
 export default function MyReview() {
   const { isLoggedIn, userId, role, token } = useAuth();
+  const navigate = useNavigate();
   const [myReviews, setMyReviews] = useState([]);
+  const [currentlyContactBreeders, setCurrentlyContactedBreeders] = useState();
 
   const fetchMyReview = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -35,8 +38,29 @@ export default function MyReview() {
     setMyReviews(data.result);
   };
 
+  const fetchCurrentlyContactedBreeder = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const endPoint = `${apiUrl}/inquiries/breeders`;
+      const res = await fetch(endPoint, {
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      // console.log(data.result);
+      setCurrentlyContactedBreeders(data.result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    if (isLoggedIn) fetchMyReview();
+    if (isLoggedIn) {
+      fetchMyReview();
+      fetchCurrentlyContactedBreeder();
+    }
   }, [isLoggedIn]);
 
   return (
@@ -78,10 +102,26 @@ export default function MyReview() {
         <P.BreederCardListTag>최근에 컨택한 브리더</P.BreederCardListTag>
 
         <P.BreederCardContainer>
-          <BreederContactCard
+          {(!currentlyContactBreeders ||
+            currentlyContactBreeders.length === 0) && (
+            <P.NothingContainer>
+              <img src="/img/nothing_bowl.svg" />
+              최근 연락한 브리더가 없습니다...
+            </P.NothingContainer>
+          )}
+          {currentlyContactBreeders?.map((breeder) => (
+            <BreederContactCard
+              key={`breederId_${breeder.breederId}`}
+              breederProfileImgSrc={breeder.profileUrl}
+              breederId={breeder.breederId}
+              breederLocation={breeder.address}
+              breederName={breeder.breederName}
+            />
+          ))}
+          {/* <BreederContactCard
             breederLocation="서울 강서구"
             breederName="해피 켄넬"
-          />
+          /> */}
           {/* <BreederContactCard
             breederLocation="서울 강서구"
             breederName="해피 켄넬"
@@ -90,7 +130,7 @@ export default function MyReview() {
             breederLocation="서울 강서구"
             breederName="해피 켄넬"
           /> */}
-          <BreederContactCard
+          {/* <BreederContactCard
             noButton={role === 'BREEDER'}
             breederId={1}
             breederLocation="서울 강서구"
@@ -101,21 +141,26 @@ export default function MyReview() {
               <BadgeVariant content="사업자등록증" />,
               <BadgeVariant content="혜택" />,
             ]}
-          />
+          /> */}
         </P.BreederCardContainer>
-        <P.BreederCardListTag>내가 작성한 후기</P.BreederCardListTag>
-        <P.ReviewCardContainer>
-          {myReviews &&
-            myReviews.map((review) => (
-              <BreederReviewAnimalCard
-                key={review.id}
-                kennelName={review.kennelName}
-                star={review.rating}
-                imgSrc={extractFirstImageUrl(review.blocks)}
-                context={extractTextFromBlocks(review.blocks)}
-              />
-            ))}
-        </P.ReviewCardContainer>
+        {role === 'MEMBER' && (
+          <>
+            <P.BreederCardListTag>내가 작성한 후기</P.BreederCardListTag>
+            <P.ReviewCardContainer>
+              {myReviews &&
+                myReviews.map((review) => (
+                  <BreederReviewAnimalCard
+                    key={review.id}
+                    onClick={() => navigate(`/WritingDetail/${review.id}`)}
+                    kennelName={review.kennelName}
+                    star={review.rating}
+                    imgSrc={extractFirstImageUrl(review.blocks)}
+                    context={extractTextFromBlocks(review.blocks)}
+                  />
+                ))}
+            </P.ReviewCardContainer>
+          </>
+        )}
       </P.MainContainer>
     </P.Layout>
   );

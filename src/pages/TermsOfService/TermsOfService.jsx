@@ -1,12 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import * as S from './TermsOfService.style';
 import TOSMenuSelect from '../../components/TOSMenuSelect/TOSMenuSelect';
+import { selectActiveMenu, setActiveMenu } from '../../redux/menuSlice';
+import { setItemChecked } from '../../redux/termsSlice';
 
 function TermsOfService() {
-  const [activeMenu, setActiveMenu] = useState('브위더 이용약관 동의');
-  const [breederTermsAgreed, setBreederTermsAgreed] = useState(false);
-  const [privacyPolicyAgreed, setPrivacyPolicyAgreed] = useState(false);
-  const [locationServiceAgreed, setLocationServiceAgreed] = useState(false);
+  const dispatch = useDispatch();
+  const activeMenuFromRedux = useSelector(selectActiveMenu);
+  const [localActiveMenu, setLocalActiveMenu] = useState(activeMenuFromRedux);
+  const { checkedItems } = useSelector((state) => state.terms);
+
+  useEffect(() => {
+    setLocalActiveMenu(activeMenuFromRedux);
+  }, [activeMenuFromRedux]);
+
+  useEffect(() => {
+    // 컴포넌트가 마운트된 후 스크롤을 최상단으로 이동시킵니다.
+    window.scrollTo(0, 0);
+  }, [activeMenuFromRedux]);
+
+  const handleMenuChange = (menu) => {
+    setLocalActiveMenu(menu);
+    dispatch(setActiveMenu(menu));
+  };
+
+  const handleAgreement = (termName) => {
+    dispatch(
+      setItemChecked({ name: termName, checked: !checkedItems[termName] }),
+    );
+  };
 
   const menuItems = [
     '브위더 이용약관 동의',
@@ -15,28 +38,26 @@ function TermsOfService() {
   ];
 
   const renderContent = () => {
-    switch (activeMenu) {
+    switch (localActiveMenu) {
       case '브위더 이용약관 동의':
         return (
           <BreederTerms
-            isAgreed={breederTermsAgreed}
-            handleAgreement={() => setBreederTermsAgreed(!breederTermsAgreed)}
+            isAgreed={checkedItems.term2}
+            handleAgreement={() => handleAgreement('term2')}
           />
         );
       case '개인정보 수집 및 이용 동의':
         return (
           <PrivacyPolicy
-            isAgreed={privacyPolicyAgreed}
-            handleAgreement={() => setPrivacyPolicyAgreed(!privacyPolicyAgreed)}
+            isAgreed={checkedItems.term3}
+            handleAgreement={() => handleAgreement('term3')}
           />
         );
       case '위치기반 서비스 이용 동의':
         return (
           <LocationServiceAgreement
-            isAgreed={locationServiceAgreed}
-            handleAgreement={() =>
-              setLocationServiceAgreed(!locationServiceAgreed)
-            }
+            isAgreed={checkedItems.term4}
+            handleAgreement={() => handleAgreement('term4')}
           />
         );
       default:
@@ -50,8 +71,8 @@ function TermsOfService() {
         <S.Title>서비스 이용약관</S.Title>
         <TOSMenuSelect
           menus={menuItems}
-          activeMenu={activeMenu}
-          setActiveMenu={setActiveMenu}
+          activeMenu={localActiveMenu}
+          setActiveMenu={handleMenuChange}
         />
         {renderContent()}
       </S.MainContainer>

@@ -4,6 +4,7 @@ import * as S from './BreederContactCard.style';
 import Button from '../button/Button';
 
 export default function BreederContactCard({
+  breederProfileImgSrc,
   breederId,
   breederLocation,
   breederName,
@@ -16,7 +17,7 @@ export default function BreederContactCard({
     <S.Container>
       <S.SpanningContainer>
         <S.ImageContainer>
-          <S.Image src="/img/post_thumbnail_example_3.jpeg" />
+          <S.Image src={breederProfileImgSrc || '/img/profile.png'} />
         </S.ImageContainer>
         <S.ContentContainer>
           <S.LocationTagContainer>
@@ -68,7 +69,10 @@ export default function BreederContactCard({
             width="auto"
             paddingHorizontal={14}
             onClick={() => {
-              if (breederId) navigate(`form/${breederId}`);
+              if (breederId)
+                navigate(
+                  `form/${breederId}?bp=${breederProfileImgSrc}&ba=${breederLocation}&bn=${breederName}`,
+                );
             }}
           >
             후기 등록

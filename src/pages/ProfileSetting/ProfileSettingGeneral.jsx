@@ -188,7 +188,7 @@ function ProfileSettingGeneral() {
             setCommuteEnd(end);
             setTurnAroundTime(turnAround);
           }
-          console.log('데이터 불러오기 성공 User info:', Data);
+          console.log('User info 데이터 불러오기 성공');
         } else {
           setError(response.data.message);
         }
@@ -231,33 +231,51 @@ function ProfileSettingGeneral() {
     }
 
     if (!hasError) {
-      const requestBody = {
-        profileImage,
-        password,
-        phone,
-        zipcode,
-        address,
-        addressDetail,
-        petAllowed,
-        cohabitant,
-        cohabitantCount,
-        familyAgreement,
-        employmentStatus,
-        commuteTime,
-        petExperience,
-        currentPet,
-        futurePlan,
-      };
+      const formData = new FormData();
+      formData.append('profileImage', profileImage);
+      formData.append(
+        'memberUpdateDTO',
+        JSON.stringify({
+          password,
+          phone,
+          zipcode,
+          address,
+          addressDetail,
+          petAllowed,
+          cohabitant,
+          cohabitantCount,
+          familyAgreement,
+          employmentStatus,
+          commuteTime,
+          petExperience,
+          currentPet,
+          futurePlan,
+        }),
+      );
+      formData.append('password', password);
+      formData.append('phone', phone);
+      formData.append('zipcode', zipcode);
+      formData.append('address', address);
+      formData.append('addressDetail', addressDetail);
+      formData.append('petAllowed', petAllowed);
+      formData.append('cohabitant', cohabitant);
+      formData.append('cohabitantCount', cohabitantCount);
+      formData.append('familyAgreement', familyAgreement);
+      formData.append('employmentStatus', employmentStatus);
+      formData.append('commuteTime', commuteTime);
+      formData.append('petExperience', petExperience);
+      formData.append('currentPet', currentPet);
+      formData.append('futurePlan', futurePlan);
 
       const token = localStorage.getItem('accessToken');
       try {
-        const response = await api.patch('/user/member', requestBody, {
+        const response = await api.patch('/user/member', formData, {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log('데이터 전송 성공 User info:', response);
+        console.log('User info 데이터 전송 성공');
         alert('변경된 내용이 저장되었습니다');
         navigate(`/MypageGeneral`);
         window.scrollTo(0, 0);
@@ -275,7 +293,7 @@ function ProfileSettingGeneral() {
         <S.ProfileCard>
           <S.ImgContainer>
             <S.ProfileImage
-              src={profileImage || '../../../public/img/defaultprofile.png'}
+              src={profileImage || '/img/defaultprofile.png'}
               alt="Profile"
             />
             <S.CameraIcon onClick={handleImageClick}>

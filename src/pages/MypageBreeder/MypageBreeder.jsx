@@ -25,6 +25,7 @@ function MypageBreeder() {
     navigate('/');
   }, [dispatch, navigate]);
   const [userData, setUserData] = useState(null);
+  const [profileImageSrc, setProfileImgSrc] = useState(null);
 
   // api 호출
   useEffect(() => {
@@ -41,6 +42,7 @@ function MypageBreeder() {
         const BreederDTOdata = response.data.result.breederDTO;
 
         setUserData(BreederDTOdata);
+        setProfileImgSrc(response.data.result.userDTO.profileImage);
       } catch (error) {
         console.error('Error fetching recentData', error);
       }
@@ -59,11 +61,7 @@ function MypageBreeder() {
               {userData && (
                 <div className="profile_img_wrapper">
                   <img
-                    src={
-                      userData.backgroundImage
-                        ? userData.backgroundImage
-                        : profile
-                    }
+                    src={profileImageSrc || profile}
                     alt="profile"
                     className="profile_img"
                   />

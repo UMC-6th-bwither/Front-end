@@ -1,23 +1,75 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useImperativeHandle, useRef, useEffect } from 'react';
 import * as A from '../../pages/BreederInfoEdit/BreederInfoEdit.style';
 
-const KennelInfo = React.forwardRef((props, ref) => {
-  const [certificates, setCertificates] = useState([]);
+const KennelInfo = React.forwardRef(({ userData }, ref) => {
+  const localRef = useRef();
+  const [kennelPictures, setKennelPictures] = useState([]);
+  const [kennelAddress, setKennelAddress] = useState('');
+  const [businessHours, setBusinessHours] = useState('');
+  const [numberOfDogs, setNumberOfDogs] = useState('');
 
-  const handleFileUpload = (event) => {
+  useImperativeHandle(ref, () => ({
+    getKennelInfoData() {
+      return {
+        kennelAddress,
+        kennelHours: businessHours,
+        kennelPopulation: numberOfDogs,
+        kennelPictures,
+      };
+    },
+    scrollIntoView(options) {
+      if (localRef.current) {
+        localRef.current.scrollIntoView(options);
+      }
+    },
+  }));
+
+  const handleDeleteKennelPicture = (id) => {
+    setKennelPictures((prevPictures) =>
+      prevPictures.filter((picture) => picture.id !== id),
+    );
+  };
+
+  const handleKennelFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setCertificates([
-        ...certificates,
+      setKennelPictures([
+        ...kennelPictures,
         { id: URL.createObjectURL(file), name: file.name },
       ]);
     }
   };
+
+  // 유저 데이터 받아오는 로직
+  useEffect(() => {
+    if (userData) {
+      const { breederDTO } = userData;
+      setKennelAddress(breederDTO.kennelAddress);
+      setBusinessHours(breederDTO.businessTime);
+      setNumberOfDogs(breederDTO.animalCount);
+
+      setKennelPictures(
+        breederDTO.breederFiles
+          .filter((file) => {
+            return file.type === 'KENNEL';
+          })
+          .map((file, index) => {
+            return {
+              id: file.breederFilePath,
+              name: `breeder_kennel_pictures_${index}`,
+            };
+          }),
+      );
+    }
+  }, [userData]);
+
   return (
-    <div ref={ref} style={{ marginBottom: '64px' }}>
+    <div ref={localRef} style={{ marginBottom: '64px' }}>
       <A.InfoItem>
         <A.InfoTitle>켄넬 정보</A.InfoTitle>
         <A.InfoContentBox>
+          {/* 켄넬 주소 */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -38,8 +90,12 @@ const KennelInfo = React.forwardRef((props, ref) => {
           <A.InfoInputBox
             type="text"
             placeholder="서울특별시 강서구 어쩌고동 어쩌고로 123-1"
+            value={kennelAddress}
+            onChange={(e) => setKennelAddress(e.target.value)}
           />
         </A.InfoContentBox>
+
+        {/* 영업 시간 */}
         <A.InfoContentBox>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,8 +129,15 @@ const KennelInfo = React.forwardRef((props, ref) => {
             </defs>
           </svg>
           <A.InfoContentTitle>영업 시간</A.InfoContentTitle>
-          <A.InfoInputBox type="text" placeholder="영업 시간을 입력해주세요" />
+          <A.InfoInputBox
+            type="text"
+            placeholder="영업 시간을 입력해주세요"
+            value={businessHours}
+            onChange={(e) => setBusinessHours(e.target.value)}
+          />
         </A.InfoContentBox>
+
+        {/* 개체수 */}
         <A.InfoContentBox>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -94,45 +157,64 @@ const KennelInfo = React.forwardRef((props, ref) => {
           <A.InfoInputBox
             type="text"
             placeholder="비글 2마리, 골든리트리버 3마리"
+            value={numberOfDogs}
+            onChange={(e) => setNumberOfDogs(e.target.value)}
           />
         </A.InfoContentBox>
 
+        {/* 기존 코드 유지 */}
         <A.KennelImgBox>
-          <A.KennelImg>강아지 켄넬 사진 1</A.KennelImg>
-          <A.KennelImg>강아지 켄넬 사진 2</A.KennelImg>
-          <A.CertificateImg2 />
-          {/* 새로 추가된 사진에 제목 입력하는 부분 추가 예정 */}
-
-          <A.CertificateImgBox>
-            {certificates.map((cert) => (
-              <div key={cert.id} style={{ position: 'relative' }}>
-                <A.CertificateImg2 as="img" src={cert.id} alt={cert.name} />
-              </div>
-            ))}
-            <label htmlFor="file-upload">
-              <A.CertificateImg2>
+          {/* 추가된 사진들이 앞쪽에 위치 */}
+          {kennelPictures.map((cert) => (
+            <div key={cert.id} style={{ position: 'relative' }}>
+              <A.CertificateImg2 as="img" src={cert.id} alt={cert.name} />
+              <A.CertificateIconBox>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="34"
-                  height="34"
-                  viewBox="0 0 34 34"
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
                   fill="none"
+                  style={{
+                    position: 'absolute',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleDeleteKennelPicture(cert.id)}
                 >
                   <path
-                    d="M17 0C17.5636 0 18.1041 0.223884 18.5026 0.622398C18.9011 1.02091 19.125 1.56141 19.125 2.125V14.875H31.875C32.4386 14.875 32.9791 15.0989 33.3776 15.4974C33.7761 15.8959 34 16.4364 34 17C34 17.5636 33.7761 18.1041 33.3776 18.5026C32.9791 18.9011 32.4386 19.125 31.875 19.125H19.125V31.875C19.125 32.4386 18.9011 32.9791 18.5026 33.3776C18.1041 33.7761 17.5636 34 17 34C16.4364 34 15.8959 33.7761 15.4974 33.3776C15.0989 32.9791 14.875 32.4386 14.875 31.875V19.125H2.125C1.56141 19.125 1.02091 18.9011 0.622398 18.5026C0.223884 18.1041 0 17.5636 0 17C0 16.4364 0.223884 15.8959 0.622398 15.4974C1.02091 15.0989 1.56141 14.875 2.125 14.875H14.875V2.125C14.875 1.56141 15.0989 1.02091 15.4974 0.622398C15.8959 0.223884 16.4364 0 17 0Z"
-                    fill="#C5C5C5"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M1.09367 2.50789C0.70315 2.11736 0.70315 1.4842 1.09367 1.09367C1.4842 0.70315 2.11736 0.70315 2.50789 1.09367L5.00078 3.58657L7.49368 1.09367C7.8842 0.70315 8.51737 0.70315 8.90789 1.09367C9.29841 1.4842 9.29841 2.11736 8.90789 2.50789L6.415 5.00078L8.90789 7.49367C9.29841 7.8842 9.29841 8.51736 8.90789 8.90789C8.51736 9.29841 7.8842 9.29841 7.49367 8.90789L5.00078 6.415L2.50789 8.90789C2.11736 9.29841 1.4842 9.29841 1.09368 8.90789C0.703151 8.51736 0.703151 7.8842 1.09368 7.49367L3.58657 5.00078L1.09367 2.50789Z"
+                    fill="white"
                   />
                 </svg>
-                파일 첨부
-              </A.CertificateImg2>
-              <input
-                id="file-upload"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={handleFileUpload}
-              />
-            </label>
-          </A.CertificateImgBox>
+              </A.CertificateIconBox>
+            </div>
+          ))}
+          {/* 파일 첨부 버튼은 맨 끝에 위치 */}
+          <label htmlFor="kennel-file-upload">
+            <A.CertificateImg2>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="34"
+                height="34"
+                viewBox="0 0 34 34"
+                fill="none"
+              >
+                <path
+                  d="M17 0C17.5636 0 18.1041 0.223884 18.5026 0.622398C18.9011 1.02091 19.125 1.56141 19.125 2.125V14.875H31.875C32.4386 14.875 32.9791 15.0989 33.3776 15.4974C33.7761 15.8959 34 16.4364 34 17C34 17.5636 33.7761 18.1041 33.3776 18.5026C32.9791 18.9011 32.4386 19.125 31.875 19.125H19.125V31.875C19.125 32.4386 18.9011 32.9791 18.5026 33.3776C18.1041 33.7761 17.5636 34 17 34C16.4364 34 15.8959 33.7761 15.4974 33.3776C15.0989 32.9791 14.875 32.4386 14.875 31.875V19.125H2.125C1.56141 19.125 1.02091 18.9011 0.622398 18.5026C0.223884 18.1041 0 17.5636 0 17C0 16.4364 0.223884 15.8959 0.622398 15.4974C1.02091 15.0989 1.56141 14.875 2.125 14.875H14.875V2.125C14.875 1.56141 15.0989 1.02091 15.4974 0.622398C15.8959 0.223884 16.4364 0 17 0Z"
+                  fill="#C5C5C5"
+                />
+              </svg>
+              파일 첨부
+            </A.CertificateImg2>
+            <input
+              id="kennel-file-upload"
+              type="file"
+              style={{ display: 'none' }}
+              onChange={handleKennelFileUpload}
+            />
+          </label>
         </A.KennelImgBox>
       </A.InfoItem>
       <A.Line />

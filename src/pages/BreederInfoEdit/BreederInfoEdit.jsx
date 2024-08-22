@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+/* eslint-disable object-shorthand */
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederInfoEdit.style';
@@ -6,8 +7,15 @@ import 'react-multi-carousel/lib/styles.css';
 import BreederInfo from '../../components/BreederInfoEdit/BreederInfo';
 import KennelInfo from '../../components/BreederInfoEdit/KennelInfo';
 import BreederQna from '../../components/BreederInfoEdit/BreederQna';
+import './BreederInfoEdit.style';
+import convertBlobUrlsToFileList from '../../utils/convertBlobUrlsToFileList';
+import './styles.css';
+import useAuth from '../../hooks/useAuth';
+import loadImageFromURL from '../../utils/loadImageFromUrl';
 
 function BreederInfoEdit() {
+  const { isLoggedIn, token } = useAuth();
+
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
   const [topImage, setTopImage] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
@@ -16,6 +24,11 @@ function BreederInfoEdit() {
   const [breederName, setBreederName] = useState('');
   const [breederIntro, setBreederIntro] = useState('');
   const [businessFileName, setBusinessFileName] = useState('');
+  const [businessCertImage, setBusinessCertImage] = useState('');
+
+  const [topImageBase64, setTopImageBase64] = useState('');
+  const [profileImageBase64, setProfileImageBase64] = useState('');
+  const [businessCertImageBase64, setBusinessCertImageBase64] = useState('');
 
   const navigate = useNavigate();
 
@@ -64,9 +77,10 @@ function BreederInfoEdit() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setTopImage(reader.result);
+        setTopImageBase64(reader.result);
       };
       reader.readAsDataURL(file);
+      setTopImage(file);
     }
   };
 
@@ -75,11 +89,19 @@ function BreederInfoEdit() {
     const file = e.target.files[0];
     if (file) {
       setBusinessFileName(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBusinessCertImageBase64(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setBusinessCertImage(file);
     }
   };
   // 파일 삭제
   const handleBusinessFileRemove = () => {
     setBusinessFileName('');
+    document.getElementById('businessFileInput').value = '';
+    setBusinessCertImage(null);
   };
 
   const handleProfileImageChange = (event) => {
@@ -87,13 +109,118 @@ function BreederInfoEdit() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result);
+        setProfileImageBase64(reader.result);
       };
       reader.readAsDataURL(file);
+      setProfileImage(file);
     }
   };
 
-  const handleSaveClick = () => {
+  const formatDateString = (dateString) => {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() - 1); // 하루를 뺍니다
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
+
+  const getSerializedData = async () => {
+    const breederInfoData = breederInfoRef.current.getBreederInfoData();
+    const kennelInfoData = kennelInfoRef.current.getKennelInfoData();
+    const FAQData = qnaRef.current.getQnaData();
+
+    // certificates와 kennelPictures 속성에 대해 convertBlobUrlsToFileList 함수를 적용
+    const certificates = await convertBlobUrlsToFileList(
+      breederInfoData.certificates,
+    );
+    const kennelPictures = await convertBlobUrlsToFileList(
+      kennelInfoData.kennelPictures,
+    );
+
+    const data = {
+      topImage: topImage,
+      profileImage: profileImage,
+      isReviewEventChecked: isReviewEventChecked,
+      reviewEventContent: reviewEventContent,
+      breederName: breederName,
+      breederIntro: breederIntro,
+      businessCertImage: businessCertImage,
+      ...breederInfoData,
+      ...kennelInfoData,
+      ...FAQData,
+      certificates, // 변환된 certificates 추가
+      kennelPictures, // 변환된 kennelPictures 추가
+    };
+
+    return data;
+  };
+
+  const createFormData = (data) => {
+    const formData = new FormData();
+
+    // 파일 처리
+    formData.append('backgroundImage', data.topImage);
+    formData.append('registrationFiles', data.businessCertImage);
+    data.certificates?.forEach((file, index) => {
+      formData.append(`certificateFiles`, file);
+    });
+    data.kennelPictures?.forEach((file, index) => {
+      formData.append(`kennelFiles`, file);
+    });
+
+    // 텍스트 필드 처리
+    formData.append('tradeName', data.breederName);
+    formData.append('description', data.breederIntro);
+    formData.append('reviewEvent', data.reviewEventContent);
+    formData.append('tradePhone', data.contactNumber);
+    formData.append('contactableTime', data.contactTime);
+    formData.append('snsAddress', data.sns);
+    formData.append('descriptionDetail', data.breederDescription);
+
+    // 동물 타입 처리
+    const species = [];
+    data.animalTypes.forEach((animal) => {
+      species.push(animal.name);
+      // formData.append(`species[${index}]`, animal.name);
+    });
+    formData.append('species', species.join(', '));
+
+    // 텍스트 필드 처리
+    formData.append('schoolName', data.schoolName);
+    formData.append('departmentName', data.majorName);
+    formData.append('enrollmentDate', formatDateString(data.enrollDate));
+    formData.append('graduationDate', formatDateString(data.graduateDate));
+    formData.append('kennelAddress', data.kennelAddress);
+    formData.append('businessTime', data.kennelHours);
+    formData.append('animalCount', data.kennelPopulation);
+
+    // 질문 필드 처리
+    formData.append('questionGuarantee', data.question1);
+    formData.append('questionPedigree', data.question2);
+    formData.append('questionBaby', data.question3);
+    formData.append('questionPeriod', data.question4);
+    formData.append('questionSupport', data.question5);
+
+    // FormData 반환
+    return formData;
+  };
+
+  const createCareerData = (input) => {
+    return input.map((item) => {
+      return {
+        tradeName: item.company, // "company" -> "tradeName"
+        joinDate: formatDateString(item.startDate), // "startDate" -> "joinDate" (날짜 부분만 추출)
+        leaveDate: item.endDate ? formatDateString(item.endDate) : null, // "endDate" -> "leaveDate" (null일 경우 null 그대로 유지)
+        currentlyEmployed: item.endDate === null, // "endDate"가 null이면 현재 근무 중으로 설정
+        description: item.description, // "description" 그대로 매핑
+      };
+    });
+  };
+
+  const handleSaveClick = async () => {
     if (isReviewEventChecked && !reviewEventContent.trim()) {
       // eslint-disable-next-line no-alert
       alert('리뷰이벤트 내용을 입력해주세요.');
@@ -101,7 +228,72 @@ function BreederInfoEdit() {
     }
 
     // 저장 로직 추가 예정
-    navigate('/MypageBreeder'); // 브리더 마이페이지
+
+    // FormData 만들기
+    const data = await getSerializedData();
+    console.log(data);
+    const formData = createFormData(data);
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ': ' + pair[1]);
+    // }
+    // console.log(formData);
+
+    const apiUrl = import.meta.env.VITE_API_URL;
+    // fetch 요청 1
+    try {
+      const endPoint = `${apiUrl}/breeder/info`;
+      const res = await fetch(endPoint, {
+        method: 'PATCH',
+        body: formData,
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const resData = await res.json();
+    } catch (err) {
+      alert('오류가 발생했습니다.');
+    }
+
+    // fetch 요청 2
+    try {
+      const careerData = createCareerData(data.careerList);
+      const endPoint = `${apiUrl}/breeder/breeding`;
+      const res2 = await fetch(endPoint, {
+        method: 'PATCH',
+        body: JSON.stringify(careerData),
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const res2Data = await res2.json();
+    } catch (err) {
+      alert('오류가 발생했습니다.');
+    }
+
+    // fetch 요청 3
+    try {
+      const endPoint = `${apiUrl}/breeder/profile`;
+      const body = new FormData();
+      body.append('profileImage', profileImage);
+
+      fetch(endPoint, {
+        body,
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type': 'multipart/form-data',
+        },
+        method: 'PATCH',
+      });
+    } catch (err) {
+      alert('오류가 발생했습니다.');
+    }
+
+    alert('성공적으로 저장되었습니다.');
+    navigate('/mypagebreeder'); // 브리더 마이페이지
   };
 
   const handleReviewEventCheck = () => {
@@ -111,10 +303,59 @@ function BreederInfoEdit() {
     }
   };
 
+  // 이미 저장된 폼 데이터 받아오는 로직
+  const [userData, setUserData] = useState();
+  const fetchUserData = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const endPoint = `${apiUrl}/user`;
+      const res = await fetch(endPoint, {
+        method: 'GET',
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { result } = await res.json();
+      const { breederDTO, userDTO } = result;
+      setProfileImageBase64(userDTO.profileImage);
+      setProfileImage(await loadImageFromURL(userDTO.profileImage));
+      setUserData(result);
+      setTopImage(true);
+      if (
+        breederDTO.breederFiles.find((value) => {
+          if (
+            value.type === 'REGISTRATION' &&
+            value.breederFilePath &&
+            value.breederFilePath !== 'null'
+          ) {
+            return true;
+          }
+          return false;
+        })
+      )
+        setBusinessFileName('사업자 등록증이 존재합니다.');
+      setTopImageBase64(breederDTO.backgroundImage);
+      setBreederName(breederDTO.tradeName);
+      setBreederIntro(
+        breederDTO.description !== 'null' ? breederDTO.description : '',
+      );
+    } catch (err) {
+      // eslint-disable-next-line no-alert
+      alert('불러오는 중 오류가 발생했습니다.');
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && token) {
+      fetchUserData();
+    }
+  }, [isLoggedIn]);
+
   return (
     <A.Container>
       <A.TopImage
-        style={topImage ? { backgroundImage: `url(${topImage})` } : {}}
+        style={topImage ? { backgroundImage: `url(${topImageBase64})` } : {}}
       />
       <A.TopImageIcon onClick={() => topImageInputRef.current.click()}>
         <svg
@@ -185,7 +426,9 @@ function BreederInfoEdit() {
         <A.OverlappingImageContainer>
           <A.OverlappingImage
             style={
-              profileImage ? { backgroundImage: `url(${profileImage})` } : {}
+              profileImage
+                ? { backgroundImage: `url(${profileImageBase64})` }
+                : {}
             }
           />
           <A.ProfileIcon onClick={() => profileImageInputRef.current.click()}>
@@ -263,7 +506,7 @@ function BreederInfoEdit() {
               onChange={handleBreederNameChange}
             />
             <A.BreederInfoTitleBoxRight>
-              <div>{breederName.length}/20</div>
+              <div>{breederName?.length}/20</div>
               <A.CertificateIconBox2>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -293,7 +536,7 @@ function BreederInfoEdit() {
               value={breederIntro}
               onChange={handleBreederIntroChange}
             />
-            <A.CharCount>{breederIntro.length}/180</A.CharCount>
+            <A.CharCount>{breederIntro?.length}/180</A.CharCount>
           </A.BreederInfoSubTitleWrapper>
 
           <A.BreederInfoSubBtnBox>
@@ -407,9 +650,9 @@ function BreederInfoEdit() {
           activeMenu={activeMenu}
           setActiveMenu={handleMenuClick}
         />
-        <BreederInfo ref={breederInfoRef} />
-        <KennelInfo ref={kennelInfoRef} />
-        <BreederQna ref={qnaRef} />
+        <BreederInfo ref={breederInfoRef} userData={userData} />
+        <KennelInfo ref={kennelInfoRef} userData={userData} />
+        <BreederQna ref={qnaRef} userData={userData} />
       </A.InfoWrapper>
       <A.FinishBtn onClick={handleSaveClick}>저장</A.FinishBtn>
     </A.Container>

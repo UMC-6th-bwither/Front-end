@@ -15,7 +15,6 @@ const menuItems = [
 function WritingDetail() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [post, setPost] = useState(null);
-  // const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const { userId } = useAuth();
   const { postId } = useParams();
@@ -23,12 +22,12 @@ function WritingDetail() {
   // 글 데이터 받아오기
   useEffect(() => {
     const getUserInfo = async () => {
-      const token = localStorage.getItem('accessToken');
+      // const token = localStorage.getItem('accessToken');
       try {
         const response = await api.get(`/post/${postId}`, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
           },
         });
         setPost(response.data.result);
@@ -95,14 +94,17 @@ function WritingDetail() {
   // url 복사 로직
   const copyUrlToClipboard = () => {
     const currentUrl = window.location.href;
-    navigator.clipboard
-      .writeText(currentUrl)
-      .then(() => {
-        alert('url이 복사되었어요');
-      })
-      .catch((err) => {
-        console.error('URL 복사에 실패했습니다: ', err);
-      });
+    const textArea = document.createElement('textarea');
+    textArea.value = currentUrl;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      alert('URL이 복사되었어요');
+    } catch (err) {
+      alert('URL 복사에 실패했습니다.', err);
+    }
+    document.body.removeChild(textArea);
   };
 
   // 북마크 추가 로직

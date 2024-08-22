@@ -6,7 +6,7 @@ import footprint from '/img/footprint.svg';
 import { animalBreeds } from '../../selectData';
 import DogCard from '../../../components/DogCard/DogCard';
 import DropBox from '../../../components/DropBoxes/DropBox';
-import nothingBowl from '../../../../public/img/nothing_bowl.svg';
+import nothingBowl from '/img/nothing_bowl.svg';
 import Pagination from '../../../components/Pagination/Pagination';
 import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
 import ButtonSelector from '../../../components/buttonselector/ButtonSelector';

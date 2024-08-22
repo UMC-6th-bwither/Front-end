@@ -11,6 +11,7 @@ function PostIcon({ src }) {
 }
 
 export default function MyPostCard({
+  onClick,
   category,
   petType,
   postTitle,
@@ -21,7 +22,7 @@ export default function MyPostCard({
   bookmarkCount,
 }) {
   return (
-    <P.MyPost>
+    <P.MyPost onClick={onClick}>
       <P.PostCategoryTag>{category}</P.PostCategoryTag>
       <P.PostWrapper>
         <div>

@@ -2,13 +2,15 @@
 import * as S from './BreederReviewAnimalCard.style';
 
 export default function BreederReviewAnimalCard({
+  postId,
+  onClick,
   kennelName,
   imgSrc,
   star,
   context,
 }) {
   return (
-    <S.Container>
+    <S.Container onClick={onClick}>
       <S.Square>
         {imgSrc && <S.SquareImage src={imgSrc} alt="이미지" />}
       </S.Square>
@@ -31,7 +33,7 @@ export default function BreederReviewAnimalCard({
                   fill="#FFCE21"
                 />
               </svg>
-              <S.Star>{star.toFixed(1)}</S.Star>
+              <S.Star>{star?.toFixed(1)}</S.Star>
             </S.StarFlex>
           </S.FlexGrow>
 

@@ -4,7 +4,7 @@ import Button from '../../components/button/Button';
 import * as S from './ProfileSetting.style';
 import api from '../../api/api';
 
-function ProfileSettingGeneral() {
+function ProfileSettingBreeder() {
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordCheckVisible, setIsPasswordCheckVisible] = useState(false);
@@ -29,12 +29,12 @@ function ProfileSettingGeneral() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+      setProfileImage(file);
     }
   };
+
   const handleImageClick = () => {
-    fileInputRef.current.click(); // 숨겨진 파일 입력 필드를 클릭
+    fileInputRef.current.click();
   };
 
   const handlePasswordChange = (e) => {
@@ -78,7 +78,7 @@ function ProfileSettingGeneral() {
           setUserData(response.data.result);
           setProfileImage(Data.userDTO.profileImage);
           setLoading(false);
-          console.log('데이터 불러오기 성공 User info:', Data);
+          console.log('User info 데이터 불러오기 성공');
         } else {
           setError(response.data.message);
         }
@@ -109,20 +109,25 @@ function ProfileSettingGeneral() {
     }
 
     if (!hasError) {
-      const requestBody = {
-        profileImage,
-        password,
-      };
-
+      // const requestBody = {
+      //   profileImage,
+      //   password,
+      // };
       const token = localStorage.getItem('accessToken');
+      const formData = new FormData();
+      if (profileImage) {
+        formData.append('profileImage', profileImage);
+      }
+      formData.append('password', password);
+
       try {
-        const response = await api.patch('/breeder/profile', requestBody, {
+        const response = await api.patch('/breeder/profile', formData, {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log('데이터 전송 성공 User info:', response);
+        console.log('User info 데이터 전송 성공');
         alert('변경된 내용이 저장되었습니다');
         navigate(`/MypageBreeder`);
         window.scrollTo(0, 0);
@@ -140,7 +145,7 @@ function ProfileSettingGeneral() {
         <S.ProfileCard>
           <S.ImgContainer>
             <S.ProfileImage
-              src={profileImage || '../../../public/img/defaultprofile.png'}
+              src={profileImage || '/img/defaultprofile.png'}
               alt="Profile"
             />
             <S.CameraIcon onClick={handleImageClick}>
@@ -283,4 +288,4 @@ function ProfileSettingGeneral() {
   );
 }
 
-export default ProfileSettingGeneral;
+export default ProfileSettingBreeder;

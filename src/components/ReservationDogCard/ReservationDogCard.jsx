@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import * as S from './ReservationDogCard.style';
 import BadgeVariant from '../badge/BadgeVariant';
-import loc from '../../../public/img/location.svg';
+import loc from '/img/location.svg';
 
 function ReservationDogCard({
   to,

@@ -8,7 +8,7 @@ import { cities, animalBreeds } from '../selectData';
 import Pagination from '../../components/Pagination/Pagination';
 import DogCard from '../../components/DogCard/DogCard';
 import DropBox from '../../components/DropBoxes/DropBox';
-import nothingBowl from '../../../public/img/nothing_bowl.svg';
+import nothingBowl from '/img/nothing_bowl.svg';
 import ButtonSelector from '../../components/buttonselector/ButtonSelector';
 import api from '../../api/api';
 

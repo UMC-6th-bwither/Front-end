@@ -325,7 +325,6 @@ function BreederRankingCommonVer() {
         if (response.data.isSuccess) {
           setBreeders(response.data.result[0].breederProfiles);
           setTotalBreeders(response.data.result[0].totalBreeders);
-          // console.log('브리더 랭킹 데이터 요청 성공');
         } else {
           setError(response.data.message);
         }
@@ -337,6 +336,10 @@ function BreederRankingCommonVer() {
     };
 
     fetchPopularBreeders();
+  }, [selectedAnimal]);
+
+  useEffect(() => {
+    setCurrentPage(0);
   }, [selectedAnimal]);
 
   if (loading) return <div>Loading...</div>;
@@ -395,6 +398,7 @@ function BreederRankingCommonVer() {
 
       <S.BreederList>
         <Slider
+          key={selectedAnimal}
           dots={settings.dots}
           infinite={settings.infinite}
           speed={settings.speed}
@@ -496,7 +500,10 @@ function BreederRankingBreederVer() {
         {breeders.slice(0, 5).map((breeder, index) => (
           <S.BreederCardVer2 key={breeder.breederId}>
             <S.RankingNum>{index + 1}</S.RankingNum>
-            <S.BreederProfileVer2 src={breeder.profileUrl} alt="profileImg" />
+            <S.BreederProfileVer2
+              src={breeder.profileUrl || '/img/defaultprofile.png'}
+              alt="profileImg"
+            />
             <S.BreederDetails>
               <S.BreederNameStars>
                 <S.BreederNameVer2>{breeder.tradeName}</S.BreederNameVer2>
@@ -534,7 +541,7 @@ function InfoArticle() {
         } else {
           setError(response.data.message);
         }
-        console.log('브리더 랭킹 데이터 요청 성공', articleData);
+        console.log('브리더 랭킹 데이터 요청 성공');
       } catch (err) {
         setError('Failed to fetch data');
       } finally {
@@ -592,11 +599,22 @@ function InfoArticle() {
             onClick={() => navigate(`/WritingDetail/${data.postId}`)}
           >
             <S.CardContainer>
-              <S.InfoCardImg src={data.postImageUrl} alt="InfoCard" />
+              <S.InfoCardImg
+                src={data.postImageUrl || '/img/mainTipDefault.png'}
+                alt="InfoCard"
+              />
               <S.InfoTitle>{data.title}</S.InfoTitle>
             </S.CardContainer>
             <S.ProFileContainer>
-              <S.ProfileImg src={data.breederImageUrl} alt="InfoCard" />
+              <S.ProfileImg
+                src={
+                  data.breederImageUrl === null ||
+                  data.breederImageUrl === 'default_image_url'
+                    ? '/img/defaultprofile.png'
+                    : data.breederImageUrl
+                }
+                alt="InfoCard"
+              />
               <S.ProFileName>{data.profileName}</S.ProFileName>
             </S.ProFileContainer>
           </S.InfoCard>
@@ -627,7 +645,7 @@ function AdoptionReview() {
         } else {
           setError(response.data.message);
         }
-        console.log('분양 후기 미리보기 데이터 요청 성공', previewReviewData);
+        console.log('분양 후기 미리보기 데이터 요청 성공');
       } catch (err) {
         setError('Failed to fetch data');
       } finally {
@@ -684,7 +702,10 @@ function AdoptionReview() {
             key={review.postId}
             onClick={() => navigate(`/WritingDetail/${review.postId}`)}
           >
-            <S.ReviewCardImg src={review.postImageUrl} alt="InfoCard" />
+            <S.ReviewCardImg
+              src={review.postImageUrl || '/img/mainReviewDefault.png'}
+              alt="InfoCard"
+            />
             <S.ReviewDetail>{review.title}</S.ReviewDetail>
           </S.ReviewCard>
         ))}
