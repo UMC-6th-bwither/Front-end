@@ -395,7 +395,7 @@ function BreederDetail() {
           </Button>
         </A.TopRightWrapper>
       </A.TopBox>
-
+      {/* 
       <A.InfoWrapper>
         <MenuSelect
           menus={menuItems}
@@ -427,7 +427,7 @@ function BreederDetail() {
           questionSupport={breederInfo.questionSupport}
         />
         <BreederCommunity ref={communityRef} />
-      </A.InfoWrapper>
+      </A.InfoWrapper> */}
     </A.Container>
   );
 }

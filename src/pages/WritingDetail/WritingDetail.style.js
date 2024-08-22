@@ -209,16 +209,10 @@ export const InputBtn = styled.img`
   gap: 8px;
   border-radius: 1000px;
 `;
-
-// <S.CommentContainer>
-// <S.ProfileImg/>
-// <S.ProfileName>김*숙</S.ProfileName>
-
-// <S.DeleteBtn></S.DeleteBtn>
-// <S.ReplyBtn></S.ReplyBtn>
-
-// <S.CommentContent></S.CommentContent>
-
-// <S.Time></S.Time>
-// <S.LikeBtn></S.LikeBtn>
-// </S.CommentContainer>
+export const RatingContainer = styled.div`
+  margin: 30px 10px;
+  // display: flex;
+  img {
+    width: 208px;
+  }
+`;
