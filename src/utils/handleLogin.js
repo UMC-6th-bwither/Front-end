@@ -9,6 +9,7 @@ export const handleLoginWithResponse = (dispatch, result) => {
   localStorage.setItem('isLoggedIn', 'true');
   localStorage.setItem('userId', result.userId);
   localStorage.setItem('username', result.username);
+  localStorage.setItem('breederId', result.breederId);
   localStorage.setItem('token', result.token);
   localStorage.setItem('role', result.role);
 };
