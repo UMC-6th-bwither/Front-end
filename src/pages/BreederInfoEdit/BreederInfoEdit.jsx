@@ -252,7 +252,7 @@ function BreederInfoEdit() {
       });
       const resData = await res.json();
     } catch (err) {
-      console.log(err);
+      alert('오류가 발생했습니다.');
     }
 
     // fetch 요청 2
@@ -270,25 +270,30 @@ function BreederInfoEdit() {
       });
       const res2Data = await res2.json();
     } catch (err) {
-      console.log(err);
+      alert('오류가 발생했습니다.');
     }
 
     // fetch 요청 3
-    const endPoint = `${apiUrl}/breeder/profile`;
-    const body = new FormData();
-    body.append('profileImage', profileImage);
+    try {
+      const endPoint = `${apiUrl}/breeder/profile`;
+      const body = new FormData();
+      body.append('profileImage', profileImage);
 
-    fetch(endPoint, {
-      body,
-      headers: {
-        Accept: '*/*',
-        Authorization: `Bearer ${token}`,
-        // 'Content-Type': 'multipart/form-data',
-      },
-      method: 'PATCH',
-    });
+      fetch(endPoint, {
+        body,
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type': 'multipart/form-data',
+        },
+        method: 'PATCH',
+      });
+    } catch (err) {
+      alert('오류가 발생했습니다.');
+    }
 
-    // navigate('/breeder-mypage'); // 브리더 마이페이지
+    alert('성공적으로 저장되었습니다.');
+    navigate('/mypagebreeder'); // 브리더 마이페이지
   };
 
   const handleReviewEventCheck = () => {
