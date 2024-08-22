@@ -72,7 +72,6 @@ const catBreeds = [
   '코리안 숏헤어',
   '터키쉬 앙고라',
   '페르시안',
-  '기타',
 ];
 
 function SearchBar({ breeds, addTag }) {
@@ -93,19 +92,11 @@ function SearchBar({ breeds, addTag }) {
     }
   };
 
-  const handleSelect = (e) => {
-    const selectedValue = e.target.value;
-    if (selectedValue === '기타') {
-      addTag(selectedValue); // '기타'를 선택한 경우 입력된 값을 태그로 추가
-    } else {
-      addTag(selectedValue); // 선택한 값만 태그로 추가
-    }
+  const handleSelect = (selectedValue) => {
+    addTag(selectedValue); // 선택한 값을 태그로 추가
     setInputValue(''); // 입력값 초기화
     setSuggestions([]); // 드롭다운 초기화
   };
-
-  const isOtherOptionVisible =
-    inputValue.trim() !== '' && suggestions.length === 0;
 
   return (
     <B.SearchWrapper>
@@ -116,14 +107,17 @@ function SearchBar({ breeds, addTag }) {
         placeholder="관리하는 주요한 종에 대해 알려주세요"
       />
       <img src={search} alt="searchIcon" />
-      {(suggestions.length > 0 || isOtherOptionVisible) && (
-        <B.DropDown onChange={handleSelect} size={suggestions.length + 1}>
+      {suggestions.length > 0 && (
+        <B.DropDown size={suggestions.length + 1}>
           {suggestions.map((suggestion, index) => (
-            <B.DropItem key={index} value={suggestion}>
+            <B.DropItem
+              key={index}
+              value={suggestion}
+              onClick={() => handleSelect(suggestion)}
+            >
               {suggestion}
             </B.DropItem>
           ))}
-          {isOtherOptionVisible && <B.DropItem value="기타">기타</B.DropItem>}
         </B.DropDown>
       )}
     </B.SearchWrapper>
