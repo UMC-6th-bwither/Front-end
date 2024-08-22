@@ -1,11 +1,22 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '/img/logo.svg';
 import profile from '/img/profile.png';
 import * as H from './Header.style';
 import useAuth from '../../hooks/useAuth';
+import Modal from './HeaderModal';
 
 export default function Header() {
   const { isLoggedIn, role } = useAuth();
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   let profileLink;
 
@@ -25,11 +36,21 @@ export default function Header() {
                 <H.NavText to="community">커뮤니티</H.NavText>
               </H.TextWrapper>
             </H.Left>
-            <H.TextWrapper>
-              <Link to="MypageGeneral">
-                <H.Profile src={profile} alt="profile" />
-              </Link>
-            </H.TextWrapper>
+            <H.IconContainer
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <H.TextWrapper>
+                <Link to="MypageGeneral">
+                  <H.Profile src={profile} alt="profile" />
+                </Link>
+              </H.TextWrapper>
+              {isHovered && (
+                <H.FloatingComponent>
+                  <Modal />
+                </H.FloatingComponent>
+              )}
+            </H.IconContainer>
           </H.SubContainer>
         </H.Container>
       );
@@ -47,11 +68,21 @@ export default function Header() {
                 <H.NavText to="community">커뮤니티</H.NavText>
               </H.TextWrapper>
             </H.Left>
-            <H.TextWrapper>
-              <Link to="MypageBreeder">
-                <H.Profile src={profile} alt="profile" />
-              </Link>
-            </H.TextWrapper>
+            <H.IconContainer
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <H.TextWrapper>
+                <Link to="MypageBreeder">
+                  <H.Profile src={profile} alt="profile" />
+                </Link>
+              </H.TextWrapper>
+              {isHovered && (
+                <H.FloatingComponent>
+                  <Modal />
+                </H.FloatingComponent>
+              )}
+            </H.IconContainer>
           </H.SubContainer>
         </H.Container>
       );
