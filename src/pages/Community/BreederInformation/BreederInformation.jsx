@@ -185,7 +185,7 @@ export default function CommunityBreederInformation() {
                 profileName={post.author}
                 postTitle={post.title}
                 postContent={extractTextFromBlocks(post.blocks)}
-                postThumbnailSrc={extractFirstImageUrl(post.blocks)}
+                postThumbnailSrc={post.coverImage}
                 timeStampKR={convertToKST(post.createdAt)}
                 viewCount={post.viewCount}
                 bookmarkCount={post.bookmarkCount}

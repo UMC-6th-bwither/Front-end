@@ -46,6 +46,21 @@ const KennelInfo = React.forwardRef(({ userData }, ref) => {
     if (userData) {
       const { breederDTO } = userData;
       setKennelAddress(breederDTO.kennelAddress);
+      setBusinessHours(breederDTO.businessTime);
+      setNumberOfDogs(breederDTO.animalCount);
+
+      setKennelPictures(
+        breederDTO.breederFiles
+          .filter((file) => {
+            return file.type === 'KENNEL';
+          })
+          .map((file, index) => {
+            return {
+              id: file.breederFilePath,
+              name: `breeder_kennel_pictures_${index}`,
+            };
+          }),
+      );
     }
   }, [userData]);
 
