@@ -35,6 +35,7 @@ function BreederList() {
         const data = response.data.result;
         setBreederCards(data.breederList);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error fetching breeders', error);
       }
     };
@@ -76,6 +77,7 @@ function BreederList() {
             [breederId]: newStatus,
           }));
         } else {
+          // eslint-disable-next-line no-console
           console.error('Bookmarking failed', response.data.message);
         }
       } else if (newStatus === 'BEFORE') {
@@ -99,10 +101,12 @@ function BreederList() {
             [breederId]: newStatus,
           }));
         } else {
+          // eslint-disable-next-line no-console
           console.error('Unbookmarking failed', response.data.message);
         }
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error handling bookmark:', error);
     }
   };
@@ -206,7 +210,6 @@ function BreederList() {
             options={[
               { value: 'createdAt', label: '최신순' },
               { value: 'breederMemberCount', label: '인기순' },
-              { value: 'distance', label: '거리순' },
               { value: 'animalCount', label: '개체순' },
             ]}
             onChange={handleSortChange}
