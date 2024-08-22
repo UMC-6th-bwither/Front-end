@@ -4,6 +4,7 @@ const initialState = {
   isLoggedIn: false,
   userId: null,
   username: null,
+  breederId: null,
   token: null,
   role: null,
 };
@@ -18,6 +19,7 @@ const authSlice = createSlice({
         isLoggedIn: true,
         userId: action.payload.userId,
         username: action.payload.username,
+        breederId: action.payload.breederId,
         token: action.payload.token,
         role: action.payload.role,
       };
@@ -26,6 +28,7 @@ const authSlice = createSlice({
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('userId');
       localStorage.removeItem('username');
+      localStorage.removeItem('breederId');
       localStorage.removeItem('token');
       localStorage.removeItem('role');
 
@@ -34,6 +37,7 @@ const authSlice = createSlice({
         isLoggedIn: false,
         userId: null,
         username: null,
+        breederId: null,
         token: null,
         role: null,
       };
@@ -42,6 +46,7 @@ const authSlice = createSlice({
       const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
       const userId = localStorage.getItem('userId');
       const username = localStorage.getItem('username');
+      const breederId = localStorage.getItem('breederId');
       const token = localStorage.getItem('token');
       const role = localStorage.getItem('role');
 
@@ -51,6 +56,7 @@ const authSlice = createSlice({
           isLoggedIn: true,
           userId,
           username,
+          breederId,
           token,
           role,
         };

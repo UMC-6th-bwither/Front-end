@@ -10,10 +10,18 @@ const useAuth = () => {
       isLoggedIn: auth.isLoggedIn,
       userId: auth.userId,
       username: auth.username,
+      breederId: auth.breederId,
       token: auth.token,
       role: auth.role,
     }),
-    [auth.isLoggedIn, auth.userId, auth.username, auth.token, auth.role],
+    [
+      auth.isLoggedIn,
+      auth.userId,
+      auth.username,
+      auth.breederId,
+      auth.token,
+      auth.role,
+    ],
   );
 };
 

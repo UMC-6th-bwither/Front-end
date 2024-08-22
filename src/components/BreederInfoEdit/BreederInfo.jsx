@@ -1,7 +1,8 @@
-import React, { useState, useRef, useImperativeHandle } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useRef, useImperativeHandle, useEffect } from 'react';
 import * as A from '../../pages/BreederInfoEdit/BreederInfoEdit.style';
 
-const BreederInfo = React.forwardRef((props, ref) => {
+const BreederInfo = React.forwardRef(({ userData }, ref) => {
   const localRef = useRef();
   const [certificates, setCertificates] = useState([]);
   const [animalTypes, setAnimalTypes] = useState([
@@ -78,6 +79,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
   };
 
   const calculateTotalCareer = () => {
+    if (!careerList) return '1년 미만';
+
     const totalYears = careerList.reduce((total, career) => {
       const careerDuration = calculateCareerDuration(
         career.startDate,
@@ -135,6 +138,56 @@ const BreederInfo = React.forwardRef((props, ref) => {
       setNewAnimalType('');
     }
   };
+
+  const transformData = (data) => {
+    return data?.map((item) => {
+      const employmentStartDate = new Date(item.joinDate).toISOString();
+      const employmentEndDate = item.leaveDate
+        ? new Date(item.leaveDate).toISOString()
+        : null;
+
+      return {
+        company: item.tradeName,
+        startDate: employmentStartDate,
+        endDate: employmentEndDate,
+        period: `${new Date(employmentStartDate).toLocaleDateString()} - ${employmentEndDate ? new Date(employmentEndDate).toLocaleDateString() : '현재'}`,
+        description: item.description,
+      };
+    });
+  };
+
+  useEffect(() => {
+    if (!userData) return;
+
+    const { breederDTO } = userData;
+    setContactNumber(
+      breederDTO.tradePhone !== 'null' ? breederDTO.tradePhone : '',
+    );
+    setContactTime(
+      breederDTO.contactableTime !== 'null' ? breederDTO.contactableTime : '',
+    );
+    setSns(breederDTO.snsAddress !== 'null' ? breederDTO.snsAddress : '');
+    setBreederDescription(
+      breederDTO.descriptionDetail !== 'null'
+        ? breederDTO.descriptionDetail
+        : '',
+    );
+
+    const types = breederDTO.species.map((value, index) => ({
+      id: index + 1,
+      name: value,
+    }));
+    setAnimalTypes(types);
+    setCareerList(transformData(breederDTO.breeding));
+    setSchoolName(
+      breederDTO.schoolName !== 'null' ? breederDTO.schoolName : '',
+    );
+    setMajorName(
+      breederDTO.departmentName !== 'null' ? breederDTO.departmentName : '',
+    );
+    setStartDate(breederDTO.enrollmentDate);
+    setEndDate(breederDTO.graduationDate);
+  }, [userData]);
 
   return (
     <div ref={localRef} style={{ marginBottom: '64px' }}>
@@ -289,7 +342,7 @@ const BreederInfo = React.forwardRef((props, ref) => {
             총 경력 {calculateTotalCareer()}
           </A.InfoContentCarrer>
         </A.InfoContentBox>
-        {careerList.map((career, index) => (
+        {careerList?.map((career, index) => (
           <div key={`career_value_${index}`}>
             <A.MiniTitle>{career.company}</A.MiniTitle>
             <A.MiniContent>{career.period}</A.MiniContent>
@@ -341,6 +394,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
                   }}
                   inline
                   dateFormat="yyyy/MM/dd"
+                  showYearDropdown
+                  scrollableYearDropdown
                 />
               )}
             </A.DateInputWrapper>
@@ -379,6 +434,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
                   }}
                   inline
                   dateFormat="yyyy/MM/dd"
+                  showYearDropdown
+                  scrollableYearDropdown
                 />
               )}
             </A.DateInputWrapper>
@@ -434,7 +491,11 @@ const BreederInfo = React.forwardRef((props, ref) => {
             <A.InfoInputContentLine2
               type="text"
               placeholder="입학연월"
-              value={startDate ? startDate.toISOString().split('T')[0] : ''}
+              value={
+                startDate && startDate !== 'null'
+                  ? new Date(startDate).toISOString().split('T')[0]
+                  : ''
+              }
               onFocus={() => setIsStartCalendarOpen(true)}
               readOnly
             />
@@ -458,6 +519,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
                 }}
                 inline
                 dateFormat="yyyy/MM/dd"
+                showYearDropdown
+                scrollableYearDropdown
               />
             )}
           </A.DateInputWrapper>
@@ -466,7 +529,11 @@ const BreederInfo = React.forwardRef((props, ref) => {
             <A.InfoInputContentLine2
               type="text"
               placeholder="졸업연월"
-              value={endDate ? endDate.toISOString().split('T')[0] : ''}
+              value={
+                endDate && endDate !== 'null'
+                  ? new Date(endDate).toISOString().split('T')[0]
+                  : ''
+              }
               onFocus={() => setIsEndCalendarOpen(true)}
               readOnly
             />
@@ -490,6 +557,8 @@ const BreederInfo = React.forwardRef((props, ref) => {
                 }}
                 inline
                 dateFormat="yyyy/MM/dd"
+                showYearDropdown
+                scrollableYearDropdown
               />
             )}
           </A.DateInputWrapper>{' '}

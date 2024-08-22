@@ -8,11 +8,14 @@ import Button from '../../components/SignUpButton/Button';
 import { updateSignupStep2, resetSignup } from '../../redux/signupSlice';
 import { postSignUp } from '../../apis/postUser';
 import Dropdown from '../../components/SignUpDropdown/Dropdown';
+import AddressSearchModal from '../../components/AddressSearch/AddressSearchModal';
 
 export default function BwitherSignUp2() {
   const dispatch = useDispatch();
   const signupData = useSelector((state) => state.signup);
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const [zipcode, setZipcode] = useState('');
   const [address, setAddress] = useState('');
@@ -115,6 +118,12 @@ export default function BwitherSignUp2() {
           <B.InputArea>
             <B.InputWrapper2>
               <B.InputTitle>현재 어디서 거주 중이신가요?</B.InputTitle>
+              <AddressSearchModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                setZipCode={setZipcode}
+                setAddress={setAddress}
+              />
               <B.InputBoxWrapper>
                 <B.InputBox2
                   type="text"
@@ -123,7 +132,9 @@ export default function BwitherSignUp2() {
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value)}
                 />
-                <B.PostCodeBtn type="button">우편번호 찾기</B.PostCodeBtn>
+                <B.PostCodeBtn type="button" onClick={() => setIsOpen(true)}>
+                  우편번호 찾기
+                </B.PostCodeBtn>
               </B.InputBoxWrapper>
               <B.InputBox2
                 placeholder="주소 입력"

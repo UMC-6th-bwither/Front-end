@@ -9,6 +9,7 @@ import beforeCheck from '/icons/signUp/check_before.svg';
 import afterCheck from '/icons/signUp/check_after.svg';
 import pwShow from '/icons/signUp/password-show.svg';
 import failX from '/icons/signUp/fail_x.svg';
+import openEye from '/icons/signUp/open_eye.svg';
 import { postLogin } from '../../apis/postUser';
 
 export default function Login() {
@@ -94,10 +95,17 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   style={{ borderColor: passwordError ? '#FA5963' : '' }}
                 />
-                <L.PwShowIcon
-                  src={pwShow}
-                  onClick={() => setShowPassword(!showPassword)}
-                />
+                {showPassword ? (
+                  <L.PwShowIcon
+                    src={openEye}
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                ) : (
+                  <L.PwShowIcon
+                    src={pwShow}
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                )}
               </div>
               {passwordError && (
                 <L.ErrorWrapper>

@@ -26,7 +26,7 @@ export const TextBox = styled.div`
   cursor: pointer;
 `;
 
-export const AllText = styled(Link)`
+export const AllText = styled.div`
   color: #272727;
   font-family: 'Noto Sans KR';
   font-size: 18px;
@@ -39,7 +39,16 @@ export const AllText = styled(Link)`
   }
 `;
 
-export const Text = styled(AllText)`
+export const Text = styled.div`
+  color: #272727;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-style: normal;
+  line-height: normal;
+  text-decoration: none;
+  &:hover {
+    color: #fe834d;
+  }
   font-weight: 350;
 `;
 

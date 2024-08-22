@@ -88,3 +88,93 @@ export const Profile = styled.img`
   height: 40px;
   border-radius: 50%;
 `;
+
+export const ModalContainer = styled.div`
+  display: flex;
+  width: 238px;
+  padding: 20px 18px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid #f1f1f1;
+  border-radius: 12px;
+  background: #fff;
+`;
+
+export const ModalName = styled.div`
+  color: #000;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+`;
+
+export const ModalEmail = styled.div`
+  color: #737373;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 21px; /* 150% */
+`;
+
+export const MypageBtn = styled(Link)`
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 12px;
+  border: 1px solid #fe834d;
+  background: #fff;
+  color: var(--main, #fe834d);
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 21px; /* 150% */
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    background: var(--sub_hover, #ffddc5);
+  }
+`;
+
+export const ModalDivider = styled.div`
+  height: 2px;
+  align-self: stretch;
+  background: #f1f1f1;
+`;
+
+export const LogoutText = styled(Link)`
+  color: #272727;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px; /* 150% */
+  cursor: pointer;
+  text-decoration: none;
+  &:hover {
+    color: var(--main, #f57137);
+  }
+`;
+
+export const IconContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+export const FloatingComponent = styled.div`
+  position: absolute;
+  top: 100%; /* 아이콘 바로 아래에 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100; /* 플로팅 컴포넌트가 다른 요소 위에 표시되도록 z-index 설정 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+`;

@@ -1,47 +1,44 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import * as S from './SignUpTerms.style';
 import beforeCheck from '/icons/signUp/check_before.svg';
 import afterCheck from '/icons/signUp/check_after.svg';
 import { FailX } from '../../pages/SignUpBwither/BwitherSignUp.style';
 import failX from '/icons/signUp/fail_x.svg';
+import { setActiveMenu } from '../../redux/menuSlice';
+import { setAllChecked, setItemChecked } from '../../redux/termsSlice';
 
 export default function SignUpTerms({ onTermsChecked, termsError }) {
-  const [isAllChecked, setIsAllChecked] = useState(false);
-
-  const [checkedItems, setCheckedItems] = useState({
-    term1: false,
-    term2: false,
-    term3: false,
-  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAllChecked, checkedItems } = useSelector((state) => state.terms);
 
   const handleAllChecked = (event) => {
     const isChecked = event.target.checked;
-    setIsAllChecked(isChecked);
-    setCheckedItems({
-      term1: isChecked,
-      term2: isChecked,
-      term3: isChecked,
-      term4: isChecked,
-    });
+    dispatch(setAllChecked({ isChecked }));
     onTermsChecked(isChecked); // 부모 컴포넌트에 상태 전달
   };
 
   const handleItemChecked = (event) => {
     const { name, checked } = event.target;
-    setCheckedItems((prevItems) => {
-      const updatedItems = { ...prevItems, [name]: checked };
-      const allChecked = Object.values(updatedItems).every(Boolean);
-      setIsAllChecked(allChecked);
-      onTermsChecked(allChecked); // 부모 컴포넌트에 상태 전달
-      return updatedItems;
-    });
+    dispatch(setItemChecked({ name, checked }));
+    onTermsChecked(
+      Object.values({ ...checkedItems, [name]: checked }).every(Boolean),
+    );
+  };
+
+  const handleMenuClick = (menu) => {
+    dispatch(setActiveMenu(menu));
+    navigate('/TermsOfService'); // 페이지 이동
   };
 
   return (
     <S.Container>
       <S.AllWrapper>
         <S.TextBox>
-          <S.AllText to="/TermsOfService">약관에 전체동의</S.AllText>
+          <S.AllText onClick={() => handleMenuClick('브위더 이용약관 동의')}>
+            약관에 전체동의
+          </S.AllText>
           <S.SubText>(필수)</S.SubText>
         </S.TextBox>
         <S.Label>
@@ -77,7 +74,9 @@ export default function SignUpTerms({ onTermsChecked, termsError }) {
       </S.Wrapper>
       <S.Wrapper>
         <S.TextBox>
-          <S.Text>이용약관 동의</S.Text>
+          <S.Text onClick={() => handleMenuClick('브위더 이용약관 동의')}>
+            이용약관 동의
+          </S.Text>
           <S.SubText>(필수)</S.SubText>
         </S.TextBox>
         <S.Label>
@@ -92,7 +91,9 @@ export default function SignUpTerms({ onTermsChecked, termsError }) {
       </S.Wrapper>
       <S.Wrapper>
         <S.TextBox>
-          <S.Text>개인정보 수집 및 이용 동의</S.Text>
+          <S.Text onClick={() => handleMenuClick('개인정보 수집 및 이용 동의')}>
+            개인정보 수집 및 이용 동의
+          </S.Text>
           <S.SubText>(필수)</S.SubText>
         </S.TextBox>
         <S.Label>
@@ -107,7 +108,9 @@ export default function SignUpTerms({ onTermsChecked, termsError }) {
       </S.Wrapper>
       <S.Wrapper>
         <S.TextBox>
-          <S.Text>위치기반 서비스 이용 동의</S.Text>
+          <S.Text onClick={() => handleMenuClick('위치기반 서비스 이용 동의')}>
+            위치기반 서비스 이용 동의
+          </S.Text>
           <S.SubText>(필수)</S.SubText>
         </S.TextBox>
         <S.Label>
