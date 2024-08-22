@@ -111,7 +111,7 @@ function BreederInfoEdit() {
     }
   };
 
-  const getSerializedFormData = async () => {
+  const getSerializedData = async () => {
     const breederInfoData = breederInfoRef.current.getBreederInfoData();
     const kennelInfoData = kennelInfoRef.current.getKennelInfoData();
     const FAQData = qnaRef.current.getQnaData();
@@ -150,7 +150,7 @@ function BreederInfoEdit() {
     }
 
     // 저장 로직 추가 예정
-    const data = await getSerializedFormData();
+    const data = await getSerializedData();
     console.log(data);
 
     // navigate('/breeder-mypage'); // 브리더 마이페이지
