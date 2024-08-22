@@ -2,11 +2,13 @@
 import { useState, useEffect } from 'react';
 import * as A from './Breeder.style';
 import bookmark from '/img/bookmark.svg';
-import { animalBreeds, 전체BreederCard } from '../../selectData';
+import { animalBreeds } from '../../selectData';
 import BreederCard from '../../../components/BreederCard/BreederCard';
 import DropBox from '../../../components/DropBoxes/DropBox';
+import nothingBowl from '/img/nothing_bowl.svg';
 import Pagination from '../../../components/Pagination/Pagination';
 import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
+import api from '../../../api/api';
 
 const menuItems1 = [
   { name: '저장한 글', href: '/myreview/save' },
@@ -21,15 +23,48 @@ const menuItems2 = [
 function Breeder() {
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
+  const [selectedBreed, setSelectedBreed] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [bookmaredBreeder, setBookmarkedBreeder] = useState([]);
 
+  // api 호출
+  useEffect(() => {
+    const fetchBreederBookmark = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+
+        const response = await api.get('/breeder/bookmark', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          params: {
+            page: currentPage,
+            animalType: selectedAnimal,
+            species: selectedBreed,
+          },
+        });
+        const data = response.data.result;
+        setBookmarkedBreeder(data.breederList);
+      } catch (error) {
+        console.error('Error fetching bookmaredBreeder', error);
+      }
+    };
+
+    fetchBreederBookmark();
+  }, [currentPage]);
+
+  // 강아지, 고양이 선택
+  const handleAnimalChange = (value) => {
+    setSelectedAnimal(value);
+  };
+  // 강아지, 고양이에 따른 종 변화
   useEffect(() => {
     setBreeds(animalBreeds[selectedAnimal] || []);
   }, [selectedAnimal, setSelectedAnimal]);
-
-  const handleAnimalChange = (event) => {
-    setSelectedAnimal(event);
-    setBreeds(animalBreeds[event] || []);
+  // 종 핸들러
+  const handleBreedChange = (value) => {
+    setSelectedBreed(value);
   };
 
   return (
@@ -62,53 +97,62 @@ function Breeder() {
                 id="animal-dropbox"
                 label="전체"
                 options={[
-                  { value: 'entire', label: '전체' },
-                  { value: 'dog', label: '강아지' },
-                  { value: 'cat', label: '고양이' },
+                  { value: '', label: '전체' },
+                  { value: 'DOG', label: '강아지' },
+                  { value: 'CAT', label: '고양이' },
                 ]}
                 onChange={handleAnimalChange}
               />
               <DropBox
                 id="breed-dropbox"
                 label="종 선택"
-                options={breeds.map((breed) => ({
-                  value: breed,
-                  label: breed,
-                }))}
+                options={[
+                  { value: '', label: '종 선택' },
+                  ...breeds.map((breed) => ({ value: breed, label: breed })),
+                ]}
+                onChange={handleBreedChange}
               />
             </A.Left>
           </A.SelectContainer>
 
-          <A.CardsContainer>
-            <div className="dogCard">
-              {전체BreederCard.map(
-                (
-                  breeder,
-                  index, // 필터링된 카드 나열
-                ) => (
-                  <BreederCard
-                    key={index}
-                    photo={breeder.photo}
-                    location={breeder.location}
-                    name={breeder.name}
-                    breederExperience={breeder.breederExperience}
-                    numberOfCertifications={breeder.numberOfCertifications}
-                    waitingDogs={breeder.waitingDogs}
-                    waitlistCount={breeder.waitlistCount}
-                    rating={breeder.rating}
-                    reviewCount={breeder.reviewCount}
-                    isBookmarked={breeder.isBookmarked}
-                    setIsBookmarked={() => {}}
-                  />
-                ),
-              )}
-            </div>
-            <Pagination
-              totalItems={전체BreederCard.length}
-              itemsPerPage={20}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
+          <A.CardsContainer
+            className={bookmaredBreeder.length === 0 ? 'empty' : ''}
+          >
+            {bookmaredBreeder.length > 0 ? (
+              <>
+                <div className="dogCard">
+                  {bookmaredBreeder.map((breeder) => (
+                    <BreederCard
+                      key={breeder.breederId}
+                      photo={breeder.profileUrl}
+                      location={breeder.address}
+                      name={breeder.breederName}
+                      breederExperience={breeder.careerYear}
+                      numberOfCertifications={breeder.certificateCount}
+                      waitingDogs={breeder.waitAnimal}
+                      waitlistCount={breeder.waitList}
+                      rating={breeder.breederRating}
+                      reviewCount={breeder.reviewCount}
+                      isBookmarked={breeder.isBookmarked}
+                      setIsBookmarked={() => {}}
+                    />
+                  ))}
+                </div>
+                <Pagination
+                  totalItems={bookmaredBreeder.length}
+                  itemsPerPage={20}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              </>
+            ) : (
+              <A.NothingContainer>
+                <img src={nothingBowl} alt="no animals" />
+                <div className="nothing_text">
+                  아직 브리더를 저장하지 않았어요..
+                </div>
+              </A.NothingContainer>
+            )}
           </A.CardsContainer>
         </A.BottomContainer>
       </A.MainContainer>

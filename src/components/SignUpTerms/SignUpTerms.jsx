@@ -2,8 +2,10 @@ import { useState } from 'react';
 import * as S from './SignUpTerms.style';
 import beforeCheck from '/icons/signUp/check_before.svg';
 import afterCheck from '/icons/signUp/check_after.svg';
+import { FailX } from '../../pages/SignUpBwither/BwitherSignUp.style';
+import failX from '/icons/signUp/fail_x.svg';
 
-export default function SignUpTerms() {
+export default function SignUpTerms({ onTermsChecked, termsError }) {
   const [isAllChecked, setIsAllChecked] = useState(false);
 
   const [checkedItems, setCheckedItems] = useState({
@@ -21,6 +23,7 @@ export default function SignUpTerms() {
       term3: isChecked,
       term4: isChecked,
     });
+    onTermsChecked(isChecked); // 부모 컴포넌트에 상태 전달
   };
 
   const handleItemChecked = (event) => {
@@ -29,6 +32,7 @@ export default function SignUpTerms() {
       const updatedItems = { ...prevItems, [name]: checked };
       const allChecked = Object.values(updatedItems).every(Boolean);
       setIsAllChecked(allChecked);
+      onTermsChecked(allChecked); // 부모 컴포넌트에 상태 전달
       return updatedItems;
     });
   };
@@ -49,6 +53,12 @@ export default function SignUpTerms() {
           <S.Check src={isAllChecked ? afterCheck : beforeCheck} />
         </S.Label>
       </S.AllWrapper>
+      {termsError && (
+        <S.ErrorWrapper>
+          <FailX src={failX} />
+          <span style={{ color: '#E76467' }}>{termsError}</span>
+        </S.ErrorWrapper>
+      )}
       <S.Divider />
       <S.Wrapper>
         <S.TextBox>

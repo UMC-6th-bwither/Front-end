@@ -143,13 +143,38 @@ export const Left = styled.div`
 export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 32px;
+  align-self: stretch;
+
+  &.empty {
+    min-height: 100vh; /* 'empty' 클래스가 있을 때만 적용 */
+  }
   .dogCard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 32px;
     align-self: stretch;
+  }
+`;
+
+export const NothingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .nothing_text {
+    align-self: stretch;
+    color: var(--Grey_icon, #c5c5c5);
+    text-align: center;
+    font-family: 'Noto Sans KR';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 `;

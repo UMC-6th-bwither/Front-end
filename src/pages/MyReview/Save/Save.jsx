@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as P from '../MyReview.style';
 import ButtonSelector from '../../../components/buttonselector/ButtonSelector';
@@ -21,6 +22,7 @@ function Icon() {
 }
 
 export default function MyReviewSave() {
+  const navigate = useNavigate();
   const { isLoggedIn, token } = useAuth();
 
   const [bookmarks, setBookmarks] = useState([]);
@@ -131,6 +133,7 @@ export default function MyReviewSave() {
         <P.PostContainer>
           {filteredBookmarks.map((post) => (
             <MyPostCard
+              onClick={() => navigate(`/WritingDetail/${post.id}`)}
               category={post.category === 'TIPS' ? '꿀정보' : '후기'}
               petType={post.petType}
               key={post.id}

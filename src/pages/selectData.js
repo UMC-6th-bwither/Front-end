@@ -355,7 +355,7 @@ export const cities = [
 ];
 
 export const animalBreeds = {
-  dog: [
+  DOG: [
     '골든 리트리버',
     '닥스훈트',
     '도베르만 핀셔',
@@ -388,7 +388,7 @@ export const animalBreeds = {
     '프렌치불독',
     '기타',
   ],
-  cat: [
+  CAT: [
     '노르웨이 숲',
     '데본 렉스',
     '돈스코이',

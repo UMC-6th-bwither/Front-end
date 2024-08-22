@@ -17,13 +17,14 @@ export const Layout = styled.div`
 
 export const NavbarContainer = styled.div`
   width: 120px;
+  flex-shrink: 0;
   height: 222px;
   //margin: 80px 0 80px 7%;
   margin: 80px 0;
 `;
 
 export const MainContainer = styled.div`
-  width: 1194px;
+  width: 75vw;
   display: flex;
   flex-direction: column;
   align-items: center;

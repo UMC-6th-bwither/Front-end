@@ -1,77 +1,49 @@
 import PropTypes from 'prop-types';
 import * as S from './ReservationDogCard.style';
-import { Heart, Gender, Foot, People } from '../../../public/img/CardInfoIcon';
+import BadgeVariant from '../badge/BadgeVariant';
+import loc from '/img/location.svg';
 
 function ReservationDogCard({
+  to,
   id,
   photo,
   location,
   name,
-  breed,
-  birthDate,
-  gender,
   breederName,
-  waitlistCount,
+  phone,
 }) {
   return (
-    <S.CardBox key={id}>
-      {waitlistCount > 0 && <S.ReservationBadge>예약중</S.ReservationBadge>}
+    <S.CardBox to={to} key={id}>
       <S.PhotoContainer>
         <img src={photo} alt={name} className="photo" />
       </S.PhotoContainer>
 
       <S.InfoContainer>
-        <div>
-          <p className="location">{location}</p>
-          <span className="name">{name}</span>
-          <span className="breed">{breed}</span>
+        <div className="location">
+          <img src={loc} alt="location" />
+          <div>{location}</div>
         </div>
-        <S.SubInfo>
-          <div className="info">
-            <div>
-              <Heart />
-              <span>출생 </span>
-              <strong>{birthDate}</strong>
-            </div>
-            <div>
-              <Gender />
-              <span>성별 </span>
-              <strong>{gender}</strong>
-            </div>
-          </div>
-          <div className="info">
-            <div>
-              <Foot />
-              <span>브리더 </span>
-              <strong>{breederName}</strong>
-            </div>
-            {waitlistCount > 0 && (
-              <div>
-                <People />
-                <span>대기예약 </span>
-                <strong>{waitlistCount}명</strong>
-              </div>
-            )}
-          </div>
-        </S.SubInfo>
+        <div className="breederName">😊 {breederName}</div>
+        <div className="phone">☎ {phone}</div>
+        <div className="badges">
+          <BadgeVariant content="강아지 전문" />
+          <BadgeVariant content="본인인증" />
+          <BadgeVariant content="사업자등록증" />
+          <BadgeVariant content="혜택" />
+        </div>
       </S.InfoContainer>
     </S.CardBox>
   );
 }
 
 ReservationDogCard.propTypes = {
+  to: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   photo: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  breed: PropTypes.string.isRequired,
-  birthDate: PropTypes.string.isRequired,
-  gender: PropTypes.string.isRequired,
   breederName: PropTypes.string.isRequired,
-  waitlistCount: PropTypes.number,
+  phone: PropTypes.string.isRequired,
 };
 
-ReservationDogCard.defaultProps = {
-  waitlistCount: 0,
-};
 export default ReservationDogCard;

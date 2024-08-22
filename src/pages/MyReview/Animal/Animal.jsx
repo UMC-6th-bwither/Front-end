@@ -1,14 +1,16 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
 import * as A from './Animal.style';
-import * as P from '../MyReview.style';
 import bookmark from '/img/bookmark.svg';
 import footprint from '/img/footprint.svg';
-import { animalBreeds, 전체DogCard } from '../../selectData';
+import { animalBreeds } from '../../selectData';
 import DogCard from '../../../components/DogCard/DogCard';
 import DropBox from '../../../components/DropBoxes/DropBox';
+import nothingBowl from '/img/nothing_bowl.svg';
 import Pagination from '../../../components/Pagination/Pagination';
 import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
+import ButtonSelector from '../../../components/buttonselector/ButtonSelector';
+import api from '../../../api/api';
 
 const menuItems1 = [
   { name: '저장한 글', href: '/myreview/save' },
@@ -25,38 +27,70 @@ function Animal() {
   const [breeds, setBreeds] = useState([]);
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedBreed, setSelectedBreed] = useState('');
-  const [isReserved, setIsReserved] = useState(false);
+  const [isReserved, setIsReserved] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [boodmarkedAnimal, setBookmaredAnimal] = useState([]);
 
+  // api 호출
+  useEffect(() => {
+    const fetchAnimalBookmark = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+
+        const response = await api.get('/animals/bookmark', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          params: {
+            memberId: 1,
+            page: currentPage,
+            animalType: selectedAnimal,
+            gender: selectedGender,
+            breed: selectedBreed,
+            status: isReserved,
+          },
+        });
+        const data = response.data.result;
+        setBookmaredAnimal(data.animalList);
+      } catch (error) {
+        console.error('Error fetching bookmaredAnimal', error);
+      }
+    };
+
+    fetchAnimalBookmark();
+  }, [currentPage, selectedAnimal, selectedGender, selectedBreed, isReserved]);
+
+  // 강아지, 고양이 선택
+  const handleAnimalChange = (value) => {
+    setSelectedAnimal(value);
+  };
+  // 강아지, 고양이에 따른 종 변화
   useEffect(() => {
     setBreeds(animalBreeds[selectedAnimal] || []);
   }, [selectedAnimal, setSelectedAnimal]);
-
-  const handleAnimalChange = (event) => {
-    setSelectedAnimal(event);
-    setBreeds(animalBreeds[event] || []);
-  };
-
+  // 성별 핸들러
   const handleGenderChange = (value) => {
     setSelectedGender(value);
   };
-
+  // 종 핸들러
   const handleBreedChange = (value) => {
     setSelectedBreed(value);
   };
-
+  // 예약 상태 토글
   const toggleReservation = () => {
-    setIsReserved(!isReserved);
+    setIsReserved((prevStatus) => (prevStatus === 'BEFORE' ? '' : 'BEFORE'));
   };
 
   // 선택된 조건에 따른 DogCard데이터 필터링
-  const bookmaredPet = 전체DogCard.filter((pet) => {
-    return (
-      (selectedGender === '' || pet.gender === selectedGender) &&
-      (selectedBreed === '' || pet.breed === selectedBreed) &&
-      (!isReserved || pet.waitlistCount === 0)
-    );
-  });
+  // const bookmaredPet = boodmarkedAnimal.filter((pet) => {
+  //   return (
+  //     pet.status === 'BOOKING' &&
+  //     (selectedGender === '' || pet.gender === selectedGender) &&
+  //     (selectedBreed === '' || pet.breed === selectedBreed) &&
+  //     (!isReserved || pet.waitlistCount === 0)
+  //   );
+  // });
 
   return (
     <A.Border>
@@ -88,9 +122,9 @@ function Animal() {
                 id="animal-dropbox"
                 label="전체"
                 options={[
-                  { value: 'entire', label: '전체' },
-                  { value: 'dog', label: '강아지' },
-                  { value: 'cat', label: '고양이' },
+                  { value: '', label: '전체' },
+                  { value: 'DOG', label: '강아지' },
+                  { value: 'CAT', label: '고양이' },
                 ]}
                 onChange={handleAnimalChange}
               />
@@ -99,8 +133,8 @@ function Animal() {
                 label="성별 선택"
                 options={[
                   { value: '', label: '성별 선택' },
-                  { value: '수컷', label: '남아' },
-                  { value: '암컷', label: '여아' },
+                  { value: 'MALE', label: '남아' },
+                  { value: 'FEMALE', label: '여아' },
                 ]}
                 onChange={handleGenderChange}
               />
@@ -113,40 +147,48 @@ function Animal() {
                 ]}
                 onChange={handleBreedChange}
               />
-              <A.ReservationBtn onClick={toggleReservation}>
-                {isReserved ? '예약 중 포함' : '예약 중 제외'}
-              </A.ReservationBtn>
+              <ButtonSelector border onClick={toggleReservation}>
+                예약 중 제외
+              </ButtonSelector>
             </A.Left>
           </A.SelectContainer>
-          <A.CardsContainer>
-            <div className="dogCard">
-              {bookmaredPet.map(
-                (
-                  pet,
-                  index, // 필터링된 카드 나열
-                ) => (
-                  <DogCard
-                    key={index}
-                    photo={pet.photo}
-                    location={pet.location}
-                    name={pet.name}
-                    breed={pet.breed}
-                    birthDate={pet.birthDate}
-                    gender={pet.gender}
-                    breederName={pet.breederName}
-                    waitlistCount={pet.waitlistCount}
-                    isBookmarked={pet.isBookmarked}
-                    setIsBookmarked={() => {}}
-                  />
-                ),
-              )}
-            </div>
-            <Pagination
-              totalItems={bookmaredPet.length}
-              itemsPerPage={20}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
+          <A.CardsContainer
+            className={boodmarkedAnimal.length === 0 ? 'empty' : ''}
+          >
+            {boodmarkedAnimal.length > 0 ? (
+              <>
+                <div className="dogCard">
+                  {boodmarkedAnimal.map((pet) => (
+                    <DogCard
+                      key={pet.animalId}
+                      photo={pet.imageUrl}
+                      location={pet.location}
+                      name={pet.name}
+                      breed={pet.breed}
+                      birthDate={pet.birthDate}
+                      gender={pet.gender}
+                      breederName={pet.breederName}
+                      waitlistCount={0}
+                      isBookmarked={pet.status}
+                      setIsBookmarked={() => {}}
+                    />
+                  ))}
+                </div>
+                <Pagination
+                  totalItems={boodmarkedAnimal.length}
+                  itemsPerPage={20}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              </>
+            ) : (
+              <A.NothingContainer>
+                <img src={nothingBowl} alt="no animals" />
+                <div className="nothing_text">
+                  아직 동물을 저장하지 않았어요..
+                </div>
+              </A.NothingContainer>
+            )}
           </A.CardsContainer>
         </A.BottomContainer>
       </A.MainContainer>

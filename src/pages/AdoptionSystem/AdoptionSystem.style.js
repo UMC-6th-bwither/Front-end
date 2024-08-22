@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+export const Layout = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 100px;
+  padding: 80px 0;
+`;
+
 export const Menu = styled.div`
   position: relative;
   left: 50px;
@@ -9,7 +17,6 @@ export const Menu = styled.div`
 `;
 export const Container = styled.div`
   width: 910px;
-  margin: 0 auto;
 `;
 
 export const Head = styled.div`
@@ -17,7 +24,6 @@ export const Head = styled.div`
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
-  padding-top: 64px;
 `;
 
 export const HeadLine = styled.div`

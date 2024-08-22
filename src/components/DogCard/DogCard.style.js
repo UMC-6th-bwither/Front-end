@@ -1,16 +1,22 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const CardBox = styled(Link)`
+const CardBox = styled.div`
   display: flex;
   flex-direction: row;
   position: relative;
   width: 970px;
   height: 188px;
   justify: space-between;
-  opacity: 0px;
+  align-items: center;
+  opacity: 1;
+`;
+
+const Click = styled(Link)`
   cursor: pointer;
   text-decoration: none;
+  display: flex;
+  flex: 1;
 `;
 
 const ReservationBadge = styled.div`
@@ -35,6 +41,12 @@ const PhotoContainer = styled.div`
   border-radius: 12px;
   opacity: 0px;
   background: #d9d9d9;
+
+  .photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 const InfoContainer = styled.div`
   margin: 0px 50px;
@@ -93,12 +105,14 @@ const BookmarkBtn = styled.button`
   border: none;
   background-color: transparent;
   position: absolute;
+  cursor: pointer;
   right: 5%;
   top: 5%;
 `;
 
 export {
   CardBox,
+  Click,
   ReservationBadge,
   PhotoContainer,
   InfoContainer,
