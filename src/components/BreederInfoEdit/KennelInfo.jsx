@@ -46,6 +46,8 @@ const KennelInfo = React.forwardRef(({ userData }, ref) => {
     if (userData) {
       const { breederDTO } = userData;
       setKennelAddress(breederDTO.kennelAddress);
+      setBusinessHours(breederDTO.businessTime);
+      setNumberOfDogs(breederDTO.animalCount);
     }
   }, [userData]);
 

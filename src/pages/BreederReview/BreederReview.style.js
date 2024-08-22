@@ -232,6 +232,7 @@ export const ReviewList = styled.div`
 `;
 
 export const ReviewItem = styled.div`
+  cursor: pointer;
   position: relative;
   width: 235px;
   display: flex;
@@ -330,4 +331,23 @@ export const ReviewText = styled.div`
     -webkit-line-clamp: unset;
     display: block;
   }
+`;
+
+export const NothingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 100px 0;
+
+  align-self: stretch;
+  color: var(--Grey_icon, #c5c5c5);
+  text-align: center;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 `;
