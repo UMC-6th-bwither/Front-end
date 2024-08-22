@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import api from '../../api/api';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederDetail.style';
@@ -27,6 +28,8 @@ function BreederDetail() {
   const qnaRef = useRef(null);
   const communityRef = useRef(null);
 
+  const { breederId } = useParams();
+
   const menuItems = [
     '브리더 정보',
     '켄넬 정보',
@@ -39,7 +42,7 @@ function BreederDetail() {
   useEffect(() => {
     const fetchBreederDetail = async () => {
       try {
-        const breederResponse = await api.get('/breeder/1');
+        const breederResponse = await api.get(`/breeder/${breederId}`);
         const breederData = breederResponse.data.result;
 
         const backgroundUrl =
@@ -414,9 +417,13 @@ function BreederDetail() {
           graduationDate={breederInfo.graduationDate}
           breedingCareers={breederInfo.breedingCareers}
           schoolName={breederInfo.schoolName}
+          files={breederInfo.files}
         />
         <KennelInfo ref={kennelInfoRef} />
-        <CareDog ref={careDogRef} />
+        <CareDog
+          ref={careDogRef}
+          breedingAnimals={breederInfo.breedingAnimals}
+        />
         <BreederReview ref={reviewRef} />
         <BreederQna
           ref={qnaRef}
@@ -426,7 +433,10 @@ function BreederDetail() {
           questionPeriod={breederInfo.questionPeriod}
           questionSupport={breederInfo.questionSupport}
         />
-        <BreederCommunity ref={communityRef} />
+        <BreederCommunity
+          ref={communityRef}
+          breederTips={breederInfo.breederTips}
+        />
       </A.InfoWrapper>
     </A.Container>
   );
