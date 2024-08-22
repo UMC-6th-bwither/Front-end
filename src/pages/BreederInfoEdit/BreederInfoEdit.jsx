@@ -165,10 +165,10 @@ function BreederInfoEdit() {
     formData.append('backgroundImage', data.topImage);
     formData.append('registrationFiles', data.businessCertImage);
     data.certificates?.forEach((file, index) => {
-      formData.append(`certificateFiles[${index}]`, file);
+      formData.append(`certificateFiles`, file);
     });
     data.kennelPictures?.forEach((file, index) => {
-      formData.append(`kennelFiles[${index}]`, file);
+      formData.append(`kennelFiles`, file);
     });
 
     // 텍스트 필드 처리

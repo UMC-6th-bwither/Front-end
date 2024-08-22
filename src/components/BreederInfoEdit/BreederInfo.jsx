@@ -187,6 +187,18 @@ const BreederInfo = React.forwardRef(({ userData }, ref) => {
     );
     setStartDate(breederDTO.enrollmentDate);
     setEndDate(breederDTO.graduationDate);
+    setCertificates(
+      breederDTO.breederFiles
+        .filter((file) => {
+          return file.type === 'CERTIFICATE';
+        })
+        .map((file, index) => {
+          return {
+            id: file.breederFilePath,
+            name: `breeder_certificates_${index}`,
+          };
+        }),
+    );
   }, [userData]);
 
   return (
