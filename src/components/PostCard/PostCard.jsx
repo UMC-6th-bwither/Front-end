@@ -12,6 +12,8 @@ function PostIcon({ src }) {
 
 export default function PostCard({
   petType,
+  postId,
+  onClick,
   profileImgSrc,
   profileName,
   postTitle,
@@ -22,7 +24,7 @@ export default function PostCard({
   bookmarkCount,
 }) {
   return (
-    <P.Post>
+    <P.Post onClick={onClick}>
       <P.PostUserProfile>
         <P.UserProfileImageConatiner>
           <P.UserProfileImage src={profileImgSrc} />

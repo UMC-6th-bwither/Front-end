@@ -103,19 +103,23 @@ export default function MyReview() {
             ]}
           />
         </P.BreederCardContainer>
-        <P.BreederCardListTag>내가 작성한 후기</P.BreederCardListTag>
-        <P.ReviewCardContainer>
-          {myReviews &&
-            myReviews.map((review) => (
-              <BreederReviewAnimalCard
-                key={review.id}
-                kennelName={review.kennelName}
-                star={review.rating}
-                imgSrc={extractFirstImageUrl(review.blocks)}
-                context={extractTextFromBlocks(review.blocks)}
-              />
-            ))}
-        </P.ReviewCardContainer>
+        {role === 'MEMBER' && (
+          <>
+            <P.BreederCardListTag>내가 작성한 후기</P.BreederCardListTag>
+            <P.ReviewCardContainer>
+              {myReviews &&
+                myReviews.map((review) => (
+                  <BreederReviewAnimalCard
+                    key={review.id}
+                    kennelName={review.kennelName}
+                    star={review.rating}
+                    imgSrc={extractFirstImageUrl(review.blocks)}
+                    context={extractTextFromBlocks(review.blocks)}
+                  />
+                ))}
+            </P.ReviewCardContainer>
+          </>
+        )}
       </P.MainContainer>
     </P.Layout>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
@@ -6,6 +7,8 @@ import 'react-multi-carousel/lib/styles.css';
 import BreederInfo from '../../components/BreederInfoEdit/BreederInfo';
 import KennelInfo from '../../components/BreederInfoEdit/KennelInfo';
 import BreederQna from '../../components/BreederInfoEdit/BreederQna';
+import './BreederInfoEdit.style';
+import convertBlobUrlsToFileList from '../../utils/convertBlobUrlsToFileList';
 
 function BreederInfoEdit() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
@@ -16,6 +19,11 @@ function BreederInfoEdit() {
   const [breederName, setBreederName] = useState('');
   const [breederIntro, setBreederIntro] = useState('');
   const [businessFileName, setBusinessFileName] = useState('');
+  const [businessCertImage, setBusinessCertImage] = useState('');
+
+  const [topImageBase64, setTopImageBase64] = useState('');
+  const [profileImageBase64, setProfileImageBase64] = useState('');
+  const [businessCertImageBase64, setBusinessCertImageBase64] = useState('');
 
   const navigate = useNavigate();
 
@@ -64,9 +72,10 @@ function BreederInfoEdit() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setTopImage(reader.result);
+        setTopImageBase64(reader.result);
       };
       reader.readAsDataURL(file);
+      setTopImage(file);
     }
   };
 
@@ -75,11 +84,19 @@ function BreederInfoEdit() {
     const file = e.target.files[0];
     if (file) {
       setBusinessFileName(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBusinessCertImageBase64(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setBusinessCertImage(file);
     }
   };
   // 파일 삭제
   const handleBusinessFileRemove = () => {
     setBusinessFileName('');
+    document.getElementById('businessFileInput').value = '';
+    setBusinessCertImage(null);
   };
 
   const handleProfileImageChange = (event) => {
@@ -87,13 +104,45 @@ function BreederInfoEdit() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result);
+        setProfileImageBase64(reader.result);
       };
       reader.readAsDataURL(file);
+      setProfileImage(file);
     }
   };
 
-  const handleSaveClick = () => {
+  const getSerializedFormData = async () => {
+    const breederInfoData = breederInfoRef.current.getBreederInfoData();
+    const kennelInfoData = kennelInfoRef.current.getKennelInfoData();
+    const FAQData = qnaRef.current.getQnaData();
+
+    // certificates와 kennelPictures 속성에 대해 convertBlobUrlsToFileList 함수를 적용
+    const certificates = await convertBlobUrlsToFileList(
+      breederInfoData.certificates,
+    );
+    const kennelPictures = await convertBlobUrlsToFileList(
+      kennelInfoData.kennelPictures,
+    );
+
+    const data = {
+      topImage: topImage,
+      profileImage: profileImage,
+      isReviewEventChecked: isReviewEventChecked,
+      reviewEventContent: reviewEventContent,
+      breederName: breederName,
+      breederIntro: breederIntro,
+      businessCertImage: businessCertImage,
+      ...breederInfoData,
+      ...kennelInfoData,
+      ...FAQData,
+      certificates, // 변환된 certificates 추가
+      kennelPictures, // 변환된 kennelPictures 추가
+    };
+
+    return data;
+  };
+
+  const handleSaveClick = async () => {
     if (isReviewEventChecked && !reviewEventContent.trim()) {
       // eslint-disable-next-line no-alert
       alert('리뷰이벤트 내용을 입력해주세요.');
@@ -101,7 +150,10 @@ function BreederInfoEdit() {
     }
 
     // 저장 로직 추가 예정
-    navigate('/breeder-mypage'); // 브리더 마이페이지
+    const data = await getSerializedFormData();
+    console.log(data);
+
+    // navigate('/breeder-mypage'); // 브리더 마이페이지
   };
 
   const handleReviewEventCheck = () => {
@@ -114,7 +166,7 @@ function BreederInfoEdit() {
   return (
     <A.Container>
       <A.TopImage
-        style={topImage ? { backgroundImage: `url(${topImage})` } : {}}
+        style={topImage ? { backgroundImage: `url(${topImageBase64})` } : {}}
       />
       <A.TopImageIcon onClick={() => topImageInputRef.current.click()}>
         <svg
@@ -185,7 +237,9 @@ function BreederInfoEdit() {
         <A.OverlappingImageContainer>
           <A.OverlappingImage
             style={
-              profileImage ? { backgroundImage: `url(${profileImage})` } : {}
+              profileImage
+                ? { backgroundImage: `url(${profileImageBase64})` }
+                : {}
             }
           />
           <A.ProfileIcon onClick={() => profileImageInputRef.current.click()}>

@@ -31,7 +31,7 @@ export default function BreederReviewAnimalCard({
                   fill="#FFCE21"
                 />
               </svg>
-              <S.Star>{star.toFixed(1)}</S.Star>
+              <S.Star>{star?.toFixed(1)}</S.Star>
             </S.StarFlex>
           </S.FlexGrow>
 

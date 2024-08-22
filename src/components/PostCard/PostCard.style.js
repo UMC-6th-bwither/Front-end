@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Post = styled.div`
+  cursor: pointer;
   margin-bottom: 48px;
   position: relative;
 
@@ -17,6 +18,7 @@ export const Post = styled.div`
 `;
 
 export const MyPost = styled.div`
+  cursor: pointer;
   position: relative;
   padding: 24px 0;
 
