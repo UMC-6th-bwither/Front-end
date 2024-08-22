@@ -8,6 +8,7 @@ import Terms from '../../components/SignUpTerms/SignUpTerms';
 import Button from '../../components/SignUpButton/Button';
 import TextButton from '../../components/SignUpButton/TextButton';
 import failX from '/icons/signUp/fail_x.svg';
+import openEye from '/icons/signUp/open_eye.svg';
 import completeCheck from '/icons/signUp/complete_check.svg';
 import { updateSignupStep1 } from '../../redux/breederSignupSlice';
 import { postEmailSend, postEmailVerify } from '../../apis/postUser';
@@ -295,10 +296,17 @@ export default function BreederSignUp1() {
                   }}
                   style={{ borderColor: passwordError ? '#FA5963' : '' }}
                 />
-                <B.PwShowIcon
-                  src={pwShow}
-                  onClick={() => setShowPassword(!showPassword)}
-                />
+                {showPassword ? (
+                  <B.PwShowIcon
+                    src={openEye}
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                ) : (
+                  <B.PwShowIcon
+                    src={pwShow}
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                )}
               </div>
               {passwordError && (
                 <B.ErrorWrapper>
@@ -329,10 +337,17 @@ export default function BreederSignUp1() {
                   }}
                   style={{ borderColor: confirmPasswordError ? '#FA5963' : '' }}
                 />
-                <B.PwShowIcon
-                  src={pwShow}
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                />
+                {showConfirmPassword ? (
+                  <B.PwShowIcon
+                    src={openEye}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  />
+                ) : (
+                  <B.PwShowIcon
+                    src={pwShow}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  />
+                )}
               </div>
               {confirmPasswordError && (
                 <B.ErrorWrapper>
