@@ -110,9 +110,8 @@ function MypageBreeder() {
           <div className="title">커뮤니티</div>
           <MP.SectionLinks>
             <MP.NavLink to="/myreview/post">내가 쓴 글</MP.NavLink>
-            <MP.NavLink to="/myreview/comment">댓글 단 글</MP.NavLink>
-            <MP.NavLink to="/myreview/review">나의 후기</MP.NavLink>
-            <MP.NavLink>받은 후기</MP.NavLink>
+            <MP.NavLink to="/myreview/save">저장한 글</MP.NavLink>
+            <MP.NavLink to="/breeder-review">받은 후기</MP.NavLink>
           </MP.SectionLinks>
         </MP.SectionContainer>
         <MP.SectionContainer>

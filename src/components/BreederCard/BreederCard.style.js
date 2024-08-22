@@ -12,7 +12,7 @@ const CardBox = styled.div`
   align-items: center;
   opacity: 1;
 `;
-const Click = styled(Link)`
+const Click = styled.div`
   cursor: pointer;
   text-decoration: none;
   display: flex;
