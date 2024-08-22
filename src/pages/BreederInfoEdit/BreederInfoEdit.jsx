@@ -276,9 +276,7 @@ function BreederInfoEdit() {
     // fetch 요청 3
     const endPoint = `${apiUrl}/breeder/profile`;
     const body = new FormData();
-    console.log(profileImage);
     body.append('profileImage', profileImage);
-    body.append('password', 'password123');
 
     fetch(endPoint, {
       body,
