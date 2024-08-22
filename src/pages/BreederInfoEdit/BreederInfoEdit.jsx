@@ -101,7 +101,7 @@ function BreederInfoEdit() {
     }
 
     // 저장 로직 추가 예정
-    navigate('/breeder-mypage'); // 브리더 마이페이지
+    navigate('/MypageBreeder'); // 브리더 마이페이지
   };
 
   const handleReviewEventCheck = () => {
