@@ -12,6 +12,7 @@ import beforeCheck from '/icons/signUp/check_before.svg';
 import afterCheck from '/icons/signUp/check_after.svg';
 import { updateSignupStep4, resetSignup } from '../../redux/breederSignupSlice';
 import { postBreederSignup } from '../../apis/postUser';
+import AddressSearchModal from '../../components/AddressSearch/AddressSearchModal';
 
 function MoreIcon() {
   return (
@@ -64,6 +65,7 @@ function AddMoreButton({ count, setCount }) {
 export default function BreederSignUp4() {
   const [zipcode, setZipcode] = useState('');
   const [address, setAddress] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const [addressDetail, setAddressDetail] = useState('');
 
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -235,13 +237,21 @@ export default function BreederSignUp4() {
               <B.InputTitleRequired>
                 운영하고 있는 켄넬/캐터리 주소
               </B.InputTitleRequired>
+              <AddressSearchModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                setZipCode={setZipcode}
+                setAddress={setAddress}
+              />
               <B.InputBoxWrapper>
                 <B.InputBox2
                   placeholder="우편번호 입력"
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value)}
                 />
-                <B.PostCodeBtn type="button">우편번호 찾기</B.PostCodeBtn>
+                <B.PostCodeBtn type="button" onClick={() => setIsOpen(true)}>
+                  우편번호 찾기
+                </B.PostCodeBtn>
               </B.InputBoxWrapper>
               <B.InputBox2
                 placeholder="주소 입력"
