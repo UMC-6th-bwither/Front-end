@@ -1,106 +1,85 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as R from './BwitherReview.style';
 import Pagination from '../../components/Pagination/Pagination';
-import ReviewModal from '../../components/BwitherReview/ReviewModal';
 import VerticalMenuSelector from '../../components/VerticalMenuSelector/VerticalMenuSelector';
-
-const allReviews = [
-  {
-    id: 1,
-    author: '켄넬 이름',
-
-    images: [
-      'https://via.placeholder.com/235/0000FF/808080',
-      'https://via.placeholder.com/235/FF0000/FFFFFF',
-    ],
-    rating: 5,
-    isNew: true,
-    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    category: '강아지',
-  },
-  {
-    id: 2,
-    images: ['https://via.placeholder.com/235'],
-    author: '켄넬 이름',
-    rating: 5,
-    isNew: true,
-    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    category: '강아지',
-  },
-  {
-    id: 3,
-    images: [
-      'https://via.placeholder.com/235/0000FF/808080',
-      'https://via.placeholder.com/235/FF0000/FFFFFF',
-    ],
-    author: '켄넬 이름',
-    rating: 5,
-    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    category: '고양이',
-  },
-  {
-    id: 4,
-    images: [],
-    author: '켄넬 이름',
-    rating: 4,
-    text: '고양이 품종이 정말 이쁩니다!',
-    category: '고양이',
-  },
-  {
-    id: 14,
-    images: ['https://via.placeholder.com/235'],
-    author: '켄넬 이름',
-    rating: 5,
-    text: '강아지를 데려왔는데 아주 귀엽고 사랑스러워서 미쳐버릴 것만 같습니다',
-    category: '고양이',
-  },
-];
+import api from '../../api/api';
 
 function BwitherReview() {
-  const [activeCategories, setActiveCategories] = useState(['전체']);
+  const [activeCategories, setActiveCategories] = useState(['ALL']);
   const [selectedReviewType, setSelectedReviewType] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedReview, setSelectedReview] = useState(null);
-  const itemsPerPage = 16;
+  const itemsPerPage = 20;
 
-  const handleCategoryClick = (category) => {
-    if (category === '전체') {
-      setActiveCategories(['전체']);
-    } else if (activeCategories.includes('전체')) {
-      setActiveCategories([category]);
-    } else {
-      setActiveCategories((prev) =>
-        prev.includes(category)
-          ? prev.filter((c) => c !== category)
-          : [...prev, category],
-      );
+  const [reviewDatas, setReviewDatas] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  // 리뷰 미리보기 데이터 받아오기
+  useEffect(() => {
+    const getInfo = async () => {
+      try {
+        const response = await api.get('/post', {
+          params: {
+            category: 'BREEDER_REVIEWS',
+          },
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.data.isSuccess) {
+          setReviewDatas(response.data.result);
+        } else {
+          setError(response.data.message);
+        }
+        console.log('분양 후기 데이터 목록 요청 성공');
+      } catch (err) {
+        setError('Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    getInfo();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  // 강아지, 고양이, 전체 선택 필터
+  const handleCategoryClick = (petType) => {
+    if (petType === 'ALL') {
+      setActiveCategories(['ALL']);
+      return;
+    }
+    if (petType === 'DOG') {
+      setActiveCategories(['DOG']);
+      return;
+    }
+    if (petType === 'CAT') {
+      setActiveCategories(['CAT']);
     }
   };
 
+  // 사진 리뷰 필터
   const handleReviewTypeClick = () => {
     setSelectedReviewType((prev) =>
       prev === '사진 리뷰' ? null : '사진 리뷰',
     );
   };
 
-  const handleReviewClick = (review) => {
-    setSelectedReview(review);
-  };
+  const filteredReviews = reviewDatas.filter((review) => {
+    const petTypeMatch =
+      activeCategories.includes('ALL') ||
+      activeCategories.includes(review.petType);
 
-  const handleCloseModal = () => {
-    setSelectedReview(null);
-  };
+    const photoMatch =
+      selectedReviewType === '사진 리뷰' ? review.hasImage : true;
 
-  const filteredReviews = allReviews.filter((review) => {
-    const categoryMatch =
-      activeCategories.includes('전체') ||
-      activeCategories.includes(review.category);
-
-    const photoMatch = selectedReviewType === '사진 리뷰' ? review.image : true;
-
-    return categoryMatch && photoMatch;
+    return petTypeMatch && photoMatch;
   });
 
+  // 페이지네이션 데이터 분할
   const paginatedReviews = filteredReviews.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
@@ -147,20 +126,20 @@ function BwitherReview() {
           <R.MiddleBox>
             <R.CommuBtnBox>
               <R.CommuBtn
-                className={activeCategories.includes('전체') ? 'active' : ''}
-                onClick={() => handleCategoryClick('전체')}
+                className={activeCategories.includes('ALL') ? 'active' : ''}
+                onClick={() => handleCategoryClick('ALL')}
               >
                 전체
               </R.CommuBtn>
               <R.CommuBtn
-                className={activeCategories.includes('강아지') ? 'active' : ''}
-                onClick={() => handleCategoryClick('강아지')}
+                className={activeCategories.includes('DOG') ? 'active' : ''}
+                onClick={() => handleCategoryClick('DOG')}
               >
                 강아지
               </R.CommuBtn>
               <R.CommuBtn
-                className={activeCategories.includes('고양이') ? 'active' : ''}
-                onClick={() => handleCategoryClick('고양이')}
+                className={activeCategories.includes('CAT') ? 'active' : ''}
+                onClick={() => handleCategoryClick('CAT')}
               >
                 고양이
               </R.CommuBtn>
@@ -194,14 +173,16 @@ function BwitherReview() {
             {paginatedReviews.map((review) => (
               <R.ReviewItem
                 key={review.id}
-                onClick={() => handleReviewClick(review)}
+                onClick={() => navigate(`/WritingDetail/${review.id}`)}
               >
                 <R.ReviewImage
-                  style={{ backgroundImage: `url(${review.image})` }}
+                  src={review.coverImage || '/img/mainTipDefault.png'}
+                  alt="Review"
                 />
+
                 <R.ReviewContent>
                   <R.ReviewKennelName>
-                    {review.author}
+                    {review.kennelName}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -218,7 +199,7 @@ function BwitherReview() {
                     </svg>
                     <span>{review.rating}</span>
                   </R.ReviewKennelName>
-                  <R.ReviewText>{review.text}</R.ReviewText>
+                  <R.ReviewText>{review.title}</R.ReviewText>
                 </R.ReviewContent>
               </R.ReviewItem>
             ))}
@@ -231,10 +212,6 @@ function BwitherReview() {
               setCurrentPage={setCurrentPage}
             />
           </R.PaginationContainer>
-
-          {selectedReview && (
-            <ReviewModal review={selectedReview} onClose={handleCloseModal} />
-          )}
         </R.Container>
       </R.PageBox>
     </R.Layout>
