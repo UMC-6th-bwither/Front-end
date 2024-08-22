@@ -147,7 +147,7 @@ export default function BreederSignUp4() {
   };
 
   const handleDateChange = (index, field, date) => {
-    const formattedDate = date.toISOString().substring(0, 7);
+    const formattedDate = date.toISOString().substring(0, 10);
     const updatedCareers = careers.map((career, i) =>
       i === index ? { ...career, [field]: formattedDate } : career,
     );
@@ -389,8 +389,8 @@ export default function BreederSignUp4() {
                           onChange={(date) =>
                             handleDateChange(index, 'startDate', date)
                           }
-                          dateFormat="yyyy-MM"
-                          displayFormat="yyyy-MM"
+                          dateFormat="yyyy-MM-dd"
+                          displayFormat="yyyy-MM-dd"
                           customInput={
                             <B.BreedingInfoInputPeriod
                               type="text"
@@ -429,8 +429,8 @@ export default function BreederSignUp4() {
                           onChange={(date) =>
                             handleDateChange(index, 'endDate', date)
                           }
-                          dateFormat="yyyy-MM"
-                          displayFormat="yyyy-MM"
+                          dateFormat="yyyy-MM-dd"
+                          displayFormat="yyyy-MM-dd"
                           customInput={
                             <B.BreedingInfoInputPeriod
                               type="text"
