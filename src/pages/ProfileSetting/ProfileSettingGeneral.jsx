@@ -275,7 +275,7 @@ function ProfileSettingGeneral() {
         <S.ProfileCard>
           <S.ImgContainer>
             <S.ProfileImage
-              src={profileImage || '../../../public/img/defaultprofile.png'}
+              src={profileImage || '/img/defaultprofile.png'}
               alt="Profile"
             />
             <S.CameraIcon onClick={handleImageClick}>

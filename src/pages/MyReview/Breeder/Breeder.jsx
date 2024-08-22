@@ -5,7 +5,7 @@ import bookmark from '/img/bookmark.svg';
 import { animalBreeds } from '../../selectData';
 import BreederCard from '../../../components/BreederCard/BreederCard';
 import DropBox from '../../../components/DropBoxes/DropBox';
-import nothingBowl from '../../../../public/img/nothing_bowl.svg';
+import nothingBowl from '/img/nothing_bowl.svg';
 import Pagination from '../../../components/Pagination/Pagination';
 import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
 import api from '../../../api/api';
