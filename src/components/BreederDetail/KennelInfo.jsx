@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import * as A from '../../pages/BreederDetail/BreederDetail.style';
 import api from '../../api/api';
 
@@ -12,10 +13,12 @@ const KennelInfo = React.forwardRef((props, ref) => {
     kennelImages: [],
   });
 
+  const { breederId } = useParams();
+
   useEffect(() => {
     const fetchKennelData = async () => {
       try {
-        const response = await api.get('/breeder/1');
+        const response = await api.get(`/breeder/${breederId}`);
         const { kennelAddress, businessTime, animalCount, files } =
           response.data.result;
 

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
+import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import * as A from '../../pages/BreederDetail/BreederDetail.style';
 import api from '../../api/api';
 
-const BreederReview = React.forwardRef((props, ref) => {
+const BreederReview = forwardRef((props, ref) => {
   const [reviews, setReviews] = useState([]);
   const [speciesList, setSpeciesList] = useState(['전체']);
   const [activeButton, setActiveButton] = useState('전체');
@@ -12,6 +13,8 @@ const BreederReview = React.forwardRef((props, ref) => {
   const [displayCount, setDisplayCount] = useState(3);
   const [sortType, setSortType] = useState('최신순');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { breederId } = useParams();
 
   const handleSortChange = (newSortType) => {
     setSortType(newSortType);
@@ -31,7 +34,7 @@ const BreederReview = React.forwardRef((props, ref) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await api.get('/breeder/1');
+        const response = await api.get(`/breeder/${breederId}`);
         const reviewsData = response.data.result.reviews;
 
         setReviews(reviewsData);
@@ -332,8 +335,10 @@ const BreederReview = React.forwardRef((props, ref) => {
               <A.ReviewTextContainer>
                 <A.ReviewText isExpanded={isExpanded}>
                   {review.content &&
-                    review.content[0] &&
-                    review.content[0].data}
+                  review.content[0] &&
+                  typeof review.content[0].data === 'string'
+                    ? review.content[0].data
+                    : '내용이 없습니다.'}
                 </A.ReviewText>
 
                 <A.MoreButton onClick={toggleExpand}>
@@ -375,8 +380,8 @@ const BreederReview = React.forwardRef((props, ref) => {
 
 BreederReview.displayName = 'BreederReview';
 
-BreederReview.propTypes = {
-  // ref: PropTypes.any,
-};
+// BreederReview.propTypes = {
+//   // ref: PropTypes.any,
+// };
 
 export default BreederReview;

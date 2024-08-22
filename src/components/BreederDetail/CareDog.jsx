@@ -5,8 +5,8 @@ import * as A from '../../pages/BreederDetail/BreederDetail.style';
 const CareDog = React.forwardRef((props, ref) => {
   const { breedingAnimals } = props;
 
-  const defaultImageSrc = '/img/kennelex.png';
-  const defaultAltText = '강아지 켄넬 사진';
+  //  const defaultImageSrc = '/img/kennelex.png';
+  //  const defaultAltText = '강아지 켄넬 사진';
 
   return (
     <div ref={ref} style={{ marginBottom: '64px' }}>
@@ -15,7 +15,7 @@ const CareDog = React.forwardRef((props, ref) => {
         <A.CareImgBox>
           {breedingAnimals.map((animal) => (
             <A.CareImg key={animal.animalId}>
-              <img src={defaultImageSrc} alt={defaultAltText} />
+              <img src={animal.animalImage} alt="animalImage" />
               <A.KennelImgText>{`${animal.name || '강아지'} (${animal.age}살, ${animal.gender === 'MALE' ? '남아' : '여아'})`}</A.KennelImgText>
             </A.CareImg>
           ))}
@@ -31,6 +31,7 @@ CareDog.propTypes = {
   breedingAnimals: PropTypes.arrayOf(
     PropTypes.shape({
       animalId: PropTypes.number.isRequired,
+      animalImage: PropTypes.string.isRequired,
       age: PropTypes.number.isRequired,
       gender: PropTypes.string.isRequired,
       name: PropTypes.string,

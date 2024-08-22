@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as S from './BreederCard.style';
 import { Foot, People, Star } from '../../../public/img/CardInfoIcon';
 import {
@@ -10,6 +11,7 @@ import BadgeVariant from '../badge/BadgeVariant';
 
 function BreederCard({
   to,
+  id,
   photo,
   location,
   name,
@@ -22,6 +24,7 @@ function BreederCard({
   initialIsBookmarked,
   onBookmarkChange,
 }) {
+  const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
 
   const bookmarking = async () => {
@@ -33,9 +36,14 @@ function BreederCard({
       console.error('Error updating bookmark status:', error);
     }
   };
+
+  const handleClick = () => {
+    navigate(`/breeder-detail/${id}`); // URL에 브리더 ID를 포함시킴
+  };
+
   return (
     <S.CardBox>
-      <S.Click to={to}>
+      <S.Click onClick={handleClick}>
         <S.PhotoContainer>
           <img src={photo} alt={name} className="photo" />
         </S.PhotoContainer>
@@ -83,6 +91,7 @@ function BreederCard({
 
 BreederCard.propTypes = {
   to: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   photo: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

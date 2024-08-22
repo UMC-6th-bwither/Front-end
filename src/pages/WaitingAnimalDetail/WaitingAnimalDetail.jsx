@@ -1,5 +1,6 @@
 /* eslint-disable react/require-default-props */
 import { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
 import api from '../../api/api';
@@ -36,6 +37,8 @@ function WaitingAnimalDetail() {
   const [animalImagePath, setAnimalImagePath] = useState('');
   const [pedigreeImagePath, setPedigreeImagePath] = useState('');
 
+  const { animalId } = useParams();
+
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
   const breederInfoRef = useRef(null);
@@ -58,7 +61,7 @@ function WaitingAnimalDetail() {
   useEffect(() => {
     const fetchAnimalDetail = async () => {
       try {
-        const animalId = 1; // 임시 테스트
+        // const animalId = animalId; 임시 테스트
         const token = localStorage.getItem('token');
 
         const response = await api.get(`/animals/${animalId}`, {

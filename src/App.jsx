@@ -107,13 +107,16 @@ function App() {
           element={<ReviewForm />}
         />
         <Route path="/MyReview/Save" element={<MyReviewSave />} />
-        <Route path="/waitinganimal-detail" element={<WaitingAnimalDetail />} />
+        <Route
+          path="/waitinganimal-detail/:animalId"
+          element={<WaitingAnimalDetail />}
+        />
         <Route
           path="/waitinganimal-breeder"
           element={<WaitingAnimalBreederVer />}
         />
         <Route path="/animal-upload" element={<AnimalUpload />} />
-        <Route path="/breeder-detail" element={<BreederDetail />} />
+        <Route path="/breeder-detail/:breederId" element={<BreederDetail />} />
         <Route path="/community/review" element={<BwitherReview />} />
         <Route path="/breeder-review" element={<BreederReview />} />
         <Route path="/MypageGeneral" element={<MypageGeneral />} />

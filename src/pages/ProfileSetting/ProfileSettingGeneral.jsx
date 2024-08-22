@@ -235,39 +235,39 @@ function ProfileSettingGeneral() {
       if (profileImage) {
         formData.append('profileImage', profileImage);
       }
-      formData.append(
-        'memberUpdateDTO',
-        JSON.stringify({
-          password,
-          phone,
-          zipcode,
-          address,
-          addressDetail,
-          petAllowed,
-          cohabitant,
-          cohabitantCount,
-          familyAgreement,
-          employmentStatus,
-          commuteTime,
-          petExperience,
-          currentPet,
-          futurePlan,
-        }),
-      );
-      // formData.append('password', password);
-      // formData.append('phone', phone);
-      // formData.append('zipcode', zipcode);
-      // formData.append('address', address);
-      // formData.append('addressDetail', addressDetail);
-      // formData.append('petAllowed', petAllowed);
-      // formData.append('cohabitant', cohabitant);
-      // formData.append('cohabitantCount', cohabitantCount);
-      // formData.append('familyAgreement', familyAgreement);
-      // formData.append('employmentStatus', employmentStatus);
-      // formData.append('commuteTime', commuteTime);
-      // formData.append('petExperience', petExperience);
-      // formData.append('currentPet', currentPet);
-      // formData.append('futurePlan', futurePlan);
+      // formData.append(
+      //   'memberUpdateDTO',
+      //   JSON.stringify({
+      //     password,
+      //     phone,
+      //     zipcode,
+      //     address,
+      //     addressDetail,
+      //     petAllowed,
+      //     cohabitant,
+      //     cohabitantCount,
+      //     familyAgreement,
+      //     employmentStatus,
+      //     commuteTime,
+      //     petExperience,
+      //     currentPet,
+      //     futurePlan,
+      //   }),
+      // );
+      formData.append('password', password);
+      formData.append('phone', phone);
+      formData.append('zipcode', zipcode);
+      formData.append('address', address);
+      formData.append('addressDetail', addressDetail);
+      formData.append('petAllowed', petAllowed);
+      formData.append('cohabitant', cohabitant);
+      formData.append('cohabitantCount', cohabitantCount);
+      formData.append('familyAgreement', familyAgreement);
+      formData.append('employmentStatus', employmentStatus);
+      formData.append('commuteTime', commuteTime);
+      formData.append('petExperience', petExperience);
+      formData.append('currentPet', currentPet);
+      formData.append('futurePlan', futurePlan);
 
       const token = localStorage.getItem('accessToken');
       try {

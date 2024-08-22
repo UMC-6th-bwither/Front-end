@@ -207,7 +207,7 @@ const WaitingBreederInfo = React.forwardRef(({ breeder }, ref) => {
                 </defs>
               </A.BreederInfoBottomReviewIcon>
               <A.BreederInfoBottomReviewText1>
-                {breeder.breederRating.toFixed(1)}
+                {/* {breeder.breederRating.toFixed(1)} */}
               </A.BreederInfoBottomReviewText1>
               <A.BreederInfoBottomReviewText2>
                 ({breeder.reviewCount})
