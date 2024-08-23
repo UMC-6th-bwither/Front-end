@@ -440,6 +440,7 @@ export default function BreederReview() {
                   backgroundImage: review.coverImage
                     ? `url(${review.coverImage})`
                     : 'url(/img/mainTipDefault.png)',
+                  backgroundSize: 'cover',
                 }}
               />
               <R.ReviewContent>
