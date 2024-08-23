@@ -315,6 +315,7 @@ function BreederDetail() {
             </Badge>
           </A.BreederInfoLabelBox>
           <A.BreederInfoBottomBox>
+            <A.Space />
             <A.BreederInfoBottom1>
               <A.BreederInfoBottomTitle>개체수</A.BreederInfoBottomTitle>
               <A.BreederInfoBottomContent>
@@ -364,12 +365,7 @@ function BreederDetail() {
                 {breederInfo.careerYear}년
               </A.BreederInfoBottomContent>
             </A.BreederInfoBottom3>
-            <A.BreederInfoBottom4>
-              <A.BreederInfoBottomTitle>신뢰 등급</A.BreederInfoBottomTitle>
-              <A.BreederInfoBottomContent>
-                {breederInfo.trustLevel}등급
-              </A.BreederInfoBottomContent>
-            </A.BreederInfoBottom4>
+            <A.Space />
           </A.BreederInfoBottomBox>
 
           <A.ReviewEvent>
