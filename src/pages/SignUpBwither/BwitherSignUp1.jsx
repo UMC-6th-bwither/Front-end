@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as B from './BwitherSignUp.style';
@@ -12,6 +12,7 @@ import openEye from '/icons/signUp/open_eye.svg';
 import completeCheck from '/icons/signUp/complete_check.svg';
 import { updateSignupStep1 } from '../../redux/signupSlice';
 import { postEmailSend, postEmailVerify } from '../../apis/postUser';
+import api from '../../api/api';
 
 export default function BwitherSignUp1() {
   const dispatch = useDispatch();
@@ -56,12 +57,17 @@ export default function BwitherSignUp1() {
 
   const [codeComplete, setCodeComplete] = useState('');
   const [verifyComplete, setVerifyComplete] = useState('');
+  const [usernameComplete, setUsernameComplete] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [termsChecked, setTermsChecked] = useState(false);
   const [termsError, setTermsError] = useState('');
+
+  const [isClicked1, setIsClicked1] = useState(false);
+  const [isClicked2, setIsClicked2] = useState(false);
+  const [isClicked3, setIsClicked3] = useState(false);
 
   const handleTermsChecked = (isChecked) => {
     setTermsChecked(isChecked);
@@ -70,11 +76,45 @@ export default function BwitherSignUp1() {
     }
   };
 
+  const checkUsername = async () => {
+    setIsClicked3(true);
+    if (!username) {
+      setUsernameError('아이디를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const response = await api.get('/check-username', {
+        params: { username: username },
+      });
+
+      if (response.data.isSuccess) {
+        console.log('성공');
+        setUsernameComplete('사용 가능한 아이디입니다.');
+        setUsernameError('');
+      } else {
+        setUsernameError('아이디가 이미 사용 중입니다.');
+        setUsernameComplete('');
+      }
+    } catch (err) {
+      console.log('Failed to fetch data', err);
+      setUsernameError('아이디가 이미 사용 중입니다.');
+      setUsernameComplete('');
+    }
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
     console.log('Form submitted');
 
-    if (!termsChecked) {
+    if (!name) {
+      setNameError('이름을 입력해주세요');
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      return;
+    } else if (!termsChecked) {
       setTermsError('약관에 동의해주세요'); // 체크박스가 모두 체크되지 않은 경우 경고
       return;
     }
@@ -87,16 +127,18 @@ export default function BwitherSignUp1() {
   };
 
   const requestVerificationCode = async () => {
+    setIsClicked1(true);
+    setCodeComplete('인증번호가 이메일로 전송되었습니다.');
     try {
       const response = await postEmailSend(email);
       console.log('인증번호 보내기 성공, Server response:', response);
-      setCodeComplete('인증번호가 이메일로 전송되었습니다.');
     } catch (error) {
       console.log('인증번호 요청 중 에러', error);
     }
   };
 
   const confirmVerificationCode = async () => {
+    setIsClicked2(true);
     try {
       const response = await postEmailVerify({
         email,
@@ -189,7 +231,11 @@ export default function BwitherSignUp1() {
                   }}
                   style={{ borderColor: emailError ? '#FA5963' : '' }}
                 />
-                <B.Button type="button" onClick={requestVerificationCode}>
+                <B.Button
+                  type="button"
+                  onClick={requestVerificationCode}
+                  clicked={isClicked1}
+                >
                   인증번호
                 </B.Button>
               </div>
@@ -223,7 +269,11 @@ export default function BwitherSignUp1() {
                   }}
                   style={{ borderColor: codeError ? '#FA5963' : '' }}
                 />
-                <B.Button type="button" onClick={confirmVerificationCode}>
+                <B.Button
+                  type="button"
+                  onClick={confirmVerificationCode}
+                  clicked={isClicked2}
+                >
                   인증하기
                 </B.Button>
               </div>
@@ -257,12 +307,24 @@ export default function BwitherSignUp1() {
                   }}
                   style={{ borderColor: usernameError ? '#FA5963' : '' }}
                 />
-                <B.Button type="button">중복확인</B.Button>
+                <B.Button
+                  type="button"
+                  onClick={checkUsername}
+                  clicked={isClicked3}
+                >
+                  중복확인
+                </B.Button>
               </div>
               {usernameError && (
                 <B.ErrorWrapper>
                   <B.FailX src={failX} />
                   <span style={{ color: '#E76467' }}>{usernameError}</span>
+                </B.ErrorWrapper>
+              )}
+              {usernameComplete && (
+                <B.ErrorWrapper>
+                  <B.CompleteCheck src={completeCheck} />
+                  <span style={{ color: '#3056d7' }}>{usernameComplete}</span>
                 </B.ErrorWrapper>
               )}
             </B.InputWrapper>

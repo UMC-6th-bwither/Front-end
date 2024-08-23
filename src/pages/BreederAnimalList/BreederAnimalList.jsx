@@ -36,6 +36,7 @@ function BreederAnimalList() {
           },
         });
         const data = response.data.result.animalList;
+        setTotalPage(response.data.result.totalPage);
         setBreederDogCards(data);
       } catch (error) {
         console.error('Error fetching BreederAnimals', error);

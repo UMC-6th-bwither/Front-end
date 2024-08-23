@@ -14,6 +14,7 @@ import api from '../../api/api';
 
 function AnimalList() {
   const [selectedAnimal, setSelectedAnimal] = useState('');
+  const [totalPage, setTotalPage] = useState(0);
   const [breeds, setBreeds] = useState([]);
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedBreed, setSelectedBreed] = useState('');
@@ -50,6 +51,7 @@ function AnimalList() {
         });
 
         setDogCards(data);
+        setTotalPage(response.data.result.totalPage);
         setIsBookmarked(initialBookmarks);
       } catch (error) {
         console.error('Error fetching animals', error);

@@ -9,6 +9,7 @@ import nothingBowl from '/img/nothing_bowl.svg';
 import api from '../../api/api';
 
 function BreederList() {
+  const [totalPage, setTotalPage] = useState(0);
   const [activeCities, setActiveCities] = useState([]);
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
@@ -35,6 +36,7 @@ function BreederList() {
         });
         const data = response.data.result;
         setBreederCards(data.breederList);
+        setTotalPage(response.data.result.totalPage);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Error fetching breeders', error);

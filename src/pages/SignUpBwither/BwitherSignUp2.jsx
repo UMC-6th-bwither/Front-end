@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import * as B from './BwitherSignUp.style';
 import progressBar50 from '/icons/signUp/progress-bar-50.svg';
 import Button from '../../components/SignUpButton/Button';
-// import failX from '/icons/signUp/fail_x.svg';
 import { updateSignupStep2, resetSignup } from '../../redux/signupSlice';
 import { postSignUp } from '../../apis/postUser';
 import Dropdown from '../../components/SignUpDropdown/Dropdown';
 import AddressSearchModal from '../../components/AddressSearch/AddressSearchModal';
+import failX from '/icons/signUp/fail_x.svg';
 
 export default function BwitherSignUp2() {
   const dispatch = useDispatch();
@@ -33,14 +33,17 @@ export default function BwitherSignUp2() {
   const [endTime, setEndTime] = useState('');
   const [roundTripTime, setRoundTripTime] = useState('6');
 
+  const [zipcodeError, setZipcodeError] = useState('');
+
+  // 모달에서 우편번호를 설정할 때 오류 메시지 초기화
+  const handleSetZipcode = (zipCode) => {
+    setZipcode(zipCode);
+    setZipcodeError(''); // 오류 메시지 초기화
+  };
+
   const handleInputChange = () => {
     setCommuteTime(`${startTime}, ${endTime}, ${roundTripTime}`);
   };
-
-  // const [firstField, setFirstField] = useState('');
-  // // const [secondField, setSecondField] = useState('');
-  // const [firstFieldError, setFirstFieldError] = useState('');
-  // const [secondFieldError, setSecondFieldError] = useState('');
 
   const [roommateNum, setRoommateNum] = useState(0);
 
@@ -54,6 +57,16 @@ export default function BwitherSignUp2() {
 
   const handleFinalSubmit = async (event) => {
     event.preventDefault();
+
+    if (!zipcode) {
+      setZipcodeError('우편번호를 입력해주세요');
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      return;
+    }
+
     dispatch(
       updateSignupStep2({
         zipcode,
@@ -121,7 +134,7 @@ export default function BwitherSignUp2() {
               <AddressSearchModal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                setZipCode={setZipcode}
+                setZipCode={handleSetZipcode}
                 setAddress={setAddress}
               />
               <B.InputBoxWrapper>
@@ -131,11 +144,25 @@ export default function BwitherSignUp2() {
                   autoFocus={{ borderColor: '#fe834d' }}
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value)}
+                  onBlur={() => {
+                    if (!zipcode) {
+                      setZipcodeError('우편번호를 입력해주세요');
+                    } else {
+                      setZipcodeError('');
+                    }
+                  }}
+                  style={{ borderColor: zipcodeError ? '#FA5963' : '' }}
                 />
                 <B.PostCodeBtn type="button" onClick={() => setIsOpen(true)}>
                   우편번호 찾기
                 </B.PostCodeBtn>
               </B.InputBoxWrapper>
+              {zipcodeError && (
+                <B.ErrorWrapper>
+                  <B.FailX src={failX} />
+                  <span style={{ color: '#E76467' }}>{zipcodeError}</span>
+                </B.ErrorWrapper>
+              )}
               <B.InputBox2
                 placeholder="주소 입력"
                 value={address}
@@ -191,21 +218,7 @@ export default function BwitherSignUp2() {
                     type="text"
                     value={cohabitant}
                     onChange={(e) => setCohabitant(e.target.value)}
-                    // onBlur={() => {
-                    //   if (!firstField) {
-                    //     setFirstFieldError('가족구성원을 알려주세요');
-                    //   } else {
-                    //     setFirstFieldError('');
-                    //   }
-                    // }}
-                    // style={{ borderColor: firstFieldError ? '#FA5963' : '' }}
                   />
-                  {/* {firstFieldError && (
-                    <B.ErrorWrapper>
-                      <B.FailX src={failX} />
-                      <div style={{ color: '#FA5963' }}>{firstFieldError}</div>
-                    </B.ErrorWrapper>
-                  )} */}
                 </B.InputBoxWrapper2>
                 <Dropdown
                   id="RoommateNum-dropbox"

@@ -9,6 +9,7 @@ import search from '/icons/signUp/search.svg';
 import Button from '../../components/SignUpButton/Button';
 import tagX from '/icons/signUp/breedTag_x.svg';
 import { updateSignupStep2 } from '../../redux/breederSignupSlice';
+import failX from '/icons/signUp/fail_x.svg';
 
 const dogBreeds = [
   '골든 리트리버',
@@ -141,6 +142,7 @@ export default function BreederSignUp2() {
   const [selectedAnimal, setSelectedAnimal] = useState(null); // 강아지,고양이 선택
 
   const [tags, setTags] = useState([]);
+  const [tagError, setTagError] = useState('');
 
   const addTag = (tag) => {
     if (!tags.includes(tag)) {
@@ -164,6 +166,10 @@ export default function BreederSignUp2() {
   const onSubmit = (event) => {
     event.preventDefault();
     console.log('Form submitted');
+    if (tags.length === 0) {
+      setTagError('관리하는 주요한 종에 대해 알려주세요');
+      return;
+    }
 
     dispatch(
       updateSignupStep2({
@@ -215,9 +221,16 @@ export default function BreederSignUp2() {
                 <div className="text">고양이</div>
               </B.Choice>
             </B.ChoiceWrapper>
+            {tagError && (
+              <B.ErrorWrapper>
+                <B.FailX src={failX} />
+                <span style={{ color: '#E76467' }}>{tagError}</span>
+              </B.ErrorWrapper>
+            )}
             <SearchBar
               breeds={selectedAnimal === 'DOG' ? dogBreeds : catBreeds}
               addTag={addTag}
+              style={{ borderColor: tagError ? '#FA5963' : '' }}
             />
             <TagList tags={tags} removeTag={removeTag} />
           </B.ContentWrapper>

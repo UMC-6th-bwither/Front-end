@@ -136,16 +136,17 @@ export const ReviewItem = styled.div`
     box-shadow 0.3s ease;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   height: 100%;
+  margin-bottom: 20px;
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    height: 351px;
+    height: 331px;
     padding: 16px 15px 24px 15px;
   }
 `;
 
-export const ReviewImage = styled.div`
+export const ReviewImage = styled.img`
   width: 235px;
   height: 235px;
   background: #eee;
@@ -186,6 +187,7 @@ export const ReviewKennelName = styled.div`
 `;
 
 export const ReviewText = styled.div`
+  height: 20px;
   color: #737373;
   font-family: 'Noto Sans KR';
   font-size: 16px;
