@@ -7,7 +7,7 @@ export const Border = styled.div`
   flex-direction: column;
   margin: 0 auto;
   gap: 88px;
-  padding-top: 136px;
+  padding-top: 64px;
   padding-bottom: 161px;
 `;
 

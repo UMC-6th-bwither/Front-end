@@ -610,11 +610,11 @@ export const Error = styled.div`
   line-height: 21px;
 `;
 
-export const FailX = styled.div`
+export const FailX = styled.img`
   display: flex;
   width: 18px;
   height: 18px;
-  padding: 8px;
+  padding: 4px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -628,4 +628,11 @@ export const Form = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 48px;
+`;
+
+export const ErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 `;

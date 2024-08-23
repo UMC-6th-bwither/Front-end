@@ -7,13 +7,22 @@ import styled from 'styled-components';
 //   background-color: #f4f4f4;
 // `;
 
-export const Layout = styled.div`
+export const Layout = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 8vw;
+  // padding: 80px 0;
   background-color: #f4f4f4;
 `;
+
+// export const Layout = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   gap: 8vw;
+//   background-color: #f4f4f4;
+// `;
 
 export const NavbarContainer = styled.div`
   width: 120px;
@@ -24,7 +33,7 @@ export const NavbarContainer = styled.div`
 `;
 
 export const MainContainer = styled.div`
-  width: 75vw;
+  width: 970px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,14 +44,13 @@ export const MainContainer = styled.div`
 `;
 
 export const Container = styled.div`
-  width: 974px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   justify-content: center;
   background-color: #ffffff;
-  padding: 140px 0;
+  padding: 100px 70px;
 `;
 
 export const TitleContainer = styled.div`
@@ -209,16 +217,10 @@ export const InputBtn = styled.img`
   gap: 8px;
   border-radius: 1000px;
 `;
-
-// <S.CommentContainer>
-// <S.ProfileImg/>
-// <S.ProfileName>김*숙</S.ProfileName>
-
-// <S.DeleteBtn></S.DeleteBtn>
-// <S.ReplyBtn></S.ReplyBtn>
-
-// <S.CommentContent></S.CommentContent>
-
-// <S.Time></S.Time>
-// <S.LikeBtn></S.LikeBtn>
-// </S.CommentContainer>
+export const RatingContainer = styled.div`
+  margin: 30px 10px;
+  // display: flex;
+  img {
+    width: 208px;
+  }
+`;

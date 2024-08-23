@@ -556,3 +556,23 @@ export const CertFileWrap = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
+export const ErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const FailX = styled.img`
+  display: flex;
+  width: 18px;
+  height: 18px;
+  padding: 4px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 1000px;
+  background: #e76467;
+`;

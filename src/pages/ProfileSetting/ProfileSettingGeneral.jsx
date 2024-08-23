@@ -232,26 +232,28 @@ function ProfileSettingGeneral() {
 
     if (!hasError) {
       const formData = new FormData();
-      formData.append('profileImage', profileImage);
-      formData.append(
-        'memberUpdateDTO',
-        JSON.stringify({
-          password,
-          phone,
-          zipcode,
-          address,
-          addressDetail,
-          petAllowed,
-          cohabitant,
-          cohabitantCount,
-          familyAgreement,
-          employmentStatus,
-          commuteTime,
-          petExperience,
-          currentPet,
-          futurePlan,
-        }),
-      );
+      if (profileImage) {
+        formData.append('profileImage', profileImage);
+      }
+      // formData.append(
+      //   'memberUpdateDTO',
+      //   JSON.stringify({
+      //     password,
+      //     phone,
+      //     zipcode,
+      //     address,
+      //     addressDetail,
+      //     petAllowed,
+      //     cohabitant,
+      //     cohabitantCount,
+      //     familyAgreement,
+      //     employmentStatus,
+      //     commuteTime,
+      //     petExperience,
+      //     currentPet,
+      //     futurePlan,
+      //   }),
+      // );
       formData.append('password', password);
       formData.append('phone', phone);
       formData.append('zipcode', zipcode);

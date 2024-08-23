@@ -419,7 +419,10 @@ function BreederRankingCommonVer() {
           </S.MeetingBreederCard>
 
           {breeders.slice(0, 10).map((breeder) => (
-            <S.BreederCard key={breeder.breederId}>
+            <S.BreederCard
+              key={breeder.breederId}
+              onClick={() => navigate(`/breeder-detail/${breeder.breederId}`)}
+            >
               <S.BreederProfile
                 src={breeder.profileUrl || '/img/defaultprofile.png'}
                 alt="profileImg"
@@ -442,6 +445,7 @@ function BreederRankingBreederVer() {
   const [breeders, setBreeders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPopularBreeders = async () => {
@@ -498,7 +502,10 @@ function BreederRankingBreederVer() {
 
       <S.BreederListVer2>
         {breeders.slice(0, 5).map((breeder, index) => (
-          <S.BreederCardVer2 key={breeder.breederId}>
+          <S.BreederCardVer2
+            key={breeder.breederId}
+            onClick={() => navigate(`/breeder-detail/${breeder.breederId}`)}
+          >
             <S.RankingNum>{index + 1}</S.RankingNum>
             <S.BreederProfileVer2
               src={breeder.profileUrl || '/img/defaultprofile.png'}

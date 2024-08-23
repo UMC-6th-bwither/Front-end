@@ -6,6 +6,8 @@ import * as D from './DeleteReasonModal.style';
 import { closeDeleteReasonModal, selectModal } from '../../redux/modalSlice';
 import uncheckedCheck from '/img/uncheckedCheck.svg';
 import checkedCheck from '/img/checkedCheck.svg';
+import api from '../../api/api';
+import useAuth from '../../hooks/useAuth';
 
 const CustomModal = {
   overlay: {
@@ -43,6 +45,7 @@ const breederLabels = [
 ];
 
 function DeleteReasonModal({ userType }) {
+  const { userId } = useAuth();
   const { isDeleteReasonModalOpen } = useSelector(selectModal);
   const dispatch = useDispatch();
   const [inputCount, setInputCount] = useState(0);
@@ -53,20 +56,76 @@ function DeleteReasonModal({ userType }) {
     false,
     false,
   ]);
+  const [additionalComment, setAdditionalComment] = useState('');
+
+  // 이유에 따른 reasonsEnum 값 설정
+  const reasonsEnum =
+    userType === 'general'
+      ? [
+          'ANIMAL_CONDITION_NOT_MET',
+          'NO_BREEDER_AVAILABLE',
+          'INFO_NOT_RECEIVED',
+          'SERVICE_COMPLEX',
+          'OTHER',
+        ]
+      : [
+          'QUIT_BREEDING',
+          'NO_ADOPTER_AVAILABLE',
+          'FOUND_SIMILAR_SERVICE',
+          'SERVICE_COMPLEX',
+          'OTHER',
+        ];
+
   const labels = userType === 'general' ? userLabels : breederLabels;
 
-  const handleClickSubmit = () => {
-    dispatch(closeDeleteReasonModal());
-  };
-
-  const onInputHandler = (e) => {
-    setInputCount(e.target.value.length);
-  };
-
+  // 체크박스 상태 변경
   const handleToggleCheck = (index) => {
     const updatedCheckedStates = [...isChecked];
     updatedCheckedStates[index] = !updatedCheckedStates[index];
     setIsChecked(updatedCheckedStates);
+  };
+
+  // 기타 이유 텍스트 입력 처리
+  const onInputHandler = (e) => {
+    setAdditionalComment(e.target.value);
+    setInputCount(e.target.value.length);
+  };
+
+  // 제출 버튼 클릭 처리
+  const handleClickSubmit = async () => {
+    // 선택된 이유 필터링
+    const selectedReasons = reasonsEnum.filter((_, index) => isChecked[index]);
+
+    // 기타 이유 선택 시, 코멘트 입력 필수
+    if (isChecked[4] && additionalComment === '') {
+      // eslint-disable-next-line no-alert
+      alert('기타 이유를 입력해주세요.');
+      return;
+    }
+
+    // API 요청 데이터 생성
+    const requestData = {
+      userId,
+      reasons: selectedReasons,
+      additionalComment: isChecked[4] ? additionalComment : '',
+    };
+
+    // 유저에 따른 api url 설정
+    const apiUrl =
+      userType === 'general' ? `/user/withdraw` : `/breeder/withdraw`;
+
+    try {
+      await api.post(apiUrl, requestData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      dispatch(closeDeleteReasonModal()); // 모달 닫기
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error during withdrawal:', error);
+    }
   };
 
   return (

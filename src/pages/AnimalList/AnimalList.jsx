@@ -244,7 +244,6 @@ function AnimalList() {
             options={[
               { value: 'createdAt', label: '최신순' },
               { value: 'animalMemberCount', label: '인기순' },
-              { value: 'distance', label: '거리순' },
             ]}
             onChange={handleSortChange}
           />
@@ -257,6 +256,7 @@ function AnimalList() {
                 {dogCards.map((dog, index) => (
                   <DogCard
                     key={dog.aniamlId}
+                    id={dog.animalId}
                     to="/waitinganimal-detail"
                     photo={dog.imageUrl}
                     location={dog.location}
@@ -265,7 +265,6 @@ function AnimalList() {
                     birthDate={dog.birthDate}
                     gender={dog.gender}
                     breederName={dog.breederName}
-                    waitlistCount={dog.waitList}
                     initialIsBookmarked={isBookmarked[dog.aniamlId] || 'BEFORE'}
                     onBookmarkChange={(newStatus) =>
                       handleBookmarkChange(dog.animalId, newStatus)

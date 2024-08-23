@@ -9,6 +9,7 @@ import {
 
 function DogCard({
   to,
+  id,
   photo,
   location,
   name,
@@ -16,7 +17,7 @@ function DogCard({
   birthDate,
   gender,
   breederName,
-  waitlistCount,
+  // waitlistCount,
   initialIsBookmarked,
   onBookmarkChange,
   showBookmarkBtn,
@@ -29,14 +30,15 @@ function DogCard({
       await onBookmarkChange(newStatus);
       setIsBookmarked(newStatus);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error updating bookmark status:', error);
     }
   };
 
   return (
     <S.CardBox>
-      <S.Click to={to}>
-        {waitlistCount > 0 && <S.ReservationBadge>예약중</S.ReservationBadge>}
+      <S.Click to={`/waitinganimal-detail/${id}`}>
+        {/* {waitlistCount > 0 && <S.ReservationBadge>예약중</S.ReservationBadge>} */}
         <S.PhotoContainer>
           <img src={photo} alt={name} className="photo" />
         </S.PhotoContainer>
@@ -61,13 +63,13 @@ function DogCard({
               <span>브리더 </span>
               <strong>{breederName}</strong>
             </p>
-            {waitlistCount > 0 && (
+            {/* {waitlistCount > 0 && (
               <p className="info">
                 <People />
                 <span>대기예약 </span>
                 <strong>{waitlistCount}명</strong>
               </p>
-            )}
+            )} */}
           </S.SubInfo>
         </S.InfoContainer>
       </S.Click>
@@ -87,6 +89,7 @@ function DogCard({
 
 DogCard.propTypes = {
   to: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   photo: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
@@ -94,14 +97,14 @@ DogCard.propTypes = {
   birthDate: PropTypes.string.isRequired,
   gender: PropTypes.string.isRequired,
   breederName: PropTypes.string.isRequired,
-  waitlistCount: PropTypes.number,
+  // waitlistCount: PropTypes.number,
   initialIsBookmarked: PropTypes.string.isRequired,
   onBookmarkChange: PropTypes.func.isRequired,
   showBookmarkBtn: PropTypes.bool,
 };
 
 DogCard.defaultProps = {
-  waitlistCount: 0,
+  // waitlistCount: 0,
   showBookmarkBtn: true,
 };
 export default DogCard;

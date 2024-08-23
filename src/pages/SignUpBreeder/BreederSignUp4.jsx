@@ -13,6 +13,7 @@ import afterCheck from '/icons/signUp/check_after.svg';
 import { updateSignupStep4, resetSignup } from '../../redux/breederSignupSlice';
 import { postBreederSignup } from '../../apis/postUser';
 import AddressSearchModal from '../../components/AddressSearch/AddressSearchModal';
+import failX from '/icons/signUp/fail_x.svg';
 
 function MoreIcon() {
   return (
@@ -75,6 +76,14 @@ export default function BreederSignUp4() {
   const [animalHospital, setAnimalHospital] = useState('');
   const [certificateNames, setCertificateNames] = useState(['']);
   const [certificateImages, setCertificateImages] = useState([]);
+
+  const [zipcodeError, setZipcodeError] = useState('');
+
+  // 모달에서 우편번호를 설정할 때 오류 메시지 초기화
+  const handleSetZipcode = (zipCode) => {
+    setZipcode(zipCode);
+    setZipcodeError(''); // 오류 메시지 초기화
+  };
 
   const [careers, setCareers] = useState([
     {
@@ -147,7 +156,7 @@ export default function BreederSignUp4() {
   };
 
   const handleDateChange = (index, field, date) => {
-    const formattedDate = date.toISOString().substring(0, 7);
+    const formattedDate = date.toISOString().substring(0, 10);
     const updatedCareers = careers.map((career, i) =>
       i === index ? { ...career, [field]: formattedDate } : career,
     );
@@ -168,6 +177,15 @@ export default function BreederSignUp4() {
   const onSubmit = async (event) => {
     event.preventDefault();
     console.log('Form submitted');
+
+    if (!zipcode) {
+      setZipcodeError('우편번호를 입력해주세요');
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      return;
+    }
 
     dispatch(
       updateSignupStep4({
@@ -240,7 +258,7 @@ export default function BreederSignUp4() {
               <AddressSearchModal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                setZipCode={setZipcode}
+                setZipCode={handleSetZipcode}
                 setAddress={setAddress}
               />
               <B.InputBoxWrapper>
@@ -248,11 +266,26 @@ export default function BreederSignUp4() {
                   placeholder="우편번호 입력"
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value)}
+                  onBlur={() => {
+                    if (!zipcode) {
+                      setZipcodeError('우편번호를 입력해주세요');
+                    } else {
+                      setZipcodeError('');
+                    }
+                  }}
+                  style={{ borderColor: zipcodeError ? '#FA5963' : '' }}
+                  autoFocus={{ borderColor: '#fe834d' }}
                 />
                 <B.PostCodeBtn type="button" onClick={() => setIsOpen(true)}>
                   우편번호 찾기
                 </B.PostCodeBtn>
               </B.InputBoxWrapper>
+              {zipcodeError && (
+                <B.ErrorWrapper>
+                  <B.FailX src={failX} />
+                  <span style={{ color: '#E76467' }}>{zipcodeError}</span>
+                </B.ErrorWrapper>
+              )}
               <B.InputBox2
                 placeholder="주소 입력"
                 value={address}
@@ -389,8 +422,8 @@ export default function BreederSignUp4() {
                           onChange={(date) =>
                             handleDateChange(index, 'startDate', date)
                           }
-                          dateFormat="yyyy-MM"
-                          displayFormat="yyyy-MM"
+                          dateFormat="yyyy-MM-dd"
+                          displayFormat="yyyy-MM-dd"
                           customInput={
                             <B.BreedingInfoInputPeriod
                               type="text"
@@ -429,8 +462,8 @@ export default function BreederSignUp4() {
                           onChange={(date) =>
                             handleDateChange(index, 'endDate', date)
                           }
-                          dateFormat="yyyy-MM"
-                          displayFormat="yyyy-MM"
+                          dateFormat="yyyy-MM-dd"
+                          displayFormat="yyyy-MM-dd"
                           customInput={
                             <B.BreedingInfoInputPeriod
                               type="text"
