@@ -337,6 +337,7 @@ function BreederInfoEdit() {
         setBusinessFileName('사업자 등록증이 존재합니다.');
       setTopImageBase64(breederDTO.backgroundImage);
       setBreederName(breederDTO.tradeName);
+      setReviewEventContent(breederDTO.reviewEvent);
       setBreederIntro(
         breederDTO.description !== 'null' ? breederDTO.description : '',
       );
