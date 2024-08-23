@@ -19,6 +19,7 @@ function BreederAnimalList() {
   const [selectedBreed, setSelectedBreed] = useState('');
   const [breederDogCards, setBreederDogCards] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
 
   // api 호출
   useEffect(() => {
@@ -33,6 +34,7 @@ function BreederAnimalList() {
           },
         });
         const data = response.data.result.animalList;
+        setTotalPage(response.data.result.totalPage);
         setBreederDogCards(data);
       } catch (error) {
         console.error('Error fetching BreederAnimals', error);
@@ -111,7 +113,7 @@ function BreederAnimalList() {
                 ))}
               </div>
               <Pagination
-                totalItems={breederDogCards.length}
+                totalItems={totalPage * 20}
                 itemsPerPage={20}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
