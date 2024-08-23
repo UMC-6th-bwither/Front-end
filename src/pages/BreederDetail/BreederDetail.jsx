@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../api/api';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './BreederDetail.style';
@@ -13,6 +13,7 @@ import BreederCommunity from '../../components/BreederDetail/BreederCommunity';
 import Badge from '../../components/badge/Badge';
 import Button from '../../components/button/Button';
 import BusinessInfoModal from '../../components/BreederDetail/BusinessInfoModal';
+import useAuth from '../../hooks/useAuth';
 
 function BreederDetail() {
   const [activeMenu, setActiveMenu] = useState('브리더 정보');
@@ -28,7 +29,9 @@ function BreederDetail() {
   const qnaRef = useRef(null);
   const communityRef = useRef(null);
 
+  const { token } = useAuth();
   const { breederId } = useParams();
+  const navigate = useNavigate();
 
   const menuItems = [
     '브리더 정보',
@@ -61,6 +64,23 @@ function BreederDetail() {
 
     fetchBreederDetail();
   }, []);
+
+  useEffect(() => {
+    const fetchInquires = async () => {
+      try {
+        await api.post(`/inquiries?breederId=${breederId}`, null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      } catch (error) {
+        console.error('브리더 문의 post 에러 발생:', error);
+      }
+    };
+
+    fetchInquires();
+  }, [breederId, token]);
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -390,7 +410,9 @@ function BreederDetail() {
               해피 브리더에게 자세한 문의를 요청해보세요. 자세한 분양 절차에
               대한 정보를 받아보실 수 있어요.
             </A.TopRightBoxInquiry>
-            <Button orange>문의 요청</Button>
+            <Button orange onClick={() => navigate(`/MypageGeneral`)}>
+              문의 요청
+            </Button>
           </A.TopRightBox>
 
           <Button whiteBorder onClick={openModal}>

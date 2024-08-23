@@ -603,6 +603,16 @@ function InfoArticle() {
                 src={data.postImageUrl || '/img/mainTipDefault.png'}
                 alt="InfoCard"
               />
+              {/* <S.InfoCardImg
+                src={
+                  data.postImageUrl.startsWith('http')
+                    ? data.postImageUrl
+                    : `${process.env.PUBLIC_URL}/${data.postImageUrl}` ||
+                      '/img/mainTipDefault.png'
+                }
+                alt="InfoCard"
+              /> */}
+
               <S.InfoTitle>{data.title}</S.InfoTitle>
             </S.CardContainer>
             <S.ProFileContainer>

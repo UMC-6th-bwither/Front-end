@@ -7,8 +7,10 @@ import nothingBowl from '/img/nothing_bowl.svg';
 import Pagination from '../../components/Pagination/Pagination';
 import { animalBreeds } from '../selectData';
 import api from '../../api/api';
+import useAuth from '../../hooks/useAuth';
 
 function BreederAnimalList() {
+  const { breederId } = useAuth();
   const navigate = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const [breeds, setBreeds] = useState([
@@ -19,6 +21,7 @@ function BreederAnimalList() {
   const [selectedBreed, setSelectedBreed] = useState('');
   const [breederDogCards, setBreederDogCards] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   // api 호출
   useEffect(() => {
@@ -26,8 +29,8 @@ function BreederAnimalList() {
       try {
         const response = await api.get('/animals/breeder', {
           params: {
-            breederId: 1,
-            page: currentPage,
+            breederId,
+            // page: currentPage,
             gender: selectedGender,
             breed: selectedBreed,
           },
@@ -40,7 +43,7 @@ function BreederAnimalList() {
     };
 
     fetchBreederAnimals();
-  }, [currentPage, selectedGender, selectedBreed]);
+  }, [breederId, currentPage, selectedGender, selectedBreed]);
 
   const handleGenderChange = (value) => {
     setSelectedGender(value);
@@ -50,12 +53,11 @@ function BreederAnimalList() {
     setSelectedBreed(value);
   };
 
-  // const filteredDogCards = breederDogCards.filter((dog) => {
-  //   return (
-  //     (selectedGender === '' || dog.gender === selectedGender) &&
-  //     (selectedBreed === '' || dog.breed === selectedBreed)
-  //   );
-  // });
+  // 페이지네이션 데이터 분할
+  const paginatedReviews = breederDogCards.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   return (
     <B.Border>
@@ -93,9 +95,10 @@ function BreederAnimalList() {
           {breederDogCards.length > 0 ? (
             <>
               <div className="dogCard">
-                {breederDogCards.map((dog) => (
+                {paginatedReviews.map((dog) => (
                   <DogCard
                     to="/waitinganimal-detail"
+                    id={dog.animalId}
                     key={dog.animalId}
                     photo={dog.imageUrl}
                     location={dog.location}
@@ -112,7 +115,7 @@ function BreederAnimalList() {
               </div>
               <Pagination
                 totalItems={breederDogCards.length}
-                itemsPerPage={20}
+                itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
               />
