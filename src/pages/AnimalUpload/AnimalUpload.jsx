@@ -212,6 +212,8 @@ function AnimalUpload() {
     setCustomBreed(event.target.value);
   };
 
+  // const [breedOptions, setBreedOptions] = useState(dogBreeds);
+  // if (selectedAnimal === '고양이') setBreedOptions(catBreeds);
   const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
 
   const handleSubmit = async () => {
@@ -334,11 +336,18 @@ function AnimalUpload() {
                 <A.BreedOption value="">
                   정확한 품종명을 선택하세요
                 </A.BreedOption>
-                {breedOptions.map((breed) => (
-                  <A.BreedOption key={breed} value={breed}>
-                    {breed}
-                  </A.BreedOption>
-                ))}
+                {selectedAnimal === '강아지' &&
+                  dogBreeds.map((breed) => (
+                    <A.BreedOption key={breed} value={breed}>
+                      {breed}
+                    </A.BreedOption>
+                  ))}
+                {selectedAnimal === '고양이' &&
+                  catBreeds.map((breed) => (
+                    <A.BreedOption key={breed} value={breed}>
+                      {breed}
+                    </A.BreedOption>
+                  ))}
               </A.BreedSelect>
 
               {selectedBreed === '직접입력' && (
@@ -437,6 +446,7 @@ function AnimalUpload() {
             selectedAnimal={selectedAnimal}
           />
           <UploadParentDogInfo
+            selectedAnimal={selectedAnimal}
             ref={dogInfoRef}
             name={name}
             onChange={handleDogInfoChange}
