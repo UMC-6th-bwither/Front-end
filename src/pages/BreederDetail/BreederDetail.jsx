@@ -63,7 +63,7 @@ function BreederDetail() {
     };
 
     fetchBreederDetail();
-  }, []);
+  }, [breederId, token]);
 
   useEffect(() => {
     const fetchInquires = async () => {
@@ -75,6 +75,7 @@ function BreederDetail() {
           },
         });
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('브리더 문의 post 에러 발생:', error);
       }
     };
@@ -119,7 +120,6 @@ function BreederDetail() {
   const toggleFavorite = async () => {
     try {
       const endpoint = `/breeder/${breederInfo.breederId}/bookmark`;
-      const token = localStorage.getItem('token');
       const memberId = localStorage.getItem('memberId');
 
       if (!memberId) {
