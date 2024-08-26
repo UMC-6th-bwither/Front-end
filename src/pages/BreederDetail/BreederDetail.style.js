@@ -309,7 +309,7 @@ export const ReviewEvent = styled.div`
   display: flex;
   gap: 6px;
   flex-direction: row;
-  width: 650px;
+  width: 906.5px;
   padding: 15px 17px 17px 17px;
   align-items: center;
   border-radius: 8px;
