@@ -135,7 +135,7 @@ export default function MyReviewPost() {
         <P.FilterContainer>
           <P.FiltersContainer>
             <Dropbox
-              defaultPlaceholder="종류"
+              defaultPlaceholder="전체"
               menuList={['전체', '강아지', '고양이']}
               setCurrentMenu={(selected) => {
                 if (selected === '강아지') {
@@ -146,7 +146,7 @@ export default function MyReviewPost() {
                   setFilterPetType('ALL');
                 }
               }}
-              width={80}
+              width={90}
             />
           </P.FiltersContainer>
           <P.SortContainer>
@@ -163,29 +163,32 @@ export default function MyReviewPost() {
               조건에 맞는 게시글이 없습니다.
             </P.NothingContainer>
           )}
-          {filteredPosts.map((post) => {
-            return (
-              <MyPostCard
-                key={post.id}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate(`/WritingDetail/${post.id}`);
-                }}
-                editMode={editMode}
-                petType={post.petType}
-                postTitle={post.title}
-                postContent={extractTextFromBlocks(post.blocks)}
-                postThumbnailSrc={post.coverImage}
-                timeStampKR={convertToKST(post.createdAt)}
-                viewCount={post.viewCount}
-                bookmarkCount={post.bookmarkCount}
-                deleteChecked={deleteCheckedStates[post.id] || false}
-                setDeleteChecked={(checked) =>
-                  setDeleteChecked(post.id, checked)
-                }
-              />
-            );
-          })}
+          {filteredPosts
+            .slice()
+            .reverse()
+            .map((post) => {
+              return (
+                <MyPostCard
+                  key={post.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/WritingDetail/${post.id}`);
+                  }}
+                  editMode={editMode}
+                  petType={post.petType}
+                  postTitle={post.title}
+                  postContent={extractTextFromBlocks(post.blocks)}
+                  postThumbnailSrc={post.coverImage}
+                  timeStampKR={convertToKST(post.createdAt)}
+                  viewCount={post.viewCount}
+                  bookmarkCount={post.bookmarkCount}
+                  deleteChecked={deleteCheckedStates[post.id] || false}
+                  setDeleteChecked={(checked) =>
+                    setDeleteChecked(post.id, checked)
+                  }
+                />
+              );
+            })}
 
           {/* <P.PaginationContainer>
             <Pagination

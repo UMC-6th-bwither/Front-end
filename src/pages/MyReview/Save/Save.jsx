@@ -4,12 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 import * as P from '../MyReview.style';
 import ButtonSelector from '../../../components/buttonselector/ButtonSelector';
-import postDummy from '../dummyData';
-import Pagination from '../../../components/Pagination/Pagination';
 import MyPostCard from '../../../components/PostCard/MyPostCard';
 import Dropbox from '../../../components/DropBoxes/Dropbox2';
 import extractTextFromBlocks from '../../../utils/extractContextFromBlocks';
-import extractFirstImageUrl from '../../../utils/extractImgSrcFromBlocks';
 import convertToKST from '../../../utils/convertToKST';
 import useAuth from '../../../hooks/useAuth';
 
@@ -23,12 +20,56 @@ function Icon() {
 
 export default function MyReviewSave() {
   const navigate = useNavigate();
-  const { isLoggedIn, token } = useAuth();
+  const { isLoggedIn, token, role } = useAuth();
 
   const [bookmarks, setBookmarks] = useState([]);
-  const [filteredBookmarks, setFilteredBookmarks] = useState([]); // 필터링된 북마크를 관리할 상태 추가
-  const [categoryFilter, setCategoryFilter] = useState('전체'); // 카테고리 필터 상태 추가
-  const [petTypeFilter, setPetTypeFilter] = useState('전체'); // 동물 필터 상태 추가
+  const [filteredBookmarks, setFilteredBookmarks] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState('전체');
+  const [petTypeFilter, setPetTypeFilter] = useState('전체');
+  const [editMode, setEditMode] = useState(false); // 편집 모드 상태 추가
+  const [deleteCheckedStates, setDeleteCheckedStates] = useState({}); // 체크된 상태 관리
+
+  const setDeleteChecked = (postId, checked) => {
+    setDeleteCheckedStates((prevState) => ({
+      ...prevState,
+      [postId]: checked,
+    }));
+  };
+
+  const getDeleteCheckedPosts = () => {
+    return filteredBookmarks.filter((post) => deleteCheckedStates[post.id]);
+  };
+
+  const deleteCheckedBookmarks = async () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+
+    const postsToDelete = getDeleteCheckedPosts();
+
+    await Promise.all(
+      postsToDelete.map(async (post) => {
+        const endPoint = `${apiUrl}/post/${post.id}/bookmark`;
+        await fetch(endPoint, {
+          method: 'DELETE',
+          headers: {
+            Accept: '*/*',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }),
+    );
+
+    const remainingPosts = filteredBookmarks.filter(
+      (post) => !deleteCheckedStates[post.id],
+    );
+
+    setBookmarks(remainingPosts);
+    setFilteredBookmarks(remainingPosts);
+  };
+
+  const editButtonHandler = () => {
+    if (editMode) deleteCheckedBookmarks();
+    setEditMode(!editMode);
+  };
 
   const fetchBookmarks = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -41,11 +82,12 @@ export default function MyReviewSave() {
     });
     const data = await res.json();
     setBookmarks(data.result);
-    setFilteredBookmarks(data.result); // 처음 로드 시 전체 북마크를 보여주도록 설정
+    setFilteredBookmarks(data.result);
   };
 
   useEffect(() => {
     if (isLoggedIn && token) {
+      if (role === 'BREEDER') setCategoryFilter('꿀정보');
       fetchBookmarks();
     }
   }, [isLoggedIn]);
@@ -73,34 +115,52 @@ export default function MyReviewSave() {
     setFilteredBookmarks(filtered);
   }, [categoryFilter, petTypeFilter, bookmarks]);
 
-  const [page, setPage] = useState(1);
-
   return (
     <P.Layout>
       <P.VerticalFlexGap20Nav>
-        <div>
-          <P.MenuTitle>커뮤니티</P.MenuTitle>
-          <P.MenuSubtitleContainer>
-            <P.MenuSubtitleActive to="/myreview/save">
-              저장한 글
-            </P.MenuSubtitleActive>
-            <P.MenuSubtitleInActive to="/myreview/review">
-              나의 후기
-            </P.MenuSubtitleInActive>
-          </P.MenuSubtitleContainer>
-        </div>
+        {role === 'MEMBER' && (
+          <>
+            <div>
+              <P.MenuTitle>커뮤니티</P.MenuTitle>
+              <P.MenuSubtitleContainer>
+                <P.MenuSubtitleActive to="/myreview/save">
+                  저장한 글
+                </P.MenuSubtitleActive>
+                <P.MenuSubtitleInActive to="/myreview/review">
+                  나의 후기
+                </P.MenuSubtitleInActive>
+              </P.MenuSubtitleContainer>
+            </div>
 
-        <div>
-          <P.MenuTitle>스크랩</P.MenuTitle>
-          <P.MenuSubtitleContainer>
-            <P.MenuSubtitleInActive to="/myreview/animal">
-              저장한 동물
-            </P.MenuSubtitleInActive>
-            <P.MenuSubtitleInActive to="/myreview/breeder">
-              저장한 브리더
-            </P.MenuSubtitleInActive>
-          </P.MenuSubtitleContainer>
-        </div>
+            <div>
+              <P.MenuTitle>스크랩</P.MenuTitle>
+              <P.MenuSubtitleContainer>
+                <P.MenuSubtitleInActive to="/myreview/animal">
+                  저장한 동물
+                </P.MenuSubtitleInActive>
+                <P.MenuSubtitleInActive to="/myreview/breeder">
+                  저장한 브리더
+                </P.MenuSubtitleInActive>
+              </P.MenuSubtitleContainer>
+            </div>
+          </>
+        )}
+        {role === 'BREEDER' && (
+          <div>
+            <P.MenuTitle>커뮤니티</P.MenuTitle>
+            <P.MenuSubtitleContainer>
+              <P.MenuSubtitleInActive to="/myreview/post">
+                내가 쓴 글
+              </P.MenuSubtitleInActive>
+              <P.MenuSubtitleActive to="/myreview/save">
+                저장한 글
+              </P.MenuSubtitleActive>
+              <P.MenuSubtitleInActive to="/breeder-review">
+                받은 후기
+              </P.MenuSubtitleInActive>
+            </P.MenuSubtitleContainer>
+          </div>
+        )}
       </P.VerticalFlexGap20Nav>
       <P.MainContainer>
         <Icon />
@@ -112,39 +172,60 @@ export default function MyReviewSave() {
 
         <P.FilterContainer>
           <P.FiltersContainer>
-            <Dropbox
-              defaultPlaceholder="카테고리"
-              menuList={['전체', '꿀정보', '후기']}
-              setCurrentMenu={setCategoryFilter} // 카테고리 필터 업데이트
-              width={110}
-            />
+            {role === 'MEMBER' && (
+              <Dropbox
+                defaultPlaceholder="카테고리"
+                menuList={['전체', '꿀정보', '후기']}
+                setCurrentMenu={setCategoryFilter}
+                width={110}
+              />
+            )}
             <Dropbox
               defaultPlaceholder="전체"
               menuList={['전체', '강아지', '고양이']}
-              setCurrentMenu={setPetTypeFilter} // 동물 필터 업데이트
+              setCurrentMenu={setPetTypeFilter}
               width={90}
             />
           </P.FiltersContainer>
           <P.SortContainer>
-            <ButtonSelector paddingVertical="14px">편집</ButtonSelector>
+            <ButtonSelector onClick={editButtonHandler}>
+              {editMode ? '삭제' : '편집'}
+            </ButtonSelector>
           </P.SortContainer>
         </P.FilterContainer>
 
         <P.PostContainer>
-          {filteredBookmarks.map((post) => (
-            <MyPostCard
-              onClick={() => navigate(`/WritingDetail/${post.id}`)}
-              category={post.category === 'TIPS' ? '꿀정보' : '후기'}
-              petType={post.petType}
-              key={post.id}
-              postTitle={post.title}
-              postContent={extractTextFromBlocks(post.blocks)}
-              postThumbnailSrc={post.coverImage}
-              timeStampKR={convertToKST(post.createdAt)}
-              viewCount={post.viewCount}
-              bookmarkCount={post.bookmarkCount}
-            />
-          ))}
+          {filteredBookmarks.length === 0 && (
+            <P.NothingContainer>
+              <img src="/img/nothing_bowl.svg" alt="No Posts" />
+              조건에 맞는 게시글이 없습니다.
+            </P.NothingContainer>
+          )}
+          {filteredBookmarks
+            .slice()
+            .reverse()
+            .map((post) => (
+              <MyPostCard
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/WritingDetail/${post.id}`);
+                }}
+                editMode={editMode}
+                category={post.category === 'TIPS' ? '꿀정보' : '후기'}
+                petType={post.petType}
+                key={post.id}
+                postTitle={post.title}
+                postContent={extractTextFromBlocks(post.blocks)}
+                postThumbnailSrc={post.coverImage}
+                timeStampKR={convertToKST(post.createdAt)}
+                viewCount={post.viewCount}
+                bookmarkCount={post.bookmarkCount}
+                deleteChecked={deleteCheckedStates[post.id] || false}
+                setDeleteChecked={(checked) =>
+                  setDeleteChecked(post.id, checked)
+                }
+              />
+            ))}
         </P.PostContainer>
       </P.MainContainer>
     </P.Layout>
