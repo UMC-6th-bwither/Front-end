@@ -25,6 +25,7 @@ function AnimalList() {
   const [isReserved, setIsReserved] = useState('');
   const [isBookmarked, setIsBookmarked] = useState([]);
   const [dogCards, setDogCards] = useState([]); // api 호출 데이터 저장
+  const itemsPerPage = 20;
 
   // api 호출
   useEffect(() => {
@@ -32,7 +33,7 @@ function AnimalList() {
       try {
         const response = await api.get('/animals', {
           params: {
-            page: currentPage - 1,
+            // page: currentPage,
             regions: selectedCities.join(','),
             animalType: selectedAnimal,
             gender: selectedGender,
@@ -167,14 +168,12 @@ function AnimalList() {
   const handleSortChange = (value) => {
     setSelectedSort(value);
   };
-  // 선택된 조건에 따른 DogCard데이터 필터링
-  // const filteredDogCards = dogCards.filter((dog) => {
-  //   return (
-  //     (selectedCities.length === 0 ||
-  //       selectedCities.some((city) => dog.location.includes(city))) &&
-  //     (!isReserved || dog.waitList === 0)
-  //   );
-  // });
+
+  // 페이지네이션 데이터 분할
+  const paginatedReviews = dogCards.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   return (
     <AL.Border>
@@ -255,7 +254,7 @@ function AnimalList() {
           {dogCards.length > 0 ? (
             <>
               <div className="dogCard">
-                {dogCards.map((dog, index) => (
+                {paginatedReviews.map((dog, index) => (
                   <DogCard
                     key={dog.aniamlId}
                     id={dog.animalId}
@@ -275,8 +274,8 @@ function AnimalList() {
                 ))}
               </div>
               <Pagination
-                totalItems={totalPage * 20}
-                itemsPerPage={20}
+                totalItems={dogCards.length}
+                itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
               />
