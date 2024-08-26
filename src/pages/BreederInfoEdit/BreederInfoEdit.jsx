@@ -228,7 +228,6 @@ function BreederInfoEdit() {
     }
 
     // 저장 로직 추가 예정
-
     // FormData 만들기
     const data = await getSerializedData();
     console.log(data);
