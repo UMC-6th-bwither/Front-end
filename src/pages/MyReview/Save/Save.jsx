@@ -139,7 +139,7 @@ export default function MyReviewSave() {
               key={post.id}
               postTitle={post.title}
               postContent={extractTextFromBlocks(post.blocks)}
-              postThumbnailSrc={extractFirstImageUrl(post.blocks)}
+              postThumbnailSrc={post.coverImage}
               timeStampKR={convertToKST(post.createdAt)}
               viewCount={post.viewCount}
               bookmarkCount={post.bookmarkCount}
