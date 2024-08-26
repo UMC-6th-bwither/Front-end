@@ -97,10 +97,10 @@ function WaitingAnimalDetail() {
     };
 
     fetchAnimalDetail();
-  }, []);
+  }, [animalId]);
 
   const handleInquiryClick = () => {
-    // 채팅말고 요청보내는 api 추가예정
+    alert('문의 요청을 보냈습니다!');
   };
 
   const handleCopyUrl = () => {

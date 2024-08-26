@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState, useRef, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';

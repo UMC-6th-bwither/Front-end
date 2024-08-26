@@ -410,7 +410,14 @@ function BreederDetail() {
                 해피 브리더에게 자세한 문의를 요청해보세요. 자세한 분양 절차에
                 대한 정보를 받아보실 수 있어요.
               </A.TopRightBoxInquiry>
-              <Button orange onClick={() => navigate(`/MypageGeneral`)}>
+              <Button
+                orange
+                onClick={() => {
+                  // eslint-disable-next-line no-alert
+                  alert('문의 요청을 보냈습니다!');
+                  navigate(`/MypageGeneral`);
+                }}
+              >
                 문의 요청
               </Button>
             </A.TopRightBox>
