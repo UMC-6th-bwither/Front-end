@@ -29,7 +29,7 @@ function BreederDetail() {
   const qnaRef = useRef(null);
   const communityRef = useRef(null);
 
-  const { token } = useAuth();
+  const { token, role } = useAuth();
   const { breederId } = useParams();
   const navigate = useNavigate();
 
@@ -113,7 +113,7 @@ function BreederDetail() {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
       // eslint-disable-next-line no-alert
-      alert('클립보드에 url이 복사됐어요');
+      alert('url이 복사되었어요!');
     });
   };
 
@@ -168,23 +168,26 @@ function BreederDetail() {
           <A.BreederInfoTitleBox>
             <A.BreederInfoTitle>🐶 {breederInfo.tradeName}</A.BreederInfoTitle>
             <A.BreederInfoTitleBoxRight>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="19"
-                viewBox="0 0 16 19"
-                fill="none"
-                style={{ cursor: 'pointer' }}
-                onClick={handleCopyUrl}
-              >
-                <path
-                  d="M0.740234 12.8V17.75H15.2602V12.8M2.72023 6.36042L8.00023 1.25L13.2802 6.36042M8.00023 12.8V1.25183"
-                  stroke="#323232"
-                  strokeWidth="1.375"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {role === 'MEMBER' && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="19"
+                  viewBox="0 0 16 19"
+                  fill="none"
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleCopyUrl}
+                >
+                  <path
+                    d="M0.740234 12.8V17.75H15.2602V12.8M2.72023 6.36042L8.00023 1.25L13.2802 6.36042M8.00023 12.8V1.25183"
+                    stroke="#323232"
+                    strokeWidth="1.375"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
+
               {isFavorite ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -400,21 +403,23 @@ function BreederDetail() {
             </div>
           </A.ReviewEvent>
         </A.TopLeftBox>
-        <A.TopRightWrapper>
-          <A.TopRightBox>
-            <A.TopRightBoxInquiry>
-              해피 브리더에게 자세한 문의를 요청해보세요. 자세한 분양 절차에
-              대한 정보를 받아보실 수 있어요.
-            </A.TopRightBoxInquiry>
-            <Button orange onClick={() => navigate(`/MypageGeneral`)}>
-              문의 요청
-            </Button>
-          </A.TopRightBox>
+        {role === 'MEMBER' && (
+          <A.TopRightWrapper>
+            <A.TopRightBox>
+              <A.TopRightBoxInquiry>
+                해피 브리더에게 자세한 문의를 요청해보세요. 자세한 분양 절차에
+                대한 정보를 받아보실 수 있어요.
+              </A.TopRightBoxInquiry>
+              <Button orange onClick={() => navigate(`/MypageGeneral`)}>
+                문의 요청
+              </Button>
+            </A.TopRightBox>
 
-          <Button whiteBorder onClick={openModal}>
-            사업자 정보 확인하기
-          </Button>
-        </A.TopRightWrapper>
+            <Button whiteBorder onClick={openModal}>
+              사업자 정보 확인하기
+            </Button>
+          </A.TopRightWrapper>
+        )}
       </A.TopBox>
 
       <A.InfoWrapper>
