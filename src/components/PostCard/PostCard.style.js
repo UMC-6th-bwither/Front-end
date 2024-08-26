@@ -18,6 +18,8 @@ export const Post = styled.div`
 `;
 
 export const MyPost = styled.div`
+  display: flex;
+  width: 100%;
   cursor: pointer;
   position: relative;
   padding: 24px 0;
@@ -25,12 +27,23 @@ export const MyPost = styled.div`
   &::after {
     content: '';
     display: block;
-    position: relative;
-    top: 24px;
+    position: absolute;
+    bottom: 0;
     width: 100%;
     height: 1px;
     background: var(--Grey_line, #f1f1f1);
   }
+`;
+
+export const FlexGrowBox = styled.div`
+  flex-grow: 1;
+`;
+
+export const CheckBoxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 20px;
 `;
 
 export const PostUserProfile = styled.div`

@@ -228,7 +228,6 @@ function BreederInfoEdit() {
     }
 
     // 저장 로직 추가 예정
-    navigate('/MypageBreeder'); // 브리더 마이페이지
     // FormData 만들기
     const data = await getSerializedData();
     console.log(data);
