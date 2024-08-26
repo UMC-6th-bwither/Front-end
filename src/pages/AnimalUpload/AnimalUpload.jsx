@@ -7,6 +7,7 @@ import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
 import 'react-datepicker/dist/react-datepicker.css';
 import api from '../../api/api';
+import useAuth from '../../hooks/useAuth';
 
 const dogBreeds = [
   '직접입력',
@@ -102,6 +103,8 @@ DogInfoInput.defaultProps = {
 DogInfoInput.displayName = 'DogInfoInput';
 
 function AnimalUpload() {
+  const { breederId, token } = useAuth();
+
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [birthDate, setBirthDate] = useState(null);
   const [dogInfoData, setDogInfoData] = useState({
@@ -214,7 +217,7 @@ function AnimalUpload() {
 
   // const [breedOptions, setBreedOptions] = useState(dogBreeds);
   // if (selectedAnimal === '고양이') setBreedOptions(catBreeds);
-  const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
+  // const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
 
   const handleSubmit = async () => {
     const formData = new FormData();
@@ -233,8 +236,6 @@ function AnimalUpload() {
       formData.append('files.pedigreeImage', pedigreeFile);
     }
 
-    const breederId = 1; // 임시
-
     const animalCreateDTO = {
       name,
       type: selectedAnimal === '강아지' ? 'DOG' : 'CAT',
@@ -244,12 +245,9 @@ function AnimalUpload() {
       breederId,
       ...dogInfoData,
     };
-    // console.log('animalCreateDTO:', JSON.stringify(animalCreateDTO));
     // console.log('FormData:', [...formData.entries()]);
 
     formData.append('animalCreateDTO', animalCreateDTO);
-
-    const token = localStorage.getItem('authToken');
 
     try {
       const response = await api.post('/animals', formData, {
