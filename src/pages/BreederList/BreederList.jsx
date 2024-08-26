@@ -19,6 +19,7 @@ function BreederList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isBookmarked, setIsBookmarked] = useState([]);
   const [breederCards, setBreederCards] = useState([]); // api 호출 데이터 저장
+  const itemsPerPage = 20;
 
   // api 호출
   useEffect(() => {
@@ -26,7 +27,7 @@ function BreederList() {
       try {
         const response = await api.get('/breeder', {
           params: {
-            page: currentPage - 1,
+            // page: currentPage,
             regions: selectedCities.join(','),
             animalType: selectedAnimal,
             species: selectedBreed,
@@ -147,13 +148,11 @@ function BreederList() {
     setCurrentPage(1);
   };
 
-  // 선택된 조건에 따른 BreederCard데이터 필터링
-  // const filteredBreederCards = breederCards.filter((breeder) => {
-  //   return (
-  //     selectedCities.length === 0 ||
-  //     selectedCities.some((city) => breeder.address.includes(city))
-  //   );
-  // });
+  // 페이지네이션 데이터 분할
+  const paginatedReviews = breederCards.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   return (
     <BL.Border>
@@ -222,7 +221,7 @@ function BreederList() {
           {breederCards.length > 0 ? (
             <>
               <div className="breederCard">
-                {breederCards.map((breeder) => (
+                {paginatedReviews.map((breeder) => (
                   <BreederCard
                     key={breeder.breederId}
                     id={breeder.breederId}
@@ -246,8 +245,8 @@ function BreederList() {
                 ))}
               </div>
               <Pagination
-                totalItems={totalPage * 20}
-                itemsPerPage={20}
+                totalItems={breederCards.length}
+                itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
               />

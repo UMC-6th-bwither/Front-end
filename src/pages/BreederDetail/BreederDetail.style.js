@@ -179,6 +179,10 @@ export const BreederInfoBottom4 = styled.div`
   align-self: stretch;
 `;
 
+export const Space = styled.div`
+  width: 130px;
+`;
+
 export const BreederInfoBottomReviewBox = styled.div`
   display: flex;
   flex-direction: row;
