@@ -153,6 +153,32 @@ function BreederDetail() {
     }
   };
 
+  const handleInquiryRequest = async () => {
+    try {
+      const response = await api.post(
+        '/inquiries',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          params: { breederId },
+        },
+      );
+
+      if (response.data.isSuccess) {
+        alert('문의 요청을 보냈습니다!');
+        navigate('/MypageGeneral');
+      } else {
+        alert('문의 요청에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('문의 요청 에러 발생:', error);
+      alert('문의 요청 중 오류가 발생했습니다.');
+    }
+  };
+
   if (!breederInfo) return <div>브리더 정보를 불러오는 중입니다...</div>;
   // 로딩 화면으로 바꾸기
 
@@ -410,14 +436,7 @@ function BreederDetail() {
                 해피 브리더에게 자세한 문의를 요청해보세요. 자세한 분양 절차에
                 대한 정보를 받아보실 수 있어요.
               </A.TopRightBoxInquiry>
-              <Button
-                orange
-                onClick={() => {
-                  // eslint-disable-next-line no-alert
-                  alert('문의 요청을 보냈습니다!');
-                  navigate(`/MypageGeneral`);
-                }}
-              >
+              <Button orange onClick={handleInquiryRequest}>
                 문의 요청
               </Button>
             </A.TopRightBox>

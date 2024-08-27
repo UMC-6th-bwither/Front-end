@@ -120,7 +120,7 @@ function WaitingAnimalBreederVer() {
   };
 
   const handleEditClick = () => {
-    setIsEditMode(true); // 편집 
+    setIsEditMode(true); // 편집
   };
 
   const handleInputChange = (e) => {
@@ -142,7 +142,7 @@ function WaitingAnimalBreederVer() {
       const response = await api.put(`/animals/${animalId}`, dataToSend, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         },
       });
       if (response.data.isSuccess) {
