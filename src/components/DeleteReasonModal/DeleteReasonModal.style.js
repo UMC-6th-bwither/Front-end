@@ -6,6 +6,7 @@ export const ModalContent = styled.div`
   align-items: center;
   gap: 52px;
   align-self: stretch;
+  position: relative;
 `;
 
 export const Title = styled.div`
@@ -15,6 +16,13 @@ export const Title = styled.div`
   font-size: 24px;
   font-weight: 700;
   line-height: 36px;
+`;
+
+export const CloseBtn = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 0;
+  cursor: pointer;
 `;
 
 export const CheckboxContainer = styled.div`

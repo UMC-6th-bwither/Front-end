@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import * as D from './DeleteReasonModal.style';
 import { closeDeleteReasonModal, selectModal } from '../../redux/modalSlice';
+import { logout } from '../../redux/authSlice';
 import uncheckedCheck from '/img/uncheckedCheck.svg';
 import checkedCheck from '/img/checkedCheck.svg';
+import close from '/img/close.svg';
 import api from '../../api/api';
 import useAuth from '../../hooks/useAuth';
 
@@ -45,6 +48,7 @@ const breederLabels = [
 ];
 
 function DeleteReasonModal({ userType }) {
+  const navigate = useNavigate();
   const { userId } = useAuth();
   const { isDeleteReasonModalOpen } = useSelector(selectModal);
   const dispatch = useDispatch();
@@ -66,14 +70,12 @@ function DeleteReasonModal({ userType }) {
           'NO_BREEDER_AVAILABLE',
           'INFO_NOT_RECEIVED',
           'SERVICE_COMPLEX',
-          'OTHER',
         ]
       : [
           'QUIT_BREEDING',
           'NO_ADOPTER_AVAILABLE',
           'FOUND_SIMILAR_SERVICE',
           'SERVICE_COMPLEX',
-          'OTHER',
         ];
 
   const labels = userType === 'general' ? userLabels : breederLabels;
@@ -90,6 +92,11 @@ function DeleteReasonModal({ userType }) {
     setAdditionalComment(e.target.value);
     setInputCount(e.target.value.length);
   };
+
+  const handleLogout = useCallback(async () => {
+    await dispatch(logout());
+    navigate('/');
+  }, [dispatch, navigate]);
 
   // 제출 버튼 클릭 처리
   const handleClickSubmit = async () => {
@@ -122,6 +129,7 @@ function DeleteReasonModal({ userType }) {
       });
 
       dispatch(closeDeleteReasonModal()); // 모달 닫기
+      handleLogout();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error during withdrawal:', error);
@@ -132,6 +140,13 @@ function DeleteReasonModal({ userType }) {
     <Modal isOpen={isDeleteReasonModalOpen} style={CustomModal}>
       <D.ModalContent>
         <D.Title>브위더를 떠나시는 이유를 알려주세요</D.Title>
+        <D.CloseBtn
+          type="button"
+          onClick={() => dispatch(closeDeleteReasonModal())}
+        >
+          <img src={close} alt="close" />
+        </D.CloseBtn>
+
         <D.CheckboxContainer>
           {labels?.map((reason, index) => (
             <D.Label
