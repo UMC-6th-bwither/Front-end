@@ -157,8 +157,20 @@ function WritingDetail() {
     let success;
     if (isBookmarked) {
       success = await removeBookmark(postId, userId);
+      if (success) {
+        setPost((prevPost) => ({
+          ...prevPost,
+          bookmarkCount: prevPost.bookmarkCount - 1,
+        }));
+      }
     } else {
       success = await addBookmark(postId, userId);
+      if (success) {
+        setPost((prevPost) => ({
+          ...prevPost,
+          bookmarkCount: prevPost.bookmarkCount + 1,
+        }));
+      }
     }
 
     if (success) {
