@@ -246,11 +246,14 @@ function AnimalUpload() {
       type: selectedAnimal === '강아지' ? 'DOG' : 'CAT',
       breed: selectedBreed === '직접입력' ? customBreed : selectedBreed,
       gender: selectedGender === '수컷' ? 'MALE' : 'FEMALE',
-      birthDate: birthDate ? birthDate.toISOString().split('T')[0] : null,
       breederId,
       ...dogInfoData,
     };
-    // console.log('FormData:', [...formData.entries()]);
+
+    if (birthDate) {
+      // eslint-disable-next-line prefer-destructuring
+      animalCreateDTO.birthDate = birthDate.toISOString().split('T')[0];
+    }
 
     formData.append('animalCreateDTO', animalCreateDTO);
 
