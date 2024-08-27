@@ -104,7 +104,7 @@ DogInfoInput.defaultProps = {
 DogInfoInput.displayName = 'DogInfoInput';
 
 function AnimalUpload() {
-  const { breederId, token } = useAuth();
+  const { token } = useAuth();
 
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [birthDate, setBirthDate] = useState(null);
@@ -222,6 +222,10 @@ function AnimalUpload() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
+    // const breederId = localStorage.getItem('breederId');
+    // console.log('Breeder ID:', breederId);
+    const breederId = localStorage.getItem('breederId');
+    console.log('Breeder ID:', breederId);
 
     Object.keys(uploadedFiles).forEach((key) => {
       uploadedFiles[key].forEach((file) => {
@@ -252,6 +256,7 @@ function AnimalUpload() {
 
     try {
       const response = await api.post('/animals', formData, {
+        params: { breederId: String(breederId) },
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,

@@ -87,6 +87,10 @@ export const Name = styled.input`
   flex-direction: column;
   gap: 12px;
   align-items: center;
+  font-family: 'Noto Sans KR';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
   border: none;
   align-self: flex-start;
   &::placeholder {
@@ -182,8 +186,10 @@ export const DogInfoText = styled.input`
   width: 227px;
   align-self: stretch;
   border-radius: 10px;
+  font-family: 'Noto Sans KR';
+  font-size: 18px;
+  font-weight: 500;
   padding: 8px 10px;
-
   border: none;
   &::placeholder {
     color: #c5c5c5;
@@ -410,6 +416,10 @@ export const InfoInput = styled.textarea`
   border-radius: 10px;
   border: 2px solid #f1f1f1;
   resize: none;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
   background: #fff;
   &::placeholder {
     color: #737373;
@@ -537,6 +547,11 @@ export const ParentDogName = styled.input`
   width: 203px;
   padding: 8px 10px;
   align-items: center;
+  font-family: 'Noto Sans KR';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: -0.5px;
   border-radius: 10px;
   border: none;
   &::placeholder {
@@ -593,6 +608,11 @@ export const ParentDogValueInput = styled.input`
   width: 400px;
   align-items: center;
   border-radius: 10px;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
   border: none;
   &::placeholder {
     color: #c5c5c5;
