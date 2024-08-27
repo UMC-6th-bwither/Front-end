@@ -230,7 +230,7 @@ z-index: 2;
 `;
 
 export const FootpintLine = styled.img`
-  padding: 170px 0;
+  padding: 30px 0;
 `;
 
 export const BottomContainer = styled.div`

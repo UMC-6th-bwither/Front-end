@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState, useRef, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
@@ -7,6 +8,7 @@ import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
 import 'react-datepicker/dist/react-datepicker.css';
 import api from '../../api/api';
+import useAuth from '../../hooks/useAuth';
 
 const dogBreeds = [
   '직접입력',
@@ -102,6 +104,8 @@ DogInfoInput.defaultProps = {
 DogInfoInput.displayName = 'DogInfoInput';
 
 function AnimalUpload() {
+  const { token } = useAuth();
+
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [birthDate, setBirthDate] = useState(null);
   const [dogInfoData, setDogInfoData] = useState({
@@ -214,10 +218,14 @@ function AnimalUpload() {
 
   // const [breedOptions, setBreedOptions] = useState(dogBreeds);
   // if (selectedAnimal === '고양이') setBreedOptions(catBreeds);
-  const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
+  // const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
 
   const handleSubmit = async () => {
     const formData = new FormData();
+    // const breederId = localStorage.getItem('breederId');
+    // console.log('Breeder ID:', breederId);
+    const breederId = localStorage.getItem('breederId');
+    console.log('Breeder ID:', breederId);
 
     Object.keys(uploadedFiles).forEach((key) => {
       uploadedFiles[key].forEach((file) => {
@@ -233,26 +241,30 @@ function AnimalUpload() {
       formData.append('files.pedigreeImage', pedigreeFile);
     }
 
-    const breederId = 1; // 임시
-
     const animalCreateDTO = {
       name,
       type: selectedAnimal === '강아지' ? 'DOG' : 'CAT',
       breed: selectedBreed === '직접입력' ? customBreed : selectedBreed,
       gender: selectedGender === '수컷' ? 'MALE' : 'FEMALE',
-      birthDate: birthDate ? birthDate.toISOString().split('T')[0] : null,
       breederId,
       ...dogInfoData,
     };
-    // console.log('animalCreateDTO:', JSON.stringify(animalCreateDTO));
-    // console.log('FormData:', [...formData.entries()]);
 
-    formData.append('animalCreateDTO', animalCreateDTO);
+    if (birthDate) {
+      const formattedDate = birthDate.toLocaleDateString('en-CA');
+      console.log('Formatted birthDate:', formattedDate);
+      animalCreateDTO.birthDate = formattedDate;
+    } else {
+      console.error('Birthdate is null or invalid');
+    }
 
-    const token = localStorage.getItem('authToken');
+    console.log('Final Animal Create DTO:', animalCreateDTO);
+
+    formData.append('animalCreateDTO', JSON.stringify(animalCreateDTO));
 
     try {
       const response = await api.post('/animals', formData, {
+        params: { breederId: String(breederId) },
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,

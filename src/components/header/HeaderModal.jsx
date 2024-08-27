@@ -11,6 +11,7 @@ export default function HeaderModal() {
   const dispatch = useDispatch();
   const { isLoggedIn, role } = useAuth();
   const [userData, setUserData] = useState('');
+  const [breederData, setBreederData] = useState('');
 
   const handleLogout = useCallback(async () => {
     await dispatch(logout());
@@ -29,8 +30,10 @@ export default function HeaderModal() {
           },
         });
         const response = userResponse.data.result.userDTO;
+        const breederDTO = userResponse.data.result.breederDTO;
 
         setUserData(response);
+        setBreederData(breederDTO);
       } catch (error) {
         console.error('Error fetching recentData', error);
       }
@@ -38,8 +41,6 @@ export default function HeaderModal() {
 
     fetchRecentData();
   }, []);
-
-  console.log(userData);
 
   let modal;
 
@@ -57,7 +58,7 @@ export default function HeaderModal() {
     } else {
       modal = (
         <H.ModalContainer>
-          <H.ModalName>{userData.name}</H.ModalName>
+          <H.ModalName>{breederData.tradeName}</H.ModalName>
           <H.ModalEmail>{userData.email}</H.ModalEmail>
           <H.MypageBtn to="/MypageBreeder">마이페이지</H.MypageBtn>
           <H.ModalDivider />

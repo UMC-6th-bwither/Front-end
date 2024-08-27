@@ -309,7 +309,7 @@ export const ReviewEvent = styled.div`
   display: flex;
   gap: 6px;
   flex-direction: row;
-  width: 650px;
+  width: 906.5px;
   padding: 15px 17px 17px 17px;
   align-items: center;
   border-radius: 8px;
@@ -833,12 +833,12 @@ export const DropdownMenu = styled.div`
   z-index: 100;
 
   div {
-    padding: 8px 0; // LatestOrderButton과 동일한 높이 조절
-    text-align: center; // 텍스트를 가운데 정렬
+    padding: 8px 0;
+    text-align: center;
     cursor: pointer;
-    white-space: nowrap; // 텍스트를 한 줄에 나오도록 설정
-    overflow: hidden; // 텍스트가 넘칠 경우 숨김
-    text-overflow: ellipsis; // 넘친 텍스트에 "..." 추가
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &:hover {
       background: var(--Grey_block, #f4f4f4);
     }

@@ -70,11 +70,16 @@ const catBreeds = [
 ];
 
 const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
-  const [ParentBirthDate, setParentBirthDate] = useState(null);
-  const [selectedBreed, setSelectedBreed] = useState('');
-  const [customBreed, setCustomBreed] = useState('');
+  const [motherBirthDate, setMotherBirthDate] = useState(null);
+  const [fatherBirthDate, setFatherBirthDate] = useState(null);
+  const [motherBreed, setMotherBreed] = useState('');
+  const [fatherBreed, setFatherBreed] = useState('');
+  const [motherCustomBreed, setMotherCustomBreed] = useState('');
+  const [fatherCustomBreed, setFatherCustomBreed] = useState('');
   const [motherImage, setMotherImage] = useState(null);
   const [fatherImage, setFatherImage] = useState(null);
+  const [motherUploadedFileName, setMotherUploadedFileName] = useState('');
+  const [fatherUploadedFileName, setFatherUploadedFileName] = useState('');
 
   const DogInfoInput = forwardRef(
     ({ value, onClick, placeholder }, innerRef) => (
@@ -87,19 +92,6 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
       />
     ),
   );
-
-  const [uploadedFileName, setUploadedFileName] = useState('');
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setUploadedFileName(file.name);
-    }
-  };
-
-  const handleFileRemove = () => {
-    setUploadedFileName('');
-  };
 
   DogInfoInput.propTypes = {
     value: PropTypes.string,
@@ -133,14 +125,14 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
     }
   };
 
-  const handleBreedChange = (event) => {
+  const handleBreedChange = (setSelectedBreed, setCustomBreed) => (event) => {
     setSelectedBreed(event.target.value);
     if (event.target.value !== '직접입력') {
       setCustomBreed('');
     }
   };
 
-  const handleCustomBreedChange = (event) => {
+  const handleCustomBreedChange = (setCustomBreed) => (event) => {
     setCustomBreed(event.target.value);
   };
 
@@ -155,6 +147,20 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
     const file = event.target.files[0];
     if (file) {
       setFatherImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleMotherFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setMotherUploadedFileName(file.name);
+    }
+  };
+
+  const handleFatherFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFatherUploadedFileName(file.name);
     }
   };
 
@@ -228,7 +234,10 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
           </A.ParentDogNameBox>
           <A.ParentDogDetail>
             <A.ParentDogLabel>종</A.ParentDogLabel>
-            <A.BreedSelect value={selectedBreed} onChange={handleBreedChange}>
+            <A.BreedSelect
+              value={motherBreed}
+              onChange={handleBreedChange(setMotherBreed, setMotherCustomBreed)}
+            >
               <A.BreedOption value="">정확한 품종명을 선택하세요</A.BreedOption>
               {breedOptions.map((breed) => (
                 <A.BreedOption key={breed} value={breed}>
@@ -236,12 +245,12 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
                 </A.BreedOption>
               ))}
             </A.BreedSelect>
-            {selectedBreed === '직접입력' && (
+            {motherBreed === '직접입력' && (
               <A.DogInfoText
                 type="text"
                 placeholder="품종을 입력하세요"
-                value={customBreed}
-                onChange={handleCustomBreedChange}
+                value={motherCustomBreed}
+                onChange={handleCustomBreedChange(setMotherCustomBreed)}
               />
             )}
           </A.ParentDogDetail>
@@ -249,8 +258,8 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogLabel>출생</A.ParentDogLabel>
             <A.InputWrapper>
               <A.CustomDatePicker
-                selected={ParentBirthDate}
-                onChange={(date) => setParentBirthDate(date)}
+                selected={motherBirthDate}
+                onChange={(date) => setMotherBirthDate(date)}
                 customInput={<DogInfoInput />}
                 dateFormat="yyyy/MM/dd"
                 popperPlacement="right-start"
@@ -319,15 +328,15 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
                 <input
                   type="file"
                   style={{ display: 'none' }}
-                  onChange={handleFileUpload}
+                  onChange={handleMotherFileUpload}
                 />
               </label>
             </A.ParentInfoFileBox>
-            {uploadedFileName && (
+            {motherUploadedFileName && (
               <A.InfoFileBoxNameContainer>
-                <A.InfoFileBoxName>{uploadedFileName}</A.InfoFileBoxName>
+                <A.InfoFileBoxName>{motherUploadedFileName}</A.InfoFileBoxName>
                 <svg
-                  onClick={handleFileRemove}
+                  onClick={() => setMotherUploadedFileName('')}
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
@@ -410,7 +419,10 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
           </A.ParentDogNameBox>
           <A.ParentDogDetail>
             <A.ParentDogLabel>종</A.ParentDogLabel>
-            <A.BreedSelect value={selectedBreed} onChange={handleBreedChange}>
+            <A.BreedSelect
+              value={fatherBreed}
+              onChange={handleBreedChange(setFatherBreed, setFatherCustomBreed)}
+            >
               <A.BreedOption value="">정확한 품종명을 선택하세요</A.BreedOption>
               {breedOptions.map((breed) => (
                 <A.BreedOption key={breed} value={breed}>
@@ -418,12 +430,12 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
                 </A.BreedOption>
               ))}
             </A.BreedSelect>
-            {selectedBreed === '직접입력' && (
+            {fatherBreed === '직접입력' && (
               <A.DogInfoText
                 type="text"
                 placeholder="품종을 입력하세요"
-                value={customBreed}
-                onChange={handleCustomBreedChange}
+                value={fatherCustomBreed}
+                onChange={handleCustomBreedChange(setFatherCustomBreed)}
               />
             )}
           </A.ParentDogDetail>
@@ -431,8 +443,8 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogLabel>출생</A.ParentDogLabel>
             <A.InputWrapper>
               <A.CustomDatePicker
-                selected={ParentBirthDate}
-                onChange={(date) => setParentBirthDate(date)}
+                selected={fatherBirthDate}
+                onChange={(date) => setFatherBirthDate(date)}
                 customInput={<DogInfoInput />}
                 dateFormat="yyyy/MM/dd"
                 popperPlacement="right-start"
@@ -501,15 +513,15 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
                 <input
                   type="file"
                   style={{ display: 'none' }}
-                  onChange={handleFileUpload}
+                  onChange={handleFatherFileUpload}
                 />
               </label>
             </A.ParentInfoFileBox>
-            {uploadedFileName && (
+            {fatherUploadedFileName && (
               <A.InfoFileBoxNameContainer>
-                <A.InfoFileBoxName>{uploadedFileName}</A.InfoFileBoxName>
+                <A.InfoFileBoxName>{fatherUploadedFileName}</A.InfoFileBoxName>
                 <svg
-                  onClick={handleFileRemove}
+                  onClick={() => setFatherUploadedFileName('')}
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
