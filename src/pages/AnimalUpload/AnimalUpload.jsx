@@ -251,11 +251,16 @@ function AnimalUpload() {
     };
 
     if (birthDate) {
-      // eslint-disable-next-line prefer-destructuring
-      animalCreateDTO.birthDate = birthDate.toISOString().split('T')[0];
+      const formattedDate = birthDate.toLocaleDateString('en-CA');
+      console.log('Formatted birthDate:', formattedDate);
+      animalCreateDTO.birthDate = formattedDate;
+    } else {
+      console.error('Birthdate is null or invalid');
     }
 
-    formData.append('animalCreateDTO', animalCreateDTO);
+    console.log('Final Animal Create DTO:', animalCreateDTO);
+
+    formData.append('animalCreateDTO', JSON.stringify(animalCreateDTO));
 
     try {
       const response = await api.post('/animals', formData, {
