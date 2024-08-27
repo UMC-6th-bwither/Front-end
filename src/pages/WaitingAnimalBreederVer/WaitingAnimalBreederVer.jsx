@@ -1,7 +1,9 @@
 /* eslint-disable react/require-default-props */
 import { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
+import useAuth from '../../hooks/useAuth';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './WaitingAnimalBreederVer.style';
 import Badge from '../../components/badge/Badge';
@@ -37,6 +39,9 @@ function WaitingAnimalBreederVer() {
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
 
+  const { animalId } = useParams();
+  const { token, breederId } = useAuth();
+
   const menuItems = ['강아지 정보', '부모 강아지 정보'];
   const responsive = {
     desktop: {
@@ -56,9 +61,6 @@ function WaitingAnimalBreederVer() {
   useEffect(() => {
     const fetchAnimalDetail = async () => {
       try {
-        const animalId = 1; // 임시 테스트
-        const token = localStorage.getItem('token');
-
         const response = await api.get(`/animals/${animalId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -130,10 +132,6 @@ function WaitingAnimalBreederVer() {
 
   const handleEditSubmit = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const animalId = 1;
-      const breederId = 2;
-
       const dataToSend = {
         ...editedData,
         animalId,

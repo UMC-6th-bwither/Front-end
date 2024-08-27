@@ -104,8 +104,6 @@ function WaitingAnimalDetail() {
 
   const handleInquiryClick = async () => {
     try {
-      // const breederId = 1;
-
       const response = await api.post(
         '/inquiries',
         {},
