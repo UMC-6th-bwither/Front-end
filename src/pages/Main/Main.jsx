@@ -191,7 +191,9 @@ function BreederPage() {
 
       <NewsBanner />
 
-      <S.Theme>👑이번 주 브리더 랭킹 </S.Theme>
+      <S.Theme>
+        👑이번 주 브리더 랭킹 <ExploreAll href="/breeder-list" />
+      </S.Theme>
       <BreederRankingBreederVer />
 
       <S.Theme>
