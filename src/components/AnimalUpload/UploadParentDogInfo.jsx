@@ -78,7 +78,8 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
   const [fatherCustomBreed, setFatherCustomBreed] = useState('');
   const [motherImage, setMotherImage] = useState(null);
   const [fatherImage, setFatherImage] = useState(null);
-  const [uploadedFileName, setUploadedFileName] = useState('');
+  const [motherUploadedFileName, setMotherUploadedFileName] = useState('');
+  const [fatherUploadedFileName, setFatherUploadedFileName] = useState('');
 
   const DogInfoInput = forwardRef(
     ({ value, onClick, placeholder }, innerRef) => (
@@ -91,17 +92,6 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
       />
     ),
   );
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setUploadedFileName(file.name);
-    }
-  };
-
-  const handleFileRemove = () => {
-    setUploadedFileName('');
-  };
 
   DogInfoInput.propTypes = {
     value: PropTypes.string,
@@ -157,6 +147,20 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
     const file = event.target.files[0];
     if (file) {
       setFatherImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleMotherFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setMotherUploadedFileName(file.name);
+    }
+  };
+
+  const handleFatherFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFatherUploadedFileName(file.name);
     }
   };
 
@@ -324,15 +328,15 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
                 <input
                   type="file"
                   style={{ display: 'none' }}
-                  onChange={handleFileUpload}
+                  onChange={handleMotherFileUpload}
                 />
               </label>
             </A.ParentInfoFileBox>
-            {uploadedFileName && (
+            {motherUploadedFileName && (
               <A.InfoFileBoxNameContainer>
-                <A.InfoFileBoxName>{uploadedFileName}</A.InfoFileBoxName>
+                <A.InfoFileBoxName>{motherUploadedFileName}</A.InfoFileBoxName>
                 <svg
-                  onClick={handleFileRemove}
+                  onClick={() => setMotherUploadedFileName('')}
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
@@ -509,15 +513,15 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
                 <input
                   type="file"
                   style={{ display: 'none' }}
-                  onChange={handleFileUpload}
+                  onChange={handleFatherFileUpload}
                 />
               </label>
             </A.ParentInfoFileBox>
-            {uploadedFileName && (
+            {fatherUploadedFileName && (
               <A.InfoFileBoxNameContainer>
-                <A.InfoFileBoxName>{uploadedFileName}</A.InfoFileBoxName>
+                <A.InfoFileBoxName>{fatherUploadedFileName}</A.InfoFileBoxName>
                 <svg
-                  onClick={handleFileRemove}
+                  onClick={() => setFatherUploadedFileName('')}
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
