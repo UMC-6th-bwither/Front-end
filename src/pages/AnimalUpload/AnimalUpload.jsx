@@ -227,6 +227,8 @@ function AnimalUpload() {
     const breederId = localStorage.getItem('breederId');
     console.log('Breeder ID:', breederId);
 
+    // const breederId = 1;
+
     Object.keys(uploadedFiles).forEach((key) => {
       uploadedFiles[key].forEach((file) => {
         formData.append(`files.${key}`, file);
@@ -243,7 +245,7 @@ function AnimalUpload() {
 
     const formattedBirthDate = birthDate
       ? birthDate.toISOString().split('T')[0]
-      : '1970-01-01';
+      : '';
 
     const animalCreateDTO = {
       name: name || '',
@@ -273,7 +275,7 @@ function AnimalUpload() {
       const response = await api.post('/animals', formData, {
         params: { breederId: String(breederId) },
         headers: {
-          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });
