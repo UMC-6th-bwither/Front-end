@@ -29,7 +29,8 @@ function BwitherReview() {
           },
         });
         if (response.data.isSuccess) {
-          setReviewDatas(response.data.result);
+          const reversedData = response.data.result.reverse(); // 데이터를 역순(최신순)으로 정렬
+          setReviewDatas(reversedData);
         } else {
           setError(response.data.message);
         }
