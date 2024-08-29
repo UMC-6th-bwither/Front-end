@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-console */
 import { useState, useRef, forwardRef } from 'react';
 import PropTypes from 'prop-types';
@@ -222,8 +223,7 @@ function AnimalUpload() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    // const breederId = localStorage.getItem('breederId');
-    // console.log('Breeder ID:', breederId);
+
     const breederId = localStorage.getItem('breederId');
     console.log('Breeder ID:', breederId);
 
@@ -241,22 +241,36 @@ function AnimalUpload() {
       formData.append('files.pedigreeImage', pedigreeFile);
     }
 
+    const formattedBirthDate = birthDate
+      ? birthDate.toLocaleDateString('en-CA')
+      : '1970-01-01'; // 기본값 설정
+
     const animalCreateDTO = {
-      name,
-      type: selectedAnimal === '강아지' ? 'DOG' : 'CAT',
-      breed: selectedBreed === '직접입력' ? customBreed : selectedBreed,
-      gender: selectedGender === '수컷' ? 'MALE' : 'FEMALE',
-      breederId,
+      name: name || '', // 기본값 빈 문자열
+      type:
+        selectedAnimal === '강아지'
+          ? 'DOG'
+          : selectedAnimal === '고양이'
+            ? 'CAT'
+            : '', // 기본값 빈 문자열
+      breed: selectedBreed === '직접입력' ? customBreed : selectedBreed || '', // 기본값 빈 문자열
+      gender:
+        selectedGender === '수컷'
+          ? 'MALE'
+          : selectedGender === '암컷'
+            ? 'FEMALE'
+            : '', // 기본값 빈 문자열
+      breederId: breederId || '', // 기본값 빈 문자열
+      birthDate: formattedBirthDate, // `birthDate`는 항상 설정되도록 함
       ...dogInfoData,
     };
-
-    if (birthDate) {
-      const formattedDate = birthDate.toLocaleDateString('en-CA');
-      console.log('Formatted birthDate:', formattedDate);
-      animalCreateDTO.birthDate = formattedDate;
-    } else {
-      console.error('Birthdate is null or invalid');
-    }
+    // if (birthDate) {
+    //   const formattedDate = birthDate.toLocaleDateString('en-CA');
+    //   console.log('Formatted birthDate:', formattedDate);
+    //   animalCreateDTO.birthDate = formattedDate;
+    // } else {
+    //   console.error('Birthdate is null or invalid');
+    // }
 
     console.log('Final Animal Create DTO:', animalCreateDTO);
 
