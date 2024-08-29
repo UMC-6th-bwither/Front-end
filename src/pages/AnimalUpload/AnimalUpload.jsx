@@ -242,35 +242,28 @@ function AnimalUpload() {
     }
 
     const formattedBirthDate = birthDate
-      ? birthDate.toLocaleDateString('en-CA')
-      : '1970-01-01'; // 기본값 설정
+      ? birthDate.toISOString().split('T')[0]
+      : '1970-01-01';
 
     const animalCreateDTO = {
-      name: name || '', // 기본값 빈 문자열
+      name: name || '',
       type:
         selectedAnimal === '강아지'
           ? 'DOG'
           : selectedAnimal === '고양이'
             ? 'CAT'
-            : '', // 기본값 빈 문자열
+            : '',
       breed: selectedBreed === '직접입력' ? customBreed : selectedBreed || '', // 기본값 빈 문자열
       gender:
         selectedGender === '수컷'
           ? 'MALE'
           : selectedGender === '암컷'
             ? 'FEMALE'
-            : '', // 기본값 빈 문자열
-      breederId: breederId || '', // 기본값 빈 문자열
-      birthDate: formattedBirthDate, // `birthDate`는 항상 설정되도록 함
+            : '',
+      breederId: breederId || '',
+      birthDate: formattedBirthDate,
       ...dogInfoData,
     };
-    // if (birthDate) {
-    //   const formattedDate = birthDate.toLocaleDateString('en-CA');
-    //   console.log('Formatted birthDate:', formattedDate);
-    //   animalCreateDTO.birthDate = formattedDate;
-    // } else {
-    //   console.error('Birthdate is null or invalid');
-    // }
 
     console.log('Final Animal Create DTO:', animalCreateDTO);
 
