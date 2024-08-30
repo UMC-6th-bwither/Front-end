@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '/img/logo.svg';
 import profile from '/img/profile.png';
@@ -38,7 +38,9 @@ export default function Header() {
     }
   };
 
-  fetchRecentData();
+  useEffect(() => {
+    fetchRecentData();
+  }, []);
 
   let profileLink;
 
