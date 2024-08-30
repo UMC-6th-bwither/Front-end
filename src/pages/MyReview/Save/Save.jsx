@@ -94,6 +94,7 @@ export default function MyReviewSave() {
 
   // 필터링 로직
   useEffect(() => {
+    if (!Array.isArray(bookmarks)) return;
     let filtered = bookmarks;
 
     if (categoryFilter !== '전체') {
@@ -195,37 +196,39 @@ export default function MyReviewSave() {
         </P.FilterContainer>
 
         <P.PostContainer>
-          {filteredBookmarks.length === 0 && (
+          {(filteredBookmarks.length === 0 ||
+            !Array.isArray(filteredBookmarks)) && (
             <P.NothingContainer>
               <img src="/img/nothing_bowl.svg" alt="No Posts" />
               조건에 맞는 게시글이 없습니다.
             </P.NothingContainer>
           )}
-          {filteredBookmarks
-            .slice()
-            .reverse()
-            .map((post) => (
-              <MyPostCard
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate(`/WritingDetail/${post.id}`);
-                }}
-                editMode={editMode}
-                category={post.category === 'TIPS' ? '꿀정보' : '후기'}
-                petType={post.petType}
-                key={post.id}
-                postTitle={post.title}
-                postContent={extractTextFromBlocks(post.blocks)}
-                postThumbnailSrc={post.coverImage}
-                timeStampKR={convertToKST(post.createdAt)}
-                viewCount={post.viewCount}
-                bookmarkCount={post.bookmarkCount}
-                deleteChecked={deleteCheckedStates[post.id] || false}
-                setDeleteChecked={(checked) =>
-                  setDeleteChecked(post.id, checked)
-                }
-              />
-            ))}
+          {Array.isArray(filteredBookmarks) &&
+            filteredBookmarks
+              .slice()
+              .reverse()
+              .map((post) => (
+                <MyPostCard
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/WritingDetail/${post.id}`);
+                  }}
+                  editMode={editMode}
+                  category={post.category === 'TIPS' ? '꿀정보' : '후기'}
+                  petType={post.petType}
+                  key={post.id}
+                  postTitle={post.title}
+                  postContent={extractTextFromBlocks(post.blocks)}
+                  postThumbnailSrc={post.coverImage}
+                  timeStampKR={convertToKST(post.createdAt)}
+                  viewCount={post.viewCount}
+                  bookmarkCount={post.bookmarkCount}
+                  deleteChecked={deleteCheckedStates[post.id] || false}
+                  setDeleteChecked={(checked) =>
+                    setDeleteChecked(post.id, checked)
+                  }
+                />
+              ))}
         </P.PostContainer>
       </P.MainContainer>
     </P.Layout>
