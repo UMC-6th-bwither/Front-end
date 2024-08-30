@@ -11,6 +11,7 @@ import Pagination from '../../../components/Pagination/Pagination';
 import VerticalMenuSelector from '../../../components/VerticalMenuSelector/VerticalMenuSelector';
 import ButtonSelector from '../../../components/buttonselector/ButtonSelector';
 import api from '../../../api/api';
+import useAuth from '../../../hooks/useAuth';
 
 const menuItems1 = [
   { name: '저장한 글', href: '/myreview/save' },
@@ -28,8 +29,10 @@ function Animal() {
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedBreed, setSelectedBreed] = useState('');
   const [isReserved, setIsReserved] = useState('');
+  const [isBookmarked, setIsBookmarked] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [boodmarkedAnimal, setBookmaredAnimal] = useState([]);
+  const itemsPerPage = 20;
 
   // api 호출
   useEffect(() => {
@@ -43,16 +46,16 @@ function Animal() {
             'Content-Type': 'application/json',
           },
           params: {
-            memberId: 1,
-            page: currentPage,
+            // memberId: 1,
+            // page: currentPage,
             animalType: selectedAnimal,
             gender: selectedGender,
             breed: selectedBreed,
             status: isReserved,
           },
         });
-        const data = response.data.result;
-        setBookmaredAnimal(data.animalList);
+        const data = response.data.result.animalList;
+        setBookmaredAnimal(data);
       } catch (error) {
         console.error('Error fetching bookmaredAnimal', error);
       }
@@ -60,6 +63,60 @@ function Animal() {
 
     fetchAnimalBookmark();
   }, [currentPage, selectedAnimal, selectedGender, selectedBreed, isReserved]);
+
+  // 북마크 저장, 취소
+  const handleBookmarkChange = async (animalId, newStatus) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+
+      if (newStatus === 'BOOKING') {
+        // 북마크 추가
+        const response = await api.post(`/animals/${animalId}/bookmark`, null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          params: {
+            animalId,
+          },
+        });
+
+        if (response.data && response.data.code === 'SUCCESS_BOOKMARK_ANIMAL') {
+          setIsBookmarked((prev) => ({
+            ...prev,
+            [animalId]: newStatus,
+          }));
+        } else {
+          console.error('Bookmarking failed', response.data.message);
+        }
+      } else if (newStatus === 'BEFORE') {
+        // 북마크 제거
+        const response = await api.delete(`/animals/${animalId}/bookmark`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          params: {
+            animalId,
+          },
+        });
+
+        if (
+          response.data &&
+          response.data.code === 'SUCCESS_REMOVE_BOOKMARK_ANIMAL'
+        ) {
+          setIsBookmarked((prev) => ({
+            ...prev,
+            [animalId]: newStatus,
+          }));
+        } else {
+          console.error('Unbookmarking failed', response.data.message);
+        }
+      }
+    } catch (error) {
+      console.error('Error handling bookmark:', error);
+    }
+  };
 
   // 강아지, 고양이 선택
   const handleAnimalChange = (value) => {
@@ -82,15 +139,11 @@ function Animal() {
     setIsReserved((prevStatus) => (prevStatus === 'BEFORE' ? '' : 'BEFORE'));
   };
 
-  // 선택된 조건에 따른 DogCard데이터 필터링
-  // const bookmaredPet = boodmarkedAnimal.filter((pet) => {
-  //   return (
-  //     pet.status === 'BOOKING' &&
-  //     (selectedGender === '' || pet.gender === selectedGender) &&
-  //     (selectedBreed === '' || pet.breed === selectedBreed) &&
-  //     (!isReserved || pet.waitlistCount === 0)
-  //   );
-  // });
+  // 페이지네이션 데이터 분할
+  const paginatedReviews = boodmarkedAnimal.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   return (
     <A.Border>
@@ -158,9 +211,10 @@ function Animal() {
             {boodmarkedAnimal.length > 0 ? (
               <>
                 <div className="dogCard">
-                  {boodmarkedAnimal.map((pet) => (
+                  {paginatedReviews.map((pet) => (
                     <DogCard
                       key={pet.animalId}
+                      id={pet.animalId}
                       photo={pet.imageUrl}
                       location={pet.location}
                       name={pet.name}
@@ -168,15 +222,19 @@ function Animal() {
                       birthDate={pet.birthDate}
                       gender={pet.gender}
                       breederName={pet.breederName}
-                      waitlistCount={0}
-                      isBookmarked={pet.status}
-                      setIsBookmarked={() => {}}
+                      initialIsBookmarked={
+                        isBookmarked[pet.animalId] || 'BEFORE'
+                      }
+                      onBookmarkChange={(newStatus) =>
+                        handleBookmarkChange(pet.animalId, newStatus)
+                      }
+                      showBookmarkBtn
                     />
                   ))}
                 </div>
                 <Pagination
                   totalItems={boodmarkedAnimal.length}
-                  itemsPerPage={20}
+                  itemsPerPage={itemsPerPage}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                 />
