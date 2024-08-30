@@ -634,10 +634,7 @@ function InfoArticle() {
                 }
                 alt="InfoCard"
               />
-              <S.ProFileName>
-                {data.profileName}
-                {data.breederName}
-              </S.ProFileName>
+              <S.ProFileName>{data.breederName}</S.ProFileName>
             </S.ProFileContainer>
           </S.InfoCard>
         ))}
@@ -653,21 +650,49 @@ function AdoptionReview() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // // 리뷰 미리보기 데이터 받아오기
+  // useEffect(() => {
+  //   const getInfo = async () => {
+  //     try {
+  //       const response = await api.get('/main/reviews', {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+  //       if (response.data.isSuccess) {
+  //         setPreviewReviewData(response.data.result);
+  //       } else {
+  //         setError(response.data.message);
+  //       }
+  //       console.log('분양 후기 미리보기 데이터 요청 성공');
+  //     } catch (err) {
+  //       setError('Failed to fetch data');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   getInfo();
+  // }, []);
+
   // 리뷰 미리보기 데이터 받아오기
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const response = await api.get('/main/reviews', {
+        const response = await api.get('/post', {
+          params: {
+            category: 'BREEDER_REVIEWS',
+          },
           headers: {
             'Content-Type': 'application/json',
           },
         });
         if (response.data.isSuccess) {
-          setPreviewReviewData(response.data.result);
+          const reversedData = response.data.result.reverse(); // 데이터를 역순(최신순)으로 정렬
+          setPreviewReviewData(reversedData);
         } else {
           setError(response.data.message);
         }
-        console.log('분양 후기 미리보기 데이터 요청 성공');
+        console.log('분양 후기 데이터 목록 요청 성공');
       } catch (err) {
         setError('Failed to fetch data');
       } finally {
@@ -721,14 +746,18 @@ function AdoptionReview() {
       >
         {previewReviewData.slice(0, 10).map((review) => (
           <S.ReviewCard
-            key={review.postId}
-            onClick={() => navigate(`/WritingDetail/${review.postId}`)}
+            key={review.id}
+            onClick={() => navigate(`/WritingDetail/${review.id}`)}
           >
             <S.ReviewCardImg
-              src={review.postImageUrl || '/img/mainReviewDefault.png'}
+              src={review.coverImage || '/img/mainReviewDefault.png'}
               alt="InfoCard"
             />
-            <S.ReviewDetail>{review.title}</S.ReviewDetail>
+            {/* <S.ReviewDetail>{review.title}</S.ReviewDetail> */}
+            <S.ReviewDetail>
+              {review.blocks.find((block) => block.type === 'paragraph')?.data
+                .text || '제목 없음'}
+            </S.ReviewDetail>
           </S.ReviewCard>
         ))}
       </Slider>
