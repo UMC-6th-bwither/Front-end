@@ -43,6 +43,7 @@ const PhotoContainer = styled.div`
   background: #d9d9d9;
 
   .photo {
+    border-radius: 12px;
     width: 100%;
     height: 100%;
     object-fit: cover;

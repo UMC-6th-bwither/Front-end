@@ -7,6 +7,7 @@ import {
   BookmarkInactive,
 } from '../../../public/img/BookmarkIcon';
 import api from '../../api/api';
+import profile from '/img/profile.png';
 
 function DogCard({
   // to,
@@ -28,6 +29,8 @@ function DogCard({
   useEffect(() => {
     // 초기 북마크 상태를 API를 통해 가져옴
     const fetchBookmarkStatus = async () => {
+      if (!showBookmarkBtn) return;
+
       try {
         const token = localStorage.getItem('accessToken');
 
@@ -51,6 +54,8 @@ function DogCard({
   }, [id]);
 
   const bookmarking = async () => {
+    if (!showBookmarkBtn) return;
+
     const newStatus = isBookmarked === 'BOOKING' ? 'BEFORE' : 'BOOKING';
     try {
       await onBookmarkChange(newStatus);
@@ -66,7 +71,7 @@ function DogCard({
       <S.Click to={`/waitinganimal-detail/${id}`}>
         {/* {waitlistCount > 0 && <S.ReservationBadge>예약중</S.ReservationBadge>} */}
         <S.PhotoContainer>
-          <img src={photo} alt={name} className="photo" />
+          <img src={photo || profile} alt={name} className="photo" />
         </S.PhotoContainer>
 
         <S.InfoContainer>
