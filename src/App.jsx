@@ -1,10 +1,11 @@
 /* eslint-disable import/no-unresolved */
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
+  useLocation,
 } from 'react-router-dom';
 import { useDispatch, Provider } from 'react-redux';
 import { loadUserFromStorage } from './redux/authSlice';
@@ -64,14 +65,22 @@ import AdoptionSystem from './pages/AdoptionSystem/AdoptionSystem';
 
 function App() {
   const dispatch = useDispatch();
+  const [headerKey, setHeaderKey] = useState(0);
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(loadUserFromStorage());
   });
 
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setHeaderKey((prevKey) => prevKey + 1);
+    }
+  }, [location.pathname]);
+
   return (
     <>
-      <Header />
+      <Header key={headerKey} />
       <Routes>
         <Route path="animal-list" element={<AnimalList />} />
         <Route path="MyReview/Animal" element={<Animal />} />
