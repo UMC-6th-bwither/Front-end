@@ -12,6 +12,29 @@ const WaitingDogInfo = React.forwardRef(
       parasiticImage: '',
       healthCheckImage: '',
     });
+    useEffect(() => {
+      handleInputChange({
+        target: { name: 'character', value: animalData.character },
+      });
+      handleInputChange({
+        target: { name: 'feature', value: animalData.feature },
+      });
+      handleInputChange({
+        target: { name: 'feeding', value: animalData.feeding },
+      });
+      handleInputChange({
+        target: { name: 'vaccination', value: animalData.vaccination },
+      });
+      handleInputChange({
+        target: { name: 'virusCheck', value: animalData.virusCheck },
+      });
+      handleInputChange({
+        target: { name: 'parasitic', value: animalData.parasitic },
+      });
+      handleInputChange({
+        target: { name: 'healthCheck', value: animalData.healthCheck },
+      });
+    }, []);
 
     const handleIconClick = (item) => {
       setSelectedItem(item);
