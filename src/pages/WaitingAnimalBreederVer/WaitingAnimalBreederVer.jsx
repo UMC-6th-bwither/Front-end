@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
-// import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './WaitingAnimalBreederVer.style';
 import Badge from '../../components/badge/Badge';
@@ -40,10 +40,7 @@ function WaitingAnimalBreederVer() {
   const parentDogInfoRef = useRef(null);
 
   const { animalId } = useParams();
-  // const { token, breederId } = useAuth();
-  const token =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMTM1IiwiaXNzIjoiYndpdGhlciB3ZWIiLCJpYXQiOjE3MjQ5MTcxNDcsImV4cCI6MTcyNTAwMzU0N30.6QVijgoQLlGtV3jCbRKNOq0XxM7h3KioP64CxPCT_iPaRgp9KbL_raEK_FO8vAZc0bDUVRhwTftkqiEYpf_2QA';
-  const breederId = 1;
+  const { token, breederId } = useAuth();
 
   const menuItems = ['강아지 정보', '부모 강아지 정보'];
   const responsive = {
