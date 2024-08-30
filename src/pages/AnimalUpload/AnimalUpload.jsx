@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-console */
 import { useState, useRef, forwardRef } from 'react';
@@ -118,6 +119,24 @@ function AnimalUpload() {
     parasitic: '',
     healthCheck: '',
   });
+  const [parentDogInfo, setParentDogInfo] = useState({
+    motherName: '',
+    fatherName: '',
+    motherBreed: '',
+    fatherBreed: '',
+    motherBirthDate: null,
+    fatherBirthDate: null,
+    motherHereditary: '',
+    fatherHereditary: '',
+    motherCharacter: '',
+    fatherCharacter: '',
+    motherHealthCheck: '',
+    fatherHealthCheck: '',
+    motherImages: [],
+    fatherImages: [],
+    motherHealthCheckImages: [],
+    fatherHealthCheckImages: [],
+  });
 
   const dogInfoRef = useRef(null);
   const parentDogInfoRef = useRef(null);
@@ -148,6 +167,13 @@ function AnimalUpload() {
 
   const handleDogInfoChange = (field, value) => {
     setDogInfoData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleParentDogInfoChange = (field, value) => {
+    setParentDogInfo((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -221,6 +247,13 @@ function AnimalUpload() {
   // if (selectedAnimal === '고양이') setBreedOptions(catBreeds);
   // const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
 
+  const formatDate = (date) => {
+    if (!(date instanceof Date) || isNaN(date)) {
+      return '';
+    }
+    return date.toISOString().split('T')[0];
+  };
+
   const handleSubmit = async () => {
     const formData = new FormData();
 
@@ -243,9 +276,9 @@ function AnimalUpload() {
       formData.append('files.pedigreeImage', pedigreeFile);
     }
 
-    const formattedBirthDate = birthDate
-      ? birthDate.toISOString().split('T')[0]
-      : '';
+    const formattedBirthDate = formatDate(birthDate);
+    const formattedMotherBirthDate = formatDate(parentDogInfo.motherBirthDate);
+    const formattedFatherBirthDate = formatDate(parentDogInfo.fatherBirthDate);
 
     const animalCreateDTO = {
       name: name || '',
@@ -255,7 +288,7 @@ function AnimalUpload() {
           : selectedAnimal === '고양이'
             ? 'CAT'
             : '',
-      breed: selectedBreed === '직접입력' ? customBreed : selectedBreed || '', // 기본값 빈 문자열
+      breed: selectedBreed === '직접입력' ? customBreed : selectedBreed || '',
       gender:
         selectedGender === '수컷'
           ? 'MALE'
@@ -265,6 +298,9 @@ function AnimalUpload() {
       breederId: breederId || '',
       birthDate: formattedBirthDate,
       ...dogInfoData,
+      motherBirthDate: formattedMotherBirthDate,
+      fatherBirthDate: formattedFatherBirthDate,
+      ...parentDogInfo,
     };
 
     console.log('Final Animal Create DTO:', animalCreateDTO);
@@ -469,9 +505,7 @@ function AnimalUpload() {
           <UploadParentDogInfo
             selectedAnimal={selectedAnimal}
             ref={dogInfoRef}
-            name={name}
-            onChange={handleDogInfoChange}
-            onFileChange={handleFileChange}
+            onChange={handleParentDogInfoChange}
           />
         </A.MenuContentWrapper>
       </A.InfoWrapper>
