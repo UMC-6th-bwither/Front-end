@@ -166,7 +166,6 @@ export const ReservationBtn = styled.button`
 export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 32px;
   align-self: stretch;
