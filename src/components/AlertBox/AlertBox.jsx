@@ -7,9 +7,11 @@ function AlertBox({ fileType, Id }) {
 
   const handleUploadClick = () => {
     if (fileType === 'KENNEL' || fileType === 'REGISTRATION') {
-      navigate(`/breeder-detail/${Id}`);
+      // navigate(`/breeder-detail/${Id}`);
+      navigate(`/breederinfo-edit/${Id}`);
     } else {
-      navigate(`/waitinganimal-detail/${Id}`);
+      navigate(`/waitinganimal-breeder/${Id}`);
+      // navigate(`/animal-upload/${Id}`);
     }
   };
 
