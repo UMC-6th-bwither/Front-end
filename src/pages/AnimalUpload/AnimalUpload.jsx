@@ -311,7 +311,7 @@ function AnimalUpload() {
       const response = await api.post('/animals', formData, {
         params: { breederId: String(breederId) },
         headers: {
-          // 'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });
