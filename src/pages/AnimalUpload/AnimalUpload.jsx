@@ -9,7 +9,7 @@ import Button from '../../components/button/Button';
 import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
 import 'react-datepicker/dist/react-datepicker.css';
-import api from '../../api/api';
+// import api from '../../api/api';
 import useAuth from '../../hooks/useAuth';
 
 const dogBreeds = [
@@ -257,10 +257,13 @@ function AnimalUpload() {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    const breederId = localStorage.getItem('breederId');
-    console.log('Breeder ID:', breederId);
-
+    const breederId = parseInt(localStorage.getItem('breederId'), 10);
+    // console.log('Breeder ID:', breederId);
     // const breederId = 1;
+
+    if (!formData.has('breederId')) {
+      formData.append('breederId', breederId);
+    }
 
     Object.keys(uploadedFiles).forEach((key) => {
       uploadedFiles[key].forEach((file) => {
@@ -277,56 +280,65 @@ function AnimalUpload() {
     }
 
     const formattedBirthDate = formatDate(birthDate);
-    const formattedMotherBirthDate = formatDate(parentDogInfo.motherBirthDate);
-    const formattedFatherBirthDate = formatDate(parentDogInfo.fatherBirthDate);
 
-    const animalCreateDTO = {
-      name: name || '',
-      type:
-        selectedAnimal === '강아지'
-          ? 'DOG'
-          : selectedAnimal === '고양이'
-            ? 'CAT'
-            : '',
-      breed: selectedBreed === '직접입력' ? customBreed : selectedBreed || '',
-      gender:
-        selectedGender === '수컷'
-          ? 'MALE'
-          : selectedGender === '암컷'
-            ? 'FEMALE'
-            : '',
-      breederId: breederId || '',
-      birthDate: formattedBirthDate,
-      ...dogInfoData,
-      motherBirthDate: formattedMotherBirthDate,
-      fatherBirthDate: formattedFatherBirthDate,
-      ...parentDogInfo,
-    };
+    formData.append('name', name || '');
+    formData.append(
+      'type',
+      selectedAnimal === '강아지'
+        ? 'DOG'
+        : selectedAnimal === '고양이'
+          ? 'CAT'
+          : '',
+    );
+    formData.append(
+      'breed',
+      selectedBreed === '직접입력' ? customBreed : selectedBreed || '',
+    );
+    formData.append(
+      'gender',
+      selectedGender === '수컷'
+        ? 'MALE'
+        : selectedGender === '암컷'
+          ? 'FEMALE'
+          : '',
+    );
+    formData.append('birthDate', formattedBirthDate || '');
 
-    console.log('Final Animal Create DTO:', animalCreateDTO);
+    Object.entries(dogInfoData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
-    formData.append('animalCreateDTO', JSON.stringify(animalCreateDTO));
+    Object.entries(parentDogInfo).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((file, index) => {
+          formData.append(`${key}[${index}]`, file);
+        });
+      } else {
+        formData.append(key, value);
+      }
+    });
 
     try {
-      const response = await api.post('/animals', formData, {
-        params: { breederId: String(breederId) },
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/animals',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
         },
-      });
+      );
 
-      if (response.data.isSuccess) {
+      const data = await response.json();
+
+      if (data.isSuccess) {
         console.log('등록 성공');
       } else {
-        console.error('등록 실패', response.data);
+        console.error('등록 실패', data);
       }
     } catch (error) {
-      if (error.response) {
-        console.error('서버에서 반환된 오류 메시지:', error.response.data);
-      } else {
-        console.error('요청 오류:', error);
-      }
+      console.error('요청 오류:', error);
     }
   };
 
