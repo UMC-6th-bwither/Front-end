@@ -6,7 +6,6 @@ export const Container = styled.div`
 
   border: 2px solid var(--Grey_line, #f1f1f1);
   border-radius: 20px;
-  overflow: hidden;
   cursor: pointer;
 `;
 
@@ -15,6 +14,8 @@ export const Square = styled.div`
   padding-bottom: 100%;
   background-color: #f1f1f1;
   position: relative;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
 `;
 
 export const SquareImage = styled.img`
@@ -84,6 +85,27 @@ export const StarFlex = styled.div`
   flex: 1;
   align-items: center;
   gap: 3px;
+`;
+
+export const IconSectionWrapper = styled.div`
+  position: relative;
+`;
+
+export const ModalContainer = styled.div`
+  position: absolute;
+  z-index: 999;
+  bottom: -60px; /* IconContainer 아래에 위치하도록 조정 */
+  left: 50%; /* 수평 정중앙에 배치 */
+  transform: translateX(-50%); /* 정가운데 맞추기 위해 사용 */
+
+  width: 100px;
+
+  text-align: center;
+  padding: 10px 20px;
+  background-color: white; /* 모달이 구별되도록 배경색 추가 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+  font-family: 'Noto Sans KR';
 `;
 
 export const IconContainer = styled.button`

@@ -151,6 +151,7 @@ export default function MyReview() {
                 myReviews.map((review) => (
                   <BreederReviewAnimalCard
                     key={review.id}
+                    postId={review.id}
                     onClick={() => navigate(`/WritingDetail/${review.id}`)}
                     kennelName={review.kennelName}
                     star={review.rating}

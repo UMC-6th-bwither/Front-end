@@ -1,3 +1,5 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
@@ -69,17 +71,19 @@ const catBreeds = [
   '페르시안',
 ];
 
-const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
-  const [motherBirthDate, setMotherBirthDate] = useState(null);
-  const [fatherBirthDate, setFatherBirthDate] = useState(null);
+const UploadParentDogInfo = forwardRef(({ selectedAnimal, onChange }, ref) => {
+  const [motherBirthDate, setMotherBirthDate] = useState('');
+  const [fatherBirthDate, setFatherBirthDate] = useState('');
   const [motherBreed, setMotherBreed] = useState('');
   const [fatherBreed, setFatherBreed] = useState('');
-  const [motherCustomBreed, setMotherCustomBreed] = useState('');
-  const [fatherCustomBreed, setFatherCustomBreed] = useState('');
   const [motherImage, setMotherImage] = useState(null);
   const [fatherImage, setFatherImage] = useState(null);
   const [motherUploadedFileName, setMotherUploadedFileName] = useState('');
   const [fatherUploadedFileName, setFatherUploadedFileName] = useState('');
+
+  const updateParentInfo = (field, value) => {
+    onChange(field, value);
+  };
 
   const DogInfoInput = forwardRef(
     ({ value, onClick, placeholder }, innerRef) => (
@@ -109,37 +113,48 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
 
   const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
 
-  const handleNameChange = (event) => {
-    if (event.target.value.length <= 30) {
+  const handleNameChange = (event, parent) => {
+    const value = event.target.value;
+    if (value.length <= 30) {
+      updateParentInfo(`${parent}Name`, value);
       event.target.setCustomValidity('');
     } else {
       event.target.setCustomValidity('이름은 30자 이내로 입력해주세요.');
     }
   };
 
-  const handleDescriptionChange = (event) => {
-    if (event.target.value.length <= 500) {
+  const formatDate = (date) => {
+    if (!date) return '';
+    return new Date(date).toISOString().split('T')[0];
+  };
+
+  const handleDateChange = (setDate, parentField) => (date) => {
+    const formattedDate = formatDate(date);
+    setDate(formattedDate);
+    onChange(parentField, formattedDate);
+  };
+
+  const handleDescriptionChange = (event, parentField) => {
+    const value = event.target.value;
+    if (value.length <= 500) {
+      updateParentInfo(parentField, value);
       event.target.setCustomValidity('');
     } else {
       event.target.setCustomValidity('글자 수는 500자 이내로 제한됩니다.');
     }
   };
 
-  const handleBreedChange = (setSelectedBreed, setCustomBreed) => (event) => {
-    setSelectedBreed(event.target.value);
-    if (event.target.value !== '직접입력') {
-      setCustomBreed('');
-    }
-  };
-
-  const handleCustomBreedChange = (setCustomBreed) => (event) => {
-    setCustomBreed(event.target.value);
+  const handleBreedChange = (setSelectedBreed, parentField) => (event) => {
+    const value = event.target.value;
+    setSelectedBreed(value);
+    updateParentInfo(parentField, value);
   };
 
   const handleMotherImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setMotherImage(URL.createObjectURL(file));
+      updateParentInfo('motherImages', [file]);
     }
   };
 
@@ -147,6 +162,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
     const file = event.target.files[0];
     if (file) {
       setFatherImage(URL.createObjectURL(file));
+      updateParentInfo('fatherImages', [file]);
     }
   };
 
@@ -154,6 +170,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
     const file = event.target.files[0];
     if (file) {
       setMotherUploadedFileName(file.name);
+      updateParentInfo('motherHealthCheckImages', [file]);
     }
   };
 
@@ -161,6 +178,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
     const file = event.target.files[0];
     if (file) {
       setFatherUploadedFileName(file.name);
+      updateParentInfo('fatherHealthCheckImages', [file]);
     }
   };
 
@@ -211,7 +229,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogName
               type="text"
               maxLength={30}
-              onChange={handleNameChange}
+              onChange={(e) => handleNameChange(e, 'mother')}
               placeholder="이름을 입력하세요"
             />
             <A.ParentDogGenderBox>
@@ -236,7 +254,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogLabel>종</A.ParentDogLabel>
             <A.BreedSelect
               value={motherBreed}
-              onChange={handleBreedChange(setMotherBreed, setMotherCustomBreed)}
+              onChange={handleBreedChange(setMotherBreed, 'motherBreed')}
             >
               <A.BreedOption value="">정확한 품종명을 선택하세요</A.BreedOption>
               {breedOptions.map((breed) => (
@@ -249,8 +267,8 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
               <A.DogInfoText
                 type="text"
                 placeholder="품종을 입력하세요"
-                value={motherCustomBreed}
-                onChange={handleCustomBreedChange(setMotherCustomBreed)}
+                value={motherBreed}
+                onChange={handleBreedChange(setMotherBreed, 'motherBreed')}
               />
             )}
           </A.ParentDogDetail>
@@ -258,10 +276,13 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogLabel>출생</A.ParentDogLabel>
             <A.InputWrapper>
               <A.CustomDatePicker
-                selected={motherBirthDate}
-                onChange={(date) => setMotherBirthDate(date)}
+                selected={motherBirthDate ? new Date(motherBirthDate) : null}
+                onChange={handleDateChange(
+                  setMotherBirthDate,
+                  'motherBirthDate',
+                )}
                 customInput={<DogInfoInput />}
-                dateFormat="yyyy/MM/dd"
+                dateFormat="yyyy-MM-dd"
                 popperPlacement="right-start"
               />
               <A.SvgIcon
@@ -283,7 +304,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogValueInput
               type="text"
               maxLength={500}
-              onChange={handleDescriptionChange}
+              onChange={(e) => handleDescriptionChange(e, 'motherHereditary')}
               placeholder="유전질환을 입력하세요"
             />
           </A.ParentDogDetail>
@@ -292,7 +313,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogValueInput
               type="text"
               maxLength={500}
-              onChange={handleDescriptionChange}
+              onChange={(e) => handleDescriptionChange(e, 'motherCharacter')}
               placeholder="성격에 대해 간략히 적어주세요"
             />
           </A.ParentDogDetail>
@@ -319,6 +340,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogValueInput
               type="text"
               placeholder="검진 결과를 간략히 적어주세요"
+              onChange={(e) => handleDescriptionChange(e, 'motherHealthCheck')}
             />
           </A.ParentDogDetail>
           <A.InfoFileBoxContainer>
@@ -336,7 +358,10 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
               <A.InfoFileBoxNameContainer>
                 <A.InfoFileBoxName>{motherUploadedFileName}</A.InfoFileBoxName>
                 <svg
-                  onClick={() => setMotherUploadedFileName('')}
+                  onClick={() => {
+                    setMotherUploadedFileName('');
+                    updateParentInfo('motherHealthCheckImages', []);
+                  }}
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
@@ -396,7 +421,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogName
               type="text"
               maxLength={30}
-              onChange={handleNameChange}
+              onChange={(e) => handleNameChange(e, 'father')}
               placeholder="이름을 입력하세요"
             />
             <A.ParentDogGenderBox>
@@ -421,7 +446,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogLabel>종</A.ParentDogLabel>
             <A.BreedSelect
               value={fatherBreed}
-              onChange={handleBreedChange(setFatherBreed, setFatherCustomBreed)}
+              onChange={handleBreedChange(setFatherBreed, 'fatherBreed')}
             >
               <A.BreedOption value="">정확한 품종명을 선택하세요</A.BreedOption>
               {breedOptions.map((breed) => (
@@ -434,8 +459,8 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
               <A.DogInfoText
                 type="text"
                 placeholder="품종을 입력하세요"
-                value={fatherCustomBreed}
-                onChange={handleCustomBreedChange(setFatherCustomBreed)}
+                value={fatherBreed}
+                onChange={handleBreedChange(setFatherBreed, 'fatherBreed')}
               />
             )}
           </A.ParentDogDetail>
@@ -443,10 +468,13 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogLabel>출생</A.ParentDogLabel>
             <A.InputWrapper>
               <A.CustomDatePicker
-                selected={fatherBirthDate}
-                onChange={(date) => setFatherBirthDate(date)}
+                selected={fatherBirthDate ? new Date(fatherBirthDate) : null}
+                onChange={handleDateChange(
+                  setFatherBirthDate,
+                  'fatherBirthDate',
+                )}
                 customInput={<DogInfoInput />}
-                dateFormat="yyyy/MM/dd"
+                dateFormat="yyyy-MM-dd"
                 popperPlacement="right-start"
               />
               <A.SvgIcon
@@ -468,7 +496,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogValueInput
               type="text"
               maxLength={500}
-              onChange={handleDescriptionChange}
+              onChange={(e) => handleDescriptionChange(e, 'fatherHereditary')}
               placeholder="유전질환을 입력하세요"
             />
           </A.ParentDogDetail>
@@ -477,7 +505,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogValueInput
               type="text"
               maxLength={500}
-              onChange={handleDescriptionChange}
+              onChange={(e) => handleDescriptionChange(e, 'fatherCharacter')}
               placeholder="성격에 대해 간략히 적어주세요"
             />
           </A.ParentDogDetail>
@@ -504,6 +532,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
             <A.ParentDogValueInput
               type="text"
               placeholder="검진 결과를 간략히 적어주세요"
+              onChange={(e) => handleDescriptionChange(e, 'fatherHealthCheck')}
             />
           </A.ParentDogDetail>
           <A.InfoFileBoxContainer>
@@ -521,7 +550,10 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal }, ref) => {
               <A.InfoFileBoxNameContainer>
                 <A.InfoFileBoxName>{fatherUploadedFileName}</A.InfoFileBoxName>
                 <svg
-                  onClick={() => setFatherUploadedFileName('')}
+                  onClick={() => {
+                    setFatherUploadedFileName('');
+                    updateParentInfo('fatherHealthCheckImages', []);
+                  }}
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
