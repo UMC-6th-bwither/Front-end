@@ -29,7 +29,7 @@ export default function SignUpTerms({ onTermsChecked, termsError }) {
 
   const handleMenuClick = (menu) => {
     dispatch(setActiveMenu(menu));
-    navigate('/TermsOfService'); // 페이지 이동
+    navigate('/TermsOfService');
   };
 
   return (

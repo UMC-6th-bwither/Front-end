@@ -39,13 +39,15 @@ export default function BwitherSignUp1() {
     return password === confirmPassword;
   };
 
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState(signupData.name || '');
+  const [phone, setPhone] = useState(signupData.phone || '');
+  const [email, setEmail] = useState(signupData.email || '');
+  const [code, setCode] = useState(signupData.code || '');
+  const [username, setUsername] = useState(signupData.username || '');
+  const [password, setPassword] = useState(signupData.password || '');
+  const [confirmPassword, setConfirmPassword] = useState(
+    signupData.confirmPassword || '',
+  );
 
   const [nameError, setNameError] = useState('');
   const [phoneError, setPhoneError] = useState('');
@@ -103,6 +105,13 @@ export default function BwitherSignUp1() {
     }
   };
 
+  // 입력이 발생할 때마다 Redux 상태 업데이트
+  const handleInputChange = (setter, fieldName) => (event) => {
+    const value = event.target.value;
+    setter(value);
+    dispatch(updateSignupStep1({ ...signupData, [fieldName]: value }));
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
     console.log('Form submitted');
@@ -119,7 +128,8 @@ export default function BwitherSignUp1() {
       return;
     }
 
-    dispatch(updateSignupStep1({ name, phone, email, username, password }));
+    // dispatch(updateSignupStep1({ name, phone, email, username, password }));
+    const { confirmPassword, ...dataToSend } = signupData;
 
     console.log('리덕스 상태:', signupData);
 
@@ -167,7 +177,7 @@ export default function BwitherSignUp1() {
                 type="text"
                 placeholder="실명을 입력해주세요"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleInputChange(setName, 'name')}
                 onBlur={() => {
                   if (!name) {
                     setNameError('이름을 입력해주세요');
@@ -193,7 +203,7 @@ export default function BwitherSignUp1() {
                 type="tel"
                 placeholder="010-1234-5678 형태로 입력해주세요"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handleInputChange(setPhone, 'phone')}
                 onBlur={() => {
                   if (!phone) {
                     setPhoneError('전화번호를 입력해주세요');
@@ -219,7 +229,7 @@ export default function BwitherSignUp1() {
                   type="email"
                   placeholder="example@email.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleInputChange(setEmail, 'email')}
                   onBlur={() => {
                     if (!email) {
                       setEmailError('이메일을 입력해주세요');
@@ -259,7 +269,7 @@ export default function BwitherSignUp1() {
                   type="text"
                   placeholder="이메일로 전송된 인증번호 6자리"
                   value={code}
-                  onChange={(e) => setCode(e.target.value)}
+                  onChange={handleInputChange(setCode, 'code')}
                   onBlur={() => {
                     if (!code) {
                       setCodeError('인증번호를 입력해주세요');
@@ -297,7 +307,7 @@ export default function BwitherSignUp1() {
                   type="text"
                   placeholder="아이디를 입력해주세요"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={handleInputChange(setUsername, 'username')}
                   onBlur={() => {
                     if (!username) {
                       setUsernameError('아이디를 입력해주세요');
@@ -335,7 +345,7 @@ export default function BwitherSignUp1() {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="영문, 숫자, 특수문자 포함 8자 이상 적어주세요"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleInputChange(setPassword, 'password')}
                   onBlur={() => {
                     if (!password) {
                       setPasswordError('비밀번호를 입력해주세요');
@@ -372,7 +382,10 @@ export default function BwitherSignUp1() {
                 <B.InputBox
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={handleInputChange(
+                    setConfirmPassword,
+                    'confirmPassword',
+                  )}
                   onBlur={() => {
                     if (!confirmPassword) {
                       setConfirmPasswordError('비밀번호를 다시 입력해주세요');

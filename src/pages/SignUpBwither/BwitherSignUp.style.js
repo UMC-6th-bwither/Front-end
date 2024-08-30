@@ -99,6 +99,10 @@ export const InputTitle = styled.div`
   }
 `;
 
+export const InputTitle2 = styled(InputTitle)`
+  margin-bottom: 8px;
+`;
+
 export const InputBoxWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -142,6 +146,18 @@ export const InputBox = styled.input`
 export const InputBox2 = styled(InputBox)`
   width: 100%;
   margin-top: 8px;
+  &:focus {
+    border: 2px solid #fe834d;
+    outline: none;
+  }
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const InputBox3 = styled(InputBox)`
+  width: 100%;
   &:focus {
     border: 2px solid #fe834d;
     outline: none;
@@ -236,7 +252,7 @@ export const RadioWrapper = styled.div`
 export const RadioBtn = styled.input`
   width: 10px;
   height: 10px;
-  padding: 6px;
+  padding: 5px;
   appearance: none;
   fill: #fff;
   border: 5px solid rgba(197, 197, 197, 0.5);

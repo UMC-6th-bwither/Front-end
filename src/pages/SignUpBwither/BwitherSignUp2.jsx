@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as B from './BwitherSignUp.style';
@@ -22,6 +22,7 @@ export default function BwitherSignUp2() {
   const [addressDetail, setAddressDetail] = useState('');
   const [petAllowed, setPetAllowed] = useState('');
   const [cohabitant, setCohabitant] = useState('');
+  const [roommateNum, setRoommateNum] = useState(0);
   const [familyAgreement, setFamilyAgreement] = useState('');
   const [employmentStatus, setEmploymentStatus] = useState('');
   const [commuteTime, setCommuteTime] = useState('7');
@@ -41,11 +42,9 @@ export default function BwitherSignUp2() {
     setZipcodeError(''); // 오류 메시지 초기화
   };
 
-  const handleInputChange = () => {
+  useEffect(() => {
     setCommuteTime(`${startTime}, ${endTime}, ${roundTripTime}`);
-  };
-
-  const [roommateNum, setRoommateNum] = useState(0);
+  }, [startTime, endTime, roundTripTime]);
 
   const handleRoommateNumChange = (value) => {
     setRoommateNum(value);
@@ -152,6 +151,7 @@ export default function BwitherSignUp2() {
                     }
                   }}
                   style={{ borderColor: zipcodeError ? '#FA5963' : '' }}
+                  readOnly
                 />
                 <B.PostCodeBtn type="button" onClick={() => setIsOpen(true)}>
                   우편번호 찾기
@@ -210,10 +210,10 @@ export default function BwitherSignUp2() {
               </B.RadioWrapper>
             </B.InputWrapper2>
             <B.InputWrapper2>
-              <B.InputTitle>현재 누구와 살고 계신가요?</B.InputTitle>
+              <B.InputTitle2>현재 누구와 살고 계신가요?</B.InputTitle2>
               <B.InputBoxWrapper>
                 <B.InputBoxWrapper2>
-                  <B.InputBox2
+                  <B.InputBox3
                     placeholder="예) 아빠, 엄마, 동생 2명"
                     type="text"
                     value={cohabitant}
@@ -326,30 +326,28 @@ export default function BwitherSignUp2() {
               </B.RadioWrapper>
             </B.InputWrapper2>
             <B.InputWrapper2>
-              <B.InputTitle>
+              <B.InputTitle2>
                 다니고 계신 직장이 있으시다면 근무 시간과 출퇴근 시간, 통근
                 시간을 알려주세요.
-              </B.InputTitle>
+              </B.InputTitle2>
               <B.TimeGrid>
                 <B.TimeWrapper>
                   <B.TimeText>출근</B.TimeText>
-                  <B.InputBox2
+                  <B.InputBox3
                     placeholder="예) 7:00"
                     value={startTime}
                     onChange={(e) => {
                       setStartTime(e.target.value);
-                      handleInputChange();
                     }}
                   />
                 </B.TimeWrapper>
                 <B.TimeWrapper>
                   <B.TimeText>퇴근</B.TimeText>
-                  <B.InputBox2
+                  <B.InputBox3
                     placeholder="예) 8:00"
                     value={endTime}
                     onChange={(e) => {
                       setEndTime(e.target.value);
-                      handleInputChange();
                     }}
                   />
                 </B.TimeWrapper>

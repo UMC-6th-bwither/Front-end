@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as S from './TermsOfService.style';
 import TOSMenuSelect from '../../components/TOSMenuSelect/TOSMenuSelect';
 import { selectActiveMenu, setActiveMenu } from '../../redux/menuSlice';
@@ -7,6 +8,7 @@ import { setItemChecked } from '../../redux/termsSlice';
 
 function TermsOfService() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const activeMenuFromRedux = useSelector(selectActiveMenu);
   const [localActiveMenu, setLocalActiveMenu] = useState(activeMenuFromRedux);
   const { checkedItems } = useSelector((state) => state.terms);
@@ -16,7 +18,6 @@ function TermsOfService() {
   }, [activeMenuFromRedux]);
 
   useEffect(() => {
-    // 컴포넌트가 마운트된 후 스크롤을 최상단으로 이동시킵니다.
     window.scrollTo(0, 0);
   }, [activeMenuFromRedux]);
 
@@ -29,6 +30,7 @@ function TermsOfService() {
     dispatch(
       setItemChecked({ name: termName, checked: !checkedItems[termName] }),
     );
+    navigate(-1);
   };
 
   const menuItems = [
