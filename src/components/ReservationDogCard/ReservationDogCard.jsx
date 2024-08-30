@@ -3,9 +3,9 @@ import * as S from './ReservationDogCard.style';
 import BadgeVariant from '../badge/BadgeVariant';
 import loc from '/img/location.svg';
 
-function ReservationDogCard({ to, id, photo, location, breederName, phone }) {
+function ReservationDogCard({ id, photo, location, breederName, phone }) {
   return (
-    <S.CardBox to={to} key={id}>
+    <S.CardBox to={`/breeder-detail/${id}`} key={id}>
       <S.PhotoContainer>
         <img src={photo} alt="animal_photo" className="photo" />
       </S.PhotoContainer>
@@ -29,7 +29,6 @@ function ReservationDogCard({ to, id, photo, location, breederName, phone }) {
 }
 
 ReservationDogCard.propTypes = {
-  to: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   photo: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
