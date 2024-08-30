@@ -143,10 +143,10 @@ export const Left = styled.div`
 export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 32px;
   align-self: stretch;
+  min-height: 100vh;
 
   &.empty {
     min-height: 100vh; /* 'empty' 클래스가 있을 때만 적용 */

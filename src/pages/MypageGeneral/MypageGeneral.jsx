@@ -207,11 +207,10 @@ function MypageGeneral() {
                   <div className="content">
                     <ReservationDogCard
                       to="/breeder-detail"
-                      key={breeder.id}
-                      id={breeder.id}
-                      photo={breeder.photo}
-                      location={breeder.location}
-                      name={breeder.name}
+                      key={breeder.breederId}
+                      id={breeder.breederId}
+                      photo={breeder.profileUrl}
+                      location={breeder.address}
                       breederName={breeder.breederName}
                       phone={breeder.phone}
                     />

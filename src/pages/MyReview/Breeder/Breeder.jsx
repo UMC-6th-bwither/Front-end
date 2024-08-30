@@ -24,8 +24,10 @@ function Breeder() {
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [breeds, setBreeds] = useState([]);
   const [selectedBreed, setSelectedBreed] = useState('');
+  const [isBookmarked, setIsBookmarked] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [bookmaredBreeder, setBookmarkedBreeder] = useState([]);
+  const itemsPerPage = 20;
 
   // api 호출
   useEffect(() => {
@@ -39,7 +41,7 @@ function Breeder() {
             'Content-Type': 'application/json',
           },
           params: {
-            page: currentPage,
+            // page: currentPage,
             animalType: selectedAnimal,
             species: selectedBreed,
           },
@@ -54,6 +56,68 @@ function Breeder() {
     fetchBreederBookmark();
   }, [currentPage]);
 
+  // 북마크 저장, 취소
+  const handleBookmarkChange = async (breederId, newStatus) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      // const breederId = 1;
+
+      if (newStatus === 'BOOKING') {
+        // 북마크 추가
+        const response = await api.post(
+          `/breeder/${breederId}/bookmark`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            params: {
+              breederId,
+            },
+          },
+        );
+
+        if (response.data && response.data.code === 'SUCCESS_BOOKMARK_ANIMAL') {
+          setIsBookmarked((prev) => ({
+            ...prev,
+            [breederId]: newStatus,
+          }));
+        } else {
+          // eslint-disable-next-line no-console
+          console.error('Bookmarking failed', response.data.message);
+        }
+      } else if (newStatus === 'BEFORE') {
+        // 북마크 제거
+        const response = await api.delete(`/breeder/${breederId}/bookmark`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          params: {
+            breederId,
+          },
+        });
+
+        if (
+          response.data &&
+          response.data.code === 'SUCCESS_REMOVE_BOOKMARK_ANIMAL'
+        ) {
+          setIsBookmarked((prev) => ({
+            ...prev,
+            [breederId]: newStatus,
+          }));
+        } else {
+          // eslint-disable-next-line no-console
+          console.error('Unbookmarking failed', response.data.message);
+        }
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error handling bookmark:', error);
+    }
+  };
+
   // 강아지, 고양이 선택
   const handleAnimalChange = (value) => {
     setSelectedAnimal(value);
@@ -66,6 +130,12 @@ function Breeder() {
   const handleBreedChange = (value) => {
     setSelectedBreed(value);
   };
+
+  // 페이지네이션 데이터 분할
+  const paginatedReviews = bookmaredBreeder.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   return (
     <A.Border>
@@ -121,9 +191,10 @@ function Breeder() {
             {bookmaredBreeder.length > 0 ? (
               <>
                 <div className="dogCard">
-                  {bookmaredBreeder.map((breeder) => (
+                  {paginatedReviews.map((breeder) => (
                     <BreederCard
                       key={breeder.breederId}
+                      id={breeder.breederId}
                       photo={breeder.profileUrl}
                       location={breeder.address}
                       name={breeder.breederName}
@@ -133,14 +204,18 @@ function Breeder() {
                       waitlistCount={breeder.waitList}
                       rating={breeder.breederRating}
                       reviewCount={breeder.reviewCount}
-                      isBookmarked={breeder.isBookmarked}
-                      setIsBookmarked={() => {}}
+                      initialIsBookmarked={
+                        isBookmarked[breeder.breederId] || 'BEFORE'
+                      }
+                      onBookmarkChange={(newStatus) =>
+                        handleBookmarkChange(breeder.breederId, newStatus)
+                      }
                     />
                   ))}
                 </div>
                 <Pagination
                   totalItems={bookmaredBreeder.length}
-                  itemsPerPage={20}
+                  itemsPerPage={itemsPerPage}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                 />

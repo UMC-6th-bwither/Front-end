@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './BreederCard.style';
 import { Foot, People, Star } from '../../../public/img/CardInfoIcon';
@@ -8,9 +8,10 @@ import {
   BookmarkInactive,
 } from '../../../public/img/BookmarkIcon';
 import BadgeVariant from '../badge/BadgeVariant';
+import api from '../../api/api';
 
 function BreederCard({
-  to,
+  // to,
   id,
   photo,
   location,
@@ -26,6 +27,31 @@ function BreederCard({
 }) {
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
+
+  useEffect(() => {
+    // 초기 북마크 상태를 API를 통해 가져옴
+    const fetchBookmarkStatus = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+
+        const response = await api.get(`/breeder/${id}/bookmarkstatus`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.data.isSuccess && response.data.result) {
+          setIsBookmarked('BOOKING'); // 북마크 상태일 경우
+        } else {
+          setIsBookmarked('BEFORE'); // 북마크가 아닌 경우
+        }
+      } catch (error) {
+        console.error('Error fetching bookmark status:', error);
+      }
+    };
+
+    fetchBookmarkStatus();
+  }, [id]);
 
   const bookmarking = async () => {
     const newStatus = isBookmarked === 'BOOKING' ? 'BEFORE' : 'BOOKING';
@@ -90,7 +116,7 @@ function BreederCard({
 }
 
 BreederCard.propTypes = {
-  to: PropTypes.string.isRequired,
+  // to: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   photo: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,

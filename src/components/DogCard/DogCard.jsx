@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as S from './DogCard.style';
 import { Heart, Gender, Foot, People } from '../../../public/img/CardInfoIcon';
 import {
   BookmarkActive,
   BookmarkInactive,
 } from '../../../public/img/BookmarkIcon';
+import api from '../../api/api';
 
 function DogCard({
-  to,
+  // to,
   id,
   photo,
   location,
@@ -23,6 +24,31 @@ function DogCard({
   showBookmarkBtn,
 }) {
   const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
+
+  useEffect(() => {
+    // 초기 북마크 상태를 API를 통해 가져옴
+    const fetchBookmarkStatus = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+
+        const response = await api.get(`/animals/${id}/bookmarkstatus`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.data.isSuccess && response.data.result) {
+          setIsBookmarked('BOOKING'); // 북마크 상태일 경우
+        } else {
+          setIsBookmarked('BEFORE'); // 북마크가 아닌 경우
+        }
+      } catch (error) {
+        console.error('Error fetching bookmark status:', error);
+      }
+    };
+
+    fetchBookmarkStatus();
+  }, [id]);
 
   const bookmarking = async () => {
     const newStatus = isBookmarked === 'BOOKING' ? 'BEFORE' : 'BOOKING';
@@ -88,7 +114,7 @@ function DogCard({
 }
 
 DogCard.propTypes = {
-  to: PropTypes.string.isRequired,
+  // to: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   photo: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
