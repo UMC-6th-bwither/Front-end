@@ -49,7 +49,7 @@ function WritingDetail() {
 
   // 기존 북마크된 글인지 확인
   useEffect(() => {
-    if (!post) return;
+    if (!post || !userId) return;
 
     const checkIfBookmarked = async () => {
       const token = localStorage.getItem('accessToken');
@@ -79,7 +79,7 @@ function WritingDetail() {
     };
 
     checkIfBookmarked();
-  }, [post]);
+  }, [post?.id, userId]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -152,6 +152,11 @@ function WritingDetail() {
 
   // 북마크 handle
   const handleBookmarkToggle = async () => {
+    if (!userId) {
+      alert('로그인을 해주세요');
+      return;
+    }
+
     if (!post) return;
 
     let success;

@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-console */
 import { useState, useRef, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
@@ -6,7 +9,8 @@ import Button from '../../components/button/Button';
 import UploadDogInfo from '../../components/AnimalUpload/UploadDogInfo';
 import UploadParentDogInfo from '../../components/AnimalUpload/UploadParentDogInfo';
 import 'react-datepicker/dist/react-datepicker.css';
-import api from '../../api/api';
+// import api from '../../api/api';
+import useAuth from '../../hooks/useAuth';
 
 const dogBreeds = [
   '직접입력',
@@ -102,6 +106,8 @@ DogInfoInput.defaultProps = {
 DogInfoInput.displayName = 'DogInfoInput';
 
 function AnimalUpload() {
+  const { token } = useAuth();
+
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [birthDate, setBirthDate] = useState(null);
   const [dogInfoData, setDogInfoData] = useState({
@@ -112,6 +118,24 @@ function AnimalUpload() {
     virusCheck: '',
     parasitic: '',
     healthCheck: '',
+  });
+  const [parentDogInfo, setParentDogInfo] = useState({
+    motherName: '',
+    fatherName: '',
+    motherBreed: '',
+    fatherBreed: '',
+    motherBirthDate: null,
+    fatherBirthDate: null,
+    motherHereditary: '',
+    fatherHereditary: '',
+    motherCharacter: '',
+    fatherCharacter: '',
+    motherHealthCheck: '',
+    fatherHealthCheck: '',
+    motherImages: [],
+    fatherImages: [],
+    motherHealthCheckImages: [],
+    fatherHealthCheckImages: [],
   });
 
   const dogInfoRef = useRef(null);
@@ -143,6 +167,13 @@ function AnimalUpload() {
 
   const handleDogInfoChange = (field, value) => {
     setDogInfoData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleParentDogInfoChange = (field, value) => {
+    setParentDogInfo((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -214,10 +245,25 @@ function AnimalUpload() {
 
   // const [breedOptions, setBreedOptions] = useState(dogBreeds);
   // if (selectedAnimal === '고양이') setBreedOptions(catBreeds);
-  const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
+  // const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
+
+  const formatDate = (date) => {
+    if (!(date instanceof Date) || isNaN(date)) {
+      return '';
+    }
+    return date.toISOString().split('T')[0];
+  };
 
   const handleSubmit = async () => {
     const formData = new FormData();
+
+    const breederId = parseInt(localStorage.getItem('breederId'), 10);
+    // console.log('Breeder ID:', breederId);
+    // const breederId = 1;
+
+    if (!formData.has('breederId')) {
+      formData.append('breederId', breederId);
+    }
 
     Object.keys(uploadedFiles).forEach((key) => {
       uploadedFiles[key].forEach((file) => {
@@ -233,43 +279,66 @@ function AnimalUpload() {
       formData.append('files.pedigreeImage', pedigreeFile);
     }
 
-    const breederId = 1; // 임시
+    const formattedBirthDate = formatDate(birthDate);
 
-    const animalCreateDTO = {
-      name,
-      type: selectedAnimal === '강아지' ? 'DOG' : 'CAT',
-      breed: selectedBreed === '직접입력' ? customBreed : selectedBreed,
-      gender: selectedGender === '수컷' ? 'MALE' : 'FEMALE',
-      birthDate: birthDate ? birthDate.toISOString().split('T')[0] : null,
-      breederId,
-      ...dogInfoData,
-    };
-    // console.log('animalCreateDTO:', JSON.stringify(animalCreateDTO));
-    // console.log('FormData:', [...formData.entries()]);
+    formData.append('name', name || '');
+    formData.append(
+      'type',
+      selectedAnimal === '강아지'
+        ? 'DOG'
+        : selectedAnimal === '고양이'
+          ? 'CAT'
+          : '',
+    );
+    formData.append(
+      'breed',
+      selectedBreed === '직접입력' ? customBreed : selectedBreed || '',
+    );
+    formData.append(
+      'gender',
+      selectedGender === '수컷'
+        ? 'MALE'
+        : selectedGender === '암컷'
+          ? 'FEMALE'
+          : '',
+    );
+    formData.append('birthDate', formattedBirthDate || '');
 
-    formData.append('animalCreateDTO', animalCreateDTO);
+    Object.entries(dogInfoData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
-    const token = localStorage.getItem('authToken');
+    Object.entries(parentDogInfo).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((file, index) => {
+          formData.append(`${key}[${index}]`, file);
+        });
+      } else {
+        formData.append(key, value);
+      }
+    });
 
     try {
-      const response = await api.post('/animals', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/animals',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
         },
-      });
+      );
 
-      if (response.data.isSuccess) {
+      const data = await response.json();
+
+      if (data.isSuccess) {
         console.log('등록 성공');
       } else {
-        console.error('등록 실패', response.data);
+        console.error('등록 실패', data);
       }
     } catch (error) {
-      if (error.response) {
-        console.error('서버에서 반환된 오류 메시지:', error.response.data);
-      } else {
-        console.error('요청 오류:', error);
-      }
+      console.error('요청 오류:', error);
     }
   };
 
@@ -448,9 +517,7 @@ function AnimalUpload() {
           <UploadParentDogInfo
             selectedAnimal={selectedAnimal}
             ref={dogInfoRef}
-            name={name}
-            onChange={handleDogInfoChange}
-            onFileChange={handleFileChange}
+            onChange={handleParentDogInfoChange}
           />
         </A.MenuContentWrapper>
       </A.InfoWrapper>

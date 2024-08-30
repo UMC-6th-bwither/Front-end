@@ -5,10 +5,12 @@ import profile from '/img/profile.png';
 import * as H from './Header.style';
 import useAuth from '../../hooks/useAuth';
 import Modal from './HeaderModal';
+import api from '../../api/api';
 
 export default function Header() {
   const { isLoggedIn, role } = useAuth();
   const [isHovered, setIsHovered] = useState(false);
+  const [userData, setUserData] = useState('');
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -17,6 +19,26 @@ export default function Header() {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
+
+  const fetchRecentData = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+
+      const userResponse = await api.get('/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const response = userResponse.data.result.userDTO;
+
+      setUserData(response);
+    } catch (error) {
+      console.error('Error fetching recentData', error);
+    }
+  };
+
+  fetchRecentData();
 
   let profileLink;
 
@@ -42,7 +64,11 @@ export default function Header() {
             >
               <H.TextWrapper>
                 <Link to="MypageGeneral">
-                  <H.Profile src={profile} alt="profile" />
+                  {userData.profileImage !== null ? (
+                    <H.Profile src={userData.profileImage} alt="profile" />
+                  ) : (
+                    <H.Profile src={profile} alt="profile" />
+                  )}
                 </Link>
               </H.TextWrapper>
               {isHovered && (
@@ -74,7 +100,11 @@ export default function Header() {
             >
               <H.TextWrapper>
                 <Link to="MypageBreeder">
-                  <H.Profile src={profile} alt="profile" />
+                  {userData.profileImage !== null ? (
+                    <H.Profile src={userData.profileImage} alt="profile" />
+                  ) : (
+                    <H.Profile src={profile} alt="profile" />
+                  )}
                 </Link>
               </H.TextWrapper>
               {isHovered && (

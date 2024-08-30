@@ -15,13 +15,13 @@ const UploadDogInfo = React.forwardRef(
     const [selectedImage, setSelectedImage] = useState(null);
 
     const handleFileUpload = (field) => (event) => {
-      const files = Array.from(event.target.files); // 업로드된 파일들을 배열로 가져오기
+      const files = Array.from(event.target.files);
       if (files.length > 0) {
         setUploadedFileName((prev) => ({
           ...prev,
-          [field]: files.map((file) => file.name).join(', '), // 파일 이름들을 문자열로 결합하여 상태 업데이트
+          [field]: files.map((file) => file.name).join(', '),
         }));
-        onFileChange(field, files); // 해당 필드에 맞는 파일들을 부모 컴포넌트로 전달
+        onFileChange(field, files);
       }
     };
 
@@ -103,13 +103,13 @@ const UploadDogInfo = React.forwardRef(
             </label>
           </A.InfoFileBox>
 
-          {uploadedFileName && (
+          {uploadedFileName.feedingImages && (
             <A.InfoFileBoxNameContainer>
               <A.InfoFileBoxName>
                 {uploadedFileName.feedingImages}
               </A.InfoFileBoxName>
               <svg
-                onClick={handleFileRemove}
+                onClick={handleFileRemove('feedingImages')}
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -163,13 +163,13 @@ const UploadDogInfo = React.forwardRef(
               />
             </label>
           </A.InfoFileBox>
-          {uploadedFileName && (
+          {uploadedFileName.vaccinationImages && (
             <A.InfoFileBoxNameContainer>
               <A.InfoFileBoxName>
                 {uploadedFileName.vaccinationImages}
               </A.InfoFileBoxName>
               <svg
-                onClick={handleFileRemove}
+                onClick={handleFileRemove('vaccinationImages')}
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -221,13 +221,13 @@ const UploadDogInfo = React.forwardRef(
               />
             </label>
           </A.InfoFileBox>
-          {uploadedFileName && (
+          {uploadedFileName.virusCheckImages && (
             <A.InfoFileBoxNameContainer>
               <A.InfoFileBoxName>
                 {uploadedFileName.virusCheckImages}
               </A.InfoFileBoxName>
               <svg
-                onClick={handleFileRemove}
+                onClick={handleFileRemove('virusCheckImages')}
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -279,13 +279,13 @@ const UploadDogInfo = React.forwardRef(
               />
             </label>
           </A.InfoFileBox>
-          {uploadedFileName && (
+          {uploadedFileName.parasiticImages && (
             <A.InfoFileBoxNameContainer>
               <A.InfoFileBoxName>
                 {uploadedFileName.parasiticImages}
-              </A.InfoFileBoxName>{' '}
+              </A.InfoFileBoxName>
               <svg
-                onClick={handleFileRemove}
+                onClick={handleFileRemove('parasiticImages')}
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -337,13 +337,13 @@ const UploadDogInfo = React.forwardRef(
               />
             </label>
           </A.InfoFileBox>
-          {uploadedFileName && (
+          {uploadedFileName.healthCheckImages && (
             <A.InfoFileBoxNameContainer>
               <A.InfoFileBoxName>
                 {uploadedFileName.healthCheckImages}
               </A.InfoFileBoxName>
               <svg
-                onClick={handleFileRemove}
+                onClick={handleFileRemove('healthCheckImages')}
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"

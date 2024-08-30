@@ -1,9 +1,12 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
 /* eslint-disable react/require-default-props */
 import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
 import api from '../../api/api';
+import useAuth from '../../hooks/useAuth';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './WaitingAnimalDetail.style';
 import Badge from '../../components/badge/Badge';
@@ -30,6 +33,9 @@ RightArrow.propTypes = {
 };
 
 function WaitingAnimalDetail() {
+  const { token } = useAuth();
+  const { breederId } = useAuth();
+
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [isFavorite, setIsFavorite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,9 +67,6 @@ function WaitingAnimalDetail() {
   useEffect(() => {
     const fetchAnimalDetail = async () => {
       try {
-        // const animalId = animalId; 임시 테스트
-        const token = localStorage.getItem('token');
-
         const response = await api.get(`/animals/${animalId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -97,10 +100,30 @@ function WaitingAnimalDetail() {
     };
 
     fetchAnimalDetail();
-  }, []);
+  }, [animalId, token]);
 
-  const handleInquiryClick = () => {
-    // 채팅말고 요청보내는 api 추가예정
+  const handleInquiryClick = async () => {
+    try {
+      const response = await api.post(
+        `/inquiries?breederId=${breederId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (response.data.isSuccess) {
+        alert('문의 요청을 보냈습니다!');
+      } else {
+        alert('문의 요청에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('문의 요청 에러 발생:', error);
+      alert('문의 요청 중 오류가 발생했습니다.');
+    }
   };
 
   const handleCopyUrl = () => {
@@ -113,9 +136,7 @@ function WaitingAnimalDetail() {
 
   const toggleFavorite = async () => {
     try {
-      // animalId 바꿔야함
-      const endpoint = `/animals/1/bookmark`;
-      const token = localStorage.getItem('token');
+      const endpoint = `/animals/${animalId}/bookmark`;
 
       if (isFavorite) {
         // 북마크 해제
