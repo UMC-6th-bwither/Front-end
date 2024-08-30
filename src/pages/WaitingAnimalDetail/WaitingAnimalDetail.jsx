@@ -105,14 +105,13 @@ function WaitingAnimalDetail() {
   const handleInquiryClick = async () => {
     try {
       const response = await api.post(
-        '/inquiries',
+        `/inquiries?breederId=${breederId}`,
         {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-          params: { breederId },
         },
       );
 
