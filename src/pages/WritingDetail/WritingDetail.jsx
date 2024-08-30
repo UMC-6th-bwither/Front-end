@@ -6,6 +6,7 @@ import TimeStampParser from '../../components/TimeStampParser/TimeStampParser';
 import api from '../../api/api';
 import Editor from '../../components/Editor/Editor';
 import useAuth from '../../hooks/useAuth';
+import convertToKST from '../../utils/convertToKST';
 
 const menuItems = [
   { name: '브리더의 꿀정보', href: '/community/breederinformation' },
@@ -247,7 +248,9 @@ function WritingDetail() {
               />
               <S.ProfileName>{post.author}</S.ProfileName>
               <S.Time>
-                <TimeStampParser>{post.createdAt}</TimeStampParser>
+                <TimeStampParser>
+                  {convertToKST(post.createdAt)}
+                </TimeStampParser>
               </S.Time>
             </S.ProfileContainer>
           </S.TitleContainer>
