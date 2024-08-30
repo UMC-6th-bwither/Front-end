@@ -25,7 +25,8 @@ function AnimalList() {
   const [isReserved, setIsReserved] = useState('');
   const [isBookmarked, setIsBookmarked] = useState([]);
   const [dogCards, setDogCards] = useState([]); // api 호출 데이터 저장
-  const itemsPerPage = 20;
+  const [totalElements, setTotalElements] = useState();
+  const [listSize, setListSize] = useState();
 
   // api 호출
   useEffect(() => {
@@ -33,7 +34,7 @@ function AnimalList() {
       try {
         const response = await api.get('/animals', {
           params: {
-            // page: currentPage,
+            page: currentPage - 1,
             regions: selectedCities.join(','),
             animalType: selectedAnimal,
             gender: selectedGender,
@@ -52,6 +53,8 @@ function AnimalList() {
 
         setDogCards(data);
         setTotalPage(response.data.result.totalPage);
+        setTotalElements(response.data.result.totalElements);
+        setListSize(response.data.result.listSize);
         setIsBookmarked(initialBookmarks);
       } catch (error) {
         console.error('Error fetching animals', error);
@@ -170,10 +173,10 @@ function AnimalList() {
   };
 
   // 페이지네이션 데이터 분할
-  const paginatedReviews = dogCards.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
+  // const paginatedReviews = dogCards.slice(
+  //   (currentPage - 1) * itemsPerPage,
+  //   currentPage * itemsPerPage,
+  // );
 
   return (
     <AL.Border>
@@ -252,40 +255,38 @@ function AnimalList() {
 
         <AL.CardsContainer className={dogCards.length === 0 ? 'empty' : ''}>
           {dogCards.length > 0 ? (
-            <>
-              <div className="dogCard">
-                {paginatedReviews.map((dog, index) => (
-                  <DogCard
-                    key={dog.aniamlId}
-                    id={dog.animalId}
-                    to="/waitinganimal-detail"
-                    photo={dog.imageUrl}
-                    location={dog.location}
-                    name={dog.name}
-                    breed={dog.breed}
-                    birthDate={dog.birthDate}
-                    gender={dog.gender}
-                    breederName={dog.breederName}
-                    initialIsBookmarked={isBookmarked[dog.aniamlId] || 'BEFORE'}
-                    onBookmarkChange={(newStatus) =>
-                      handleBookmarkChange(dog.animalId, newStatus)
-                    }
-                  />
-                ))}
-              </div>
-              <Pagination
-                totalItems={dogCards.length}
-                itemsPerPage={itemsPerPage}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
-            </>
+            <div className="dogCard">
+              {dogCards.map((dog, index) => (
+                <DogCard
+                  key={dog.aniamlId}
+                  id={dog.animalId}
+                  to="/waitinganimal-detail"
+                  photo={dog.imageUrl}
+                  location={dog.location}
+                  name={dog.name}
+                  breed={dog.breed}
+                  birthDate={dog.birthDate}
+                  gender={dog.gender}
+                  breederName={dog.breederName}
+                  initialIsBookmarked={isBookmarked[dog.aniamlId] || 'BEFORE'}
+                  onBookmarkChange={(newStatus) =>
+                    handleBookmarkChange(dog.animalId, newStatus)
+                  }
+                />
+              ))}
+            </div>
           ) : (
             <AL.NothingContainer>
               <img src={nothingBowl} alt="no animals" />
               <div className="nothing_text">아직 동물들이 없어요..</div>
             </AL.NothingContainer>
           )}
+          <Pagination
+            totalItems={totalElements}
+            itemsPerPage={listSize}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </AL.CardsContainer>
       </AL.AnimalContainer>
     </AL.Border>

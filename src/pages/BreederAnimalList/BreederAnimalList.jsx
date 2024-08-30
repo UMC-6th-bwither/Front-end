@@ -21,7 +21,8 @@ function BreederAnimalList() {
   const [selectedBreed, setSelectedBreed] = useState('');
   const [breederDogCards, setBreederDogCards] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const [totalElements, setTotalElements] = useState();
+  const [listSize, setListSize] = useState();
 
   // api 호출
   useEffect(() => {
@@ -30,13 +31,15 @@ function BreederAnimalList() {
         const response = await api.get('/animals/breeder', {
           params: {
             breederId,
-            // page: currentPage,
+            page: currentPage - 1,
             gender: selectedGender,
             breed: selectedBreed,
           },
         });
         const data = response.data.result.animalList;
         // setTotalPage(response.data.result.totalPage);
+        setTotalElements(response.data.result.totalElements);
+        setListSize(response.data.result.listSize);
         setBreederDogCards(data);
       } catch (error) {
         console.error('Error fetching BreederAnimals', error);
@@ -55,10 +58,10 @@ function BreederAnimalList() {
   };
 
   // 페이지네이션 데이터 분할
-  const paginatedReviews = breederDogCards.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
+  // const paginatedReviews = breederDogCards.slice(
+  //   (currentPage - 1) * itemsPerPage,
+  //   currentPage * itemsPerPage,
+  // );
 
   return (
     <B.Border>
@@ -94,33 +97,25 @@ function BreederAnimalList() {
           className={breederDogCards.length === 0 ? 'empty' : ''}
         >
           {breederDogCards.length > 0 ? (
-            <>
-              <div className="dogCard">
-                {paginatedReviews.map((dog) => (
-                  <DogCard
-                    to="/waitinganimal-detail"
-                    id={dog.animalId}
-                    key={dog.animalId}
-                    photo={dog.imageUrl}
-                    location={dog.location}
-                    name={dog.name}
-                    breed={dog.breed}
-                    birthDate={dog.birthDate}
-                    gender={dog.gender}
-                    breederName={dog.breederName}
-                    initialIsBookmarked={dog.status}
-                    onBookmarkChange={() => {}}
-                    showBookmarkBtn={false}
-                  />
-                ))}
-              </div>
-              <Pagination
-                totalItems={breederDogCards.length}
-                itemsPerPage={itemsPerPage}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
-            </>
+            <div className="dogCard">
+              {breederDogCards.map((dog) => (
+                <DogCard
+                  to="/waitinganimal-detail"
+                  id={dog.animalId}
+                  key={dog.animalId}
+                  photo={dog.imageUrl}
+                  location={dog.location}
+                  name={dog.name}
+                  breed={dog.breed}
+                  birthDate={dog.birthDate}
+                  gender={dog.gender}
+                  breederName={dog.breederName}
+                  initialIsBookmarked={dog.status}
+                  onBookmarkChange={() => {}}
+                  showBookmarkBtn={false}
+                />
+              ))}
+            </div>
           ) : (
             <B.NothingContainer>
               <img src={nothingBowl} alt="no animals" />
@@ -129,6 +124,12 @@ function BreederAnimalList() {
               </div>
             </B.NothingContainer>
           )}
+          <Pagination
+            totalItems={totalElements}
+            itemsPerPage={listSize}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </B.CardsContainer>
       </B.ContentContainer>
     </B.Border>
