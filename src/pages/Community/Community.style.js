@@ -7,6 +7,12 @@ export const Layout = styled.section`
   justify-content: center;
   gap: 8vw;
   padding: 80px 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 40px 0;
+    gap: 8vw;
+  }
 `;
 
 export const MenuTitle = styled.div`
@@ -30,12 +36,25 @@ export const MenuTitle = styled.div`
     height: 2px;
     background: var(--main, #fe834d);
   }
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    padding-bottom: 30px;
+
+    &::after {
+      bottom: -12px;
+    }
+  }
 `;
 
 export const MenuSubtitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  @media (max-width: 768px) {
+    gap: 4px;
+  }
 `;
 
 export const MenuSubtitleActive = styled(Link)`
@@ -46,6 +65,10 @@ export const MenuSubtitleActive = styled(Link)`
   font-weight: 700;
   line-height: normal;
   text-decoration: none;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 export const MenuSubtitleInActive = styled(Link)`
@@ -56,10 +79,23 @@ export const MenuSubtitleInActive = styled(Link)`
   font-weight: 350;
   line-height: normal;
   text-decoration: none;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 export const MainContainer = styled.div`
   width: 970px;
+
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 16px;
+  }
 `;
 
 export const IconContainer = styled.div`
@@ -68,6 +104,11 @@ export const IconContainer = styled.div`
   justify-content: space-between;
   width: 56px;
   height: 56px;
+
+  @media (max-width: 768px) {
+    width: 48px;
+    height: 48px;
+  }
 `;
 
 export const IconImage = styled.img`
@@ -79,15 +120,30 @@ export const IconImage = styled.img`
 export const SmallQuestionIconContainer = styled.div`
   width: 12px;
   height: 16px;
+
+  @media (max-width: 768px) {
+    width: 10px;
+    height: 14px;
+  }
 `;
 
 export const BigQuestionIconContainer = styled.div`
   width: 26px;
   height: 40px;
+
+  @media (max-width: 768px) {
+    width: 22px;
+    height: 34px;
+  }
 `;
 
 export const TitleLayout = styled.div`
   display: flex;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 export const MainTitle = styled.div`
@@ -99,6 +155,10 @@ export const MainTitle = styled.div`
   line-height: normal;
 
   margin: 10px 0 8px 0;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 export const MainSubTitle = styled.div`
@@ -108,11 +168,19 @@ export const MainSubTitle = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 export const TitleButtonContainer = styled.div`
   margin-left: auto;
   margin-top: auto;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
 `;
 
 export const FiltersContainer = styled.div`
@@ -120,6 +188,12 @@ export const FiltersContainer = styled.div`
   display: flex;
   align-items: flex-end;
   gap: 6px;
+
+  @media (max-width: 768px) {
+    padding-top: 40px;
+    justify-content: space-between;
+    gap: 4px;
+  }
 `;
 
 export const Filter = styled.button`
@@ -140,28 +214,56 @@ export const Filter = styled.button`
   font-style: normal;
   font-weight: 350;
   line-height: 21px; /* 150% */
+
+  @media (max-width: 768px) {
+    height: 28px;
+    font-size: 12px;
+    padding: 4px 10px;
+  }
 `;
 
 export const FilterContainer = styled.div`
   display: flex;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 export const SortContainer = styled.div`
   padding-top: 88px;
   margin-left: auto;
+
+  @media (max-width: 768px) {
+    padding-top: 40px;
+    margin-left: 0;
+  }
 `;
 
 export const PostContainer = styled.div`
   padding: 32px 0 0 0;
+
+  @media (max-width: 768px) {
+    padding: 16px 0 0 0;
+  }
 `;
 
 export const Post = styled.div`
   margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
 `;
 
 export const PostUserProfile = styled.div`
   display: flex;
   padding-bottom: 16px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 12px;
+  }
 `;
 
 export const UserProfileImageConatiner = styled.div`
@@ -171,6 +273,12 @@ export const UserProfileImageConatiner = styled.div`
   overflow: hidden;
   border-radius: 32px;
   background-color: gainsboro;
+
+  @media (max-width: 768px) {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+  }
 `;
 
 export const UserProfileImage = styled.img`
@@ -189,6 +297,10 @@ export const UserProfileName = styled.div`
   font-style: normal;
   font-weight: 350;
   line-height: 18px; /* 112.5% */
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 export const PostTitle = styled.div`
@@ -202,6 +314,10 @@ export const PostTitle = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 21px; /* 150% */
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export const PostContent = styled.div`
@@ -217,11 +333,20 @@ export const PostContent = styled.div`
   font-style: normal;
   font-weight: 350;
   line-height: normal;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    -webkit-line-clamp: 3;
+  }
 `;
 
 export const PostIconLayout = styled.div`
   display: flex;
   gap: 18px;
+
+  @media (max-width: 768px) {
+    gap: 12px;
+  }
 `;
 
 export const PostTimestamp = styled.div`
@@ -231,16 +356,29 @@ export const PostTimestamp = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export const PostIconFrame = styled.div`
   display: flex;
   gap: 6px;
+
+  @media (max-width: 768px) {
+    gap: 4px;
+  }
 `;
 
 export const PostIconContainer = styled.div`
   width: 20px;
   height: 20px;
+
+  @media (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 export const PostIconImage = styled.img`
@@ -258,8 +396,16 @@ export const PostIconContent = styled.div`
   font-weight: 350;
   line-height: 18px; /* 150% */
   letter-spacing: -0.2px;
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 
 export const PaginationContainer = styled.div`
   padding-top: 75px;
+
+  @media (max-width: 768px) {
+    padding-top: 40px;
+  }
 `;
