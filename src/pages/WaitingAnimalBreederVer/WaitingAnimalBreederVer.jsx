@@ -232,7 +232,10 @@ function WaitingAnimalBreederVer() {
                 <p>
                   <strong>종</strong> {animalData.breed}
                 </p>
-                <p>{animalData.gender === 'MALE' ? '남아' : '여아'}</p>
+                <p>
+                  <strong>성별</strong>
+                  {animalData.gender === 'MALE' ? '남아' : '여아'}
+                </p>
                 <p>
                   <strong>생일</strong> {animalData.birthDate}
                 </p>

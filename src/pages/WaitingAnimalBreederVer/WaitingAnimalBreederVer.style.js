@@ -127,7 +127,7 @@ export const Reservation = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: 21px;
-  margin-bottom: 32px;
+  margin-bottom: 15px;
 `;
 
 export const TextContainer = styled.div`
@@ -152,7 +152,6 @@ export const DogContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 21px;
 `;
 
 export const DogName = styled.h2`
@@ -165,7 +164,6 @@ export const DogName = styled.h2`
 
 export const DogInfo = styled.div`
   font-size: 16px;
-  display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
