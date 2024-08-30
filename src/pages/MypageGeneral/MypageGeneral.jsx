@@ -206,7 +206,6 @@ function MypageGeneral() {
                 <MP.ResContent key={breeder.id}>
                   <div className="content">
                     <ReservationDogCard
-                      to="/breeder-detail"
                       key={breeder.breederId}
                       id={breeder.breederId}
                       photo={breeder.profileUrl}
