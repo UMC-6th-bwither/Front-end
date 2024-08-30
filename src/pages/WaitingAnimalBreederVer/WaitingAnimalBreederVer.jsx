@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
-import useAuth from '../../hooks/useAuth';
+// import useAuth from '../../hooks/useAuth';
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './WaitingAnimalBreederVer.style';
 import Badge from '../../components/badge/Badge';
@@ -40,7 +40,10 @@ function WaitingAnimalBreederVer() {
   const parentDogInfoRef = useRef(null);
 
   const { animalId } = useParams();
-  const { token, breederId } = useAuth();
+  // const { token, breederId } = useAuth();
+  const token =
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMTM1IiwiaXNzIjoiYndpdGhlciB3ZWIiLCJpYXQiOjE3MjQ5MTcxNDcsImV4cCI6MTcyNTAwMzU0N30.6QVijgoQLlGtV3jCbRKNOq0XxM7h3KioP64CxPCT_iPaRgp9KbL_raEK_FO8vAZc0bDUVRhwTftkqiEYpf_2QA';
+  const breederId = 1;
 
   const menuItems = ['강아지 정보', '부모 강아지 정보'];
   const responsive = {
@@ -132,15 +135,14 @@ function WaitingAnimalBreederVer() {
 
   const handleEditSubmit = async () => {
     try {
-      const dataToSend = {
-        ...editedData,
-        animalId,
-        breederId,
-      };
-      const response = await api.put(`/animals/${animalId}`, dataToSend, {
+      const response = await api.put(`/animals/${animalId}`, editedData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
+        },
+        params: {
+          animalId,
+          breederId,
         },
       });
       if (response.data.isSuccess) {
@@ -361,12 +363,22 @@ function WaitingAnimalBreederVer() {
           activeMenu={activeMenu}
           setActiveMenu={handleMenuClick}
         />
-        <WaitingDogInfo ref={dogInfoRef} animalData={animalData} />
+        <WaitingDogInfo
+          ref={dogInfoRef}
+          animalData={animalData}
+          isEditMode={isEditMode}
+          handleInputChange={handleInputChange}
+          editedData={editedData}
+          //  handleFileUpload={handleFileUpload}
+        />
         <WaitingParentDogInfo
           ref={parentDogInfoRef}
           animalParents={animalData.animalParents}
           animalName={animalData.name}
           animalType={animalData.type}
+          isEditMode={isEditMode}
+          editedData={editedData}
+          handleInputChange={handleInputChange}
         />
       </A.InfoWrapper>
       {isModalOpen && (

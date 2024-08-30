@@ -121,7 +121,7 @@ function App() {
           element={<WaitingAnimalDetail />}
         />
         <Route
-          path="/waitinganimal-breeder"
+          path="/waitinganimal-breeder/:animalId"
           element={<WaitingAnimalBreederVer />}
         />
         <Route path="/animal-upload" element={<AnimalUpload />} />

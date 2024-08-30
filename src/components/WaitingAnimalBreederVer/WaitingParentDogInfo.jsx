@@ -1,13 +1,26 @@
+/* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/button-has-type */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/display-name */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as A from '../../pages/WaitingAnimalDetail/WaitingAnimalDetail.style';
 
 const WaitingParentDogInfo = React.forwardRef(
-  ({ animalParents, animalName, animalType }, ref) => {
+  (
+    {
+      animalParents,
+      animalName,
+      animalType,
+      isEditMode,
+      editedData,
+      handleInputChange,
+    },
+    ref,
+  ) => {
     const [selectedParent, setSelectedParent] = useState(null);
-    const [selectedHealthCheckImages, setSelectedHealthCheckImages] = useState(
-      [],
-    );
+    const [selectedHealthCheckImages, setSelectedHealthCheckImages] = useState([]);
 
     const handleIconClick = (parent) => {
       setSelectedParent(parent);
@@ -28,7 +41,6 @@ const WaitingParentDogInfo = React.forwardRef(
     return (
       <div ref={ref} style={{ marginBottom: '96px' }}>
         <A.InfoTitle>{parentTitle}</A.InfoTitle>
-
         {animalParents.map((parent) => (
           <A.ParentDogCard key={parent.animalParentsId}>
             <A.ParentDogImage
@@ -44,10 +56,20 @@ const WaitingParentDogInfo = React.forwardRef(
                 }}
               />
             </A.ParentDogImage>
-
             <A.ParentDogInfo>
               <A.ParentDogNameContainer>
-                <A.ParentDogName>{animalName}</A.ParentDogName>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    name={`parentName-${parent.animalParentsId}`}
+                    value={editedData[`parentName-${parent.animalParentsId}`] || parent.name}
+                    onChange={handleInputChange}
+                    placeholder="부모 강아지 이름"
+                    style={{ fontSize: '16px', fontWeight: 'bold' }}
+                  />
+                ) : (
+                  <A.ParentDogName>{parent.name}</A.ParentDogName>
+                )}
                 <A.ParentDogNameGender>
                   {parent.type === 'MOTHER'
                     ? `${animalName} 모`
@@ -87,19 +109,68 @@ const WaitingParentDogInfo = React.forwardRef(
               </A.ParentDogNameContainer>
               <A.ParentDogDetail>
                 <A.ParentDogLabel>종</A.ParentDogLabel>
-                <A.ParentDogValue>{parent.breed}</A.ParentDogValue>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    name={`parentBreed-${parent.animalParentsId}`}
+                    value={
+                      editedData[`parentBreed-${parent.animalParentsId}`] ||
+                      parent.breed
+                    }
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <A.ParentDogValue>{parent.breed}</A.ParentDogValue>
+                )}
               </A.ParentDogDetail>
               <A.ParentDogDetail>
                 <A.ParentDogLabel>출생</A.ParentDogLabel>
-                <A.ParentDogValue>{parent.birthDate}</A.ParentDogValue>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    name={`parentBirthDate-${parent.animalParentsId}`}
+                    value={
+                      editedData[`parentBirthDate-${parent.animalParentsId}`] ||
+                      parent.birthDate
+                    }
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <A.ParentDogValue>{parent.birthDate}</A.ParentDogValue>
+                )}
               </A.ParentDogDetail>
               <A.ParentDogDetail>
                 <A.ParentDogLabel>유전질환</A.ParentDogLabel>
-                <A.ParentDogValue>{parent.hereditary}</A.ParentDogValue>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    name={`parentHereditary-${parent.animalParentsId}`}
+                    value={
+                      editedData[
+                        `parentHereditary-${parent.animalParentsId}`
+                      ] || parent.hereditary
+                    }
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <A.ParentDogValue>{parent.hereditary}</A.ParentDogValue>
+                )}
               </A.ParentDogDetail>
               <A.ParentDogDetail>
                 <A.ParentDogLabel>성격</A.ParentDogLabel>
-                <A.ParentDogValue>{parent.character}</A.ParentDogValue>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    name={`parentCharacter-${parent.animalParentsId}`}
+                    value={
+                      editedData[`parentCharacter-${parent.animalParentsId}`] ||
+                      parent.character
+                    }
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <A.ParentDogValue>{parent.character}</A.ParentDogValue>
+                )}
               </A.ParentDogDetail>
               <A.ParentDogDetail>
                 <A.ParentDogLabel>
@@ -114,62 +185,49 @@ const WaitingParentDogInfo = React.forwardRef(
                     style={{ cursor: 'pointer' }}
                   >
                     <path
-                      d="M11.3333 5.83333C11.1565 5.83333 10.987 5.90357 10.8619 6.0286C10.7369 6.15362 10.6667 6.32319 10.6667 6.5V10.5C10.6667 10.6768 10.5964 10.8464 10.4714 10.9714C10.3464 11.0964 10.1768 11.1667 10 11.1667H2C1.82319 11.1667 1.65362 11.0964 1.5286 10.9714C1.40357 10.8464 1.33333 10.6768 1.33333 10.5V2.5C1.33333 2.32319 1.40357 2.15362 1.5286 2.0286C1.65362 1.90357 1.82319 1.83333 2 1.83333H6C6.17681 1.83333 6.34638 1.7631 6.4714 1.63807C6.59643 1.51305 6.66667 1.34348 6.66667 1.16667C6.66667 0.989856 6.59643 0.820286 6.4714 0.695262C6.34638 0.570238 6.17681 0.5 6 0.5H2C1.46957 0.5 0.960859 0.710714 0.585787 1.08579C0.210714 1.46086 0 1.96957 0 2.5V10.5C0 11.0304 0.210714 11.5391 0.585787 11.9142C0.960859 12.2893 1.46957 12.5 2 12.5H10C10.5304 12.5 11.0391 12.2893 11.4142 11.9142C11.7893 11.5391 12 11.0304 12 10.5V6.5C12 6.32319 11.9298 6.15362 11.8047 6.0286C11.6797 5.90357 11.5101 5.83333 11.3333 5.83333Z"
-                      fill="#2D2D2D"
-                    />
-                    <path
-                      d="M8.66728 1.83333H9.72061L5.52728 6.02C5.46479 6.08197 5.4152 6.15571 5.38135 6.23695C5.3475 6.31819 5.33008 6.40532 5.33008 6.49333C5.33008 6.58134 5.3475 6.66848 5.38135 6.74972C5.4152 6.83096 5.46479 6.90469 5.52728 6.96667C5.58925 7.02915 5.66299 7.07875 5.74423 7.11259C5.82547 7.14644 5.9126 7.16387 6.00061 7.16387C6.08862 7.16387 6.17576 7.14644 6.25699 7.11259C6.33823 7.07875 6.41197 7.02915 6.47394 6.96667L10.6673 2.78V3.83333C10.6673 4.01014 10.7375 4.17971 10.8625 4.30474C10.9876 4.42976 11.1571 4.5 11.3339 4.5C11.5108 4.5 11.6803 4.42976 11.8053 4.30474C11.9304 4.17971 12.0006 4.01014 12.0006 3.83333V1.16667C12.0006 0.989856 11.9304 0.820286 11.8053 0.695262C11.6803 0.570238 11.5108 0.5 11.3339 0.5H8.66728C8.49047 0.5 8.3209 0.570238 8.19587 0.695262C8.07085 0.820286 8.00061 0.989856 8.00061 1.16667C8.00061 1.34348 8.07085 1.51305 8.19587 1.63807C8.3209 1.7631 8.49047 1.83333 8.66728 1.83333Z"
-                      fill="#2D2D2D"
+                      d="M11.3333 5.83333C11.1565 5.83333 10.987 5.90357 10.8619 6.0286C10.7369 6.15362 10.6667 6.32319 10.6667 6.5C10.6667 6.676 10.7369 6.84556 10.8619 6.97059C10.987 7.09562 11.1565 7.16667 11.3333 7.16667C11.5101 7.16667 11.6797 7.09562 11.8047 6.97059C11.9297 6.84556 12 6.676 12 6.5C12 6.32319 11.9297 6.15362 11.8047 6.0286C11.6797 5.90357 11.5101 5.83333 11.3333 5.83333ZM6 9.66667H10.6667V11.3333H6V9.66667ZM1.33333 4.83333H5.99999V6.83333H1.33333V4.83333ZM1.33333 7.66667H5.99999V9.66667H1.33333V7.66667Z"
+                      fill="#9E9E9E"
                     />
                   </A.InfoIcon>
                 </A.ParentDogLabel>
-                <A.ParentDogValue>{parent.healthCheck}</A.ParentDogValue>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    name={`parentHealthCheck-${parent.animalParentsId}`}
+                    value={
+                      editedData[
+                        `parentHealthCheck-${parent.animalParentsId}`
+                      ] || parent.healthCheck
+                    }
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <A.ParentDogValue>{parent.healthCheck}</A.ParentDogValue>
+                )}
               </A.ParentDogDetail>
             </A.ParentDogInfo>
           </A.ParentDogCard>
         ))}
 
+        {/* Parent info modal */}
         {selectedParent && (
-          <A.ModalOverlay onClick={closeModal}>
-            <A.ModalContent onClick={(e) => e.stopPropagation()}>
-              <A.CloseButton onClick={closeModal}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M14.8964 0.396447C15.0917 0.201184 15.4083 0.201184 15.6036 0.396447C15.7988 0.591709 15.7988 0.908291 15.6036 1.10355L8.70711 8L15.6036 14.8964C15.7988 15.0917 15.7988 15.4083 15.6036 15.6036C15.4083 15.7988 15.0917 15.7988 14.8964 15.6036L8 8.70711L1.10355 15.6036C0.908291 15.7988 0.591709 15.7988 0.396446 15.6036C0.201185 15.4083 0.201185 15.0917 0.396447 14.8964L7.29289 8L0.396447 1.10355C0.201185 0.908291 0.201185 0.591709 0.396447 0.396447C0.591709 0.201184 0.908291 0.201184 1.10355 0.396447L8 7.29289L14.8964 0.396447Z"
-                    fill="#C5C5C5"
-                  />
-                </svg>
-              </A.CloseButton>
-              {selectedHealthCheckImages.length > 0 ? (
-                selectedHealthCheckImages.map((imageUrl, index) => (
-                  <img
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={index}
-                    src={imageUrl}
-                    alt={`${animalName} ${
-                      selectedParent === 'MOTHER' ? '모' : '부'
-                    } 수의사 검진 결과 ${index + 1}`}
-                    style={{
-                      width: '100%',
-                      marginBottom: '8px',
-                      borderRadius: '12px',
-                      objectFit: 'cover',
-                    }}
-                  />
-                ))
-              ) : (
-                <p>수의사 검진 결과 이미지가 없습니다.</p>
-              )}
+          <A.Modal>
+            <A.ModalContent>
+              <A.ModalHeader>
+                <h2>{selectedParent}의 검진 결과</h2>
+                <button onClick={closeModal}>닫기</button>
+              </A.ModalHeader>
+              <A.ModalBody>
+                <A.ImageList>
+                  {selectedHealthCheckImages.map((img, index) => (
+                    <A.ImageItem key={index}>
+                      <img src={img} alt={`검진 결과 ${index + 1}`} />
+                    </A.ImageItem>
+                  ))}
+                </A.ImageList>
+              </A.ModalBody>
             </A.ModalContent>
-          </A.ModalOverlay>
+          </A.Modal>
         )}
       </div>
     );
@@ -177,24 +235,12 @@ const WaitingParentDogInfo = React.forwardRef(
 );
 
 WaitingParentDogInfo.propTypes = {
-  animalParents: PropTypes.arrayOf(
-    PropTypes.shape({
-      animalParentsId: PropTypes.number.isRequired,
-      type: PropTypes.oneOf(['MOTHER', 'FATHER']).isRequired,
-      name: PropTypes.string.isRequired,
-      breed: PropTypes.string.isRequired,
-      birthDate: PropTypes.string.isRequired,
-      hereditary: PropTypes.string.isRequired,
-      character: PropTypes.string.isRequired,
-      healthCheck: PropTypes.string.isRequired,
-      imageUrl: PropTypes.string.isRequired,
-      healthCheckImages: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }),
-  ).isRequired,
+  animalParents: PropTypes.array.isRequired,
   animalName: PropTypes.string.isRequired,
-  animalType: PropTypes.oneOf(['DOG', 'CAT']).isRequired,
+  animalType: PropTypes.string.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
+  editedData: PropTypes.object.isRequired,
+  handleInputChange: PropTypes.func.isRequired,
 };
-
-WaitingParentDogInfo.displayName = 'WaitingParentDogInfo';
 
 export default WaitingParentDogInfo;

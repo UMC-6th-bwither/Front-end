@@ -65,6 +65,28 @@ function WaitingAnimalDetail() {
     },
   };
   useEffect(() => {
+    const fetchRecentAnimal = async () => {
+      try {
+        const response = await api.post(
+          '/user/recent-animals',
+          { animalId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        if (response.data.isSuccess) {
+          console.log('최근 본 동물 업데이트 성공');
+        } else {
+          console.error('최근 본 동물 업데이트 실패:', response.data.message);
+        }
+      } catch (error) {
+        console.error('최근 본 동물 업데이트 중 에러 발생:', error);
+      }
+    };
+
     const fetchAnimalDetail = async () => {
       try {
         const response = await api.get(`/animals/${animalId}`, {
@@ -91,6 +113,8 @@ function WaitingAnimalDetail() {
           if (pedigreeFile) {
             setPedigreeImagePath(pedigreeFile.animalFilePath);
           }
+
+          fetchRecentAnimal();
         } else {
           console.error('동물 정보 가져오기 에러:', response.data.message);
         }

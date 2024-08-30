@@ -120,33 +120,20 @@ function BreederDetail() {
   const toggleFavorite = async () => {
     try {
       const endpoint = `/breeder/${breederInfo.breederId}/bookmark`;
-      const memberId = localStorage.getItem('memberId');
+      const method = isFavorite ? 'DELETE' : 'POST';
 
-      if (!memberId) {
-        // console.error('No memberId found');
-        return;
-      }
-      // memberId 어딘가에서 가져와서 넣어야함
+      await api({
+        method,
+        url: endpoint,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        data: isFavorite ? null : { breederId: breederInfo.breederId },
+      });
+      setIsFavorite((prev) => !prev);
 
-      if (isFavorite) {
-        // 북마크 해제
-        await api.post(
-          endpoint,
-          {
-            breederId: breederInfo.breederId,
-            // memberId: memberId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        // eslint-disable-next-line no-console
-        console.log('북마크 성공');
-      }
-
-      setIsFavorite((prev) => !prev); // 북마크 상태 토글
+      console.log(isFavorite ? '북마크 해제 성공' : '북마크 성공');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('북마크 에러 발생:', error);
@@ -179,7 +166,6 @@ function BreederDetail() {
   };
 
   if (!breederInfo) return <div>브리더 정보를 불러오는 중입니다...</div>;
-  // 로딩 화면으로 바꾸기
 
   return (
     <A.Container>
