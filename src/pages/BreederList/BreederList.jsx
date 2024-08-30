@@ -19,7 +19,8 @@ function BreederList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isBookmarked, setIsBookmarked] = useState([]);
   const [breederCards, setBreederCards] = useState([]); // api 호출 데이터 저장
-  const itemsPerPage = 20;
+  const [totalElements, setTotalElements] = useState();
+  const [listSize, setListSize] = useState();
 
   // api 호출
   useEffect(() => {
@@ -27,7 +28,7 @@ function BreederList() {
       try {
         const response = await api.get('/breeder', {
           params: {
-            // page: currentPage,
+            page: currentPage - 1,
             regions: selectedCities.join(','),
             animalType: selectedAnimal,
             species: selectedBreed,
@@ -36,7 +37,9 @@ function BreederList() {
         });
         const data = response.data.result;
         setBreederCards(data.breederList);
-        setTotalPage(response.data.result.totalPage);
+        setTotalPage(data.totalPage);
+        setTotalElements(data.totalElements);
+        setListSize(data.listSize);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Error fetching breeders', error);
@@ -149,10 +152,10 @@ function BreederList() {
   };
 
   // 페이지네이션 데이터 분할
-  const paginatedReviews = breederCards.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
+  // const paginatedReviews = breederCards.slice(
+  //   (currentPage - 1) * itemsPerPage,
+  //   currentPage * itemsPerPage,
+  // );
 
   return (
     <BL.Border>
@@ -219,44 +222,42 @@ function BreederList() {
 
         <BL.CardsContainer className={breederCards.length === 0 ? 'empty' : ''}>
           {breederCards.length > 0 ? (
-            <>
-              <div className="breederCard">
-                {paginatedReviews.map((breeder) => (
-                  <BreederCard
-                    key={breeder.breederId}
-                    id={breeder.breederId}
-                    to="/breeder-detail"
-                    photo={breeder.profileUrl}
-                    location={breeder.address}
-                    name={breeder.breederName}
-                    breederExperience={breeder.careerYear}
-                    numberOfCertifications={breeder.certificateCount}
-                    waitingDogs={breeder.waitAnimal}
-                    waitlistCount={breeder.waitlist}
-                    rating={breeder.breederRating}
-                    reviewCount={breeder.reviewCount}
-                    initialIsBookmarked={
-                      isBookmarked[breeder.breederId] || 'BEFORE'
-                    }
-                    onBookmarkChange={(newStatus) =>
-                      handleBookmarkChange(breeder.breederId, newStatus)
-                    }
-                  />
-                ))}
-              </div>
-              <Pagination
-                totalItems={breederCards.length}
-                itemsPerPage={itemsPerPage}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
-            </>
+            <div className="breederCard">
+              {breederCards.map((breeder) => (
+                <BreederCard
+                  key={breeder.breederId}
+                  id={breeder.breederId}
+                  to="/breeder-detail"
+                  photo={breeder.profileUrl}
+                  location={breeder.address}
+                  name={breeder.breederName}
+                  breederExperience={breeder.careerYear}
+                  numberOfCertifications={breeder.certificateCount}
+                  waitingDogs={breeder.waitAnimal}
+                  waitlistCount={breeder.waitlist}
+                  rating={breeder.breederRating}
+                  reviewCount={breeder.reviewCount}
+                  initialIsBookmarked={
+                    isBookmarked[breeder.breederId] || 'BEFORE'
+                  }
+                  onBookmarkChange={(newStatus) =>
+                    handleBookmarkChange(breeder.breederId, newStatus)
+                  }
+                />
+              ))}
+            </div>
           ) : (
             <BL.NothingContainer>
               <img src={nothingBowl} alt="no animals" />
               <div className="nothing_text">아직 브리더가 없어요..</div>
             </BL.NothingContainer>
           )}
+          <Pagination
+            totalItems={totalElements}
+            itemsPerPage={listSize}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </BL.CardsContainer>
       </BL.AnimalContainer>
     </BL.Border>
