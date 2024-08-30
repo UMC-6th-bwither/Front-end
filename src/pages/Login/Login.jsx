@@ -61,6 +61,9 @@ export default function Login() {
       setPasswordError('');
     } catch (error) {
       console.log('로그인 api 요청 중 에러', error);
+      if (error.response.data.message === '사용자를 찾을 수 없습니다.') {
+        setUsernameError('존재하지 않는 계정이에요');
+      } else setPasswordError('비밀번호를 다시 확인해주세요');
     }
   };
 
