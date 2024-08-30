@@ -9,6 +9,7 @@ import {
 } from '../../../public/img/BookmarkIcon';
 import BadgeVariant from '../badge/BadgeVariant';
 import api from '../../api/api';
+import profile from '/img/profile.png';
 
 function BreederCard({
   // to,
@@ -71,7 +72,7 @@ function BreederCard({
     <S.CardBox>
       <S.Click onClick={handleClick}>
         <S.PhotoContainer>
-          <img src={photo} alt={name} className="photo" />
+          <img src={photo || profile} alt={name} className="photo" />
         </S.PhotoContainer>
 
         <S.InfoContainer>
