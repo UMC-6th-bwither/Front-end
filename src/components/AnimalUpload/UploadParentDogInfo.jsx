@@ -76,8 +76,6 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal, onChange }, ref) => {
   const [fatherBirthDate, setFatherBirthDate] = useState('');
   const [motherBreed, setMotherBreed] = useState('');
   const [fatherBreed, setFatherBreed] = useState('');
-  const [motherCustomBreed, setMotherCustomBreed] = useState('');
-  const [fatherCustomBreed, setFatherCustomBreed] = useState('');
   const [motherImage, setMotherImage] = useState(null);
   const [fatherImage, setFatherImage] = useState(null);
   const [motherUploadedFileName, setMotherUploadedFileName] = useState('');
@@ -146,20 +144,9 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal, onChange }, ref) => {
     }
   };
 
-  const handleBreedChange =
-    (setSelectedBreed, setCustomBreed, parentField) => (event) => {
-      const value = event.target.value;
-      setSelectedBreed(value);
-      updateParentInfo(parentField, value);
-      if (value !== '직접입력') {
-        setCustomBreed('');
-        updateParentInfo(parentField.replace('Breed', 'CustomBreed'), '');
-      }
-    };
-
-  const handleCustomBreedChange = (setCustomBreed, parentField) => (event) => {
+  const handleBreedChange = (setSelectedBreed, parentField) => (event) => {
     const value = event.target.value;
-    setCustomBreed(value);
+    setSelectedBreed(value);
     updateParentInfo(parentField, value);
   };
 
@@ -267,11 +254,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal, onChange }, ref) => {
             <A.ParentDogLabel>종</A.ParentDogLabel>
             <A.BreedSelect
               value={motherBreed}
-              onChange={handleBreedChange(
-                setMotherBreed,
-                setMotherCustomBreed,
-                'motherBreed',
-              )}
+              onChange={handleBreedChange(setMotherBreed, 'motherBreed')}
             >
               <A.BreedOption value="">정확한 품종명을 선택하세요</A.BreedOption>
               {breedOptions.map((breed) => (
@@ -284,11 +267,8 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal, onChange }, ref) => {
               <A.DogInfoText
                 type="text"
                 placeholder="품종을 입력하세요"
-                value={motherCustomBreed}
-                onChange={handleCustomBreedChange(
-                  setMotherCustomBreed,
-                  'motherCustomBreed',
-                )}
+                value={motherBreed}
+                onChange={handleBreedChange(setMotherBreed, 'motherBreed')}
               />
             )}
           </A.ParentDogDetail>
@@ -466,11 +446,7 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal, onChange }, ref) => {
             <A.ParentDogLabel>종</A.ParentDogLabel>
             <A.BreedSelect
               value={fatherBreed}
-              onChange={handleBreedChange(
-                setFatherBreed,
-                setFatherCustomBreed,
-                'fatherBreed',
-              )}
+              onChange={handleBreedChange(setFatherBreed, 'fatherBreed')}
             >
               <A.BreedOption value="">정확한 품종명을 선택하세요</A.BreedOption>
               {breedOptions.map((breed) => (
@@ -483,11 +459,8 @@ const UploadParentDogInfo = forwardRef(({ selectedAnimal, onChange }, ref) => {
               <A.DogInfoText
                 type="text"
                 placeholder="품종을 입력하세요"
-                value={fatherCustomBreed}
-                onChange={handleCustomBreedChange(
-                  setFatherCustomBreed,
-                  'fatherCustomBreed',
-                )}
+                value={fatherBreed}
+                onChange={handleBreedChange(setFatherBreed, 'fatherBreed')}
               />
             )}
           </A.ParentDogDetail>
