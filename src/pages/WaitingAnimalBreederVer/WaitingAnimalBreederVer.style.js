@@ -10,6 +10,31 @@ export const Container = styled.div`
   padding: 64px 0 291px 0;
 `;
 
+export const InfoInput = styled.textarea`
+  display: flex;
+  width: 100%;
+  max-width: 970px;
+  height: 112px;
+  padding: 8px 10px 8px 18px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+  resize: none;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 350;
+  line-height: 24px;
+  background: #fff;
+  &::placeholder {
+    color: #737373;
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-weight: 350;
+    line-height: 24px;
+  }
+`;
+
 export const EditBtn = styled.button`
   border-radius: 12px;
   border: 1px solid var(--Grey_icon, #c5c5c5);
@@ -149,6 +174,7 @@ export const DogInfo = styled.div`
   line-height: 21px;
   strong {
     color: #737373;
+    margin-right: 10px;
   }
   margin-bottom: 20px;
 `;
