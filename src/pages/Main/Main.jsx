@@ -634,7 +634,10 @@ function InfoArticle() {
                 }
                 alt="InfoCard"
               />
-              <S.ProFileName>{data.profileName}</S.ProFileName>
+              <S.ProFileName>
+                {data.profileName}
+                {data.breederName}
+              </S.ProFileName>
             </S.ProFileContainer>
           </S.InfoCard>
         ))}

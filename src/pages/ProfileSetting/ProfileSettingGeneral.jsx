@@ -208,15 +208,20 @@ function ProfileSettingGeneral() {
   const handleSubmitClick = async () => {
     let hasError = false;
 
-    if (passwordError || password.length === 0) {
-      setPasswordError('조건에 맞지 않아요.');
-      alert('비밀번호를 입력해주세요');
-      hasError = true;
-    } else if (passwordCheckError || password !== passwordCheck) {
-      setPasswordCheckError('비밀번호가 일치하지 않아요.');
-      alert('비밀번호가 일치하지 않습니다');
-      hasError = true;
-    } else if (phoneError || phone.length === 0) {
+    if (password.trim() !== '') {
+      // 비밀번호가 공백이 아닐 때만 유효성 검사 수행
+      if (passwordError || password.length === 0) {
+        setPasswordError('조건에 맞지 않아요.');
+        alert('비밀번호를 입력해주세요');
+        hasError = true;
+      } else if (passwordCheckError || password !== passwordCheck) {
+        setPasswordCheckError('비밀번호가 일치하지 않아요.');
+        alert('비밀번호가 일치하지 않습니다');
+        hasError = true;
+      }
+    }
+
+    if (phoneError || phone.length === 0) {
       setPhoneError('전화번호를 형식에 맞게 입력해주세요.');
       alert('전화번호를 입력해주세요');
       hasError = true;
@@ -235,26 +240,10 @@ function ProfileSettingGeneral() {
       if (profileImage) {
         formData.append('profileImage', profileImage);
       }
-      // formData.append(
-      //   'memberUpdateDTO',
-      //   JSON.stringify({
-      //     password,
-      //     phone,
-      //     zipcode,
-      //     address,
-      //     addressDetail,
-      //     petAllowed,
-      //     cohabitant,
-      //     cohabitantCount,
-      //     familyAgreement,
-      //     employmentStatus,
-      //     commuteTime,
-      //     petExperience,
-      //     currentPet,
-      //     futurePlan,
-      //   }),
-      // );
-      formData.append('password', password);
+      if (password.trim() !== '') {
+        // 비밀번호가 공백이 아닐 경우에만 추가
+        formData.append('password', password);
+      }
       formData.append('phone', phone);
       formData.append('zipcode', zipcode);
       formData.append('address', address);

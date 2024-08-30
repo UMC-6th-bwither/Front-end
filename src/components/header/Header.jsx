@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '/img/logo.svg';
 import profile from '/img/profile.png';
@@ -20,25 +20,27 @@ export default function Header() {
     setIsHovered(false);
   };
 
-  const fetchRecentData = async () => {
-    try {
-      const token = localStorage.getItem('accessToken');
+  useEffect(() => {
+    const fetchRecentData = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
 
-      const userResponse = await api.get('/user', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      const response = userResponse.data.result.userDTO;
+        const userResponse = await api.get('/user', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const response = userResponse.data.result.userDTO;
 
-      setUserData(response);
-    } catch (error) {
-      console.error('Error fetching recentData', error);
-    }
-  };
+        setUserData(response);
+      } catch (error) {
+        console.error('Error fetching recentData', error);
+      }
+    };
 
-  fetchRecentData();
+    fetchRecentData();
+  }, []);
 
   let profileLink;
 
