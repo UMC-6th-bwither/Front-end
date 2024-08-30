@@ -211,7 +211,7 @@ function MypageGeneral() {
                       photo={breeder.profileUrl}
                       location={breeder.address}
                       breederName={breeder.breederName}
-                      phone={breeder.phone}
+                      phone={breeder.tradePhone}
                     />
                   </div>
                 </MP.ResContent>
