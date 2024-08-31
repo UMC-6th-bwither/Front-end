@@ -259,9 +259,10 @@ function AnimalUpload() {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    const breederId = parseInt(localStorage.getItem('breederId'), 10);
+    // const breederId = parseInt(localStorage.getItem('breederId'), 10);
     // console.log('Breeder ID:', breederId);
     // const breederId = 1;
+    const breederId = 1;
 
     // if (!formData.has('breederId')) {
     //   formData.append('breederId', breederId);
@@ -335,9 +336,9 @@ function AnimalUpload() {
           body: formData,
         },
       );
-      console.log(response.data);
 
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (data.isSuccess) {
         console.log('등록 성공');
