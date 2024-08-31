@@ -259,10 +259,10 @@ function AnimalUpload() {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    // const breederId = parseInt(localStorage.getItem('breederId'), 10);
+    const breederId = parseInt(localStorage.getItem('breederId'), 10);
     // console.log('Breeder ID:', breederId);
     // const breederId = 1;
-    const breederId = 1;
+    // const breederId = 1;
 
     // if (!formData.has('breederId')) {
     //   formData.append('breederId', breederId);
