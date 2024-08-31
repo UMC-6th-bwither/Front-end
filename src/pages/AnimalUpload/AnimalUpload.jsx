@@ -263,9 +263,9 @@ function AnimalUpload() {
     // console.log('Breeder ID:', breederId);
     // const breederId = 1;
 
-    if (!formData.has('breederId')) {
-      formData.append('breederId', breederId);
-    }
+    // if (!formData.has('breederId')) {
+    //   formData.append('breederId', breederId);
+    // }
 
     Object.keys(uploadedFiles).forEach((key) => {
       uploadedFiles[key].forEach((file) => {
@@ -279,6 +279,10 @@ function AnimalUpload() {
 
     if (pedigreeFile) {
       formData.append('files.pedigreeImage', pedigreeFile);
+    } else {
+      console.error('파일이 선택되지 않았습니다.');
+      alert('파일을 선택해 주세요.');
+      return;
     }
 
     const formattedBirthDate = formatDate(birthDate);
@@ -322,7 +326,7 @@ function AnimalUpload() {
 
     try {
       const response = await fetch(
-        'http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/animals',
+        `http://ec2-3-37-97-6.ap-northeast-2.compute.amazonaws.com:8080/animals?breederId=${breederId}`,
         {
           method: 'POST',
           headers: {
@@ -331,6 +335,7 @@ function AnimalUpload() {
           body: formData,
         },
       );
+      console.log(response.data);
 
       const data = await response.json();
 
