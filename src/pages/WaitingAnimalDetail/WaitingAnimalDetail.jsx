@@ -67,9 +67,13 @@ function WaitingAnimalDetail() {
   useEffect(() => {
     const fetchRecentAnimal = async () => {
       try {
+        if (!animalId) {
+          console.error('Animal ID가 없습니다.');
+          return;
+        }
         const response = await api.post(
-          '/user/recent-animals',
-          { animalId },
+          `/user/recent-animals?animalId=${encodeURIComponent(animalId)}`,
+          {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
