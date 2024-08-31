@@ -3,6 +3,8 @@
 /* eslint-disable no-console */
 import { useState, useRef, forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+
 import MenuSelect from '../../components/MenuSelect/MenuSelect';
 import * as A from './AnimalUpload.style';
 import Button from '../../components/button/Button';
@@ -107,6 +109,7 @@ DogInfoInput.displayName = 'DogInfoInput';
 
 function AnimalUpload() {
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   const [activeMenu, setActiveMenu] = useState('강아지 정보');
   const [birthDate, setBirthDate] = useState(null);
@@ -333,6 +336,7 @@ function AnimalUpload() {
 
       if (data.isSuccess) {
         console.log('등록 성공');
+        navigate('/BreederAnimalList');
       } else {
         console.error('등록 실패', data);
       }
