@@ -279,7 +279,7 @@ function AnimalUpload() {
     });
 
     if (pedigreeFile) {
-      formData.append('files.pedigreeImage', pedigreeFile);
+      formData.append('pedigreeImage', pedigreeFile);
     } else {
       console.error('파일이 선택되지 않았습니다.');
       alert('파일을 선택해 주세요.');
@@ -324,6 +324,10 @@ function AnimalUpload() {
         formData.append(key, value);
       }
     });
+
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
 
     try {
       const response = await fetch(
