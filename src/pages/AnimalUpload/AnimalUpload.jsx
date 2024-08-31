@@ -243,7 +243,6 @@ function AnimalUpload() {
     setCustomBreed(event.target.value);
   };
 
-  // const [breedOptions, setBreedOptions] = useState(dogBreeds);
   // if (selectedAnimal === '고양이') setBreedOptions(catBreeds);
   // const breedOptions = selectedAnimal === '강아지' ? dogBreeds : catBreeds;
 
